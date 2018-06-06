@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans default-lazy-init="false">
+	<bean id="templateDao" class="com.best1.db.TemplateDao">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="userDao" class="com.best1.db.UserDao">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="treeInfoDAO" class="com.best1.db.TreeInfoDAO">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	
+	<bean id="pvInfoDAO" class="com.best1.db.PVInfoDAO">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="loggingDAO" class="com.best1.db.LoggingDAO">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="privilegeDao" class="com.best1.db.PrivilegeDao">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="roleDao" class="com.best1.db.RoleDao">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="menuDao" class="com.best1.db.MenuDao">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="departmentDao" class="com.best1.db.DepartmentDao">
+		<property name="baseDAO">
+			<ref bean="BaseDAO"/>
+		</property>
+	</bean>
+</beans>

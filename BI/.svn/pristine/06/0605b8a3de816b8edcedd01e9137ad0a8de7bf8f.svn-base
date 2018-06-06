@@ -1,0 +1,46 @@
+/*初始花样式*/
+
+/* Normalizes margin, padding , td */
+body, div, dl, dt, dd, ul,li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th
+{ margin : 0; padding : 0; }
+
+body{ font-size:12px;}
+
+ol{ margin-top:0px;}
+
+/* Normalizes font-size for headers */
+h1,h2,h3,h4,h5,h6 { font-size : 100%;}
+
+/* Removes list-style from lists */
+ul { list-style : none;}
+
+p { font-size :12px; }
+
+/* Normalizes font-style and font-weight to normal  strong,*/
+address, caption, cite, code, dfn, em, th, var
+{ font-style : normal; font-weight : normal; }
+
+/* Removes list-style from lists 
+table { border-collapse : collapse; border-spacing : 0; }*/
+
+/* Removes border from fieldset and img */
+fieldset,img { border : 0; }
+
+/* Left-aligns text in caption and th */
+caption,th { text-align : left; }
+
+/* Removes quotation marks from q */
+q:before, q:after { content :''; }
+
+a{text-decoration:none;}
+a:hover{ text-decoration:underline;}
+a:focus{ outline:none;}
+
+
+
+
+
+
+
+
+

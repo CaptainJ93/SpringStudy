@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.scm.TscmProductMapper">
+
+
+<resultMap type="com.best1.api.entity.scm.product.ProductInfo" id="productbaseInfo">
+<result column="productid" jdbcType="DECIMAL" property="productid" />
+<result column="productname" jdbcType="VARCHAR" property="productname" />
+<result column="colorcode" jdbcType="DECIMAL" property="colorcode" />
+<result column="stylecode" jdbcType="DECIMAL" property="stylecode" />
+<result column="colorclass" jdbcType="DECIMAL" property="colorclass" />
+<result column="styleclass" jdbcType="DECIMAL" property="styleclass" />
+<result column="clr" jdbcType="VARCHAR" property="clr" />
+<result column="sty" jdbcType="VARCHAR" property="sty" />
+<result column="sellprice" jdbcType="DECIMAL" property="sellprice" />
+<result column="marketprice" jdbcType="DECIMAL" property="marketprice" />
+<result column="okqty" jdbcType="DECIMAL" property="okqty" />
+<result column="lclass" jdbcType="VARCHAR" property="lclass" />
+<result column="mclass" jdbcType="VARCHAR" property="mclass" />
+<result column="sclass" jdbcType="VARCHAR" property="sclass" />
+<result column="u8lclass" jdbcType="VARCHAR" property="u8lclass" />
+<result column="u8sclass" jdbcType="VARCHAR" property="u8sclass" />
+<result column="mainComment" jdbcType="VARCHAR" property="mainComment" />
+<result column="noticeComment" jdbcType="VARCHAR" property="noticeComment" />
+<result column="optComment" jdbcType="VARCHAR" property="optComment" />
+<result column="cplComment" jdbcType="VARCHAR" property="cplComment" />
+<result column="giftComment" jdbcType="VARCHAR" property="giftComment" />
+<result column="boxComment" jdbcType="VARCHAR" property="boxComment" />
+<result column="outprovince" jdbcType="VARCHAR" property="outprovince" />
+<result column="isjifen" jdbcType="VARCHAR" property="isjifen" />
+<result column="jifenprice" jdbcType="DECIMAL" property="jifenprice" />
+<result column="rtnjifen" jdbcType="DECIMAL" property="rtnjifen" />
+</resultMap>
+
+<resultMap type="com.best1.api.entity.scm.product.TscmProductcolourstyle" id="productColourStyleInfo">
+<result column="productid"  jdbcType="DECIMAL" property="productid" />
+<result column="colorcode"  jdbcType="DECIMAL" property="colorcode" />
+<result column="stylecode"  jdbcType="DECIMAL" property="stylecode" />
+<result column="colorclass" jdbcType="DECIMAL" property="colorclass" />
+<result column="styleclass" jdbcType="DECIMAL" property="styleclass" />
+<result column="colourname" jdbcType="VARCHAR" property="colourname" />
+<result column="stylename"  jdbcType="VARCHAR" property="stylename" />
+
+</resultMap>
+  <sql id="Example_Where_Clause" >
+   
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+
+
+ <select id="selectProductcolourstyleByExample" resultType="com.best1.api.entity.scm.product.TscmProductattribute" parameterType="TscmProductattributeExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+     COLOURSTYLEID, PRODUCTID, COLOURCODE, STYLECODE, COLOURCLASS, STYLECLASS, FORSALE, 
+    CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, QUANTITY, FORSALELASTMODIFIEDBY, 
+    FORSALELASTMODIFIEDTIMESTAMP
+     from ET1_CHINA.TSCM_PRODUCTCOLOURSTYLE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+ <select id="selectProductattributeByExample" resultType="com.best1.api.entity.scm.product.TscmProductattribute" parameterType="TscmProductattributeExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    ATTRIBUTEID, PRODUCTID, ATTRIBUTECATEGORYID, ATTRIBUTEVALUE, CREATEDBY, CREATEDTIMESTAMP
+    from ET1_CHINA.TSCM_PRODUCTATTRIBUTE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+ 
+<select id="selectSpmProductidByProduct" parameterType="com.best1.api.entity.scm.product.TscmProduct" resultType="com.best1.api.entity.scm.product.TscmProduct">
+select PRODUCTID,
+       SUPPLIERID,
+       PURCHASEID,
+       MDID,
+       MANUFACTURERNAME,
+       PRODUCTVERSION,
+       MCLASSCODE,
+       SCLASSCODE,
+       PRODUCTCATEGORY,
+       PRODUCTTYPE,
+       TAXTYPE,
+       COSTPRICE,
+       SELLINGPRICE,
+       MARKETPRICE,
+       MEMBERPRICE,
+       POTYPE,
+       PRODUCTNAME1,
+       PRODUCTNAME2,
+       CREATEDBY,
+       CREATEDTIMESTAMP,
+       LASTMODIFIEDBY,
+       LASTMODIFIEDTIMESTAMP,
+       NOOFINSTALLMENT,
+       COMMISIONTYPE,
+       COMMISSIONRATE,
+       CURRENCYTYPE,
+       PRODUCTSTATUS,
+       LOCALORIMPORTED,
+       WARRANTYPERIOD,
+       MAXIMUMQUANTITY,
+       ECONOMICORDERQUANTITY,
+       MAXIMUMDISCOUNTQUANTITY,
+       QUANTITYPROCESSEDPERDAY,
+       BONUSTYPE,
+       SAFETYSTOCK,
+       FIRSTPOQUANTITY,
+       BONUSVALUE,
+       SHIPPINGPRICE,
+       SERVICEPRICE,
+       IMPORTINGPRICE,
+       IMPORTINGCOST,
+       REPURCHASEPERIOD,
+       EXPIRYDAYS,
+       REALSUPPLIERID,
+       AVERAGECOST,
+       SURPRISEPRICE,
+       REGAPPROVEDDATE,
+       COMMITEEAPPROVEDDATE,
+       WARRANTY,
+       USERMANUAL,
+       DOWNPAYMENT,
+       INVOICEREQUIRED,
+       TV,
+       CATALOG,
+       WEB,
+       NEWSPAPER,
+       PROJECT,
+       BROADCASTING,
+       OWNBRANDS,
+       SELFPROMOTION,
+       BONUSPOINTALLOWED,
+       IVRORDER,
+       GIFTCERTIFICATEPURCHASE,
+       GIFTPACKAGE,
+       BRANDNAME,
+       MANUFACTURINGPLACE,
+       REALSUPPLIERNAME,
+       PRODUCTIMAGEPATH,
+       LCLASSCODE,
+       LASTREQUESTRAISEDBY,
+       COMPANYID,
+       TAX,
+       PRODUCTNAMECONCAT,
+       IMPORTTAXTYPE,
+       PARTIALTAXAMOUNT,
+       PENDINGORDER,
+       PAYMENTTERMS,
+       ORIGINALPRODUCTID,
+       AUTOSHIP,
+       MULTIPLE,
+       RTNORDRATE,
+       SMSSUPPLIERNAME,
+       SMSCONTACTPHONE,
+       SMSSENDFLAG,
+       SIMPLETASK,
+       EXCLUSIVECHANNEL,
+       MDIDLASTMODIFIEDBY,
+       MDIDLASTMODIFIEDTIMESTAMP,
+       LASTREQUESTRAISEDTS,
+       CHANGEDFIELDS,
+       PROFIT,
+       PROFITRATE,
+       TAXPERCENT,
+       SCMPRODUCTID
+		FROM TSCM_PRODUCT prod,TSCM_SPMSCMPRODUCT spmrpod
+		where  
+		spmrpod.SCMPRODUCTID=prod.PRODUCTID(+)
+		and 	spmrpod.SCMPRODUCTID=#{spmproductid}
+	</select>
+	
+	
+	
+
+	<select id="productGeneralSequenceMax"
+		parameterType="com.best1.api.entity.scm.product.TscmProductgeneralExample"
+		resultType="java.lang.Integer">
+		select max(commentsequence) from ET1_CHINA.TSCM_PRODUCTGENERAL
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+
+
+ <insert id="insertProductGeneralSelective" parameterType="com.best1.api.entity.scm.product.TscmProductgeneral" >
+ 
+   <selectKey keyProperty="productmiscinfoid" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_PRODUCTGENERAL.nextval from dual
+		</selectKey>
+		
+    insert into ET1_CHINA.TSCM_PRODUCTGENERAL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productmiscinfoid != null" >
+        PRODUCTMISCINFOID,
+      </if>
+      <if test="productid != null" >
+        PRODUCTID,
+      </if>
+      <if test="generalinfocode != null" >
+        GENERALINFOCODE,
+      </if>
+      <if test="commentsequence != null" >
+        COMMENTSEQUENCE,
+      </if>
+      <if test="comments != null" >
+        COMMENTS,
+      </if>
+      <if test="commenttype != null" >
+        COMMENTTYPE,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productmiscinfoid != null" >
+        #{productmiscinfoid,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="generalinfocode != null" >
+        #{generalinfocode,jdbcType=DECIMAL},
+      </if>
+      <if test="commentsequence != null" >
+        #{commentsequence,jdbcType=DECIMAL},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="commenttype != null" >
+        #{commenttype,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+
+<insert id="insertProductcolourstyleSelective" parameterType="com.best1.api.entity.scm.product.TscmProductcolourstyle">
+   <selectKey keyProperty="colourstyleid" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_PRODUCTCOLOURSTYLE.nextval from dual
+		</selectKey>
+		
+    insert into ET1_CHINA.TSCM_PRODUCTCOLOURSTYLE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="colourstyleid != null">
+        COLOURSTYLEID,
+      </if>
+      <if test="productid != null">
+        PRODUCTID,
+      </if>
+      <if test="colourcode != null">
+        COLOURCODE,
+      </if>
+      <if test="stylecode != null">
+        STYLECODE,
+      </if>
+      <if test="colourclass != null">
+        COLOURCLASS,
+      </if>
+      <if test="styleclass != null">
+        STYLECLASS,
+      </if>
+      <if test="forsale != null">
+        FORSALE,
+      </if>
+      <if test="createdby != null">
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="quantity != null">
+        QUANTITY,
+      </if>
+      <if test="forsalelastmodifiedby != null">
+        FORSALELASTMODIFIEDBY,
+      </if>
+      <if test="forsalelastmodifiedtimestamp != null">
+        FORSALELASTMODIFIEDTIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="colourstyleid != null">
+        #{colourstyleid,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null">
+        #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="colourcode != null">
+        #{colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="stylecode != null">
+        #{stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="colourclass != null">
+        #{colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="styleclass != null">
+        #{styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="forsale != null">
+        #{forsale,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="forsalelastmodifiedby != null">
+        #{forsalelastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="forsalelastmodifiedtimestamp != null">
+        #{forsalelastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateProductcolourstyleByPrimaryKeySelective" parameterType="com.best1.api.entity.scm.product.TscmProductcolourstyle">
+   
+    update ET1_CHINA.TSCM_PRODUCTCOLOURSTYLE
+    <set>
+      <if test="productid != null">
+        PRODUCTID = #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="colourcode != null">
+        COLOURCODE = #{colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="stylecode != null">
+        STYLECODE = #{stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="colourclass != null">
+        COLOURCLASS = #{colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="styleclass != null">
+        STYLECLASS = #{styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="forsale != null">
+        FORSALE = #{forsale,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quantity != null">
+        QUANTITY = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="forsalelastmodifiedby != null">
+        FORSALELASTMODIFIEDBY = #{forsalelastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="forsalelastmodifiedtimestamp != null">
+        FORSALELASTMODIFIEDTIMESTAMP = #{forsalelastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where COLOURSTYLEID = #{colourstyleid,jdbcType=DECIMAL}
+  </update>
+  
+   <update id="updateProductcolourstyleByExample" parameterType="com.best1.api.entity.scm.product.TscmProductcolourstyle">
+   
+    update ET1_CHINA.TSCM_PRODUCTCOLOURSTYLE
+    <set>
+      <if test="forsale != null">
+        FORSALE = #{forsale,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quantity != null">
+        QUANTITY = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="forsalelastmodifiedby != null">
+        FORSALELASTMODIFIEDBY = #{forsalelastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="forsalelastmodifiedtimestamp != null">
+        FORSALELASTMODIFIEDTIMESTAMP = #{forsalelastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+        WHERE PRODUCTID = #{productid,jdbcType=DECIMAL} 
+        AND COLOURCODE = #{colourcode,jdbcType=DECIMAL} 
+        AND STYLECODE = #{stylecode,jdbcType=DECIMAL} 
+        AND COLOURCLASS = #{colourclass,jdbcType=DECIMAL} 
+        AND STYLECLASS = #{styleclass,jdbcType=DECIMAL}
+  </update>
+  
+ <update id="updateProductByPrimaryKeySelective" parameterType="com.best1.api.entity.scm.product.TscmProduct" >
+ 
+    update ET1_CHINA.TSCM_PRODUCT
+    <set >
+      <if test="supplierid != null" >
+        SUPPLIERID = #{supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseid != null" >
+        PURCHASEID = #{purchaseid,jdbcType=DECIMAL},
+      </if>
+      <if test="mdid != null" >
+        MDID = #{mdid,jdbcType=DECIMAL},
+      </if>
+      <if test="manufacturername != null" >
+        MANUFACTURERNAME = #{manufacturername,jdbcType=VARCHAR},
+      </if>
+      <if test="productversion != null" >
+        PRODUCTVERSION = #{productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="mclasscode != null" >
+        MCLASSCODE = #{mclasscode,jdbcType=DECIMAL},
+      </if>
+      <if test="sclasscode != null" >
+        SCLASSCODE = #{sclasscode,jdbcType=DECIMAL},
+      </if>
+      <if test="productcategory != null" >
+        PRODUCTCATEGORY = #{productcategory,jdbcType=DECIMAL},
+      </if>
+      <if test="producttype != null" >
+        PRODUCTTYPE = #{producttype,jdbcType=DECIMAL},
+      </if>
+      <if test="taxtype != null" >
+        TAXTYPE = #{taxtype,jdbcType=DECIMAL},
+      </if>
+      <if test="costprice != null" >
+        COSTPRICE = #{costprice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellingprice != null" >
+        SELLINGPRICE = #{sellingprice,jdbcType=DECIMAL},
+      </if>
+      <if test="marketprice != null" >
+        MARKETPRICE = #{marketprice,jdbcType=DECIMAL},
+      </if>
+      <if test="memberprice != null" >
+        MEMBERPRICE = #{memberprice,jdbcType=DECIMAL},
+      </if>
+      <if test="potype != null" >
+        POTYPE = #{potype,jdbcType=DECIMAL},
+      </if>
+      <if test="productname1 != null" >
+        PRODUCTNAME1 = #{productname1,jdbcType=VARCHAR},
+      </if>
+      <if test="productname2 != null" >
+        PRODUCTNAME2 = #{productname2,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noofinstallment != null" >
+        NOOFINSTALLMENT = #{noofinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="commisiontype != null" >
+        COMMISIONTYPE = #{commisiontype,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionrate != null" >
+        COMMISSIONRATE = #{commissionrate,jdbcType=DECIMAL},
+      </if>
+      <if test="currencytype != null" >
+        CURRENCYTYPE = #{currencytype,jdbcType=DECIMAL},
+      </if>
+      <if test="productstatus != null" >
+        PRODUCTSTATUS = #{productstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="localorimported != null" >
+        LOCALORIMPORTED = #{localorimported,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyperiod != null" >
+        WARRANTYPERIOD = #{warrantyperiod,jdbcType=DECIMAL},
+      </if>
+      <if test="maximumquantity != null" >
+        MAXIMUMQUANTITY = #{maximumquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="economicorderquantity != null" >
+        ECONOMICORDERQUANTITY = #{economicorderquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="maximumdiscountquantity != null" >
+        MAXIMUMDISCOUNTQUANTITY = #{maximumdiscountquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityprocessedperday != null" >
+        QUANTITYPROCESSEDPERDAY = #{quantityprocessedperday,jdbcType=DECIMAL},
+      </if>
+      <if test="bonustype != null" >
+        BONUSTYPE = #{bonustype,jdbcType=DECIMAL},
+      </if>
+      <if test="safetystock != null" >
+        SAFETYSTOCK = #{safetystock,jdbcType=DECIMAL},
+      </if>
+      <if test="firstpoquantity != null" >
+        FIRSTPOQUANTITY = #{firstpoquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="bonusvalue != null" >
+        BONUSVALUE = #{bonusvalue,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingprice != null" >
+        SHIPPINGPRICE = #{shippingprice,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceprice != null" >
+        SERVICEPRICE = #{serviceprice,jdbcType=DECIMAL},
+      </if>
+      <if test="importingprice != null" >
+        IMPORTINGPRICE = #{importingprice,jdbcType=DECIMAL},
+      </if>
+      <if test="importingcost != null" >
+        IMPORTINGCOST = #{importingcost,jdbcType=DECIMAL},
+      </if>
+      <if test="repurchaseperiod != null" >
+        REPURCHASEPERIOD = #{repurchaseperiod,jdbcType=DECIMAL},
+      </if>
+      <if test="expirydays != null" >
+        EXPIRYDAYS = #{expirydays,jdbcType=DECIMAL},
+      </if>
+      <if test="realsupplierid != null" >
+        REALSUPPLIERID = #{realsupplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="averagecost != null" >
+        AVERAGECOST = #{averagecost,jdbcType=DECIMAL},
+      </if>
+      <if test="surpriseprice != null" >
+        SURPRISEPRICE = #{surpriseprice,jdbcType=DECIMAL},
+      </if>
+      <if test="regapproveddate != null" >
+        REGAPPROVEDDATE = #{regapproveddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commiteeapproveddate != null" >
+        COMMITEEAPPROVEDDATE = #{commiteeapproveddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warranty != null" >
+        WARRANTY = #{warranty,jdbcType=CHAR},
+      </if>
+      <if test="usermanual != null" >
+        USERMANUAL = #{usermanual,jdbcType=CHAR},
+      </if>
+      <if test="downpayment != null" >
+        DOWNPAYMENT = #{downpayment,jdbcType=CHAR},
+      </if>
+      <if test="invoicerequired != null" >
+        INVOICEREQUIRED = #{invoicerequired,jdbcType=CHAR},
+      </if>
+      <if test="tv != null" >
+        TV = #{tv,jdbcType=CHAR},
+      </if>
+      <if test="catalog != null" >
+        CATALOG = #{catalog,jdbcType=CHAR},
+      </if>
+      <if test="web != null" >
+        WEB = #{web,jdbcType=CHAR},
+      </if>
+      <if test="newspaper != null" >
+        NEWSPAPER = #{newspaper,jdbcType=CHAR},
+      </if>
+      <if test="project != null" >
+        PROJECT = #{project,jdbcType=CHAR},
+      </if>
+      <if test="broadcasting != null" >
+        BROADCASTING = #{broadcasting,jdbcType=CHAR},
+      </if>
+      <if test="ownbrands != null" >
+        OWNBRANDS = #{ownbrands,jdbcType=CHAR},
+      </if>
+      <if test="selfpromotion != null" >
+        SELFPROMOTION = #{selfpromotion,jdbcType=CHAR},
+      </if>
+      <if test="bonuspointallowed != null" >
+        BONUSPOINTALLOWED = #{bonuspointallowed,jdbcType=CHAR},
+      </if>
+      <if test="ivrorder != null" >
+        IVRORDER = #{ivrorder,jdbcType=CHAR},
+      </if>
+      <if test="giftcertificatepurchase != null" >
+        GIFTCERTIFICATEPURCHASE = #{giftcertificatepurchase,jdbcType=CHAR},
+      </if>
+      <if test="giftpackage != null" >
+        GIFTPACKAGE = #{giftpackage,jdbcType=CHAR},
+      </if>
+      <if test="brandname != null" >
+        BRANDNAME = #{brandname,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturingplace != null" >
+        MANUFACTURINGPLACE = #{manufacturingplace,jdbcType=VARCHAR},
+      </if>
+      <if test="realsuppliername != null" >
+        REALSUPPLIERNAME = #{realsuppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="productimagepath != null" >
+        PRODUCTIMAGEPATH = #{productimagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="lclasscode != null" >
+        LCLASSCODE = #{lclasscode,jdbcType=DECIMAL},
+      </if>
+      <if test="lastrequestraisedby != null" >
+        LASTREQUESTRAISEDBY = #{lastrequestraisedby,jdbcType=DECIMAL},
+      </if>
+      <if test="companyid != null" >
+        COMPANYID = #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="tax != null" >
+        TAX = #{tax,jdbcType=CHAR},
+      </if>
+      <if test="productnameconcat != null" >
+        PRODUCTNAMECONCAT = #{productnameconcat,jdbcType=VARCHAR},
+      </if>
+      <if test="importtaxtype != null" >
+        IMPORTTAXTYPE = #{importtaxtype,jdbcType=DECIMAL},
+      </if>
+      <if test="partialtaxamount != null" >
+        PARTIALTAXAMOUNT = #{partialtaxamount,jdbcType=DECIMAL},
+      </if>
+      <if test="pendingorder != null" >
+        PENDINGORDER = #{pendingorder,jdbcType=CHAR},
+      </if>
+      <if test="paymentterms != null" >
+        PAYMENTTERMS = #{paymentterms,jdbcType=DECIMAL},
+      </if>
+      <if test="originalproductid != null" >
+        ORIGINALPRODUCTID = #{originalproductid,jdbcType=DECIMAL},
+      </if>
+      <if test="autoship != null" >
+        AUTOSHIP = #{autoship,jdbcType=CHAR},
+      </if>
+      <if test="multiple != null" >
+        MULTIPLE = #{multiple,jdbcType=DECIMAL},
+      </if>
+      <if test="rtnordrate != null" >
+        RTNORDRATE = #{rtnordrate,jdbcType=DECIMAL},
+      </if>
+      <if test="smssuppliername != null" >
+        SMSSUPPLIERNAME = #{smssuppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="smscontactphone != null" >
+        SMSCONTACTPHONE = #{smscontactphone,jdbcType=VARCHAR},
+      </if>
+      <if test="smssendflag != null" >
+        SMSSENDFLAG = #{smssendflag,jdbcType=VARCHAR},
+      </if>
+      <if test="simpletask != null" >
+        SIMPLETASK = #{simpletask,jdbcType=CHAR},
+      </if>
+      <if test="exclusivechannel != null" >
+        EXCLUSIVECHANNEL = #{exclusivechannel,jdbcType=DECIMAL},
+      </if>
+      <if test="mdidlastmodifiedby != null" >
+        MDIDLASTMODIFIEDBY = #{mdidlastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="mdidlastmodifiedtimestamp != null" >
+        MDIDLASTMODIFIEDTIMESTAMP = #{mdidlastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastrequestraisedts != null" >
+        LASTREQUESTRAISEDTS = #{lastrequestraisedts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changedfields != null" >
+        CHANGEDFIELDS = #{changedfields,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null" >
+        PROFIT = #{profit,jdbcType=DECIMAL},
+      </if>
+      <if test="profitrate != null" >
+        PROFITRATE = #{profitrate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxpercent != null" >
+        TAXPERCENT = #{taxpercent,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where PRODUCTID = #{productid,jdbcType=DECIMAL}
+  </update>
+<select id="selectInfoByProduct" parameterType="com.best1.api.entity.scm.product.TscmProduct" resultType="com.best1.api.entity.scm.product.TscmProduct">
+		 select PRODUCTID,
+       SUPPLIERID,
+       PURCHASEID,
+       MDID,
+       MANUFACTURERNAME,
+       PRODUCTVERSION,
+       MCLASSCODE,
+       SCLASSCODE,
+       PRODUCTCATEGORY,
+       PRODUCTTYPE,
+       TAXTYPE,
+       COSTPRICE,
+       SELLINGPRICE,
+       MARKETPRICE,
+       MEMBERPRICE,
+       POTYPE,
+       PRODUCTNAME1,
+       PRODUCTNAME2,
+       CREATEDBY,
+       CREATEDTIMESTAMP,
+       LASTMODIFIEDBY,
+       LASTMODIFIEDTIMESTAMP,
+       NOOFINSTALLMENT,
+       COMMISIONTYPE,
+       COMMISSIONRATE,
+       CURRENCYTYPE,
+       PRODUCTSTATUS,
+       LOCALORIMPORTED,
+       WARRANTYPERIOD,
+       MAXIMUMQUANTITY,
+       ECONOMICORDERQUANTITY,
+       MAXIMUMDISCOUNTQUANTITY,
+       QUANTITYPROCESSEDPERDAY,
+       BONUSTYPE,
+       SAFETYSTOCK,
+       FIRSTPOQUANTITY,
+       BONUSVALUE,
+       SHIPPINGPRICE,
+       SERVICEPRICE,
+       IMPORTINGPRICE,
+       IMPORTINGCOST,
+       REPURCHASEPERIOD,
+       EXPIRYDAYS,
+       REALSUPPLIERID,
+       AVERAGECOST,
+       SURPRISEPRICE,
+       REGAPPROVEDDATE,
+       COMMITEEAPPROVEDDATE,
+       WARRANTY,
+       USERMANUAL,
+       DOWNPAYMENT,
+       INVOICEREQUIRED,
+       TV,
+       CATALOG,
+       WEB,
+       NEWSPAPER,
+       PROJECT,
+       BROADCASTING,
+       OWNBRANDS,
+       SELFPROMOTION,
+       BONUSPOINTALLOWED,
+       IVRORDER,
+       GIFTCERTIFICATEPURCHASE,
+       GIFTPACKAGE,
+       BRANDNAME,
+       MANUFACTURINGPLACE,
+       REALSUPPLIERNAME,
+       PRODUCTIMAGEPATH,
+       LCLASSCODE,
+       LASTREQUESTRAISEDBY,
+       COMPANYID,
+       TAX,
+       PRODUCTNAMECONCAT,
+       IMPORTTAXTYPE,
+       PARTIALTAXAMOUNT,
+       PENDINGORDER,
+       PAYMENTTERMS,
+       ORIGINALPRODUCTID,
+       AUTOSHIP,
+       MULTIPLE,
+       RTNORDRATE,
+       SMSSUPPLIERNAME,
+       SMSCONTACTPHONE,
+       SMSSENDFLAG,
+       SIMPLETASK,
+       EXCLUSIVECHANNEL,
+       MDIDLASTMODIFIEDBY,
+       MDIDLASTMODIFIEDTIMESTAMP,
+       LASTREQUESTRAISEDTS,
+       CHANGEDFIELDS,
+       PROFIT,
+       PROFITRATE,
+       TAXPERCENT
+		from Tscm_Product
+		where  
+		productid>10000
+		<if test="productid != null">
+			and 	productid=#{productid}
+			</if>
+			<if test="productversion != null">
+				and productversion=#{productversion}
+			</if>
+			
+			<if test="supplierid != null">
+				and supplierid=#{supplierid}
+			</if>
+			<if test="companyid != null">
+				and companyid=#{companyid}
+			</if>
+			<if test="startdate != null and enddate!=null">
+				and ( lastmodifiedtimestamp  between 
+				<![CDATA[to_date(#{startdate}, 'yyyy/MM/dd')]]>
+			 and  
+			 <![CDATA[to_date(#{enddate}, 'yyyy/MM/dd')]]>
+			 )
+			</if>
+	
+	</select>
+	
+	
+	
+	<select id="selectProductColourStyleByProduct" parameterType="com.best1.api.entity.scm.product.TscmProductcolourstyle" resultType="com.best1.api.entity.scm.product.TscmProductcolourstyle">
+			select *
+		from Tscm_Productcolourstyle
+		<trim prefix="where" prefixOverrides="and |or">  
+		<if test="productid != null">
+				productid=#{productid}
+			</if>
+			
+		</trim>
+	</select>
+	
+	
+		<select id="selectProductGeneralProduct" parameterType="com.best1.api.entity.scm.product.TscmProductgeneral" resultType="com.best1.api.entity.scm.product.TscmProductgeneral">
+			select *
+		from TSCM_PRODUCTGENERAL
+		<trim prefix="where" prefixOverrides="and |or">  
+		<if test="productid != null">
+				productid=#{productid}
+			</if>
+			
+		</trim>
+	</select>
+	
+	
+		<select id="selectProductWarehouseProduct" parameterType="com.best1.api.entity.scm.product.TscmProductwarehouse" resultType="com.best1.api.entity.scm.product.TscmProductwarehouse">
+			select *
+		from Tscm_Productwarehouse
+		<trim prefix="where" prefixOverrides="and |or">  
+		<if test="productid != null">
+				productid=#{productid}
+			</if>
+			
+		</trim>
+	</select>
+	
+<select id="selectProductLogisticProduct" parameterType="com.best1.api.entity.scm.product.TscmProductlogistic" resultType="com.best1.api.entity.scm.product.TscmProductlogistic">
+			select *
+		from Tscm_Productlogistic
+		<trim prefix="where" prefixOverrides="and |or">  
+		<if test="productid != null">
+				productid=#{productid}
+			</if>
+	
+		</trim>
+	</select>
+	
+ <select id="porductAvailQty" resultType="Long" parameterType="java.util.Map">
+       select  Platform_API.SF_GetProdAvailQty(
+     #{ai_ProductID,mode=IN,jdbcType=DECIMAL},
+     #{ai_ColorCode,mode=IN,jdbcType=DECIMAL},
+     #{ai_StyleCode,mode=IN,jdbcType=DECIMAL}
+     ) as result from dual
+     
+
+  </select>
+  
+  
+   <select id="selectByProdInfo" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.SP_GetProdInfo(
+     #{ai_ProductID,mode=IN,jdbcType=DECIMAL},
+     #{ri_Info,jdbcType=CURSOR,mode=OUT,resultMap=productbaseInfo,javaType=java.sql.ResultSet})
+     }
+
+  </select>
+  
+  
+ <select id="selectPorductColor" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.COLOR_SEARCH(
+     #{V_PRODUCTID,mode=IN,jdbcType=DECIMAL},
+     #{V_RTN_DATA,jdbcType=CURSOR,mode=OUT,resultMap=productColourStyleInfo,javaType=java.sql.ResultSet},
+     #{V_RTN_CODE,mode=OUT,jdbcType=DECIMAL}
+     )
+     }
+
+  </select>
+  
+     <select id="selectPorductStyle" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.STYLE_SEARCH(
+     #{V_PRODUCTID,mode=IN,jdbcType=DECIMAL},
+     #{V_RTN_DATA,jdbcType=CURSOR,mode=OUT,resultMap=productColourStyleInfo,javaType=java.sql.ResultSet},
+     #{V_RTN_CODE,mode=OUT,jdbcType=DECIMAL}
+     )
+     }
+
+  </select>
+  
+     <select id="selectStockProd" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.STOCK_PROD(
+     #{al_PRODUCTID,mode=IN,jdbcType=DECIMAL},
+     #{al_PRODUCTVERSION,mode=IN,jdbcType=DECIMAL},
+     #{al_COLOURCODE,mode=IN,jdbcType=DECIMAL},
+     #{al_STYLECODE,mode=IN,jdbcType=DECIMAL},
+     #{as_COLOURCLASS,mode=IN,jdbcType=VARCHAR},
+     #{as_STYLECLASS,mode=IN,jdbcType=VARCHAR},
+     #{as_productAvailaleQty,mode=OUT,jdbcType=DECIMAL},
+     #{as_productMaxQty,mode=OUT,jdbcType=DECIMAL},
+     #{al_rtn_code,mode=OUT,jdbcType=DECIMAL},
+     #{as_rtn_msg,mode=OUT,jdbcType=VARCHAR}
+     )
+     }
+
+  </select>
+  
+  
+  
+</mapper> 

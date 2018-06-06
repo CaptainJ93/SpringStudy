@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.crm.TcrmContacthistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmContacthistory" >
+
+    <result column="CONTACTID" property="contactid" jdbcType="DECIMAL" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="CALLSTARTDATE" property="callstartdate" jdbcType="TIMESTAMP" />
+    <result column="CALLENDDATE" property="callenddate" jdbcType="TIMESTAMP" />
+    <result column="CONTACTTYPE" property="contacttype" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="EMOTICONID" property="emoticonid" jdbcType="DECIMAL" />
+    <result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+    <result column="DURATION" property="duration" jdbcType="DECIMAL" />
+    <result column="ACWENDDATE" property="acwenddate" jdbcType="TIMESTAMP" />
+    <result column="VOICEFILELOCATION" property="voicefilelocation" jdbcType="VARCHAR" />
+    <result column="PLACEID" property="placeid" jdbcType="VARCHAR" />
+    <result column="IVRPATH" property="ivrpath" jdbcType="VARCHAR" />
+    <result column="CONNID" property="connid" jdbcType="VARCHAR" />
+    <result column="CONTACTNUMBER" property="contactnumber" jdbcType="VARCHAR" />
+    <result column="VDNCD" property="vdncd" jdbcType="VARCHAR" />
+    <result column="CALLATTENDEDBY" property="callattendedby" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+   
+    CONTACTID, CUSTOMERID, CALLSTARTDATE, CALLENDDATE, CONTACTTYPE, CREATEDTIMESTAMP, 
+    EMOTICONID, MESSAGE, DURATION, ACWENDDATE, VOICEFILELOCATION, PLACEID, IVRPATH, CONNID, 
+    CONTACTNUMBER, VDNCD, CALLATTENDEDBY
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.crm.TcrmContacthistoryExample" >
+  
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CONTACTHISTORY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.crm.TcrmContacthistoryExample" >
+  
+    delete from ET1_CHINA.TCRM_CONTACTHISTORY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+ 
+  <insert id="insertSelective" parameterType="com.best1.api.entity.crm.TcrmContacthistory" >
+ 
+   <selectKey resultType="long"  keyProperty="contactid" order="BEFORE">
+         SELECT s_contacthistory.Nextval FROM DUAL
+      </selectKey>
+      
+    insert into ET1_CHINA.TCRM_CONTACTHISTORY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contactid != null" >
+        CONTACTID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="callstartdate != null" >
+        CALLSTARTDATE,
+      </if>
+      <if test="callenddate != null" >
+        CALLENDDATE,
+      </if>
+      <if test="contacttype != null" >
+        CONTACTTYPE,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="emoticonid != null" >
+        EMOTICONID,
+      </if>
+      <if test="message != null" >
+        MESSAGE,
+      </if>
+      <if test="duration != null" >
+        DURATION,
+      </if>
+      <if test="acwenddate != null" >
+        ACWENDDATE,
+      </if>
+      <if test="voicefilelocation != null" >
+        VOICEFILELOCATION,
+      </if>
+      <if test="placeid != null" >
+        PLACEID,
+      </if>
+      <if test="ivrpath != null" >
+        IVRPATH,
+      </if>
+      <if test="connid != null" >
+        CONNID,
+      </if>
+      <if test="contactnumber != null" >
+        CONTACTNUMBER,
+      </if>
+      <if test="vdncd != null" >
+        VDNCD,
+      </if>
+      <if test="callattendedby != null" >
+        CALLATTENDEDBY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contactid != null" >
+        #{contactid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="callstartdate != null" >
+        #{callstartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callenddate != null" >
+        #{callenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contacttype != null" >
+        #{contacttype,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emoticonid != null" >
+        #{emoticonid,jdbcType=DECIMAL},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=DECIMAL},
+      </if>
+      <if test="acwenddate != null" >
+        #{acwenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="voicefilelocation != null" >
+        #{voicefilelocation,jdbcType=VARCHAR},
+      </if>
+      <if test="placeid != null" >
+        #{placeid,jdbcType=VARCHAR},
+      </if>
+      <if test="ivrpath != null" >
+        #{ivrpath,jdbcType=VARCHAR},
+      </if>
+      <if test="connid != null" >
+        #{connid,jdbcType=VARCHAR},
+      </if>
+      <if test="contactnumber != null" >
+        #{contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="vdncd != null" >
+        #{vdncd,jdbcType=VARCHAR},
+      </if>
+      <if test="callattendedby != null" >
+        #{callattendedby,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.crm.TcrmContacthistoryExample" resultType="java.lang.Integer" >
+ 
+    select count(*) from ET1_CHINA.TCRM_CONTACTHISTORY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+ 
+    update ET1_CHINA.TCRM_CONTACTHISTORY
+    <set >
+      <if test="record.contactid != null" >
+        CONTACTID = #{record.contactid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null" >
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.callstartdate != null" >
+        CALLSTARTDATE = #{record.callstartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.callenddate != null" >
+        CALLENDDATE = #{record.callenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.contacttype != null" >
+        CONTACTTYPE = #{record.contacttype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.emoticonid != null" >
+        EMOTICONID = #{record.emoticonid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.message != null" >
+        MESSAGE = #{record.message,jdbcType=VARCHAR},
+      </if>
+      <if test="record.duration != null" >
+        DURATION = #{record.duration,jdbcType=DECIMAL},
+      </if>
+      <if test="record.acwenddate != null" >
+        ACWENDDATE = #{record.acwenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.voicefilelocation != null" >
+        VOICEFILELOCATION = #{record.voicefilelocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.placeid != null" >
+        PLACEID = #{record.placeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ivrpath != null" >
+        IVRPATH = #{record.ivrpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.connid != null" >
+        CONNID = #{record.connid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactnumber != null" >
+        CONTACTNUMBER = #{record.contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vdncd != null" >
+        VDNCD = #{record.vdncd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callattendedby != null" >
+        CALLATTENDEDBY = #{record.callattendedby,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+</mapper>

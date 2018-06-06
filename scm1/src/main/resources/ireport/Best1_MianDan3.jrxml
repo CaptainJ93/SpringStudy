@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Best1_MianDan" language="groovy" pageWidth="297" pageHeight="425" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" scriptletClass="com.sinoservices.common.util.ChineseMoneyScriptlet" uuid="bc979c19-5e98-44c3-a225-8f7dd72e22d7">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="160"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/app/tomcat/webapps/VWMS_temp/163/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGE_PATH_FACE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}+"Smiling.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/DataSets/MainData/RowData]]>
+	</queryString>
+	<field name="SO_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[SO_NO]]></fieldDescription>
+	</field>
+	<field name="CDWH_POSTCODE" class="java.lang.String">
+		<fieldDescription><![CDATA[CDWH_POSTCODE]]></fieldDescription>
+	</field>
+	<field name="WMOR_C_ZIP" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_C_ZIP]]></fieldDescription>
+	</field>
+	<field name="WMOR_C_TEL1" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_C_TEL1]]></fieldDescription>
+	</field>
+	<field name="WMOR_C_TEL2" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_C_TEL2]]></fieldDescription>
+	</field>
+	<field name="CDWH_ADDRESS" class="java.lang.String">
+		<fieldDescription><![CDATA[CDWH_ADDRESS]]></fieldDescription>
+	</field>
+	<field name="ISNEWCUSTOMER" class="java.lang.String">
+		<fieldDescription><![CDATA[ISNEWCUSTOMER]]></fieldDescription>
+	</field>
+	<field name="INSTRUCTIONTOSCM" class="java.lang.String">
+		<fieldDescription><![CDATA[INSTRUCTIONTOSCM]]></fieldDescription>
+	</field>
+	<field name="ET1_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[ET1_NO]]></fieldDescription>
+	</field>
+	<field name="WMOR_SOREFERENCE1" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_SOREFERENCE1]]></fieldDescription>
+	</field>
+	<field name="WMAA_LOGISTICSID" class="java.lang.String">
+		<fieldDescription><![CDATA[WMAA_LOGISTICSID]]></fieldDescription>
+	</field>
+	<field name="WMOR_CONSIGNEENAME" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_CONSIGNEENAME]]></fieldDescription>
+	</field>
+	<field name="CDWH_TEL" class="java.lang.String">
+		<fieldDescription><![CDATA[CDWH_TEL]]></fieldDescription>
+	</field>
+	<field name="ROW_NUM" class="java.lang.String">
+		<fieldDescription><![CDATA[ROW_NUM]]></fieldDescription>
+	</field>
+	<field name="TYPE_OF_PAYMENT" class="java.lang.String">
+		<fieldDescription><![CDATA[TYPE_OF_PAYMENT]]></fieldDescription>
+	</field>
+	<field name="SUM_NUM" class="java.lang.String">
+		<fieldDescription><![CDATA[SUM_NUM]]></fieldDescription>
+	</field>
+	<field name="WMOR_CONSIGNEEID" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_CONSIGNEEID]]></fieldDescription>
+	</field>
+	<field name="CARRIER_SHORT" class="java.lang.String">
+		<fieldDescription><![CDATA[CARRIER_SHORT]]></fieldDescription>
+	</field>
+	<field name="WMAA_WAVE_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[WMAA_WAVE_NO]]></fieldDescription>
+	</field>
+	<field name="CDWH_NAME" class="java.lang.String">
+		<fieldDescription><![CDATA[CDWH_NAME]]></fieldDescription>
+	</field>
+	<field name="WMOR_C_ADDRESS1" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOR_C_ADDRESS1]]></fieldDescription>
+	</field>
+	<field name="EBPL_NAME_CN" class="java.lang.String">
+		<fieldDescription><![CDATA[EBPL_NAME_CN]]></fieldDescription>
+	</field>
+	<field name="INSTRUCTIONTOWMS" class="java.lang.String">
+		<fieldDescription><![CDATA[INSTRUCTIONTOWMS]]></fieldDescription>
+	</field>
+	<field name="COD_PRICE" class="java.lang.String">
+		<fieldDescription><![CDATA[COD_PRICE]]></fieldDescription>
+	</field>
+	<field name="CDPD_GROSSW" class="java.lang.String">
+		<fieldDescription><![CDATA[CDPD_GROSSW]]></fieldDescription>
+	</field>
+	<field name="CDSK_SKU_NAME" class="java.lang.String">
+		<fieldDescription><![CDATA[CDSK_SKU_NAME]]></fieldDescription>
+	</field>
+	<field name="CDSK_SKU_GROUP6" class="java.lang.String">
+		<fieldDescription><![CDATA[CDSK_SKU_GROUP6]]></fieldDescription>
+	</field>
+	<field name="CDSK_SKU_CODE" class="java.lang.String">
+		<fieldDescription><![CDATA[CDSK_SKU_CODE]]></fieldDescription>
+	</field>
+	<field name="CDSK_SKU_GROUP3" class="java.lang.String">
+		<fieldDescription><![CDATA[CDSK_SKU_GROUP3]]></fieldDescription>
+	</field>
+	<field name="USERDEFINED13" class="java.lang.String">
+		<fieldDescription><![CDATA[USERDEFINED13]]></fieldDescription>
+	</field>
+	<field name="WMOS_D_EDI_06" class="java.lang.String">
+		<fieldDescription><![CDATA[WMOS_D_EDI_06]]></fieldDescription>
+	</field>
+	<group name="waalogistic">
+		<groupExpression><![CDATA[$F{WMAA_LOGISTICSID}]]></groupExpression>
+		<groupHeader>
+			<band height="273">
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="6" y="66" width="36" height="14"/>
+					<textElement markup="none">
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[地址：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="131" y="81" width="38" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[订单号：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a642db65-96fe-4ea9-bb37-daa93d4500ef" x="30" y="221" width="214" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{INSTRUCTIONTOSCM}+($F{TYPE_OF_PAYMENT}.equals( "P" )?("（刷卡）"):"")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="6" y="96" width="38" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[电话：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="7" y="175" width="34" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[收件人：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="c49407bb-9d05-431c-8f04-d626e76fed69" x="227" y="94" width="68" height="16"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ET1_NO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="7608c2ad-2b2a-46f3-8cc7-f7532eb0570b" x="36" y="175" width="106" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="11" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_CONSIGNEENAME}+"("+$F{WMOR_CONSIGNEEID}+")"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="f22b2a6e-e3ab-4ff6-ae52-cc0cfefed8c4" x="188" y="95" width="43" height="16"/>
+					<textElement>
+						<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[出货单号：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="bedb05fa-f39b-4b32-be15-644ab4134de3" x="32" y="206" width="212" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_C_ADDRESS1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="157" y="191" width="35" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[订单号：]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="369ed181-ed98-41e8-ad1a-00f6b2c542b3" x="244" y="174" width="1" height="61"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="59fa0c76-9571-4b31-8f29-53633e380c78" x="190" y="191" width="54" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_SOREFERENCE1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="7608c2ad-2b2a-46f3-8cc7-f7532eb0570b" x="36" y="80" width="95" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="11" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_CONSIGNEENAME}+"("+$F{WMOR_CONSIGNEEID}+")"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="142" y="175" width="26" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[邮编：]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="c5337a3a-b654-4f9f-b0ac-aa9d76e41965" stretchType="RelativeToBandHeight" x="244" y="175" width="49" height="31"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EBPL_NAME_CN}.length()>=3?$F{EBPL_NAME_CN}.substring( 0, 2 ):$F{EBPL_NAME_CN}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="6" y="81" width="35" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[收件人：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="59fa0c76-9571-4b31-8f29-53633e380c78" x="163" y="81" width="45" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_SOREFERENCE1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="7" y="141" width="281" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[温馨提示：3C、家电等特殊商品退换货按三包处理，有疑义可致电客服咨询]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="70d6baa3-b72d-4c7b-a087-81f58a3bbfe9" x="30" y="191" width="137" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_C_TEL1}.trim().equals( "" )||$F{WMOR_C_TEL2}.trim().equals( "" )?($F{WMOR_C_TEL1}+$F{WMOR_C_TEL2}):($F{WMOR_C_TEL1}+"/"+$F{WMOR_C_TEL2})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="7" y="206" width="25" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[地址：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="f46089bc-f41a-4855-a117-ae81eab4114e" x="167" y="174" width="71" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_C_ZIP}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="183" y="38" width="25" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[邮编：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="207" y="81" width="38" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[邮编：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="7" y="221" width="25" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[备注：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="70d6baa3-b72d-4c7b-a087-81f58a3bbfe9" x="30" y="96" width="158" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_C_TEL1}.trim().equals( "" )||$F{WMOR_C_TEL2}.trim().equals( "" )?($F{WMOR_C_TEL1}+$F{WMOR_C_TEL2}):($F{WMOR_C_TEL1}+"/"+$F{WMOR_C_TEL2})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="7" y="191" width="25" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[电话：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="6" y="53" width="36" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[电话：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="6" y="38" width="36" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[寄件人：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="f46089bc-f41a-4855-a117-ae81eab4114e" x="234" y="81" width="52" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_C_ZIP}]]></textFieldExpression>
+				</textField>
+				<componentElement>
+					<reportElement uuid="79083a84-cca6-4f87-aea8-e0fbd37a1638" x="37" y="123" width="114" height="18"/>
+					<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="1.0" textPosition="none" quietZone="10.0">
+						<jr:codeExpression><![CDATA[$F{WMAA_LOGISTICSID}]]></jr:codeExpression>
+					</jr:Code128>
+				</componentElement>
+				<componentElement>
+					<reportElement uuid="bb1af804-b3df-4945-80b8-f095d972bf73" x="155" y="3" width="136" height="35"/>
+					<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="1.0" textPosition="bottom" quietZone="10.0">
+						<jr:codeExpression><![CDATA[$F{SO_NO}]]></jr:codeExpression>
+					</jr:Code128>
+				</componentElement>
+				<textField pattern="yyyy-MM-dd HH:mm:ss">
+					<reportElement uuid="82f751f0-ae24-41a4-9fc5-c87267d05ba4" x="48" y="24" width="103" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" pdfEncoding="Cp1252"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="9fc70aa1-86e0-427f-b026-b3db547e202a" x="42" y="38" width="135" height="14"/>
+					<textElement>
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CDWH_NAME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="3be36f82-3abc-4f77-bbeb-cfabc49b4b07" x="42" y="53" width="239" height="14"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CDWH_TEL}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="c38881dc-5846-4ada-ac06-401a3b83ac2f" stretchType="RelativeToBandHeight" x="41" y="66" width="252" height="14"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CDWH_ADDRESS}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="b9ab8b79-0351-41f7-9f3b-8d35134bb400" x="208" y="38" width="73" height="14"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CDWH_POSTCODE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="6b06a283-a382-4022-a45f-17b0024b8900" x="6" y="24" width="43" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[寄件时间：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="6" y="110" width="37" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[地址：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="bedb05fa-f39b-4b32-be15-644ab4134de3" stretchType="RelativeToBandHeight" x="31" y="109" width="262" height="14"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WMOR_C_ADDRESS1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="4a65682f-89b4-46e3-8860-866c941b6b15" x="151" y="123" width="138" height="18"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{WMAA_LOGISTICSID}]]></textFieldExpression>
+				</textField>
+				<image evaluationTime="Auto">
+					<reportElement uuid="ef159d25-d86b-4a83-8d54-2fa4babbb893" x="133" y="18" width="22" height="19">
+						<printWhenExpression><![CDATA["Y".equals( $F{INSTRUCTIONTOWMS} )||"y".equals( $F{INSTRUCTIONTOWMS} )]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{IMAGE_PATH_FACE}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="c5337a3a-b654-4f9f-b0ac-aa9d76e41965" stretchType="RelativeToBandHeight" x="245" y="205" width="48" height="30"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EBPL_NAME_CN}.length()>=3?$F{EBPL_NAME_CN}.substring(2):""]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="38" width="295" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="80" width="295" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="155" width="295" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="175" width="295" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="234" width="295" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="e1e29da1-f71c-407b-8dc5-0eef19f87adc" x="10" y="253" width="57" height="20"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[代收货款：]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8d4b5d9e-f8de-4b84-b5dc-278059895ac9" x="184" y="237" width="60" height="16"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[代收货款：]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="71b2233f-16a6-41b1-a2e0-2012471085f2" x="67" y="253" width="218" height="20"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["￥"+((com.sinoservices.common.util.ChineseMoneyScriptlet)$P{REPORT_SCRIPTLET}).showChinese($F{COD_PRICE}.toString())+"(元)"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="5ed03cdb-1f4c-4ad1-a04d-039555276dce" x="239" y="237" width="54" height="16"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COD_PRICE}+"(元)"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="c63f550d-f30a-4883-a23a-decb1885ac10" x="132" y="237" width="52" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{CDPD_GROSSW}.trim().equals( "" ))?"0.00(g)":($F{CDPD_GROSSW}+"(g)")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0157afdc-88ba-4fa8-925a-409a90dcf57d" x="88" y="237" width="44" height="16"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[计费重量：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="59fa0c76-9571-4b31-8f29-53633e380c78" x="10" y="237" width="78" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["订单号："+$F{WMOR_SOREFERENCE1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="112">
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="3" y="19" width="46" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[好易购]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="65f1534b-7ea8-46cc-9977-500c1df13b4c" x="3" y="34" width="292" height="16"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[损等表面质量问题，并核对商品信息无误后签收。]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="3" y="49" width="90" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[收货人签名：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="c89b8dd4-ecb4-46ff-9059-068f35f522ec" x="3" y="75" width="90" height="34"/>
+					<textElement>
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CARRIER_SHORT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="0f0f7f32-f843-41de-a5cb-17a95e13640a" x="185" y="49" width="101" height="16"/>
+					<textElement>
+						<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[年  月  日  时]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="65f1534b-7ea8-46cc-9977-500c1df13b4c" x="47" y="19" width="249" height="16"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[客户注意事项：签收前请查看外包装是否完好，确认没有破]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement uuid="76683941-43eb-46f9-92b2-4eed6400fbab" x="159" y="74" width="123" height="33"/>
+					<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="1.0" textPosition="bottom" quietZone="10.0">
+						<jr:codeExpression><![CDATA[$F{WMAA_LOGISTICSID}]]></jr:codeExpression>
+					</jr:Code128>
+				</componentElement>
+				<textField>
+					<reportElement uuid="9f4176c7-8369-40ae-9be5-7c8ccf2b58a8" x="104" y="77" width="40" height="23"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SUM_NUM}+"-"+$F{ROW_NUM}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="336989e4-e1ac-4976-9ae1-bb5e29a8ff96" x="171" y="2" width="122" height="16"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["出货单号："+$F{ET1_NO}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="19" width="295" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="155b2745-e938-4551-8b3a-cf5fce54bb26" x="1" y="68" width="295" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{WMOS_D_EDI_06}.equals("N")]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="bfd6da26-f17d-4380-9bc7-f6c07db63a02" x="30" y="0" width="256" height="12" isPrintWhenDetailOverflows="true"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="7" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CDSK_SKU_CODE}+" "+$F{CDSK_SKU_NAME}+" "+$F{CDSK_SKU_GROUP3}+" "+$F{CDSK_SKU_GROUP6}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4d1e4c67-8831-4638-860e-89e010484b36" stretchType="RelativeToTallestObject" x="12" y="0" width="18" height="12"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT} == 1 ? "商品明细：":""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

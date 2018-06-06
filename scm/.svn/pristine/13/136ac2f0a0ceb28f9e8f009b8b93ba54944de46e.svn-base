@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.outinterface.dao.UserInfoDao">
+    
+	<sql id="userinfoColumns">
+		a.code AS "code",
+		a.username AS "username",
+		a.validatecode AS "validatecode",
+		a.type AS "type",
+		a.userid AS "userid"
+	</sql>
+	
+	<sql id="userinfoJoins">
+	</sql>
+    
+	<select id="get" resultType="UserInfo">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM scm_outinterface_userinfo a
+		<include refid="userinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UserInfo">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM scm_outinterface_userinfo a
+		<include refid="userinfoJoins"/>
+		<!--  <where>
+		 	a.del_flag = #{delFlag} AND
+			<if test="name != null and name != ''">
+				 a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+			</if>
+		</where>-->
+		<where>
+		    1=1
+		    <if test="code !=null and code!=''">
+		        and a.code = #{code}
+		    </if>
+		     <if test="username !=null and username!=''">
+		        and a.username = #{username}
+		    </if>
+		     <if test="validatecode !=null and validatecode!=''">
+		        and a.validatecode = #{validatecode}
+		    </if>
+		     <if test="type !=null and type!=''">
+		        and a.type = #{type}
+		    </if>
+		     <if test="userid !=null and userid!=''">
+		        and a.userid = #{userid}
+		    </if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.id DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DeliveryOrderIntransit">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM scm_outinterface_userinfo a
+		<include refid="userinfoJoins"/>
+		<!--  
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>	-->	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.id DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+
+
+	
+</mapper>

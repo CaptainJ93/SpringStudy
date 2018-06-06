@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafRefunddetailsMapper">
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.oaf.order.ToafRefunddetails">
+
+    <id column="REFUNDID" jdbcType="DECIMAL" property="refundid" />
+    <result column="ORDERID" jdbcType="DECIMAL" property="orderid" />
+    <result column="ITEMID" jdbcType="DECIMAL" property="itemid" />
+    <result column="CUSTOMERID" jdbcType="DECIMAL" property="customerid" />
+    <result column="REFUNDMODE" jdbcType="DECIMAL" property="refundmode" />
+    <result column="REFUNDSTATUS" jdbcType="DECIMAL" property="refundstatus" />
+    <result column="REFERENCETYPE" jdbcType="DECIMAL" property="referencetype" />
+    <result column="REFERENCENO" jdbcType="DECIMAL" property="referenceno" />
+    <result column="CREATEDBY" jdbcType="DECIMAL" property="createdby" />
+    <result column="CREATEDTIMESTAMP" jdbcType="TIMESTAMP" property="createdtimestamp" />
+    <result column="LASTMODIFIEDBY" jdbcType="DECIMAL" property="lastmodifiedby" />
+    <result column="LASTMODIFIEDTIMESTAMP" jdbcType="TIMESTAMP" property="lastmodifiedtimestamp" />
+    <result column="PRODUCTID" jdbcType="DECIMAL" property="productid" />
+    <result column="MULTICODEID" jdbcType="DECIMAL" property="multicodeid" />
+    <result column="PAYMENTID" jdbcType="DECIMAL" property="paymentid" />
+    <result column="REFUNDAMOUNT" jdbcType="DECIMAL" property="refundamount" />
+    <result column="PRODUCTVERSION" jdbcType="DECIMAL" property="productversion" />
+    <result column="REFUNDDATE" jdbcType="TIMESTAMP" property="refunddate" />
+    <result column="COMPANY" jdbcType="DECIMAL" property="company" />
+    <result column="ORIGINALAMOUNT" jdbcType="DECIMAL" property="originalamount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+   
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+
+    REFUNDID, ORDERID, ITEMID, CUSTOMERID, REFUNDMODE, REFUNDSTATUS, REFERENCETYPE, REFERENCENO, 
+    CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, PRODUCTID, MULTICODEID, 
+    PAYMENTID, REFUNDAMOUNT, PRODUCTVERSION, REFUNDDATE, COMPANY, ORIGINALAMOUNT
+  </sql>
+  <select id="selectByExample" parameterType="com.best1.api.entity.oaf.order.ToafRefunddetailsExample" resultMap="BaseResultMap">
+ 
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_REFUNDDETAILS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+ 
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_REFUNDDETAILS
+    where REFUNDID = #{refundid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  
+    delete from ET1_CHINA.TOAF_REFUNDDETAILS
+    where REFUNDID = #{refundid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.oaf.order.ToafRefunddetailsExample">
+
+    delete from ET1_CHINA.TOAF_REFUNDDETAILS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+ 
+  <insert id="insertSelective" parameterType="com.best1.api.entity.oaf.order.ToafRefunddetails">
+  
+    insert into ET1_CHINA.TOAF_REFUNDDETAILS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="refundid != null">
+        REFUNDID,
+      </if>
+      <if test="orderid != null">
+        ORDERID,
+      </if>
+      <if test="itemid != null">
+        ITEMID,
+      </if>
+      <if test="customerid != null">
+        CUSTOMERID,
+      </if>
+      <if test="refundmode != null">
+        REFUNDMODE,
+      </if>
+      <if test="refundstatus != null">
+        REFUNDSTATUS,
+      </if>
+      <if test="referencetype != null">
+        REFERENCETYPE,
+      </if>
+      <if test="referenceno != null">
+        REFERENCENO,
+      </if>
+      <if test="createdby != null">
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="productid != null">
+        PRODUCTID,
+      </if>
+      <if test="multicodeid != null">
+        MULTICODEID,
+      </if>
+      <if test="paymentid != null">
+        PAYMENTID,
+      </if>
+      <if test="refundamount != null">
+        REFUNDAMOUNT,
+      </if>
+      <if test="productversion != null">
+        PRODUCTVERSION,
+      </if>
+      <if test="refunddate != null">
+        REFUNDDATE,
+      </if>
+      <if test="company != null">
+        COMPANY,
+      </if>
+      <if test="originalamount != null">
+        ORIGINALAMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="refundid != null">
+        #{refundid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderid != null">
+        #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="itemid != null">
+        #{itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null">
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="refundmode != null">
+        #{refundmode,jdbcType=DECIMAL},
+      </if>
+      <if test="refundstatus != null">
+        #{refundstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="referencetype != null">
+        #{referencetype,jdbcType=DECIMAL},
+      </if>
+      <if test="referenceno != null">
+        #{referenceno,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productid != null">
+        #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="multicodeid != null">
+        #{multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentid != null">
+        #{paymentid,jdbcType=DECIMAL},
+      </if>
+      <if test="refundamount != null">
+        #{refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="productversion != null">
+        #{productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="refunddate != null">
+        #{refunddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=DECIMAL},
+      </if>
+      <if test="originalamount != null">
+        #{originalamount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.oaf.order.ToafRefunddetailsExample" resultType="java.lang.Integer">
+   
+    select count(*) from ET1_CHINA.TOAF_REFUNDDETAILS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+ 
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.oaf.order.ToafRefunddetails">
+
+    update ET1_CHINA.TOAF_REFUNDDETAILS
+    <set>
+      <if test="orderid != null">
+        ORDERID = #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="itemid != null">
+        ITEMID = #{itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null">
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="refundmode != null">
+        REFUNDMODE = #{refundmode,jdbcType=DECIMAL},
+      </if>
+      <if test="refundstatus != null">
+        REFUNDSTATUS = #{refundstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="referencetype != null">
+        REFERENCETYPE = #{referencetype,jdbcType=DECIMAL},
+      </if>
+      <if test="referenceno != null">
+        REFERENCENO = #{referenceno,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productid != null">
+        PRODUCTID = #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="multicodeid != null">
+        MULTICODEID = #{multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentid != null">
+        PAYMENTID = #{paymentid,jdbcType=DECIMAL},
+      </if>
+      <if test="refundamount != null">
+        REFUNDAMOUNT = #{refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="productversion != null">
+        PRODUCTVERSION = #{productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="refunddate != null">
+        REFUNDDATE = #{refunddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="company != null">
+        COMPANY = #{company,jdbcType=DECIMAL},
+      </if>
+      <if test="originalamount != null">
+        ORIGINALAMOUNT = #{originalamount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where REFUNDID = #{refundid,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

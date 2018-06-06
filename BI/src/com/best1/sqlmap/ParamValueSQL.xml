@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ParamValueSql">
+	<!-- 返回结果集类型-->
+	<resultMap class="com.best1.domain.ParamValue" id="getParamValueInfo">
+		<result property="code" column="DICT_CODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="name" column="DICT_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="value" column="PARAM_VALUE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	
+	<select id="getParamValueInfos" resultMap="getParamValueInfo" parameterClass="java.util.HashMap">
+		SELECT DICT_CODE,DICT_NAME,PARAM_VALUE FROM SYS_PARAM_DEFINE ORDER BY DICT_CODE
+	</select>
+</sqlMap>

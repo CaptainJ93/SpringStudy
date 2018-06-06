@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.api.mapper.crm.TcrmLotterybonusMapper">
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmLotterybonus">
+   
+    <id column="TRANSACTIONID" jdbcType="DECIMAL" property="transactionid" />
+    <result column="CUSTOMERID" jdbcType="DECIMAL" property="customerid" />
+    <result column="LOTTERYBONUSNO" jdbcType="DECIMAL" property="lotterybonusno" />
+    <result column="TRANSACTIONTYPEID" jdbcType="DECIMAL" property="transactiontypeid" />
+    <result column="TRANSACTIONDATE" jdbcType="TIMESTAMP" property="transactiondate" />
+    <result column="TRANSACTIONAMOUNT" jdbcType="DECIMAL" property="transactionamount" />
+    <result column="STARTDATE" jdbcType="TIMESTAMP" property="startdate" />
+    <result column="ENDDATE" jdbcType="TIMESTAMP" property="enddate" />
+    <result column="REFERENCETYPEID" jdbcType="DECIMAL" property="referencetypeid" />
+    <result column="EXCEPTIONDESC" jdbcType="VARCHAR" property="exceptiondesc" />
+    <result column="CREATEDBY" jdbcType="DECIMAL" property="createdby" />
+    <result column="CREATEDTIMESTAMP" jdbcType="TIMESTAMP" property="createdtimestamp" />
+    <result column="LASTMODIFIEDBY" jdbcType="DECIMAL" property="lastmodifiedby" />
+    <result column="LASTMODIFIEDTIMESTAMP" jdbcType="TIMESTAMP" property="lastmodifiedtimestamp" />
+    <result column="REFERENCEVALUE" jdbcType="DECIMAL" property="referencevalue" />
+    <result column="REFERENCEITEM" jdbcType="DECIMAL" property="referenceitem" />
+    <result column="COMPANYID" jdbcType="DECIMAL" property="companyid" />
+    <result column="ORIGINALLOTTERYBONUSNO" jdbcType="DECIMAL" property="originallotterybonusno" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+ 
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+  
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+   
+    TRANSACTIONID, CUSTOMERID, LOTTERYBONUSNO, TRANSACTIONTYPEID, TRANSACTIONDATE, TRANSACTIONAMOUNT, 
+    STARTDATE, ENDDATE, REFERENCETYPEID, EXCEPTIONDESC, CREATEDBY, CREATEDTIMESTAMP, 
+    LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, REFERENCEVALUE, REFERENCEITEM, COMPANYID, 
+    ORIGINALLOTTERYBONUSNO
+  </sql>
+  <select id="selectByExample" parameterType="com.best1.api.entity.crm.TcrmLotterybonusExample" resultMap="BaseResultMap">
+   
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_LOTTERYBONUS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_LOTTERYBONUS
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  
+    delete from ET1_CHINA.TCRM_LOTTERYBONUS
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.crm.TcrmLotterybonusExample">
+   
+    delete from ET1_CHINA.TCRM_LOTTERYBONUS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.best1.api.entity.crm.TcrmLotterybonus">
+ 
+<selectKey keyProperty="TRANSACTIONID" resultType="java.lang.Long"	order="BEFORE">
+			select S_LOTTERYBONUS.NEXTVAL from dual
+</selectKey>
+    insert into ET1_CHINA.TCRM_LOTTERYBONUS (TRANSACTIONID, CUSTOMERID, LOTTERYBONUSNO, 
+      TRANSACTIONTYPEID, TRANSACTIONDATE, TRANSACTIONAMOUNT, 
+      STARTDATE, ENDDATE, REFERENCETYPEID, 
+      EXCEPTIONDESC, CREATEDBY, CREATEDTIMESTAMP, 
+      LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, 
+      REFERENCEVALUE, REFERENCEITEM, COMPANYID, 
+      ORIGINALLOTTERYBONUSNO)
+    values (#{transactionid,jdbcType=DECIMAL}, #{customerid,jdbcType=DECIMAL}, #{lotterybonusno,jdbcType=DECIMAL}, 
+      #{transactiontypeid,jdbcType=DECIMAL}, #{transactiondate,jdbcType=TIMESTAMP}, #{transactionamount,jdbcType=DECIMAL}, 
+      #{startdate,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP}, #{referencetypeid,jdbcType=DECIMAL}, 
+      #{exceptiondesc,jdbcType=VARCHAR}, #{createdby,jdbcType=DECIMAL}, #{createdtimestamp,jdbcType=TIMESTAMP}, 
+      #{lastmodifiedby,jdbcType=DECIMAL}, #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, 
+      #{referencevalue,jdbcType=DECIMAL}, #{referenceitem,jdbcType=DECIMAL}, #{companyid,jdbcType=DECIMAL}, 
+      #{originallotterybonusno,jdbcType=DECIMAL})
+  </insert>
+<insert id="insertSelective" parameterType="com.best1.api.entity.crm.TcrmLotterybonus">
+   
+<selectKey keyProperty="TRANSACTIONID" resultType="java.lang.Long"	order="BEFORE">
+			select S_LOTTERYBONUS.NEXTVAL from dual
+</selectKey>
+    insert into ET1_CHINA.TCRM_LOTTERYBONUS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="transactionid != null">
+        TRANSACTIONID,
+      </if>
+      <if test="customerid != null">
+        CUSTOMERID,
+      </if>
+      <if test="lotterybonusno != null">
+        LOTTERYBONUSNO,
+      </if>
+      <if test="transactiontypeid != null">
+        TRANSACTIONTYPEID,
+      </if>
+      <if test="transactiondate != null">
+        TRANSACTIONDATE,
+      </if>
+      <if test="transactionamount != null">
+        TRANSACTIONAMOUNT,
+      </if>
+      <if test="startdate != null">
+        STARTDATE,
+      </if>
+      <if test="enddate != null">
+        ENDDATE,
+      </if>
+      <if test="referencetypeid != null">
+        REFERENCETYPEID,
+      </if>
+      <if test="exceptiondesc != null">
+        EXCEPTIONDESC,
+      </if>
+      <if test="createdby != null">
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="referencevalue != null">
+        REFERENCEVALUE,
+      </if>
+      <if test="referenceitem != null">
+        REFERENCEITEM,
+      </if>
+      <if test="companyid != null">
+        COMPANYID,
+      </if>
+      <if test="originallotterybonusno != null">
+        ORIGINALLOTTERYBONUSNO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="transactionid != null">
+        #{transactionid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null">
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="lotterybonusno != null">
+        #{lotterybonusno,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiontypeid != null">
+        #{transactiontypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiondate != null">
+        #{transactiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transactionamount != null">
+        #{transactionamount,jdbcType=DECIMAL},
+      </if>
+      <if test="startdate != null">
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="referencetypeid != null">
+        #{referencetypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="exceptiondesc != null">
+        #{exceptiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="referencevalue != null">
+        #{referencevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="referenceitem != null">
+        #{referenceitem,jdbcType=DECIMAL},
+      </if>
+      <if test="companyid != null">
+        #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="originallotterybonusno != null">
+        #{originallotterybonusno,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.crm.TcrmLotterybonusExample" resultType="java.lang.Integer">
+  
+    select count(*) from ET1_CHINA.TCRM_LOTTERYBONUS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+  
+    update ET1_CHINA.TCRM_LOTTERYBONUS
+    <set>
+      <if test="record.transactionid != null">
+        TRANSACTIONID = #{record.transactionid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null">
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lotterybonusno != null">
+        LOTTERYBONUSNO = #{record.lotterybonusno,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactiontypeid != null">
+        TRANSACTIONTYPEID = #{record.transactiontypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactiondate != null">
+        TRANSACTIONDATE = #{record.transactiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.transactionamount != null">
+        TRANSACTIONAMOUNT = #{record.transactionamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.startdate != null">
+        STARTDATE = #{record.startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.enddate != null">
+        ENDDATE = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.referencetypeid != null">
+        REFERENCETYPEID = #{record.referencetypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.exceptiondesc != null">
+        EXCEPTIONDESC = #{record.exceptiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdby != null">
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null">
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null">
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.referencevalue != null">
+        REFERENCEVALUE = #{record.referencevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="record.referenceitem != null">
+        REFERENCEITEM = #{record.referenceitem,jdbcType=DECIMAL},
+      </if>
+      <if test="record.companyid != null">
+        COMPANYID = #{record.companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.originallotterybonusno != null">
+        ORIGINALLOTTERYBONUSNO = #{record.originallotterybonusno,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    
+    update ET1_CHINA.TCRM_LOTTERYBONUS
+    set TRANSACTIONID = #{record.transactionid,jdbcType=DECIMAL},
+      CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      LOTTERYBONUSNO = #{record.lotterybonusno,jdbcType=DECIMAL},
+      TRANSACTIONTYPEID = #{record.transactiontypeid,jdbcType=DECIMAL},
+      TRANSACTIONDATE = #{record.transactiondate,jdbcType=TIMESTAMP},
+      TRANSACTIONAMOUNT = #{record.transactionamount,jdbcType=DECIMAL},
+      STARTDATE = #{record.startdate,jdbcType=TIMESTAMP},
+      ENDDATE = #{record.enddate,jdbcType=TIMESTAMP},
+      REFERENCETYPEID = #{record.referencetypeid,jdbcType=DECIMAL},
+      EXCEPTIONDESC = #{record.exceptiondesc,jdbcType=VARCHAR},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      REFERENCEVALUE = #{record.referencevalue,jdbcType=DECIMAL},
+      REFERENCEITEM = #{record.referenceitem,jdbcType=DECIMAL},
+      COMPANYID = #{record.companyid,jdbcType=DECIMAL},
+      ORIGINALLOTTERYBONUSNO = #{record.originallotterybonusno,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.crm.TcrmLotterybonus">
+   
+    update ET1_CHINA.TCRM_LOTTERYBONUS
+    <set>
+      <if test="customerid != null">
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="lotterybonusno != null">
+        LOTTERYBONUSNO = #{lotterybonusno,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiontypeid != null">
+        TRANSACTIONTYPEID = #{transactiontypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiondate != null">
+        TRANSACTIONDATE = #{transactiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transactionamount != null">
+        TRANSACTIONAMOUNT = #{transactionamount,jdbcType=DECIMAL},
+      </if>
+      <if test="startdate != null">
+        STARTDATE = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        ENDDATE = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="referencetypeid != null">
+        REFERENCETYPEID = #{referencetypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="exceptiondesc != null">
+        EXCEPTIONDESC = #{exceptiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="referencevalue != null">
+        REFERENCEVALUE = #{referencevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="referenceitem != null">
+        REFERENCEITEM = #{referenceitem,jdbcType=DECIMAL},
+      </if>
+      <if test="companyid != null">
+        COMPANYID = #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="originallotterybonusno != null">
+        ORIGINALLOTTERYBONUSNO = #{originallotterybonusno,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.best1.api.entity.crm.TcrmLotterybonus">
+  
+    update ET1_CHINA.TCRM_LOTTERYBONUS
+    set CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      LOTTERYBONUSNO = #{lotterybonusno,jdbcType=DECIMAL},
+      TRANSACTIONTYPEID = #{transactiontypeid,jdbcType=DECIMAL},
+      TRANSACTIONDATE = #{transactiondate,jdbcType=TIMESTAMP},
+      TRANSACTIONAMOUNT = #{transactionamount,jdbcType=DECIMAL},
+      STARTDATE = #{startdate,jdbcType=TIMESTAMP},
+      ENDDATE = #{enddate,jdbcType=TIMESTAMP},
+      REFERENCETYPEID = #{referencetypeid,jdbcType=DECIMAL},
+      EXCEPTIONDESC = #{exceptiondesc,jdbcType=VARCHAR},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      REFERENCEVALUE = #{referencevalue,jdbcType=DECIMAL},
+      REFERENCEITEM = #{referenceitem,jdbcType=DECIMAL},
+      COMPANYID = #{companyid,jdbcType=DECIMAL},
+      ORIGINALLOTTERYBONUSNO = #{originallotterybonusno,jdbcType=DECIMAL}
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </update>
+</mapper>

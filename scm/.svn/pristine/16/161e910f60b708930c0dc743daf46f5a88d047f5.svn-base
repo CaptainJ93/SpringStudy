@@ -1,0 +1,359 @@
+/**
+ * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.best1.scm.modules.supplier.service;
+
+import static com.best1.scm.common.utils.MathUtils.doubleValue;
+import static com.best1.scm.common.utils.MathUtils.intValue;
+import static com.best1.scm.common.utils.MathUtils.longValue;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.best1.scm.common.persistence.Page;
+import com.best1.scm.common.service.CrudService;
+import com.best1.scm.common.service.ServiceException;
+import com.best1.scm.common.utils.Collections3;
+import com.best1.scm.common.utils.MathUtils;
+import com.best1.scm.common.utils.SCMConstants;
+import com.best1.scm.common.utils.StringUtils;
+import com.best1.scm.modules.delivery.entity.DeliveryOrderintransit;
+import com.best1.scm.modules.delivery.entity.DeliveryOrderintransitDetail;
+import com.best1.scm.modules.delivery.service.DeliveryOrderintransitDetailService;
+import com.best1.scm.modules.delivery.service.DeliveryOrderintransitService;
+import com.best1.scm.modules.irpeort.entity.CSOInfoMianDan;
+import com.best1.scm.modules.irpeort.entity.CSOMianDanSenderInfo;
+import com.best1.scm.modules.irpeort.entity.CSOSubInfoMianDan;
+import com.best1.scm.modules.supplier.dao.ScmSupplierCsoinfoDao;
+import com.best1.scm.modules.supplier.entity.ScmSupplierCsoinfo;
+import com.best1.scm.modules.supplier.entity.ScmSupplierDeliveryOrder;
+import com.best1.scm.modules.supplier.entity.ScmSupplierShipConfirmInfo;
+import com.best1.scm.modules.sys.entity.User;
+import com.best1.scm.modules.sys.utils.UserUtils;
+import com.best1.scm.modules.vws.entity.Carrierdeliverorderid;
+import com.best1.scm.modules.vws.entity.Zipcode;
+import com.best1.scm.modules.vws.service.CarrierdeliverorderidService;
+import com.best1.scm.modules.vws.service.ZipcodeService;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+/**
+ * 指送订单Service
+ * 
+ * @author fanxuankai
+ * @version 2016-12-27
+ */
+@Service
+@Transactional(readOnly = true)
+public class ScmSupplierCsoinfoService extends CrudService<ScmSupplierCsoinfoDao, ScmSupplierCsoinfo> {
+	private static final String errorMessageTemplate = "操作失败，请重试：%s";
+	@Autowired
+	private DeliveryOrderintransitService deliveryOrderintransitService;
+	@Autowired
+	private DeliveryOrderintransitDetailService deliveryOrderintransitDetailService;
+	@Autowired
+	private CarrierdeliverorderidService carrierdeliverorderidService;
+	@Autowired
+	private ZipcodeService zipcodeService;
+	@Autowired
+	CSOMianDanSenderInfo senderInfo;
+
+	@Override
+	public ScmSupplierCsoinfo get(String id) {
+		return super.get(id);
+	}
+
+	public ScmSupplierCsoinfo getByRole(String id) {
+		ScmSupplierCsoinfo csoInfoSO = new ScmSupplierCsoinfo();
+		csoInfoSO.setId(id);
+		List<ScmSupplierCsoinfo> list = findListByRole(csoInfoSO);
+		if (list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public List<ScmSupplierCsoinfo> findList(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		if (StringUtils.isEmpty(scmSupplierCsoinfo.getPage().getOrderBy())) {
+			scmSupplierCsoinfo.getPage().setOrderBy("a.productid asc");
+		}
+		return super.findList(scmSupplierCsoinfo);
+	}
+
+	@Override
+	public Page<ScmSupplierCsoinfo> findPage(Page<ScmSupplierCsoinfo> page, ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		return super.findPage(page, scmSupplierCsoinfo);
+	}
+
+	public List<ScmSupplierCsoinfo> findListByRole(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		checkRole(scmSupplierCsoinfo);
+		return findList(scmSupplierCsoinfo);
+	}
+
+	public Page<ScmSupplierCsoinfo> findPageByRole(Page<ScmSupplierCsoinfo> page,
+			ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		scmSupplierCsoinfo.setPage(page);
+		page.setList(findListByRole(scmSupplierCsoinfo));
+		return page;
+	}
+
+	/**
+	 * 查询出货单明细
+	 * 
+	 * @param scmSupplierCsoinfo
+	 * @return
+	 */
+	@Transactional
+	public List<ScmSupplierDeliveryOrder> findCHMXListByRole(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		checkRole(scmSupplierCsoinfo);
+		return dao.findDeliveryOrderList(scmSupplierCsoinfo);
+	}
+
+	@Transactional
+	public void shipConfirm(List<ScmSupplierShipConfirmInfo> shipConfirmInfos) {
+		String message = null;
+		for (int i = 0; i < shipConfirmInfos.size(); i++) {
+			ScmSupplierShipConfirmInfo shipConfirmInfo = shipConfirmInfos.get(i);
+			if (shipConfirmInfo.getCarrierId() == null || shipConfirmInfo.getCarrierId() == 0) {
+				message = String.format(errorMessageTemplate, "请填写配送公司代码，" + shipConfirmInfo);
+				throw new ServiceException(message);
+			}
+			if (StringUtils.isEmpty(shipConfirmInfo.getTrackingNumber())) {
+				message = String.format(errorMessageTemplate, "请填写配送单号，" + shipConfirmInfo);
+				throw new ServiceException(message);
+			}
+			ScmSupplierCsoinfo csoInfoSO = mappingScmSupplierCsoinfo(shipConfirmInfo);
+			checkRole(csoInfoSO);
+			List<ScmSupplierCsoinfo> csoinfos = findList(csoInfoSO);
+			if (csoinfos == null || csoinfos.isEmpty()) {
+				message = String.format(errorMessageTemplate, "没有该订单，" + shipConfirmInfo);
+				throw new ServiceException(message);
+			}
+			ScmSupplierCsoinfo csoInfo = csoinfos.get(0);
+			if (csoInfo.getOrderstatus() != SCMConstants.ORDER_STATUS_SHIPPING_IN_PROGRESS) {
+				message = String.format(errorMessageTemplate, "订单状态异常，" + shipConfirmInfo);
+				throw new ServiceException(message);
+			}
+			Date confirmDate = new Date();
+			String userId = UserUtils.getUser().getId();
+
+			shipConfirmInfo.setTrackingNumber(filterStr(shipConfirmInfo.getTrackingNumber()));
+			
+			csoInfo.setDeliveryorderid(shipConfirmInfo.getTrackingNumber());
+			csoInfo.setSelectedcarrier(shipConfirmInfo.getCarrierId());
+			csoInfo.setOrderstatus(SCMConstants.ORDER_STATUS_SHIPPING_CONFIRMED);
+			csoInfo.setActualshipdate(confirmDate);
+			csoInfo.setLastupdatedby(userId);
+			csoInfo.setLastupdatedtime(confirmDate);
+
+			DeliveryOrderintransit orderPackage = mappingDeliveryOrderintransit(csoInfo);
+			orderPackage.setTrackingnumber(shipConfirmInfo.getTrackingNumber());
+			orderPackage.setTrackingstatus(SCMConstants.TRACKING_STATUS_SHIP_CONFIRM);
+			orderPackage.setPackagetype(SCMConstants.PACKAGE_TYPE_GENERAL);
+			orderPackage.setPackageweight(MathUtils.doubleValue(shipConfirmInfo.getPackageWeight()));
+			orderPackage.setPackageremark(shipConfirmInfo.getPackageRemark());
+			// orderPackage.setPackagevolume();
+			// orderPackage.setRecordcreatedby(userId);
+			orderPackage.setRecordcreatedtime(confirmDate);
+			// orderPackage.setLastupdatedby(userId);
+			orderPackage.setLastupdatedtime(confirmDate);
+
+			DeliveryOrderintransitDetail orderPackageDetail = mappingDeliveryOrderintransitDetail(csoInfo);
+			// orderPackageDetail.setPaymentstatus();
+			// orderPackageDetail.setPaymenttimestamp();
+			orderPackageDetail.setTrackingnumber(shipConfirmInfo.getTrackingNumber());
+			// orderPackageDetail.setRecordcreatedby(userId);
+			orderPackageDetail.setRecordcreatedtime(confirmDate);
+			// orderPackageDetail.setLastupdatedby(userId);
+			orderPackageDetail.setLastupdatedtime(confirmDate);
+
+			deliveryOrderintransitService.save(orderPackage);
+			deliveryOrderintransitDetailService.save(orderPackageDetail);
+			dao.update(csoInfo);
+		}
+	}
+
+	public List<ScmSupplierCsoinfo> findListOnShipConfirmByRole(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		checkRole(scmSupplierCsoinfo);
+		if (scmSupplierCsoinfo.getOrderstatus() == null) {
+			scmSupplierCsoinfo.setOrderstatus(SCMConstants.ORDER_STATUS_SHIPPING_IN_PROGRESS);
+		}
+		if (scmSupplierCsoinfo.getOrderstatus() != SCMConstants.ORDER_STATUS_SHIPPING_IN_PROGRESS) {
+			return null;
+		}
+		return findListByRole(scmSupplierCsoinfo);
+	}
+
+	public ScmSupplierShipConfirmInfo mappingScmSupplierShipConfirmInfo(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		ScmSupplierShipConfirmInfo scmSupplierShipConfirmInfo = new ScmSupplierShipConfirmInfo();
+		scmSupplierShipConfirmInfo.setCsoInfoId(scmSupplierCsoinfo.getId());
+		scmSupplierShipConfirmInfo.setCarrierId(scmSupplierCsoinfo.getSelectedcarrier());
+		scmSupplierShipConfirmInfo.setCarrierName(scmSupplierCsoinfo.getSelectedcarriername());
+		scmSupplierShipConfirmInfo.setTrackingNumber(scmSupplierCsoinfo.getDeliveryorderid());
+		scmSupplierShipConfirmInfo.setShiporderId(scmSupplierCsoinfo.getShiporderid());
+		scmSupplierShipConfirmInfo.setOrderId(scmSupplierCsoinfo.getOrderid());
+		scmSupplierShipConfirmInfo.setItemId(scmSupplierCsoinfo.getItemid());
+		return scmSupplierShipConfirmInfo;
+	}
+
+	public JRDataSource getCSOInfoMianDanDataSource(List<ScmSupplierCsoinfo> infos) {
+		List<CSOInfoMianDan> mianDans = new ArrayList<>();
+		for (ScmSupplierCsoinfo csoinfo : infos) {
+			ScmSupplierShipConfirmInfo scmSupplierShipConfirmInfo = new ScmSupplierShipConfirmInfo();
+			if (!StringUtils.isEmpty(csoinfo.getDeliveryorderid())) {
+				DeliveryOrderintransit orderintransit = new DeliveryOrderintransit();
+				orderintransit.setTrackingnumber(csoinfo.getDeliveryorderid());
+				List<DeliveryOrderintransit> deliveryOrderintransits = deliveryOrderintransitService
+						.findList(orderintransit);
+				if (deliveryOrderintransits != null && deliveryOrderintransits.size() > 0) {
+					orderintransit = deliveryOrderintransits.get(0);
+				}
+				if (orderintransit != null) {
+					scmSupplierShipConfirmInfo.setPackageRemark(orderintransit.getPackageremark());
+					scmSupplierShipConfirmInfo.setPackageWeight(orderintransit.getPackageweight());
+				}
+			}
+			CSOInfoMianDan csoInfoMianDan = new CSOInfoMianDan();
+			Zipcode zipcode = new Zipcode(csoinfo.getCustomerzipcode());
+			zipcode = zipcodeService.get(zipcode);
+			if (zipcode == null) {
+				zipcode = new Zipcode();
+			}
+			csoInfoMianDan.setValue(senderInfo, csoinfo, scmSupplierShipConfirmInfo, zipcode);
+			CSOSubInfoMianDan subInfoMianDan = new CSOSubInfoMianDan();
+			subInfoMianDan.setValue(csoinfo, scmSupplierShipConfirmInfo);
+
+			JRDataSource jrSubDataSource = new JRBeanCollectionDataSource(Arrays.asList(subInfoMianDan));
+			csoInfoMianDan.setSubInfoDS(jrSubDataSource);
+			mianDans.add(csoInfoMianDan);
+		}
+		JRDataSource jrDataSource = new JRBeanCollectionDataSource(mianDans);
+		return jrDataSource;
+	}
+
+	@Transactional
+	public void assignCarrier(List<ScmSupplierCsoinfo> infos, long carrierId) {
+		if (Collections3.isEmpty(infos)) {
+			throw new ServiceException("指派配送公司失败，订单信息不可为空。");
+		}
+		Page<Carrierdeliverorderid> searchPage = new Page<>();
+		searchPage.setPageSize(infos.size());
+		Carrierdeliverorderid searchCarrierdeliverorderid = new Carrierdeliverorderid();
+		searchCarrierdeliverorderid.setCarrierid(carrierId);
+		searchCarrierdeliverorderid.setStatus(SCMConstants.CARRIERDELIVERORDERID_STATUS_UNUSED);
+		Page<Carrierdeliverorderid> carrierdeliverorderidResultPage = carrierdeliverorderidService.findPage(searchPage,
+				searchCarrierdeliverorderid);
+		List<Carrierdeliverorderid> carrierdeliverorderidList = carrierdeliverorderidResultPage.getList();
+		if (carrierdeliverorderidList.size() < infos.size()) {
+			throw new ServiceException("指派配送公司失败，可用配送单已不够。");
+		}
+		for (int i = 0; i < infos.size(); i++) {
+			Carrierdeliverorderid carrierdeliverorderid = carrierdeliverorderidList.get(i);
+			carrierdeliverorderid.setStatus(SCMConstants.CARRIERDELIVERORDERID_STATUS_USED);
+			carrierdeliverorderidService.save(carrierdeliverorderid);
+			ScmSupplierCsoinfo scmSupplierCsoinfo = infos.get(i);
+			scmSupplierCsoinfo.setSelectedcarrier(carrierdeliverorderid.getCarrierid());
+			scmSupplierCsoinfo.setDeliveryorderid(carrierdeliverorderid.getDeliveryorderid());
+			dao.update(scmSupplierCsoinfo);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void save(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		super.save(scmSupplierCsoinfo);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void delete(ScmSupplierCsoinfo scmSupplierCsoinfo) {
+		super.delete(scmSupplierCsoinfo);
+	}
+
+	private void checkRole(ScmSupplierCsoinfo csoInfoSO) {
+		User currentUser = UserUtils.getUser();
+		if (UserUtils.getSubject().hasRole(SCMConstants.ROLE_ADMIN)
+				|| UserUtils.getSubject().hasRole(SCMConstants.ROLE_VWS)) {
+		} else if (UserUtils.getSubject().hasRole(SCMConstants.ROLE_CARRIER)) {
+			csoInfoSO.setCarrieridprimary(Long.valueOf(currentUser.getOffice().getCode()));
+			csoInfoSO.getCriteria().setByCarrier(true);
+		} else if (UserUtils.getSubject().hasRole(SCMConstants.ROLE_SUPPLIER)) {
+			csoInfoSO.setSupplierid(Long.valueOf(currentUser.getNo()));
+			csoInfoSO.getCriteria().setBySupplier(true);
+		}
+	}
+
+	private ScmSupplierCsoinfo mappingScmSupplierCsoinfo(ScmSupplierShipConfirmInfo confirmInfo) {
+		ScmSupplierCsoinfo csoInfo = new ScmSupplierCsoinfo();
+		csoInfo.setId(confirmInfo.getCsoInfoId());
+		csoInfo.setShiporderid(confirmInfo.getShiporderId());
+		csoInfo.setOrderid(confirmInfo.getOrderId());
+		csoInfo.setItemid(confirmInfo.getItemId());
+		return csoInfo;
+	}
+
+	private DeliveryOrderintransit mappingDeliveryOrderintransit(ScmSupplierCsoinfo csoInfo) {
+		DeliveryOrderintransit orderPackage = new DeliveryOrderintransit();
+		orderPackage.setWarehouseid(intValue(csoInfo.getWarehouseid()));
+		orderPackage.setActualshipdate(csoInfo.getActualshipdate());
+		orderPackage.setCustomerid(csoInfo.getCustomerid());
+		orderPackage.setCustomertelnumber(csoInfo.getHometelephone1());
+		orderPackage.setCustomermobnumber(csoInfo.getMobileno1());
+		orderPackage.setCustomername(csoInfo.getCustomername());
+		orderPackage.setReceivingzipcode(csoInfo.getCustomerzipcode());
+		orderPackage.setReceivingaddress1(csoInfo.getDeliveryaddress1());
+		orderPackage.setReceivingaddress2(csoInfo.getDeliveryaddress2());
+		orderPackage.setPackagecodnum(doubleValue(csoInfo.getCodamount()));
+		orderPackage.setSelectedcarrier(String.valueOf(csoInfo.getSelectedcarrier()));
+		orderPackage.setActualshipdate(csoInfo.getActualshipdate());
+		orderPackage.setDeliverytype(intValue(csoInfo.getDeliverytype()));
+		orderPackage.setSubdeliverytype(intValue(csoInfo.getSubdeliverytype()));
+		return orderPackage;
+	}
+
+	private DeliveryOrderintransitDetail mappingDeliveryOrderintransitDetail(ScmSupplierCsoinfo csoInfo) {
+		DeliveryOrderintransitDetail orderPackageDetail = new DeliveryOrderintransitDetail();
+		orderPackageDetail.setOrderid(longValue(csoInfo.getOrderid()));
+		orderPackageDetail.setItemid(intValue(csoInfo.getItemid()));
+		orderPackageDetail.setShiporderid(longValue(csoInfo.getShiporderid()));
+		orderPackageDetail.setShipordersequence(intValue(csoInfo.getShipordersequence()));
+		orderPackageDetail.setProductid(longValue(csoInfo.getProductid()));
+		orderPackageDetail.setProductversion(intValue(csoInfo.getProductversion()));
+		orderPackageDetail.setProductname(csoInfo.getProductname());
+		orderPackageDetail.setColorclasscode(intValue(csoInfo.getProductcolourclass()));
+		orderPackageDetail.setColorcode(intValue(csoInfo.getProductcolourcode()));
+		orderPackageDetail.setColorvalue(csoInfo.getProductcolourdescription());
+		orderPackageDetail.setStyleclasscode(intValue(csoInfo.getProductstyleclass()));
+		orderPackageDetail.setStylecode(intValue(csoInfo.getProductstylecode()));
+		orderPackageDetail.setStylevalue(csoInfo.getProductstyledescription());
+		orderPackageDetail.setProductnum((int) longValue(csoInfo.getProductquantity()));
+		orderPackageDetail.setCodnum(doubleValue(csoInfo.getCodamount()));
+		orderPackageDetail.setCreatedtimestamp(csoInfo.getRecordcreatedtime());
+		return orderPackageDetail;
+	}
+	
+	//科学计数法的字符串转化为普通字符串
+	public static String filterStr(String str){
+		String bigStr = "";
+		 try {
+			 if(str.indexOf("0")==0){
+					bigStr = str;
+				}else{
+					bigStr = new BigDecimal(str).toPlainString();
+				}
+	        } catch (Exception e) {
+	        	bigStr = str;
+	        }
+		return bigStr;
+	}
+
+}

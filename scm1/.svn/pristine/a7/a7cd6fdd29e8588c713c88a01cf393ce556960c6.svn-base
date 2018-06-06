@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryOrderintransitDao">
+    
+	<sql id="deliveryOrderintransitColumns">
+		a.id AS "id",
+		a.warehouseid AS "warehouseid",
+		a.trackingnumber AS "trackingnumber",
+		a.customerid AS "customerid",
+		a.customertelnumber AS "customertelnumber",
+		a.customermobnumber AS "customermobnumber",
+		a.customername AS "customername",
+		a.receivingzipcode AS "receivingzipcode",
+		a.receivingaddress1 AS "receivingaddress1",
+		a.receivingaddress2 AS "receivingaddress2",
+		a.packageweight AS "packageweight",
+		a.packagevolume as "packagevolume",
+		a.packagecodnum AS "packagecodnum",
+		a.packageremark AS "packageremark",
+		a.selectedcarrier AS "selectedcarrier",
+		a.actualshipdate AS "actualshipdate",
+		a.trackingstatus AS "trackingstatus",
+		a.receiptorrejecttime AS "receiptorrejecttime",
+		a.isnoinventoryorders AS "isnoinventoryorders",
+		a.toet1flag  AS "toet1flag",
+		a.packagetype       AS "packagetype",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime",
+		carrier.carriername AS "carrier.carriername"
+	</sql>
+	
+	<sql id="deliveryOrderintransitJoins">
+	,scm_carrier carrier
+	</sql>
+    
+	<select id="get" resultType="DeliveryOrderintransit">
+		SELECT 
+			<include refid="deliveryOrderintransitColumns"/>
+		FROM scm_delivery_orderintransit a
+		<include refid="deliveryOrderintransitJoins"/>
+		WHERE a.id = #{id}
+		 and carrier.carrierid=a.selectedcarrier
+	</select>
+	
+	<select id="findList" resultType="DeliveryOrderintransit">
+		SELECT 
+			<include refid="deliveryOrderintransitColumns"/>
+		FROM scm_delivery_orderintransit a
+		<include refid="deliveryOrderintransitJoins"/>
+		<where>
+			 carrier.carrierid=a.selectedcarrier
+		</where>
+		
+			<if test="selectedcarrier != null and selectedcarrier != null and selectedcarrier != ''">
+			AND a.selectedcarrier= #{selectedcarrier} 
+		
+		</if>
+			<if test="trackingnumber != null and trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber=#{trackingnumber}
+		</if>	
+		
+		<if test="createDateStart != null">
+			AND a.actualshipdate &gt;= #{createDateStart}
+		</if>
+		<if test="createDateEnd != null">
+			AND a.actualshipdate &lt;= #{createDateEnd}
+		</if>
+		
+		<if test="recordcreatedtimeStart != null">
+				AND a.recordcreatedtime &gt;= #{recordcreatedtimeStart}
+			</if>
+		
+			<if test="recordcreatedtimeEnd != null">
+			AND a.recordcreatedtime &lt;= #{recordcreatedtimeEnd}
+			</if>
+		
+    	<if test="recordcreatedtime != null">
+			AND a.recordcreatedtime &gt;= #{recordcreatedtime}
+		</if>
+		
+			<if test="trackingstatus != null and trackingstatus != null and trackingstatus != ''and trackingstatus != -1">
+			AND a.trackingstatus= #{trackingstatus} 
+		
+		</if>
+		<if test="toet1flag != null and toet1flag != null and toet1flag != ''">
+			AND a.toet1flag= #{toet1flag} 
+		</if>
+		<if test="packagetype != null and packagetype != null and packagetype != ''and packagetype != -1">
+			AND a.packagetype= #{packagetype} 
+		</if>
+		
+			<if test="receivingzipcode != null and receivingzipcode != null and receivingzipcode != ''">
+			AND a.receivingzipcode=#{receivingzipcode}
+		</if>	
+		
+		<if test="deliverytype != null and deliverytype != null and deliverytype != ''">
+			AND a.deliverytype=#{deliverytype}
+		</if>
+		<if test="subdeliverytype != null and subdeliverytype != null and subdeliverytype != ''">
+			AND a.subdeliverytype=#{subdeliverytype}
+		</if>		
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DeliveryOrderintransit">
+		SELECT 
+			<include refid="deliveryOrderintransitColumns"/>
+		FROM scm_delivery_orderintransit a
+		<include refid="deliveryOrderintransitJoins"/>
+		<where>
+			 b.carrierid=a.selectedcarrier
+		</where>
+		
+		<if test="selectedcarrier != null and selectedcarrier != null and selectedcarrier != ''">
+			AND a.selectedcarrier= #{selectedcarrier} 
+		
+		</if>
+			<if test="trackingnumber != null and trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber=#{trackingnumber}
+		</if>	
+		
+		<if test="createDateStart != null">
+			AND a.actualshipdate &gt;= #{createDateStart}
+		</if>
+		<if test="createDateEnd != null">
+			AND a.actualshipdate &lt;= #{createDateEnd}
+		</if>
+		
+		<if test="trackingstatus != null and trackingstatus != null and trackingstatus != ''">
+			AND a.trackingstatus= #{trackingstatus} 
+		</if>
+		
+		<if test="toet1flag != null and toet1flag != null and toet1flag != ''">
+			AND a.toet1flag= #{toet1flag} 
+		</if>
+		
+		<if test="packagetype != null and packagetype != null and packagetype != ''and packagetype != -1">
+			AND a.packagetype= #{packagetype} 
+		
+		</if>
+		
+		<if test="deliverytype != null and deliverytype != null and deliverytype != ''">
+			AND a.deliverytype=#{deliverytype}
+		</if>
+		<if test="subdeliverytype != null and subdeliverytype != null and subdeliverytype != ''">
+			AND a.subdeliverytype=#{subdeliverytype}
+		</if>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_delivery_orderintransit(
+			id,
+			warehouseid,
+			trackingnumber,
+			customerid,
+			customertelnumber,
+			customermobnumber,
+			customername,
+			receivingzipcode,
+			receivingaddress1,
+			receivingaddress2,
+			packageweight,
+			packagevolume,
+			packagecodnum,
+			packageremark,
+			selectedcarrier,
+			actualshipdate,
+			trackingstatus,
+			receiptorrejecttime,
+			isnoinventoryorders,
+			packagetype,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime,
+			deliverytype,
+			subdeliverytype
+		) VALUES (
+			#{id},
+			#{warehouseid},
+			#{trackingnumber},
+			#{customerid},
+			#{customertelnumber},
+			#{customermobnumber},
+			#{customername},
+			#{receivingzipcode},
+			#{receivingaddress1},
+			#{receivingaddress2},
+			#{packageweight},
+			#{packagevolume},
+			#{packagecodnum},
+			#{packageremark},
+			#{selectedcarrier},
+			#{actualshipdate},
+			#{trackingstatus},
+			#{receiptorrejecttime},
+			#{isnoinventoryorders},
+			#{packagetype},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime},
+			#{deliverytype},
+			#{subdeliverytype}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_delivery_orderintransit SET 	
+			warehouseid = #{warehouseid},
+			trackingnumber = #{trackingnumber},
+			customerid = #{customerid},
+			customertelnumber = #{customertelnumber},
+			customermobnumber = #{customermobnumber},
+			customername = #{customername},
+			receivingzipcode = #{receivingzipcode},
+			receivingaddress1 = #{receivingaddress1},
+			receivingaddress2 = #{receivingaddress2},
+			packageweight = #{packageweight},
+			packagevolume = #{packagevolume},
+			packagecodnum = #{packagecodnum},
+			packageremark = #{packageremark},
+			selectedcarrier = #{selectedcarrier},
+			actualshipdate = #{actualshipdate},
+			trackingstatus = #{trackingstatus},
+			receiptorrejecttime=#{receiptorrejecttime},
+			isnoinventoryorders = #{isnoinventoryorders},
+			toet1flag = #{toet1flag},
+			packagetype=#{packagetype},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime},
+			deliverytype = #{deliverytype},
+			subdeliverytype = #{subdeliverytype}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_delivery_orderintransit
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

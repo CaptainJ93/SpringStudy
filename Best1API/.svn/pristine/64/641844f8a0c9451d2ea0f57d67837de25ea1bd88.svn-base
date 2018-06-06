@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.chm.PgmProductInfoMapper">
+
+
+<resultMap type="com.best1.api.entity.chm.PgmProduct" id="PgmProductInfo">
+<result column="productid" jdbcType="DECIMAL" property="productid" />
+<result column="subchannelname" jdbcType="VARCHAR" property="subchannelname" />
+<result column="programname" jdbcType="VARCHAR" property="programname" />
+<result column="starttime" jdbcType="VARCHAR" property="starttime" />
+<result column="endtime" jdbcType="VARCHAR" property="endtime" />
+<result column="duration" jdbcType="DECIMAL" property="duration" />
+<result column="seq" jdbcType="DECIMAL" property="seq" />
+<result column="multicodeid" jdbcType="DECIMAL" property="multicodeid" />
+<result column="productname" jdbcType="DECIMAL" property="productname" />
+<result column="sellprice" jdbcType="DECIMAL" property="sellprice" />
+</resultMap>
+
+
+<resultMap id="BaseResultMap"	type="com.best1.api.entity.chm.Programdetail">
+   <result column="nfmpgmscheduleid" property="nfmpgmscheduleid" jdbcType="DECIMAL" />
+   <result column="nfmsubchannelid" property="nfmsubchannelid" jdbcType="DECIMAL" />
+   <result column="subchannelname" property="subchannelname"	jdbcType="CHAR" />
+   <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+   <result column="pgmlength" property="pgmlength" jdbcType="DECIMAL" />
+   <result column="productid" property="productid"	jdbcType="DECIMAL" />		
+   <result column="multicodeid" property="multicodeid" jdbcType="DECIMAL" />
+   <result column="productname" property="productname" jdbcType="CHAR" />
+   <result column="broadcastsequence" property="broadcastsequence" jdbcType="DECIMAL" />
+   <result column="plannedduration" property="plannedduration" jdbcType="DECIMAL" />
+   <result column="istape" property="istape" jdbcType="CHAR" />
+   <result column="promotionsdesc" property="promotionsdesc" jdbcType="CHAR" />	
+   <result column="fathertypename" property="fathertypename" jdbcType="CHAR" />
+   <result column="childtypename" property="childtypename" jdbcType="CHAR" />
+</resultMap>
+	
+	
+<resultMap id="livenfmProgproductResultMap"	type="com.best1.api.entity.chm.Programdetail">
+   <result column="productid" property="productid"	jdbcType="DECIMAL" />
+   <result column="nfmpgmscheduleid" property="nfmpgmscheduleid" jdbcType="DECIMAL" />
+   <result column="istape" property="istape" jdbcType="CHAR" />
+   <result column="nfmsubchannelid" property="nfmsubchannelid" jdbcType="DECIMAL" />
+   <result column="subchannelname" property="subchannelname"	jdbcType="CHAR" />
+   <result column="prdqstarttime" property="prdqstarttime" jdbcType="TIMESTAMP" />
+   <result column="length" property="length" jdbcType="DECIMAL" />
+   <result column="orderquantity" property="orderquantity" jdbcType="DECIMAL" />
+   <result column="orderamount" property="orderamount" jdbcType="DECIMAL" />
+  
+</resultMap>
+
+
+<select id="livenfmProgproductInfo" parameterType="com.best1.api.entity.chm.Programdetail" resultMap="livenfmProgproductResultMap">
+ select 
+       l.productid ,
+       p.nfmpgmscheduleid ,
+       k.istape,
+       sub.subchannelid,
+       sub.subchannelname,
+       l1.prdqstarttime,
+       l1.length,
+       l.orderquantity,
+       l.orderamount
+  from tchm_livenfmprogramproducts l,
+       tchm_livenfmprogproductseq  l1,
+       tchm_nfmproducttobecampaigned  k,
+       tchm_nfmprogramproductcuesheet s,
+       tchm_nfmprogramplanning        p,
+       tchm_subchannel                sub
+where
+ k.nfmproducttobecampaignedid = s.productcampaignid
+and s.cueid = l.cueid
+and l.livepgmproductsid = l1.livepgmproductsid
+and p.nfmpgmscheduleid = k.nfmpgmscheduleid
+and p.nfmsubchannelid = sub.subchannelid
+      <if test="nfmpgmscheduleid != null">
+			and   p.nfmpgmscheduleid = #{nfmpgmscheduleid}
+</if>     
+  
+	<if test="productid != null">
+			and l.productid  = #{productid}
+		</if>
+		
+			<if test="startdate != null">
+			AND  l.createdtimestamp &gt;= to_date(#{startdate}, 'yyyy-MM-dd hh24:mi:ss')
+		</if>
+		<if test="enddate != null">
+			AND  l.createdtimestamp &lt; to_date(#{enddate}, 'yyyy-MM-dd hh24:mi:ss')
+		</if>
+	
+	</select>
+  
+  
+  
+   <select id="pgmInfo" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.SP_GetPGMInfo(
+     #{ai_BDate,mode=IN,jdbcType=VARCHAR},
+     #{ai_Days,mode=IN,jdbcType=DECIMAL},
+     #{ai_SubID,mode=IN,jdbcType=DECIMAL},
+     #{ri_Info,jdbcType=CURSOR,mode=OUT,resultMap=PgmProductInfo,javaType=java.sql.ResultSet})
+     }
+
+  </select>
+  
+ <select id="programDetailInfo" parameterType="com.best1.api.entity.chm.Programdetail" resultMap="BaseResultMap">
+    select   p.nfmpgmscheduleid ,
+             p.nfmsubchannelid ,
+             s.subchannelname ,
+             p.starttime,
+             p.length AS pgmlength,
+             p.pgmstatus,
+             g.productid,
+             g.multicodeid ,
+             d.productname1||d.productname2 AS productname,
+             g.broadcastsequence,
+             g.plannedduration,
+             g.istape,
+             g.promotionsdesc,
+             g.FATHERTYPENAME,
+             g.CHILDTYPENAME
+        from tchm_nfmprogramplanning       p,
+             tchm_nfmproducttobecampaigned g,
+             tchm_subchannel               s,
+             tscm_product                  d
+       where p.nfmpgmscheduleid = g.nfmpgmscheduleid
+         and p.nfmsubchannelid = s.subchannelid
+         and g.productid = d.productid  
+           <if test="nfmpgmscheduleid != null">
+		and g.nfmpgmscheduleid = #{nfmpgmscheduleid}
+		</if>     
+        <if test="subchannelid != null">
+			  and p.nfmsubchannelid = #{subchannelid}
+		</if>
+        <if test="status != null">
+			and g.status = #{status}
+		</if>
+		<if test="pgmstatus != null">
+			and p.pgmstatus  = #{pgmstatus}
+		</if>
+		<if test="productselectionstatus != null">
+			and p.productselectionstatus  = #{productselectionstatus}
+		</if>
+		
+		<if test="startdate != null">
+			AND  p.starttime &gt;= to_date(#{startdate}, 'yyyy-MM-dd hh24:mi:ss')
+		</if>
+		<if test="enddate != null">
+			AND  p.starttime &lt; to_date(#{enddate}, 'yyyy-MM-dd hh24:mi:ss')
+		</if>
+	</select>
+  
+
+
+  
+</mapper> 

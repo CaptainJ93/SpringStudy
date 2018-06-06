@@ -1,0 +1,23 @@
+#Mon Nov 18 13:08:17 CST 2013
+eclipse.preferences.version=1
+encoding//WebContent/chat/chat.jsp=UTF-8
+encoding//WebContent/chat/js/active.js=UTF-8
+encoding//WebContent/chat/js/chat.js=UTF-8
+encoding//WebContent/css/layout.css=gbk
+encoding//WebContent/js/filemanage/mutiflieupload.js=UTF-8
+encoding//WebContent/js/i18n/grid.locale-cn.js=UTF-8
+encoding//WebContent/js/jquery-ui.min.js=UTF-8
+encoding//WebContent/js/jquery.fileupdown.js=UTF-8
+encoding//WebContent/js/jquery.fileupload.js=UTF-8
+encoding//WebContent/js/jquery.hl.js=UTF-8
+encoding//WebContent/js/jquery.hlGrid.js=UTF-8
+encoding//WebContent/main.js=UTF-8
+encoding//WebContent/plugin/order/js/createOrder.js=UTF-8
+encoding//WebContent/plugin/order/js/showOrder.js=UTF-8
+encoding//WebContent/pub/common.js=UTF-8
+encoding//WebContent/pub/include.jsp=UTF-8
+encoding//WebContent/pub/permission.js=UTF-8
+encoding//WebContent/subSys/js/subSysList.js=UTF-8
+encoding//WebContent/subSys/t.jsp=UTF-8
+encoding//WebContent/template/js/templateList.js=UTF-8
+encoding/<project>=UTF-8

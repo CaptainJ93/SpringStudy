@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="sqlMapClientReport" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+    	<property name="configLocation" value="classpath:report/report-sqlmap-config.xml"/>
+    	<property name="dataSource" ref="DataSource"/>
+  	</bean>
+  	
+  	<bean id="sqlMapClientReport2" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+    	<property name="configLocation" value="classpath:report/report-sqlmap-config.xml"/>
+    	<property name="dataSource" ref="DataSource2"/>
+  	</bean>
+
+  	<!-- 工具类配置 -->
+  	<bean id="ReportBaseDAO" class="com.best1.base.BaseDAO">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClientReport"/>
+		</property>
+	</bean>
+	
+	<bean id="ReportBaseDAO2" class="com.best1.base.BaseDAO">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClientReport2"/>
+		</property>
+	</bean>
+    
+</beans>

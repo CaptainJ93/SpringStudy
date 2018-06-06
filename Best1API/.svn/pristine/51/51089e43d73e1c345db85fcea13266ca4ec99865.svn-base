@@ -1,0 +1,24 @@
+1.tb_ext_customeraddress新增 RECEIVERNAME                VARCHAR2(64)字段
+
+2. etmall.PKIE_TAKEORDER.SP_TAKEORDER调用如下SP
+
+sp_ins_toaf_orderpayment中
+
+   -- 取得本次應轉資料tb_ie_ord04
+    cursor cur_get_ie_ord04 is
+      select a.*, b.createdby, b.createdtimestamp
+        from tb_ie_ord04 a, tb_ie_ord01 b
+       where a.orderid = b.orderid
+         and a.orderid = al_orderid
+       order by a.itemid;
+
+调整
+
+   -- 取得本次應轉資料tb_ie_ord04
+    cursor cur_get_ie_ord04 is
+      select a.*, b.createdby, b.createdtimestamp
+        from tb_ie_ord04 a, tb_ie_ord01 b
+       where a.orderid = b.orderid
+         and a.orderid = al_orderid
+         and a.paymentamount>0
+       order by a.itemid;

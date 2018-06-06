@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.deliveryfee.dao.ScmDeliveryfeePackagedetailIntimeDao">
+    
+	<sql id="scmDeliveryfeePackagedetailColumns">
+		a.id AS "id",
+		a.trackingnumber AS "trackingnumber",
+		a.selectedcarrier AS "selectedcarrier",
+		a.actualshipdate AS "actualshipdate",
+		a.trackingstatus AS "trackingstatus",
+		a.receivingzipcode AS "receivingzipcode",
+		a.fheavy AS "fheavy",
+		a.fheavyprice AS "fheavyprice",
+		a.cheavyunit AS "cheavyunit",
+		a.cheavyunitprice AS "cheavyunitprice",
+		a.type AS "type",
+		a.codfeerate AS "codfeerate",
+		a.rejectrate AS "rejectrate",
+		a.fheavynum AS "fheavynum",
+		a.cheavynum AS "cheavynum",
+		a.codfeenum AS "codfeenum",
+		a.rejectnum AS "rejectnum",
+		a.resultnum AS "resultnum",
+		a.resulttime AS "resulttime"
+	</sql>
+	
+	<sql id="scmDeliveryfeePackagedetailJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmDeliveryfeePackagedetail">
+		SELECT 
+			<include refid="scmDeliveryfeePackagedetailColumns"/>
+		FROM scm_deliveryfee_packagedetail a
+		<include refid="scmDeliveryfeePackagedetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmDeliveryfeePackagedetail">
+		 select a.trackingnumber    AS "trackingnumber",
+			       a.selectedcarrier   AS "selectedcarrier",
+			       a.actualshipdate    AS "actualshipdate",
+			       a.trackingstatus    AS "trackingstatus",
+			       a.receivingzipcode  AS "receivingzipcode",
+			       a.receivingaddress1 as "receivingaddress1",
+			       a.packageweight  as "packageweight",
+				   a.packagecodnum  as "packagecodnum",
+			       p.fheavy            as "fheavy",
+			       p.fheavyprice       as "fheavyprice",
+			       p.cheavyunit        as "cheavyunit",
+			       p.cheavyunitprice   as "cheavyunitprice",
+			       cfee.codfeerate     as "codfeerate",
+			       cfee.rejectrate     as "rejectrate"
+			  from scm_delivery_orderintransit a
+			  LEFT JOIN scm_deliveryfee_price p
+			    on a.selectedcarrier = p.selectedcarrier
+			   and a.receivingzipcode = p.zipcode
+			  LEFT JOIN scm_deliveryfee_codfee cfee
+			    on a.selectedcarrier = cfee.selectedcarrier
+			    
+			    
+		<where>
+			 1=1 
+	        <if test="createDateStart != null">
+				AND a.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a.actualshipdate &lt;= #{createDateEnd}
+			</if>
+			 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+			<if test="deliveryfeeflag != null and  deliveryfeeflag == 1">
+				and  ( p.selectedcarrier is not NULL  and  p.zipcode is not null  and cfee.selectedcarrier is  not NULL)
+			</if>
+			<if test="deliveryfeeflag != null and  deliveryfeeflag == 0">
+				and  ( p.selectedcarrier is  NULL  or  p.zipcode is  null  or cfee.selectedcarrier is  NULL)
+			</if>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmDeliveryfeePackagedetail">
+				 select a.trackingnumber    AS "trackingnumber",
+			       a.selectedcarrier   AS "selectedcarrier",
+			       a.actualshipdate    AS "actualshipdate",
+			       a.trackingstatus    AS "trackingstatus",
+			       a.receivingzipcode  AS "receivingzipcode",
+			       a.receivingaddress1 as "receivingaddress1",
+			       a.packageweight  as "packageweight",
+				   a.packagecodnum  as "packagecodnum",
+			       p.fheavy            as "fheavy",
+			       p.fheavyprice       as "fheavyprice",
+			       p.cheavyunit        as "cheavyunit",
+			       p.cheavyunitprice   as "cheavyunitprice",
+			       cfee.codfeerate     as "codfeerate",
+			       cfee.rejectrate     as "rejectrate"
+			  from scm_delivery_orderintransit a
+			  LEFT JOIN scm_deliveryfee_price p
+			    on a.selectedcarrier = p.selectedcarrier
+			   and a.receivingzipcode = p.zipcode
+			  LEFT JOIN scm_deliveryfee_codfee cfee
+			    on a.selectedcarrier = cfee.selectedcarrier
+		<where>
+			 1=1 
+	        <if test="createDateStart != null">
+				AND a.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a.actualshipdate &lt;= #{createDateEnd}
+			</if>
+			 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+		
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_deliveryfee_packagedetail(
+			id,
+			trackingnumber,
+			selectedcarrier,
+			actualshipdate,
+			trackingstatus,
+			receivingzipcode,
+			fheavy,
+			fheavyprice,
+			cheavyunit,
+			cheavyunitprice,
+			type,
+			codfeerate,
+			rejectrate,
+			fheavynum,
+			cheavynum,
+			codfeenum,
+			rejectnum,
+			resultnum,
+			resulttime
+		) VALUES (
+			#{id},
+			#{trackingnumber},
+			#{selectedcarrier},
+			#{actualshipdate},
+			#{trackingstatus},
+			#{receivingzipcode},
+			#{fheavy},
+			#{fheavyprice},
+			#{cheavyunit},
+			#{cheavyunitprice},
+			#{type},
+			#{codfeerate},
+			#{rejectrate},
+			#{fheavynum},
+			#{cheavynum},
+			#{codfeenum},
+			#{rejectnum},
+			#{resultnum},
+			#{resulttime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_deliveryfee_packagedetail SET 	
+			trackingnumber = #{trackingnumber},
+			selectedcarrier = #{selectedcarrier},
+			actualshipdate = #{actualshipdate},
+			trackingstatus = #{trackingstatus},
+			receivingzipcode = #{receivingzipcode},
+			fheavy = #{fheavy},
+			fheavyprice = #{fheavyprice},
+			cheavyunit = #{cheavyunit},
+			cheavyunitprice = #{cheavyunitprice},
+			type = #{type},
+			codfeerate = #{codfeerate},
+			rejectrate = #{rejectrate},
+			fheavynum = #{fheavynum},
+			cheavynum = #{cheavynum},
+			codfeenum = #{codfeenum},
+			rejectnum = #{rejectnum},
+			resultnum = #{resultnum},
+			resulttime = #{resulttime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_deliveryfee_packagedetail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

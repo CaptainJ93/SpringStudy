@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FinanceSql">
+	<!-- 供应商订单统计-->
+	<resultMap class="java.util.HashMap" id="getSaleDetails">
+		<result property="accountdate" column="ACCOUNTDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="-1"/>
+		<result property="accountbegindate" column="ACCOUNTBEGINDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="accountenddate" column="ACCOUNTENDDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="-1"/>
+		<result property="warehouseid" column="WAREHOUSEID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="companyid" column="COMPANYID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="customerid" column="CUSTOMERID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="orderid" column="ORDERID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="itemid" column="ITEMID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="productid" column="PRODUCTID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="productname" column="PRODUCTNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="supplierid" column="SUPPLIERID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="quantity" column="QUANTITY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="productcost" column="PRODUCTCOST" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lclasscode" column="LCLASSCODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="mclasscode" column="MCLASSCODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="sclasscode" column="SCLASSCODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="u8lclassname" column="U8LCLASSNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="province" column="PROVINCE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="city" column="CITY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="town" column="TOWN" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="subchannelname" column="SUBCHANNELNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="actualshippeddate" column="ACTUALSHIPPEDDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="productamount" column="PRODUCTAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="invoiceamount" column="INVOICEAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="invoiceprefix" column="INVOICEPREFIX" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="invoiceno" column="INVOICENO" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="invoicedate" column="INVOICEDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="deliverytype" column="DELIVERYTYPE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="shiporderid" column="SHIPORDERID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="sequenceno" column="SEQUENCENO" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="deliveryorderid" column="DELIVERYORDERID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="meno" column="MENO" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		
+	</resultMap>
+	<select id="getSaleDetails" resultMap="getSaleDetails" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+       accountdate,
+       accountbegindate,
+       accountenddate,
+       warehouseid,
+       companyid,
+       orderid,
+       itemid,
+       productid,
+       productname,
+       supplierid,
+       lclasscode,
+       mclasscode,
+       sclasscode,
+       u8lclassname,
+       customerid,
+       quantity,
+       productcost,
+       province,
+       city,
+       town,
+       subchannelname,
+       actualshippeddate,
+       productamount,
+       invoiceamount,
+       invoiceprefix,
+       invoiceno,
+       invoicedate,
+       deliverytype,
+       shiporderid,
+       sequenceno,
+       deliveryorderid,
+       meno
+	  from tfin_saledetails t
+	  where t.detailtype='1'
+	    
+	    <isNotEmpty prepend="" property="productid">
+			and t.productid = #productid# 
+		</isNotEmpty>
+		<isNotEmpty prepend="" property="productname">
+			and t.productname like  '%#productname#%'
+		</isNotEmpty>
+		
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	
+	<select id="getSaleDetails_count" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select 
+       count(*)
+	  from tfin_saledetails t
+	  where t.detailtype='1'
+	  <isNotEmpty prepend="" property="productid">
+			and t.productid = #productid# 
+		</isNotEmpty>
+		<isNotEmpty prepend="" property="productname">
+			and t.productname like  '%#productname#%'
+		</isNotEmpty>
+	</select>
+	
+	
+	
+</sqlMap>

@@ -1,0 +1,138 @@
+触发器,TR_TSCM_SHIP_READY_NON_CC
+
+
+1.供应商配送，发票后寄
+订单类型：一般
+商品配送方式：指送--->>>一般
+SPM上，需完成发货确认流程，输入面单号+选择配送公司
+
+2.指定配送商上门取货寄送
+
+订单类型：一般
+商品配送方式：指送--->>>到厂取货
+
+
+3.提成模式
+商品类型:佣金
+接单方式：无限制
+订单类型：佣金
+商品配送方式： 指送--->>>一般
+特定通路、非COD
+
+SPM上，需完成发货确认流程，输入面单号+选择配送公司
+
+
+
+
+
+4.解决库存问题
+指送商品需，插入下表信息
+INSERT INTO TVWS_PRODUCTQTY
+  (PRODUCTQTYID,
+   PRODUCTID,
+   PRODUCTVERSION,
+   COLOURCODE,
+   COLOURCLASS,
+   STYLECODE,
+   STYLECLASS,
+   NORMALQUANTITY,
+   DAMAGEDQUANTITY,
+   CREATEDBY,
+   CREATEDTIMESTAMP,
+   LASTMODIFIEDBY,
+   LASTMODIFIEDTIMESTAMP)
+VALUES
+  (S_PRODUCTQTY.NEXTVAL,
+  111493  ,
+  1,
+   5037,
+  5001,
+   5172,
+   5016,
+   100,
+   0,
+   30364,
+   SYSDATE,
+   30364,
+   SYSDATE);
+
+
+SELECT AVAILABLEQUANTITY,
+       PRODUCTID,
+       PRODUCTVERSION,
+       COLOURCODE,
+       COLOURCLASS,
+       STYLECODE,
+       STYLECLASS
+  FROM TSCM_PURCHASEORDERDETAIL
+ WHERE PRODUCTID = 111493
+   AND PRODUCTVERSION = 1
+
+select * from TVWS_PRODUCTQTY a where a.productid=111493 for update 
+
+5.简化如下流程
+
+1) 商品开发流程，采用简易方式
+2）批量导入方式，需新增，配送方式，销退方式字段
+3）简化采购流程，将采购流程转化成库存方式同步,
+库存扣减需完成采购订单流程
+
+
+
+select * from tcmn_domaindata d where d.domainname='SubDeliveryType' ;
+select * from tcmn_domaindata d where d.domainname='SubReturnType' ;
+
+
+
+采用商品类型
+佣金商品
+修改
+
+SCM_PD_BasicProdReg_Tab1.jsp
+SCMConstant.java
+新增
+ public static int SCM_PROD_CATEGORY_COMMISSION = 1007;
+
+
+ProductDetailsSaveTC.java
+
+
+View_SCM_PD_BasicProdReg_Tab1.jsp
+
+
+select * from tcmn_domaindata d where  d.domainname='ProductCategory'  for update 
+
+select * from tcmn_domaindata d where  d.domainname='ProductCategoryMain'  for update 
+
+select * from tcmn_domaindata d where d.domainname='ProductCategoryOwnBrandsBuyouts' for update ;
+
+
+spm/screens/productSignOffDetails.jsp
+
+SPM 商品
+SCM_PD_InitiateCreateProduct.jsp
+
+
+
+3.出货进行中
+
+VOAF_CO_CAN_SHIP_1 订单类型新增14
+
+
+
+佣金订单改造
+OAFSubmitOrderService.java
+TakeorderTC.java
+ECSR_Order_Take_Order.jsp
+
+CustomerShipOrderBatchController.java
+SCMBatchConstants.java
+
+//hwh 2014-06-25 add Commission Order
+else if (customerShipOrderVO.getOrdertype() == SCMBatchConstants.ORDER_TYPE_COMMISSION) {
+processCustomerShipOrder(customerShipOrderVO);
+					}
+//hwh 2014-03-04 add Commission Order end
+
+
+

@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.crm.TcrmCusttransactiondetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmCusttransactiondetails" >
+ 
+    <id column="TRANSACTIONID" property="transactionid" jdbcType="DECIMAL" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="REFERENCEVALUE" property="referencevalue" jdbcType="DECIMAL" />
+    <result column="COMPANYID" property="companyid" jdbcType="DECIMAL" />
+    <result column="ACCOUNTTYPEID" property="accounttypeid" jdbcType="DECIMAL" />
+    <result column="ACCOUNTNUMBER" property="accountnumber" jdbcType="DECIMAL" />
+    <result column="TRANSACTIONAMOUNT" property="transactionamount" jdbcType="DECIMAL" />
+    <result column="TRANSACTIONDATE" property="transactiondate" jdbcType="TIMESTAMP" />
+    <result column="CREDITDEBITFLG" property="creditdebitflg" jdbcType="CHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="REFERENCETYPEID" property="referencetypeid" jdbcType="DECIMAL" />
+    <result column="MULTICODEID" property="multicodeid" jdbcType="DECIMAL" />
+    <result column="TRANSACTIONDETAILSID" property="transactiondetailsid" jdbcType="DECIMAL" />
+    <result column="ORDERID" property="orderid" jdbcType="DECIMAL" />
+    <result column="ITEMID" property="itemid" jdbcType="DECIMAL" />
+    <result column="EXCEPTIONDESC" property="exceptiondesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+ 
+    TRANSACTIONID, CUSTOMERID, REFERENCEVALUE, COMPANYID, ACCOUNTTYPEID, ACCOUNTNUMBER, 
+    TRANSACTIONAMOUNT, TRANSACTIONDATE, CREDITDEBITFLG, CREATEDBY, CREATEDTIMESTAMP, 
+    LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, PRODUCTID, REFERENCETYPEID, MULTICODEID, TRANSACTIONDETAILSID, 
+    ORDERID, ITEMID, EXCEPTIONDESC
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="TcrmCusttransactiondetailsExample" >
+
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+   
+    delete from ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="TcrmCusttransactiondetailsExample" >
+   
+    delete from ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TcrmCusttransactiondetails" >
+ 
+    insert into ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS (TRANSACTIONID, CUSTOMERID, REFERENCEVALUE, 
+      COMPANYID, ACCOUNTTYPEID, ACCOUNTNUMBER, 
+      TRANSACTIONAMOUNT, TRANSACTIONDATE, CREDITDEBITFLG, 
+      CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, 
+      LASTMODIFIEDTIMESTAMP, PRODUCTID, REFERENCETYPEID, 
+      MULTICODEID, TRANSACTIONDETAILSID, ORDERID, 
+      ITEMID, EXCEPTIONDESC)
+    values (#{transactionid,jdbcType=DECIMAL}, #{customerid,jdbcType=DECIMAL}, #{referencevalue,jdbcType=DECIMAL}, 
+      #{companyid,jdbcType=DECIMAL}, #{accounttypeid,jdbcType=DECIMAL}, #{accountnumber,jdbcType=DECIMAL}, 
+      #{transactionamount,jdbcType=DECIMAL}, #{transactiondate,jdbcType=TIMESTAMP}, #{creditdebitflg,jdbcType=CHAR}, 
+      #{createdby,jdbcType=DECIMAL}, #{createdtimestamp,jdbcType=TIMESTAMP}, #{lastmodifiedby,jdbcType=DECIMAL}, 
+      #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, #{productid,jdbcType=DECIMAL}, #{referencetypeid,jdbcType=DECIMAL}, 
+      #{multicodeid,jdbcType=DECIMAL}, #{transactiondetailsid,jdbcType=DECIMAL}, #{orderid,jdbcType=DECIMAL}, 
+      #{itemid,jdbcType=DECIMAL}, #{exceptiondesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="TcrmCusttransactiondetails" >
+ 
+ <selectKey keyProperty="transactionid" resultType="long" order="BEFORE">
+    select S_CUSTTRANSACTIONDETAILS.nextval  FROM DUAL
+  </selectKey>
+    insert into ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transactionid != null" >
+        TRANSACTIONID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="referencevalue != null" >
+        REFERENCEVALUE,
+      </if>
+      <if test="companyid != null" >
+        COMPANYID,
+      </if>
+      <if test="accounttypeid != null" >
+        ACCOUNTTYPEID,
+      </if>
+      <if test="accountnumber != null" >
+        ACCOUNTNUMBER,
+      </if>
+      <if test="transactionamount != null" >
+        TRANSACTIONAMOUNT,
+      </if>
+      <if test="transactiondate != null" >
+        TRANSACTIONDATE,
+      </if>
+      <if test="creditdebitflg != null" >
+        CREDITDEBITFLG,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="productid != null" >
+        PRODUCTID,
+      </if>
+      <if test="referencetypeid != null" >
+        REFERENCETYPEID,
+      </if>
+      <if test="multicodeid != null" >
+        MULTICODEID,
+      </if>
+      <if test="transactiondetailsid != null" >
+        TRANSACTIONDETAILSID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="itemid != null" >
+        ITEMID,
+      </if>
+      <if test="exceptiondesc != null" >
+        EXCEPTIONDESC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transactionid != null" >
+        #{transactionid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="referencevalue != null" >
+        #{referencevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="companyid != null" >
+        #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="accounttypeid != null" >
+        #{accounttypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="accountnumber != null" >
+        #{accountnumber,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionamount != null" >
+        #{transactionamount,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiondate != null" >
+        #{transactiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creditdebitflg != null" >
+        #{creditdebitflg,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="referencetypeid != null" >
+        #{referencetypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="multicodeid != null" >
+        #{multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiondetailsid != null" >
+        #{transactiondetailsid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="itemid != null" >
+        #{itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="exceptiondesc != null" >
+        #{exceptiondesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TcrmCusttransactiondetailsExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+  
+    update ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    <set >
+      <if test="record.transactionid != null" >
+        TRANSACTIONID = #{record.transactionid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null" >
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.referencevalue != null" >
+        REFERENCEVALUE = #{record.referencevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="record.companyid != null" >
+        COMPANYID = #{record.companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.accounttypeid != null" >
+        ACCOUNTTYPEID = #{record.accounttypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.accountnumber != null" >
+        ACCOUNTNUMBER = #{record.accountnumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactionamount != null" >
+        TRANSACTIONAMOUNT = #{record.transactionamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactiondate != null" >
+        TRANSACTIONDATE = #{record.transactiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creditdebitflg != null" >
+        CREDITDEBITFLG = #{record.creditdebitflg,jdbcType=CHAR},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.productid != null" >
+        PRODUCTID = #{record.productid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.referencetypeid != null" >
+        REFERENCETYPEID = #{record.referencetypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.multicodeid != null" >
+        MULTICODEID = #{record.multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactiondetailsid != null" >
+        TRANSACTIONDETAILSID = #{record.transactiondetailsid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderid != null" >
+        ORDERID = #{record.orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.itemid != null" >
+        ITEMID = #{record.itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.exceptiondesc != null" >
+        EXCEPTIONDESC = #{record.exceptiondesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+  
+    update ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    set TRANSACTIONID = #{record.transactionid,jdbcType=DECIMAL},
+      CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      REFERENCEVALUE = #{record.referencevalue,jdbcType=DECIMAL},
+      COMPANYID = #{record.companyid,jdbcType=DECIMAL},
+      ACCOUNTTYPEID = #{record.accounttypeid,jdbcType=DECIMAL},
+      ACCOUNTNUMBER = #{record.accountnumber,jdbcType=DECIMAL},
+      TRANSACTIONAMOUNT = #{record.transactionamount,jdbcType=DECIMAL},
+      TRANSACTIONDATE = #{record.transactiondate,jdbcType=TIMESTAMP},
+      CREDITDEBITFLG = #{record.creditdebitflg,jdbcType=CHAR},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      PRODUCTID = #{record.productid,jdbcType=DECIMAL},
+      REFERENCETYPEID = #{record.referencetypeid,jdbcType=DECIMAL},
+      MULTICODEID = #{record.multicodeid,jdbcType=DECIMAL},
+      TRANSACTIONDETAILSID = #{record.transactiondetailsid,jdbcType=DECIMAL},
+      ORDERID = #{record.orderid,jdbcType=DECIMAL},
+      ITEMID = #{record.itemid,jdbcType=DECIMAL},
+      EXCEPTIONDESC = #{record.exceptiondesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TcrmCusttransactiondetails" >
+ 
+    update ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    <set >
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="referencevalue != null" >
+        REFERENCEVALUE = #{referencevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="companyid != null" >
+        COMPANYID = #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="accounttypeid != null" >
+        ACCOUNTTYPEID = #{accounttypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="accountnumber != null" >
+        ACCOUNTNUMBER = #{accountnumber,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionamount != null" >
+        TRANSACTIONAMOUNT = #{transactionamount,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiondate != null" >
+        TRANSACTIONDATE = #{transactiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creditdebitflg != null" >
+        CREDITDEBITFLG = #{creditdebitflg,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productid != null" >
+        PRODUCTID = #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="referencetypeid != null" >
+        REFERENCETYPEID = #{referencetypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="multicodeid != null" >
+        MULTICODEID = #{multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="transactiondetailsid != null" >
+        TRANSACTIONDETAILSID = #{transactiondetailsid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="itemid != null" >
+        ITEMID = #{itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="exceptiondesc != null" >
+        EXCEPTIONDESC = #{exceptiondesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TcrmCusttransactiondetails" >
+    
+    update ET1_CHINA.TCRM_CUSTTRANSACTIONDETAILS
+    set CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      REFERENCEVALUE = #{referencevalue,jdbcType=DECIMAL},
+      COMPANYID = #{companyid,jdbcType=DECIMAL},
+      ACCOUNTTYPEID = #{accounttypeid,jdbcType=DECIMAL},
+      ACCOUNTNUMBER = #{accountnumber,jdbcType=DECIMAL},
+      TRANSACTIONAMOUNT = #{transactionamount,jdbcType=DECIMAL},
+      TRANSACTIONDATE = #{transactiondate,jdbcType=TIMESTAMP},
+      CREDITDEBITFLG = #{creditdebitflg,jdbcType=CHAR},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      PRODUCTID = #{productid,jdbcType=DECIMAL},
+      REFERENCETYPEID = #{referencetypeid,jdbcType=DECIMAL},
+      MULTICODEID = #{multicodeid,jdbcType=DECIMAL},
+      TRANSACTIONDETAILSID = #{transactiondetailsid,jdbcType=DECIMAL},
+      ORDERID = #{orderid,jdbcType=DECIMAL},
+      ITEMID = #{itemid,jdbcType=DECIMAL},
+      EXCEPTIONDESC = #{exceptiondesc,jdbcType=VARCHAR}
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.ProductViewMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.best1.api.entity.view.ProductView">
+
+		<id column="productid" property="productid" jdbcType="DECIMAL" />
+		<id column="productversion" property="productversion" jdbcType="DECIMAL" />
+		<result column="supplierid" property="supplierid" jdbcType="DECIMAL" />
+		<result column="productname" property="productname" jdbcType="CHAR" />
+		<result column="colourclass" property="colourclass" jdbcType="DECIMAL" />
+		<result column="colourcode" property="colourcode" jdbcType="DECIMAL" />
+		<result column="styleclass" property="styleclass" jdbcType="DECIMAL" />
+		<result column="stylecode" property="stylecode" jdbcType="DECIMAL" />
+		
+		<result column="costprice" property="costprice" jdbcType="DECIMAL" />
+		<result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+		<result column="sellingprice" property="sellingprice" jdbcType="DECIMAL" />
+		
+		<result column="mclasscode" property="mclasscode" jdbcType="DECIMAL" />
+		<result column="sclasscode" property="sclasscode" jdbcType="DECIMAL" />
+		<result column="lclasscode" property="lclasscode" jdbcType="DECIMAL" />
+		<result column="companyid" property="companyid" jdbcType="DECIMAL" />
+	
+		<result column="deliverytype" property="deliverytype" jdbcType="DECIMAL" />
+		<result column="returntype" property="returntype" jdbcType="DECIMAL" />
+		
+	</resultMap>
+
+	<select id="fetchProducts" parameterType="com.best1.api.entity.view.ProductView"
+		resultMap="BaseResultMap">
+	select 
+	   p.PRODUCTCATEGORY,
+	   p.supplierid,
+       p.productid, 
+       p.productversion, 
+       p.productname1 || p.productname2 as productname, 
+       pc.colourcode, 
+       pc.colourclass, 
+       d1.shortnametaiwaneese as colourcn,
+       pc.stylecode, 
+       pc.styleclass, 
+       d2.shortnametaiwaneese as stylecn,
+       p.costprice, 
+       par.taxrate,
+       p.sellingprice,
+       p.lclasscode,
+       fl.shortnametaiwaneese1 as lclasscn,
+       p.mclasscode,
+       fl.shortnametaiwaneese2 as mclasscn,
+       p.sclasscode,
+       fl.shortnametaiwaneese3 as sclasscn,
+       p.companyid,
+       logis.deliverytype,
+       logis.returntype 
+  from TSCM_PRODUCT p, tscm_productcolourstyle pc, tscm_productlogistic logis,
+  et1_china.tscm_productparameters par,
+  (select tp1.domaincode          domaincode1,
+               tp1.shortnametaiwaneese shortnametaiwaneese1,
+               tp2.domaincode          domaincode2,
+               tp2.shortnametaiwaneese shortnametaiwaneese2,
+               tp3.domaincode          domaincode3,
+               tp3.shortnametaiwaneese shortnametaiwaneese3
+          from (select tp.parentcode, tp.domaincode, tp.shortnametaiwaneese
+                  from tcmn_productclasscodes tp
+                 where tp.parentcode = 0) tp1,
+               (select tp.parentcode, tp.domaincode, tp.shortnametaiwaneese
+                  from tcmn_productclasscodes tp) tp2,
+               (select tp.parentcode, tp.domaincode, tp.shortnametaiwaneese
+                  from tcmn_productclasscodes tp) tp3
+         where tp1.domaincode = tp2.parentcode
+           and tp2.domaincode = tp3.parentcode) fl,
+       tcmn_domaindata d1,
+       tcmn_domaindata d2
+ where 
+p.productid = pc.productid
+and p.productid=logis.productid
+and p.productid=par.productid(+)
+and p.productversion=par.productversion(+)
+  and p.lclasscode = fl.domaincode1
+   and p.mclasscode = fl. domaincode2
+   and p.sclasscode = fl.domaincode3
+   and pc.colourclass = d1.parentcode
+   and pc.colourcode = d1.domaincode
+   and pc.styleclass = d2.parentcode
+   and pc.stylecode = d2.domaincode
+		<if test="productid != null">
+			and p.productid = #{productid}
+		</if>
+				
+		<if test="startdate != null">
+			AND p.lastmodifiedtimestamp &gt;= to_date(#{startdate}, 'yyyymmdd')
+		</if>
+		<if test="enddate != null">
+			AND p.lastmodifiedtimestamp &lt; to_date(#{enddate}, 'yyyymmdd')
+		</if>
+		
+		
+	
+	</select>
+
+</mapper> 

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.api.mapper.crm.TcrmCustomercontactsMapper">
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmCustomercontacts">
+  
+    <id column="CUSTOMERCONTACTSID" jdbcType="DECIMAL" property="customercontactsid" />
+    <result column="CUSTOMERID" jdbcType="DECIMAL" property="customerid" />
+    <result column="CREATEDBY" jdbcType="DECIMAL" property="createdby" />
+    <result column="CREATEDTIMESTAMP" jdbcType="TIMESTAMP" property="createdtimestamp" />
+    <result column="LASTMODIFIEDBY" jdbcType="DECIMAL" property="lastmodifiedby" />
+    <result column="LASTMODIFIEDTIMESTAMP" jdbcType="TIMESTAMP" property="lastmodifiedtimestamp" />
+    <result column="RELATIONSHIP" jdbcType="DECIMAL" property="relationship" />
+    <result column="CONTACTTYPE" jdbcType="DECIMAL" property="contacttype" />
+    <result column="CONTACTNUMBER" jdbcType="VARCHAR" property="contactnumber" />
+    <result column="STATUS" jdbcType="DECIMAL" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+  
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+  
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    
+    CUSTOMERCONTACTSID, CUSTOMERID, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, 
+    RELATIONSHIP, CONTACTTYPE, CONTACTNUMBER, STATUS
+  </sql>
+  <select id="selectByExample" parameterType="com.best1.api.entity.crm.TcrmCustomercontactsExample" resultMap="BaseResultMap">
+  
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    where CUSTOMERCONTACTSID = #{customercontactsid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  
+    delete from ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    where CUSTOMERCONTACTSID = #{customercontactsid,jdbcType=DECIMAL}
+  </delete>
+ 
+ 
+  <insert id="insertSelective" parameterType="com.best1.api.entity.crm.TcrmCustomercontacts">
+ 
+  <selectKey resultType="long"  keyProperty="customercontactsid" order="BEFORE">
+         SELECT ET1_CHINA.S_CUSTOMERCONTACTS.Nextval FROM DUAL
+      </selectKey>
+      
+      
+    insert into ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customercontactsid != null">
+        CUSTOMERCONTACTSID,
+      </if>
+      <if test="customerid != null">
+        CUSTOMERID,
+      </if>
+      <if test="createdby != null">
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="relationship != null">
+        RELATIONSHIP,
+      </if>
+      <if test="contacttype != null">
+        CONTACTTYPE,
+      </if>
+      <if test="contactnumber != null">
+        CONTACTNUMBER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customercontactsid != null">
+        #{customercontactsid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null">
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="relationship != null">
+        #{relationship,jdbcType=DECIMAL},
+      </if>
+      <if test="contacttype != null">
+        #{contacttype,jdbcType=DECIMAL},
+      </if>
+      <if test="contactnumber != null">
+        #{contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.crm.TcrmCustomercontactsExample" resultType="java.lang.Integer">
+    
+    select count(*) from ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+ 
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.crm.TcrmCustomercontacts">
+   
+    update ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    <set>
+      <if test="customerid != null">
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="relationship != null">
+        RELATIONSHIP = #{relationship,jdbcType=DECIMAL},
+      </if>
+      <if test="contacttype != null">
+        CONTACTTYPE = #{contacttype,jdbcType=DECIMAL},
+      </if>
+      <if test="contactnumber != null">
+        CONTACTNUMBER = #{contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where CUSTOMERCONTACTSID = #{customercontactsid,jdbcType=DECIMAL}
+  </update>
+  
+  
+  <update id="updateByExampleSelective" parameterType="map">
+
+    update ET1_CHINA.TCRM_CUSTOMERCONTACTS
+    <set>
+      <if test="record.customercontactsid != null">
+        CUSTOMERCONTACTSID = #{record.customercontactsid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null">
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null">
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null">
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null">
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.relationship != null">
+        RELATIONSHIP = #{record.relationship,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contacttype != null">
+        CONTACTTYPE = #{record.contacttype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contactnumber != null">
+        CONTACTNUMBER = #{record.contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

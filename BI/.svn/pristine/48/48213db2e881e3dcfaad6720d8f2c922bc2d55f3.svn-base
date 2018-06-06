@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AuditDefineSql">
+    <typeAlias alias="AuditDefine" type="com.best1.report.domain.AuditDefine" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select 
+		   a.audit_id,
+	       a.audit_busi_code,
+	       a.department_id,
+	       a.busi_status,
+	       a.busi_status_desc,
+	       a.next_audit_id,
+	       a.next_busi_status,
+	       a.fail_status
+       from TB_BEST1_AUDIT_DEFINE a
+	</sql>
+    <!-- 通用查询条件-->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="auditId">
+				<![CDATA[
+					a.AUDIT_ID = #auditId#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="auditBusiCode">
+				<![CDATA[
+					a.AUDIT_BUSI_CODE = #auditBusiCode#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentId">
+				<![CDATA[
+					a.DEPARTMENT_ID = #departmentId#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="busiStatus">
+				<![CDATA[
+					a.BUSI_STATUS = #busiStatus#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<resultMap class="java.util.HashMap" id="getAuditDefine">
+		<result property="auditId" column="AUDIT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="auditBusiCode" column="AUDIT_BUSI_CODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="departmentId" column="DEPARTMENT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="busiStatus" column="BUSI_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="busiStatusDesc" column="BUSI_STATUS_DESC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="nextAuditId" column="NEXT_AUDIT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="nextBusiStatus" column="NEXT_BUSI_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="failStatus" column="FAIL_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	
+	<select id="getAuditDefines" resultMap="getAuditDefine" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<resultMap class="AuditDefine" id="getAuditObj">
+		<result property="auditId" column="AUDIT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="auditBusiCode" column="AUDIT_BUSI_CODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="departmentId" column="DEPARTMENT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="busiStatus" column="BUSI_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="busiStatusDesc" column="BUSI_STATUS_DESC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="nextAuditId" column="NEXT_AUDIT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="nextBusiStatus" column="NEXT_BUSI_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="failStatus" column="FAIL_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	
+	<select id="getAuditDefineObj" resultMap="getAuditObj" parameterClass="java.util.HashMap">
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+	</select>
+	
+	
+	<!-- 新增 -->
+	<insert id="insertAuditRecord" parameterClass="java.util.HashMap">
+	insert into tb_best1_audit_record(
+	  RECORD_ID,
+	  AUDITOR,
+	  AUDIT_DATE,
+	  OBJ_ID,
+	  AUDIT_DESC,
+	  AUDIT_STATUS)
+    values(
+      SEQ_AUDIT_RECORD_ID.NEXTVAL,
+      #auditor#,
+      sysdate,
+      #objId#,
+      #auditDesc#,
+      #auditStatus#)
+    </insert>
+	
+</sqlMap>

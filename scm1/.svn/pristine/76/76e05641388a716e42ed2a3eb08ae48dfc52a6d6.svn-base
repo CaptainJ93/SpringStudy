@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.supplier.dao.ScmSupplierSroheaderDao">
+    
+	<sql id="scmSupplierSroheaderColumns">
+		a.id AS "id",
+		a.warehouseid AS "warehouseid",
+		a.zipcode AS "zipcode",
+		a.receiveaddress1 AS "receiveaddress1",
+		a.receiveaddress2 AS "receiveaddress2",
+		a.customername AS "customername",
+		a.telephonenumber AS "telephonenumber",
+		a.mobilenumber AS "mobilenumber",
+		a.returntime AS "returntime",
+		a.returnid AS "returnid",
+		a.returntype AS "returntype",
+		a.customerid AS "customerid",
+		a.selectedcarrier AS "selectedcarrier",
+		a.isfacetofacerefund AS "isfacetofacerefund",
+		a.refundcodnumber AS "refundcodnumber",
+		a.isneedinvoice AS "isneedinvoice",
+		a.receiptsuccesstime AS "receiptsuccesstime",
+		a.tohygwarehousetime AS "tohygwarehousetime",
+		a.receiptconfirmtime AS "receiptconfirmtime",
+		a.receiptdeliveryorderid AS "receiptdeliveryorderid",
+		a.receiptstatus AS "receiptstatus",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime",
+		a.deliverytype AS "deliverytype",
+		a.subdeliverytype AS "subdeliverytype",
+		a.supplierid AS "supplierid",
+		selectedcarrier.carriername AS "selectedcarriername"
+	</sql>
+	
+	<sql id="scmSupplierSroheaderJoins">
+	LEFT JOIN scm_carrier selectedcarrier ON selectedcarrier.carrierid = a.selectedcarrier
+	</sql>
+    
+	<select id="get" resultType="ScmSupplierSroheader">
+		SELECT 
+			<include refid="scmSupplierSroheaderColumns"/>
+		FROM scm_supplier_sroheader a
+		<include refid="scmSupplierSroheaderJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmSupplierSroheader">
+		SELECT 
+			<include refid="scmSupplierSroheaderColumns"/>
+		FROM scm_supplier_sroheader a
+		<include refid="scmSupplierSroheaderJoins"/>
+		<where>
+			1=1
+		</where>
+			<if test="warehouseid != null and warehouseid != ''">
+				AND a.warehouseid = #{warehouseid}
+			</if>
+			<if test="returntype != null and returntype != ''">
+				AND a.returntype = #{returntype}
+			</if>
+			<if test="customerid != null and customerid != ''">
+				AND a.customerid = #{customerid}
+			</if>
+			<if test="selectedcarrier != null and selectedcarrier != ''">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+			<if test="supplierid != null and supplierid != ''">
+				AND a.supplierid = #{supplierid}
+			</if>
+			<if test="isfacetofacerefund != null and isfacetofacerefund != ''">
+				AND a.isfacetofacerefund = #{isfacetofacerefund}
+			</if>
+			<if test="isneedinvoice != null and isneedinvoice != ''">
+				AND a.isneedinvoice = #{isneedinvoice}
+			</if>
+			<if test="returnid != null and returnid != ''">
+				AND a.returnid = #{returnid}
+			</if>
+			<if test="receiptstatus != null and receiptstatus != ''">
+				AND a.receiptstatus = #{receiptstatus}
+			</if>
+			<if test="deliverytype != null and deliverytype != ''">
+				AND a.deliverytype = #{deliverytype}
+			</if>
+			<if test="subdeliverytype != null and subdeliverytype != ''">
+				AND a.subdeliverytype = #{subdeliverytype}
+			</if>
+			<if test="toet1flag != null and toet1flag != ''">
+				AND a.toet1flag = #{toet1flag}
+			</if>
+			<if test="returntimeStart != null">
+			AND a.returntime &gt;= #{returntimeStart}
+			</if>
+			<if test="returntimeEnd != null">
+				AND a.returntime &lt;= #{returntimeEnd}
+			</if>
+			<if test="receiptsuccesstimeStart != null">
+			AND a.receiptsuccesstime &gt;= #{receiptsuccesstimeStart}
+			</if>
+			<if test="receiptsuccesstimeEnd != null">
+				AND a.receiptsuccesstime &lt;= #{receiptsuccesstimeEnd}
+			</if>
+			<if test="recordcreatedtimeStart != null">
+			AND a.recordcreatedtime &gt;= #{recordcreatedtimeStart}
+			</if>
+			<if test="recordcreatedtimeEnd != null">
+				AND a.recordcreatedtime &lt;= #{recordcreatedtimeEnd}
+			</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmSupplierSroheader">
+		SELECT 
+			<include refid="scmSupplierSroheaderColumns"/>
+		FROM scm_supplier_sroheader a
+		<include refid="scmSupplierSroheaderJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_supplier_sroheader(
+			id,
+			warehouseid,
+			zipcode,
+			receiveaddress1,
+			receiveaddress2,
+			customername,
+			telephonenumber,
+			mobilenumber,
+			returntime,
+			returnid,
+			returntype,
+			customerid,
+			selectedcarrier,
+			isfacetofacerefund,
+			refundcodnumber,
+			isneedinvoice,
+			receiptsuccesstime,
+			tohygwarehousetime,
+			receiptconfirmtime,
+			receiptdeliveryorderid,
+			receiptstatus,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime,
+			deliverytype,
+			subdeliverytype,
+			supplierid
+		) VALUES (
+			#{id},
+			#{warehouseid},
+			#{zipcode},
+			#{receiveaddress1},
+			#{receiveaddress2},
+			#{customername},
+			#{telephonenumber},
+			#{mobilenumber},
+			#{returntime},
+			#{returnid},
+			#{returntype},
+			#{customerid},
+			#{selectedcarrier},
+			#{isfacetofacerefund},
+			#{refundcodnumber},
+			#{isneedinvoice},
+			#{receiptsuccesstime},
+			#{tohygwarehousetime},
+			#{receiptconfirmtime},
+			#{receiptdeliveryorderid},
+			#{receiptstatus},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime},
+			#{deliverytype},
+			#{subdeliverytype},
+			#{supplierid}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_supplier_sroheader SET 	
+			warehouseid = #{warehouseid},
+			zipcode = #{zipcode},
+			receiveaddress1 = #{receiveaddress1},
+			receiveaddress2 = #{receiveaddress2},
+			customername = #{customername},
+			telephonenumber = #{telephonenumber},
+			mobilenumber = #{mobilenumber},
+			returntime = #{returntime},
+			returnid = #{returnid},
+			returntype = #{returntype},
+			customerid = #{customerid},
+			selectedcarrier = #{selectedcarrier},
+			isfacetofacerefund = #{isfacetofacerefund},
+			refundcodnumber = #{refundcodnumber},
+			isneedinvoice = #{isneedinvoice},
+			receiptsuccesstime = #{receiptsuccesstime},
+			tohygwarehousetime = #{tohygwarehousetime},
+			receiptconfirmtime = #{receiptconfirmtime},
+			receiptdeliveryorderid = #{receiptdeliveryorderid},
+			receiptstatus = #{receiptstatus},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime},
+			deliverytype = #{deliverytype},
+			subdeliverytype = #{subdeliverytype},
+			toet1flag = #{toet1flag} 
+		<where>
+			1=1
+		</where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+			<if test="returnid != null and returnid != ''">
+				AND returnid = #{returnid}
+			</if>
+			<if test="supplierid != null and supplierid != ''">
+				AND supplierid = #{supplierid}
+			</if>
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_supplier_sroheader
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

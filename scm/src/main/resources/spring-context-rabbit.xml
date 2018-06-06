@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/rabbit 
+		http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd" default-lazy-init="true">
+	<!-- From STDIN To RabbitMQ -->	
+<!-- 
+
+	http://www.springframework.org/schema/integration 
+		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/integration/stream
+		http://www.springframework.org/schema/integration/stream/spring-integration-stream-4.0.xsd
+		http://www.springframework.org/schema/integration/amqp 
+		http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+ -->
+
+<!-- Infrastructure
+
+ -->
+  
+
+	<rabbit:connection-factory id="connectionFactory" host="192.168.100.248" virtual-host="/" username="hyg" password="hyg" port="5672" publisher-confirms="true" publisher-returns="true" />
+
+
+
+   
+	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"	exchange="scmExchange" routing-key="kerry" />
+
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<rabbit:queue name="scmQueue" />
+	
+	
+	<!-- exchagne type is topic -->
+	<rabbit:topic-exchange name="scmExchange">
+		<rabbit:bindings>
+		    <!-- sender: routing-key  receiver:binding-key -->
+			<rabbit:binding queue="scmQueue" pattern="kerry" />
+		</rabbit:bindings>
+	</rabbit:topic-exchange>
+	
+	<bean id="foo" class="com.best1.scm.common.mq.rabbit.springamqp.Foo" />
+
+	<rabbit:listener-container
+		connection-factory="connectionFactory" acknowledge="manual" >
+		<rabbit:listener ref="foo" queue-names="scmQueue"  method="listen"></rabbit:listener>
+		<rabbit:listener ref="wMSDeliveryOrderMQListener" queue-names="SCM_PACKAGESINFO" />
+		<rabbit:listener ref="et1ReturnintransitMQListener" queue-names="SCM_CUSTOMERRETURNINFO"/>
+		<rabbit:listener ref="wMSSKUInfoMQListener" queue-names="SCM_SKUINFO" />
+		<rabbit:listener ref="wMSDeliveryOrderAAMQListener" queue-names="SCM_AAINFO"/>
+	</rabbit:listener-container>
+
+	
+	
+	<!-- 配送信息的监听 -->
+	<bean id="wMSDeliveryOrderMQListener" class="com.best1.scm.modules.vws.web.WMSDeliveryOrderMQListener"></bean>
+	<!-- 揽收信息的监听 -->
+	<bean id="et1ReturnintransitMQListener" class="com.best1.scm.modules.vws.web.Et1ReturnintransitMQListener"></bean>
+	<!-- 接收商品信息 -->
+	<bean id="wMSSKUInfoMQListener" class="com.best1.scm.modules.vws.web.WMSSKUInfoMQListener"></bean>
+	<!-- 接收A换A-->
+	<bean id="wMSDeliveryOrderAAMQListener" class="com.best1.scm.modules.vws.web.WMSDeliveryOrderAAMQListener"></bean>
+	
+	
+	<bean id="wMSDeliveryOrderMQService" class="com.best1.scm.modules.vws.service.WMSDeliveryOrderMQService"></bean>
+
+	<bean id="test" class="com.best1.scm.common.mq.rabbit.abin.action.Test">
+		<property name="string" value="kerry" />
+
+	</bean>
+
+</beans>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/rabbit 
+		http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd" default-lazy-init="true">
+	<!-- From STDIN To RabbitMQ -->	
+<!-- 
+
+	http://www.springframework.org/schema/integration 
+		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/integration/stream
+		http://www.springframework.org/schema/integration/stream/spring-integration-stream-4.0.xsd
+		http://www.springframework.org/schema/integration/amqp 
+		http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+ -->
+
+<!-- Infrastructure
+
+ <rabbit:connection-factory id="connectionFactory" host="10.50.5.82" virtual-host="/" username="hyg" password="hyg" port="5672" publisher-confirms="true" publisher-returns="true" />
+ 
+ 	<rabbit:connection-factory id="connectionFactory" host="192.168.100.248" virtual-host="/" username="hyg" password="hyg" port="5672" publisher-confirms="true" publisher-returns="true" />
+    	
+ -->
+ 	<rabbit:connection-factory id="connectionFactory" host="10.50.5.82" virtual-host="/" username="hyg" password="hyg" port="5672" publisher-confirms="true" publisher-returns="true" />
+  
+
+  <rabbit:admin id="connectAdmin" connection-factory="connectionFactory" />
+   
+    <!-- 短信发送 -->
+	<rabbit:queue   name="QUEUE.MESSAGE_SMS_SEND" durable="true" auto-delete="false" exclusive="false"  declared-by="connectAdmin" />
+	
+	 <!-- 定义direct exchange，绑定queueTest -->
+    <rabbit:direct-exchange name="EXCHANGE.MESSAGE_SMS_SED"  durable="true" auto-delete="false" declared-by="connectAdmin">
+        <rabbit:bindings>
+            <rabbit:binding queue="QUEUE.MESSAGE_SMS_SEND" key="MESSAGE_SMS_SEND_KEY"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    
+
+<rabbit:template exchange="EXCHANGE.MESSAGE_SMS_SED" id="amqpTemplate"  routing-key="MESSAGE_SMS_SEND_KEY"  connection-factory="connectionFactory"  message-converter="jsonMessageConverter" />
+ 
+ 
+
+
+   <!--  
+	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"	exchange="scmExchange" routing-key="kerry" />
+
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<rabbit:queue name="scmQueue" />
+	-->
+	
+	<!-- exchagne type is topic -->
+	   <!--<rabbit:topic-exchange name="scmExchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="scmQueue" pattern="kerry" />
+		</rabbit:bindings>
+	</rabbit:topic-exchange> -->
+	
+
+	
+
+	<rabbit:listener-container
+		connection-factory="connectionFactory" acknowledge="manual" >
+		<!--  
+		<rabbit:listener ref="wMSInventoryMQListener" queue-names="WMS_Inventory" />
+		<rabbit:listener ref="wMSCSOWholeConfirmMQListener" queue-names="WMS_CSOConfirm" />
+		<rabbit:listener ref="wMSSROWholeConfirmMQListener" queue-names="WMS_SROConfirm" />
+		<rabbit:listener ref="wMSRTVWholeConfirmMQListener" queue-names="WMS_RTVConfirm" />
+		<rabbit:listener ref="wMSSSOWholeConfirmMQListener" queue-names="WMS_SSOConfirm" />
+		<rabbit:listener ref="wMSOrderInvoicenoMQListener"  queue-names="WMS_OrderInvoiceno" />
+		<rabbit:listener ref="wMSWhtransferodconfirmMQListener"  queue-names="WMS_Whtransferodconfirm" />
+		-->
+		<rabbit:listener ref="smsReportMQListener"         queue-names="QUEUE.MESSAGE_SMS_DELIVERYREPORT" />
+		<rabbit:listener ref="smsReceiveMQListener"         queue-names="QUEUE.MESSAGE_SMS_RECEIVE" />
+	</rabbit:listener-container>
+
+	<!-- 短信响应的监听 -->
+	<bean id="smsReportMQListener" class="com.best1.api.mq.sms.SmsReportMQListener"/>
+	<bean id="smsReceiveMQListener" class="com.best1.api.mq.sms.SmsReceiveMQListener"/>
+	<!-- 库存信息的监听 -->
+	<bean id="wMSInventoryMQListener" class="com.best1.api.mq.vwms.WMSInventoryMQListener"/>
+	<!-- 出货结果信息的监听 -->
+	<bean id="wMSCSOWholeConfirmMQListener" class="com.best1.api.mq.vwms.WMSCSOWholeConfirmMQListener"/>
+	<!-- 销退/拦截确认的监听 -->
+	<bean id="wMSSROWholeConfirmMQListener" class="com.best1.api.mq.vwms.WMSSROWholeConfirmMQListener"/>
+	<!-- 退厂确认的监听 -->
+	<bean id="wMSRTVWholeConfirmMQListener" class="com.best1.api.mq.vwms.WMSRTVWholeConfirmMQListener"/>
+	<!-- 采购确认的监听 -->
+	<bean id="wMSSSOWholeConfirmMQListener" class="com.best1.api.mq.vwms.WMSSSOWholeConfirmMQListener"/>
+	<!-- 订单发票状况的监听 -->
+	<bean id="wMSOrderInvoicenoMQListener" class="com.best1.api.mq.vwms.WMSOrderInvoicenoMQListener"/>
+	<!-- 跨订单调拨信息状况的监听 -->
+	<bean id="wMSWhtransferodconfirmMQListener" class="com.best1.api.mq.vwms.WMSWhtransferodconfirmMQListener"/>
+	<bean id="jsonMessageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />  
+	
+	<!-- 揽收信息的监听
+	<bean id="et1ReturnintransitMQListener" class="com.best1.scm.modules.vws.web.Et1ReturnintransitMQListener"></bean>
+	
+	
+	<bean id="wMSDeliveryOrderMQService" class="com.best1.scm.modules.vws.service.WMSDeliveryOrderMQService"></bean> 
+
+  -->
+</beans>

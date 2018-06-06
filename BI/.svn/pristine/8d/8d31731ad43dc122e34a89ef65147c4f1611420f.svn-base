@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TreeSql">
+	<!-- 返回结果集类型-->
+	<resultMap class="com.best1.domain.MenuInfo" id="getTreeInfo">
+		<result property="id" column="MENUID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="name" column="MENUNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pid" column="MENUPID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="url" column="MENUURL" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menuType" column="MENUTYPE" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="menuorder" column="MENUORDER" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+	</resultMap>
+	
+    
+	
+	<select id="getTreeInfos" resultMap="getTreeInfo" parameterClass="java.util.HashMap">
+	   
+		SELECT DISTINCT A.MENUID, A.MENUNAME, A.MENUPID, A.MENUURL, A.MENUTYPE,A.MENUORDER FROM TB_BEST1_MENU A WHERE 1 = 1 AND A.MENUPID = #pid# START WITH A.MENUID IN (SELECT B.SOURCEID FROM TB_BEST1_ROLE_SOURCE B WHERE B.SOURCETYPE = '10' AND B.ROLEID IN (SELECT C.ROLEID FROM TB_BEST1_USERROLE C WHERE C.USERID = #userid#))CONNECT BY PRIOR MENUPID = MENUID
+		order by A.MENUORDER	
+		
+	</select>
+	
+	
+	<resultMap class="com.best1.domain.MenuInfo" id="getMenuTreeInfo">
+		<result property="id" column="MENUID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="name" column="MENUNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pid" column="MENUPID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="menuType" column="MENUTYPE" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="checked" column="CHECKED" javaType="java.lang.String" jdbcType="DECIMAL" nullValue=""/>
+		<result property="opened" column="OPENED" javaType="java.lang.String" jdbcType="DECIMAL" nullValue=""/>
+	</resultMap>
+	<select id="getMenuTree" resultMap="getMenuTreeInfo" parameterClass="java.util.HashMap">
+		SELECT A.MENUID, A.MENUNAME, A.MENUPID,A.MENUTYPE,
+			(select CASE when count(1)=0 then 'fasle' else 'true' end from tb_best1_role_source b where b.sourceid = a.menuid and b.sourcetype='10' and b.roleid = #roleid#) as CHECKED,
+			'false' as OPENED
+  			FROM TB_BEST1_MENU A order by menuid
+	</select>
+	
+	<resultMap class="com.best1.domain.MenuInfo" id="getMenuDirectory">
+		<result property="id" column="MENUID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="name" column="MENUNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pid" column="MENUPID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="menuType" column="MENUTYPE" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+	</resultMap>
+	<select id="getMenuTreeDirectory" resultMap="getMenuDirectory" parameterClass="java.util.HashMap">
+		SELECT A.MENUID, A.MENUNAME, A.MENUPID,A.MENUTYPE
+  			FROM TB_BEST1_MENU A 
+  			<dynamic prepend="where">
+				<isNotEmpty prepend="and" property="menutype">
+					<![CDATA[
+						a.menutype = #menutype#
+					]]>
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="menuid">
+					<![CDATA[
+						(a.menuid not in (SELECT m.menuid FROM TB_BEST1_MENU m START WITH m.menupid = #menuid#
+							CONNECT BY PRIOR m.menuid = m.menupid) and A.MENUID != #menuid#)
+					]]>
+				</isNotEmpty>
+			</dynamic>
+  			order by menuid
+	</select>
+	
+	
+	<resultMap class="com.best1.domain.MenuInfo" id="getDepartmentTreeInfo">
+		<result property="id" column="id" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="name" column="name" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pid" column="pid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+	</resultMap>
+	<select id="getDepartmentTree" resultMap="getDepartmentTreeInfo" parameterClass="java.util.HashMap">
+		SELECT tbd.department_id as id,tbd.department_name as name,tbd.department_pid as pid FROM tb_best1_department tbd 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="departmentId">
+				<![CDATA[
+					(tbd.department_id not in (SELECT a.department_id FROM tb_best1_department a START WITH a.department_pid = #departmentId#
+						CONNECT BY PRIOR a.department_id = a.department_pid) AND tbd.department_id != #departmentId#)
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY tbd.department_id 
+	</select>
+</sqlMap>

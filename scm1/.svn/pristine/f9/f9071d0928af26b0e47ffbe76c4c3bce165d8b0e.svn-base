@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.supplier.dao.ScmSupplierSkuinfoDao">
+    
+	<sql id="scmSupplierSkuinfoColumns">
+		a.id AS "id",
+		a.productid AS "productid",
+		a.productversion AS "productversion",
+		a.productname AS "productname",
+		a.colorclasscode AS "colorclasscode",
+		a.colorcode AS "colorcode",
+		a.styleclasscode AS "styleclasscode",
+		a.stylecode AS "stylecode",
+		a.colorvalue AS "colorvalue",
+		a.stylevalue AS "stylevalue",
+		a.productskucode AS "productskucode",
+		a.supplierid AS "supplierid",
+		a.remark AS "remark",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="scmSupplierSkuinfoJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmSupplierSkuinfo">
+		SELECT 
+			<include refid="scmSupplierSkuinfoColumns"/>
+		FROM scm_supplier_skuinfo a
+		<include refid="scmSupplierSkuinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmSupplierSkuinfo">
+		SELECT 
+			<include refid="scmSupplierSkuinfoColumns"/>
+		FROM scm_supplier_skuinfo a
+		<include refid="scmSupplierSkuinfoJoins"/>
+		<where>
+			
+			<if test="productid != null and productid != ''">
+				AND a.productid = #{productid}
+			</if>
+			<if test="productversion != null and productversion != ''">
+				AND a.productversion = #{productversion}
+			</if>
+			<if test="productname != null and productname != ''">
+				AND a.productname like CONCAT('%','${productname}','%' )
+			</if>
+			<if test="productskucode != null and productskucode != ''">
+				AND a.productskucode = #{productskucode}
+			</if>
+			<if test="supplierid != null and supplierid != ''">
+				AND a.supplierid = #{supplierid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmSupplierSkuinfo">
+		SELECT 
+			<include refid="scmSupplierSkuinfoColumns"/>
+		FROM scm_supplier_skuinfo a
+		<include refid="scmSupplierSkuinfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_supplier_skuinfo(
+			id,
+			productid,
+			productversion,
+			productname,
+			colorclasscode,
+			colorcode,
+			styleclasscode,
+			stylecode,
+			colorvalue,
+			stylevalue,
+			productskucode,
+			supplierid,
+			remark,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{productid},
+			#{productversion},
+			#{productname},
+			#{colorclasscode},
+			#{colorcode},
+			#{styleclasscode},
+			#{stylecode},
+			#{colorvalue},
+			#{stylevalue},
+			#{productskucode},
+			#{supplierid},
+			#{remark},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_supplier_skuinfo SET 	
+			productid = #{productid},
+			productversion = #{productversion},
+			productname = #{productname},
+			colorclasscode = #{colorclasscode},
+			colorcode = #{colorcode},
+			styleclasscode = #{styleclasscode},
+			stylecode = #{stylecode},
+			colorvalue = #{colorvalue},
+			stylevalue = #{stylevalue},
+			productskucode = #{productskucode},
+			supplierid = #{supplierid},
+			remark = #{remark},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_supplier_skuinfo
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

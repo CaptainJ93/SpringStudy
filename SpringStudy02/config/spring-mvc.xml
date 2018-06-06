@@ -1,0 +1,79 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans   
+	http://www.springframework.org/schema/beans/spring-beans.xsd   
+	http://www.springframework.org/schema/mvc   
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/context   
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 扫面spring的注解,base-package名字和src中package名字相同 -->
+	<context:component-scan
+		base-package="cn.sm1234.controller"></context:component-scan>
+
+	<!--使用ControllerAdvice注解要添加的配置 -->
+	<context:component-scan
+		base-package="org.neo.springmvclearn">
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<mvc:annotation-driven />
+
+	<!--Spring4中使用json要添加的配置 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jsonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--SimpleMappingExceptionResolver异常处理 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!--支持的异常列表 -->
+		<property name="exceptionMappings">
+			<!--包当中显示此方法需要注入props,props中有具体的prop,key的值即为异常的名字,括号里为此异常要跳转的页面 -->
+			<props>
+				<!--默认会把名为exception的变量传给/WEB-INF/jsp/error.jsp页面 -->
+				<prop key="java.lang.ArithmeticException">/WEB-INF/jsp/error.jsp</prop>
+				<prop key="java.lang.NullPointerException">/WEB-INF/jsp/error2.jsp</prop>
+			</props>
+		</property>
+		<property name="exceptionAttribute" value="ex"></property>
+	</bean>
+
+	<!--HandlerExceptionResolver异常处理 -->
+	<bean class="cn.sm1234.controller.MyHandlerExceptionResolver"></bean>
+	
+	<!-- 文件处理bean配置 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 可以加配置控制文件大小等 -->
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+

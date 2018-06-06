@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans default-lazy-init="false" default-autowire="byName">
+	<bean id="templateService" class="com.best1.service.impl.TemplateServiceImpl">
+		<property name="templateDao">
+			<ref bean="templateDao" />
+		</property>
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>									
+	</bean>	
+	
+	<bean id="loginService" class="com.best1.service.impl.LoginServiceImpl">
+		<property name="userDao">
+			<ref bean="userDao" />
+		</property>		
+		<property name="privilegeDao">
+			<ref bean="privilegeDao" />
+		</property>								
+	</bean>	
+	
+	<bean id="treeInfoService" class="com.best1.service.impl.TreeInfoServiceImpl">
+		<property name="treeInfoDAO">
+			<ref bean="treeInfoDAO" />
+		</property>										
+	</bean>	
+	
+	<bean id="paramValueService" class="com.best1.service.impl.ParamValueServiceImpl">
+		<property name="pvInfoDAO">
+			<ref bean="pvInfoDAO" />
+		</property>										
+	</bean>
+	
+	<bean id="loggingService" class="com.best1.service.impl.LoggingServiceImpl">
+		<property name="loggingDAO">
+			<ref bean="loggingDAO" />
+		</property>										
+	</bean>	
+	
+	<bean id="userService" class="com.best1.service.impl.UserServiceImpl">
+		<property name="userDAO">
+			<ref bean="userDao" />
+		</property>										
+	</bean>	
+	
+	<bean id="roleService" class="com.best1.service.impl.RoleServiceImpl">
+		<property name="roleDao">
+			<ref bean="roleDao" />
+		</property>										
+	</bean>
+	
+	<bean id="privilegeService" class="com.best1.service.impl.PrivilegeServiceImpl">
+		<property name="privilegeDao">
+			<ref bean="privilegeDao" />
+		</property>										
+	</bean>	
+	
+	<bean id="menuService" class="com.best1.service.impl.MenuServiceImpl">
+		<property name="menuDao">
+			<ref bean="menuDao" />
+		</property>										
+	</bean>	
+	
+	<bean id="departmentService" class="com.best1.service.impl.DepartmentServiceImpl">
+		<property name="departmentDao">
+			<ref bean="departmentDao" />
+		</property>										
+	</bean>	
+</beans>

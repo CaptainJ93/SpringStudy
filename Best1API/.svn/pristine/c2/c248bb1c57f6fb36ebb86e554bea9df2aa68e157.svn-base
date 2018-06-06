@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>Quartz的本地Cron式执行任务配置</description>
+
+	<!-- Quartz本地Schduler -->
+	<bean id="localQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- Triggers集成 -->
+		<property name="triggers">
+			<list>
+			<!-- 
+			 <ref bean="triggerInvoicePrint" />
+			 <ref bean="triggernvoiceReturnConfirm" />
+			  -->
+			 <ref bean="triggerWeather" />
+			</list>
+		</property>
+		<!-- Quartz配置, 本地运行无需单独的quartz.properties文件，在此简单配置即可 -->
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.threadPool.threadCount">5</prop>
+			</props>
+		</property>
+		<!-- 启动时延期2秒开始任务 -->
+		<property name="startupDelay" value="2" />
+		<property name="autoStartup">
+		<value>true</value>
+	     </property>
+	</bean>
+
+	<!-- Cron式Trigger定义 -->
+	<bean id="triggerInvoicePrint" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobInvoicePrint" />
+		<!-- 每十分钟执行一次 
+		0 0 12 * * ?  
+		-->
+		<!-- 
+		<property name="cronExpression" value="0 0 9 * * ?" />
+		-->
+		<property name="cronExpression" value="0 0/30 * * * ? *" />
+	</bean>
+ 
+	<bean id="triggernvoiceReturnConfirm" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobInvoiceReturnConfirm" />
+		<!--   每十分钟执行一次 
+	
+		<property name="cronExpression" value="005 * * * * ?" />
+		
+		<property name="cronExpression" value="0 0 12 * * ?" />
+		 -->
+		<property name="cronExpression" value="0 0/15 * * * ? *" />
+		
+	</bean>
+	
+
+	<bean id="triggerWeather" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobweatherClient" />
+		<!-- 每十分钟执行一次 
+		0 0 12 * * ?  
+		-->
+		<!-- 
+		<property name="cronExpression" value="0 0 9 * * ?" />
+		-->
+		<property name="cronExpression" value="0 0 0,9,12,17 * * ?" />
+	</bean>
+	
+<bean id="jobweatherClient" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="weatherClient" />
+		<property name="targetMethod" value="Weather" />
+		<!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	<!-- JobDetajil, 基于MethodInvokingJobDetailFactoryBean调用普通Spring Bean -->
+	<bean id="jobInvoicePrint" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="electronicInvoice" />
+		<property name="targetMethod" value="InvoicePrint" />
+		<!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+		<property name="concurrent" value="true" />
+	</bean>
+
+    <bean id="jobInvoiceReturnConfirm" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="electronicInvoice" />
+		<property name="targetMethod" value="InvoiceReturnConfirm" />
+		<!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+		 <property name="concurrent" value="true" />
+	</bean>
+	 
+<bean id="electronicInvoice" class="com.best1.api.mq.invoice.client.ElectronicInvoice"/>
+<bean id="weatherClient" class="com.best1.api.mq.weather.client.WeatherClient"/>
+</beans>

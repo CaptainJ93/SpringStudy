@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryOrderintransitDetailDao">
+    
+	<sql id="deliveryOrderintransitDetailColumns">
+		a.id AS "id",
+		a.orderid AS "orderid",
+		a.itemid AS "itemid",
+		a.shiporderid AS "shiporderid",
+		a.shipordersequence AS "shipordersequence",
+		a.productid AS "productid",
+		a.productversion AS "productversion",
+		a.productname AS "productname",
+		a.colorclasscode AS "colorclasscode",
+		a.colorcode AS "colorcode",
+		a.styleclasscode AS "styleclasscode",
+		a.stylecode AS "stylecode",
+		a.colorvalue AS "colorvalue",
+		a.stylevalue AS "stylevalue",
+		a.productnum AS "productnum",
+		a.codnum AS "codnum",
+		a.createdtimestamp AS "createdtimestamp",
+		a.trackingnumber AS "trackingnumber",
+		a.orderdeliverystatus AS "orderdeliverystatus",
+		a.istoet1flag         AS 'istoet1flag',
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime",
+		a.paymentstatus AS "paymentstatus",
+		a.paymenttimestamp AS "paymenttimestamp"
+	</sql>
+	
+	<sql id="deliveryOrderintransitDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="DeliveryOrderintransitDetail">
+		SELECT 
+			<include refid="deliveryOrderintransitDetailColumns"/>
+		FROM scm_delivery_orderintransit_detail a
+		<include refid="deliveryOrderintransitDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DeliveryOrderintransitDetail">
+		SELECT 
+			<include refid="deliveryOrderintransitDetailColumns"/>
+		FROM scm_delivery_orderintransit_detail a
+		<include refid="deliveryOrderintransitDetailJoins"/>
+		<where>
+			1=1
+		</where>
+		
+		<if test="trackingnumber != null and trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber=#{trackingnumber}
+		</if>	
+		
+		<if test="orderid != null  and orderid != ''">
+			AND a.orderid=#{orderid}
+		</if>
+		<if test="itemid != null  and itemid != ''">
+			AND a.itemid=#{itemid}
+		</if>
+		<if test="productid != null  and productid != ''">
+			AND a.productid=#{productid}
+		</if>
+		
+		<if test="productversion != null  and productversion != ''">
+			AND a.productversion=#{productversion}
+		</if>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DeliveryOrderintransitDetail">
+		SELECT 
+			<include refid="deliveryOrderintransitDetailColumns"/>
+		FROM scm_delivery_orderintransit_detail a
+		<include refid="deliveryOrderintransitDetailJoins"/>
+		<where>
+			1=1
+		</where>
+		
+		<if test="trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber=#{trackingnumber}
+		</if>		
+		
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_delivery_orderintransit_detail(
+			id,
+			orderid,
+			itemid,
+			shiporderid,
+			shipordersequence,
+			productid,
+			productversion,
+			productname,
+			colorclasscode,
+			colorcode,
+			styleclasscode,
+			stylecode,
+			colorvalue,
+			stylevalue,
+			productnum,
+			codnum,
+			createdtimestamp,
+			trackingnumber,
+			orderdeliverystatus,
+			istoet1flag,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime,
+			paymentstatus,
+			paymenttimestamp
+		) VALUES (
+			#{id},
+			#{orderid},
+			#{itemid},
+			#{shiporderid},
+			#{shipordersequence},
+			#{productid},
+			#{productversion},
+			#{productname},
+			#{colorclasscode},
+			#{colorcode},
+			#{styleclasscode},
+			#{stylecode},
+			#{colorvalue},
+			#{stylevalue},
+			#{productnum},
+			#{codnum},
+			#{createdtimestamp},
+			#{trackingnumber},
+			#{orderdeliverystatus},
+			#{istoet1flag},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime},
+			#{paymentstatus},
+			#{paymenttimestamp}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_delivery_orderintransit_detail SET 	
+			orderid = #{orderid},
+			itemid = #{itemid},
+			shiporderid = #{shiporderid},
+			shipordersequence = #{shipordersequence},
+			productid = #{productid},
+			productversion = #{productversion},
+			productname = #{productname},
+			colorclasscode = #{colorclasscode},
+			colorcode = #{colorcode},
+			styleclasscode = #{styleclasscode},
+			stylecode = #{stylecode},
+			colorvalue = #{colorvalue},
+			stylevalue = #{stylevalue},
+			productnum = #{productnum},
+			codnum = #{codnum},
+			createdtimestamp = #{createdtimestamp},
+			trackingnumber = #{trackingnumber},
+			orderdeliverystatus = #{orderdeliverystatus},
+			istoet1flag     =  #{istoet1flag},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime},
+			paymentstatus=#{paymentstatus},
+			paymenttimestamp=#{paymenttimestamp}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_delivery_orderintransit_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

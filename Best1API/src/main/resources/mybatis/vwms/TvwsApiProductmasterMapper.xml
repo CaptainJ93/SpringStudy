@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiProductmasterMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiProductmaster" >
+ 
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="PRODUCTNAME" property="productname" jdbcType="VARCHAR" />
+    <result column="COSTPRICE" property="costprice" jdbcType="DECIMAL" />
+    <result column="SUPPLIERID" property="supplierid" jdbcType="DECIMAL" />
+    <result column="WEIGHTAFTERPACKING" property="weightafterpacking" jdbcType="DECIMAL" />
+    <result column="LENGTHAFTERPACKING" property="lengthafterpacking" jdbcType="DECIMAL" />
+    <result column="HEIGHTAFTERPACKING" property="heightafterpacking" jdbcType="DECIMAL" />
+    <result column="WIDTHAFTERPACKING" property="widthafterpacking" jdbcType="DECIMAL" />
+    <result column="CONSOLIDATIONALLOWED" property="consolidationallowed" jdbcType="VARCHAR" />
+    <result column="MDNAME" property="mdname" jdbcType="VARCHAR" />
+    <result column="MANAME" property="maname" jdbcType="VARCHAR" />
+    <result column="PRODUCTSTATUS" property="productstatus" jdbcType="DECIMAL" />
+    <result column="PRODUCTCATEGORY" property="productcategory" jdbcType="DECIMAL" />
+    <result column="DELIVERYTYPE" property="deliverytype" jdbcType="DECIMAL" />
+    <result column="STORAGETYPE" property="storagetype" jdbcType="DECIMAL" />
+    <result column="LCLASSCODE" property="lclasscode" jdbcType="DECIMAL" />
+    <result column="MCLASSCODE" property="mclasscode" jdbcType="DECIMAL" />
+    <result column="SCLASSCODE" property="sclasscode" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="MDID" property="mdid" jdbcType="DECIMAL" />
+    <result column="PURCHASEID" property="purchaseid" jdbcType="DECIMAL" />
+    <result column="SELLINGPRICE" property="sellingprice" jdbcType="DECIMAL" />
+    <result column="WAREHOUSEID" property="warehouseid" jdbcType="DECIMAL" />
+    <result column="COMPANYID" property="companyid" jdbcType="DECIMAL" />
+    <result column="SPECIALPACKAGING" property="specialpackaging" jdbcType="VARCHAR" />
+    <result column="SINGLEPACKAGING" property="singlepackaging" jdbcType="VARCHAR" />
+    <result column="BOXID" property="boxid" jdbcType="DECIMAL" />
+    <result column="ONEDAYSHIP" property="onedayship" jdbcType="VARCHAR" />
+    <result column="colourvalue" property="colourvalue" jdbcType="VARCHAR" />
+    <result column="stylevalue" property="stylevalue" jdbcType="VARCHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="BATCHID" property="batchid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+ 
+  <sql id="Base_Column_List" >
+   
+    PRODUCTID, PRODUCTVERSION, PRODUCTNAME, COSTPRICE, SUPPLIERID, WEIGHTAFTERPACKING, 
+    LENGTHAFTERPACKING, HEIGHTAFTERPACKING, WIDTHAFTERPACKING, CONSOLIDATIONALLOWED, 
+    MDNAME, MANAME, PRODUCTSTATUS, PRODUCTCATEGORY, DELIVERYTYPE, STORAGETYPE, LCLASSCODE, 
+    MCLASSCODE, SCLASSCODE, COLOURCODE, COLOURCLASS, STYLECODE, STYLECLASS, MDID, PURCHASEID, 
+    SELLINGPRICE,WAREHOUSEID,COMPANYID, SPECIALPACKAGING,SINGLEPACKAGING, 
+    TEMPERATURE,BOXID, ONEDAYSHIP,colourvalue,stylevalue, RECORDCREATEDTIME, BATCHID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiProductmasterExample" >
+ 
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_PRODUCTMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.best1.api.entity.vwms.TvwsApiProductmasterExample" resultType="java.lang.Integer" >
+  
+    select count(*) from ET1_CHINA.TVWS_API_PRODUCTMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+ 
+</mapper>

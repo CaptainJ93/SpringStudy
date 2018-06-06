@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.cmn.TcmnApiBatchinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.cmn.TcmnApiBatchinfo" >
+    <result column="BATCHTYPE" property="batchtype" jdbcType="VARCHAR" />
+    <result column="BATCHID" property="batchid" jdbcType="VARCHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+      <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 
+ <sql id="Base_Column_List" >
+ 
+    BATCHTYPE, BATCHID, RECORDCREATEDTIME
+  </sql>
+  <select id="selectByBatchinfo" resultMap="BaseResultMap" parameterType="com.best1.api.entity.cmn.TcmnApiBatchinfo" >
+   select
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCMN_API_BATCHINFO
+      where 1=1
+     <if test="status != null">
+			AND status = #{status}
+		</if>
+     <if test="batchtype != null">
+			AND batchtype = #{batchtype}
+		</if>
+		
+		 <if test="batchid != null">
+			AND batchid = #{batchid}
+		</if>
+		
+		<if test="startdate != null">
+			AND recordcreatedtime &gt;=  to_date(#{startdate},'yyyy-MM-dd hh24:mi:ss')
+			</if>
+		<if test="enddate != null">
+			AND recordcreatedtime &lt; to_date(#{enddate},'yyyy-MM-dd hh24:mi:ss')
+		</if>
+		
+  </select>
+  <delete id="deleteByBatchinfo" parameterType="com.best1.api.entity.cmn.TcmnApiBatchinfo" >
+
+    delete from ET1_CHINA.TVWS_API_BATCHINFO
+     where 1=1
+    
+     <if test="batchtype != null">
+			AND batchtype = #{batchtype}
+		</if>
+		
+		 <if test="batchid != null">
+			AND batchid = #{batchid}
+		</if>
+  </delete>
+  
+  
+  <update id="updateByBatchinfo" parameterType="com.best1.api.entity.cmn.TcmnApiBatchinfo" >
+    update   ET1_CHINA.TCMN_API_BATCHINFO set  
+    <if test="status != null" >
+     status = #{status},
+     </if>
+ 
+        lastmodifiedtimestamp=#{lastmodifiedtimestamp,jdbcType=TIMESTAMP}
+    
+     where 1=1
+    
+     <if test="batchtype != null">
+			AND batchtype = #{batchtype}
+		</if>
+		
+		 <if test="batchid != null">
+			AND batchid = #{batchid}
+		</if>
+		
+  </update>
+  
+</mapper>

@@ -1,0 +1,83 @@
+请求地址：http://localhost:8080/scm/a/vws/returnintransit
+请求方法：POST
+
+header:
+
+code:
+username:
+validatecode:
+userid:
+type:1000
+
+
+body:
+
+{
+    "warehouseid": "1",
+    "zipcode": "310000",
+    "receiveaddress1": "浙江省杭州市下沙区",
+    "receiveaddress2": "高沙社区3幢2单元",
+    "customername": "张",
+    "telephonenumber": "15024457933",
+    "mobilenumber": "87650150",
+    "returntime": "205-03-21 17:00:12",
+    "returnid": "7994696",
+    "returntype": "1001",
+    "customerid": "32300",
+    "selectedcarrier": "1000043",
+    "isfacetofacerefund": "1",
+    "refundcodnumber": "789.5",
+    "isneedinvoice": "1000",
+    "receiptdeliveryorderid": "0",
+    "isneedinvoice":"1",
+    "receiptdeliveryorderid":"zzzzzzz",
+    "receiptstatus":"1000",
+    "returnReturnintransitDetail": [
+        {
+        		"orderid":"2344567",
+        		"returnid":"7994695",
+        		"itemid":"1",
+        		"shiporderid":"7366687",
+        		"shipordersequence":"1",
+        		"productid": 110880,
+        		"productversion":"1",
+        		"productname":"测试商品测试商品1",
+        		"colorclasscode":"5001",
+        		"colorcode":"5037",
+        		"styleclasscode":"6001",
+        		"stylecode":"6037",
+        		"colorvalue":"红色",
+        		"stylevalue":"37码",
+        		"productdetail":"该商品是测试商品，为了更好的测试使用的.",
+        		"productboxingdetail":"该商品是测试商品，为了更好的测试使用的.",
+        		"productnumber":"1",
+        		"returnorderid":"2881111",
+        		"returnorderseq":"2",
+        		"createdtimestamp":"2016-3-10 8:00:00"
+            
+        },
+          {
+        		"orderid":"2344567",
+        		"returnid":"7994695",
+        		"itemid":"2",
+        		"shiporderid":"7366687",
+        		"shipordersequence":"1",
+        		"productid": 110880,
+        		"productversion":"1",
+        		"productname":"测试商品测试商品1",
+        		"colorclasscode":"5001",
+        		"colorcode":"5037",
+        		"styleclasscode":"6001",
+        		"stylecode":"6037",
+        		"colorvalue":"红色",
+        		"stylevalue":"37码",
+        		"productdetail":"该商品是测试商品，为了更好的测试使用的.",
+        		"productboxingdetail":"该商品是测试商品，为了更好的测试使用的.",
+        		"productnumber":"1",
+        		"returnorderid":"2881111",
+        		"returnorderseq":"2",
+        		"createdtimestamp":"2016-3-10 8:00:00"
+            
+        }
+    ]
+}

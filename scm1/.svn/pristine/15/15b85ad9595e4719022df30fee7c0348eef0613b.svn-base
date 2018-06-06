@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.deliveryfee.dao.ScmDeliveryfeeCodfeeDao">
+    
+	<sql id="scmDeliveryfeeCodfeeColumns">
+		a.id AS "id",
+		a.selectedcarrier AS "selectedcarrier",
+		a.codfeerate AS "codfeerate",
+		a.rejectrate AS "rejectrate",
+		a.expbegindate AS "expbegindate",
+		a.expenddate AS "expenddate"
+	</sql>
+	
+	<sql id="scmDeliveryfeeCodfeeJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmDeliveryfeeCodfee">
+		SELECT 
+			<include refid="scmDeliveryfeeCodfeeColumns"/>
+		FROM scm_deliveryfee_codfee a
+		<include refid="scmDeliveryfeeCodfeeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmDeliveryfeeCodfee">
+		SELECT 
+			<include refid="scmDeliveryfeeCodfeeColumns"/>
+		FROM scm_deliveryfee_codfee a
+		<include refid="scmDeliveryfeeCodfeeJoins"/>
+		<where>
+				1 = 1
+		    <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmDeliveryfeeCodfee">
+		SELECT 
+			<include refid="scmDeliveryfeeCodfeeColumns"/>
+		FROM scm_deliveryfee_codfee a
+		<include refid="scmDeliveryfeeCodfeeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_deliveryfee_codfee(
+			id,
+			selectedcarrier,
+			codfeerate,
+			rejectrate,
+			expbegindate,
+			expenddate
+		) VALUES (
+			#{id},
+			#{selectedcarrier},
+			#{codfeerate},
+			#{rejectrate},
+			#{expbegindate},
+			#{expenddate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_deliveryfee_codfee SET 	
+			selectedcarrier = #{selectedcarrier},
+			codfeerate = #{codfeerate},
+			rejectrate = #{rejectrate},
+			expbegindate = #{expbegindate},
+			expenddate = #{expenddate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_deliveryfee_codfee
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

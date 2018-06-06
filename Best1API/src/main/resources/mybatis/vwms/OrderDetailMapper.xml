@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.vwms.OrderDetailMapper">
+
+<resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.OrderDetail" >
+  	<result column="warehouseid" property="warehouseid" jdbcType="DECIMAL" />
+  	<result column="shipordercreateddate" property="shipordercreateddate" jdbcType="DATE" />
+  	<result column="scheduledshipdate" property="scheduledshipdate" jdbcType="DATE" />
+  	<result column="scheduleddeliverydate" property="scheduleddeliverydate" jdbcType="DATE" />
+  	<result column="requireddeliverytime" property="requireddeliverytime" jdbcType="DATE" />
+  	<result column="orderpriority" property="orderpriority" jdbcType="DECIMAL" />
+  	<result column="customerid" property="customerid" jdbcType="DECIMAL" />
+  	<result column="customername" property="customername" jdbcType="VARCHAR" />
+  	<result column="hometelephone1" property="hometelephone1" jdbcType="VARCHAR" />
+  	<result column="mobileno1" property="mobileno1" jdbcType="VARCHAR" />
+  	<result column="customerzipcode" property="customerzipcode" jdbcType="VARCHAR" />
+  	<result column="deliveryaddress" property="deliveryaddress" jdbcType="VARCHAR" />
+    <result column="shipordertype" property="shipordertype" jdbcType="DECIMAL" />
+    <result column="instructiontowms" property="instructiontowms" jdbcType="VARCHAR" />
+    <result column="instructiontoscm" property="instructiontoscm" jdbcType="VARCHAR" />
+    <result column="crossdockflag" property="crossdockflag" jdbcType="VARCHAR" />	
+    <result column="shipordertype" property="shipordertype" jdbcType="DECIMAL" />
+    <result column="carrieridprimary" property="carrieridprimary" jdbcType="DECIMAL" />
+    <result column="carrieridsecondary" property="carrieridsecondary" jdbcType="DECIMAL" />
+    <result column="codamount" property="codamount" jdbcType="DECIMAL" />
+    <result column="isspecialpacking" property="isspecialpacking" jdbcType="CHAR" />
+    <result column="giftpackmessage" property="giftpackmessage" jdbcType="VARCHAR" />	
+    <result column="isoffshoredelivery" property="isoffshoredelivery" jdbcType="CHAR" />
+    <result column="invoicenumber" property="invoicenumber" jdbcType="VARCHAR" />	
+    <result column="invoicezipcode" property="invoicezipcode" jdbcType="VARCHAR" />	
+    <result column="invoicecompanyno" property="invoicecompanyno" jdbcType="VARCHAR" />	
+    <result column="invoicetitle" property="invoicetitle" jdbcType="VARCHAR" />	
+    <result column="invoiceamount" property="invoiceamount" jdbcType="DECIMAL" />
+    <result column="invoiceaddress1" property="invoiceaddress1" jdbcType="VARCHAR" />	
+    <result column="invoiceaddress2" property="invoiceaddress2" jdbcType="VARCHAR" />
+    <result column="orderid" property="orderid" jdbcType="DECIMAL" />
+    <result column="itemid" property="itemid" jdbcType="DECIMAL" />
+    <result column="subchannelid" property="subchannelid" jdbcType="DECIMAL" />	
+    <result column="isneedinvoice" property="isneedinvoice" jdbcType="CHAR" />
+    <result column="invoicetype" property="invoicetype" jdbcType="DECIMAL" />	
+    <result column="paymentmode" property="paymentmode" jdbcType="VARCHAR" />
+    <result column="deliveryaddressid" property="deliveryaddressid" jdbcType="DECIMAL" />
+    <result column="invoiceaddressid" property="invoiceaddressid" jdbcType="DECIMAL" />
+    <result column="servicefee" property="servicefee" jdbcType="DECIMAL" />
+    <result column="offshoredeliverycharges" property="offshoredeliverycharges" jdbcType="DECIMAL" />
+    <result column="isnewcustomer" property="isnewcustomer" jdbcType="CHAR" />
+    <result column="recordcreatedtime" property="recordcreatedtime" jdbcType="DATE" />
+ </resultMap>
+ 
+
+<resultMap id="OrderProductDetailResultMap" type="com.best1.api.entity.vwms.OrderProductDetail" >
+  	<result column="shiporderid" property="shiporderid" jdbcType="DECIMAL" />
+  	<result column="productid" property="productid" jdbcType="DECIMAL" />
+  	<result column="productversion" property="productversion" jdbcType="DECIMAL" />
+  	<result column="productcolourclass" property="productcolourclass" jdbcType="DECIMAL" />
+  	<result column="productcolourcode" property="productcolourcode" jdbcType="DECIMAL" />
+  	<result column="productcolourdescription" property="productcolourdescription" jdbcType="VARCHAR" />
+  	<result column="productstyleclass" property="productstyleclass" jdbcType="DECIMAL" />
+  	<result column="productstylecode" property="productstylecode" jdbcType="DECIMAL" />
+  	<result column="productstyledescription" property="productstyledescription" jdbcType="VARCHAR" />
+  	<result column="productquantity" property="productquantity" jdbcType="DECIMAL" />
+  	<result column="shipordersequence" property="shipordersequence" jdbcType="DECIMAL" />
+  	<result column="orderid" property="orderid" jdbcType="DECIMAL" />
+  	<result column="itemid" property="itemid" jdbcType="DECIMAL" />
+  	<result column="ispromotionalproduct" property="ispromotionalproduct" jdbcType="CHAR" />
+    <result column="promotionrelationseq" property="promotionrelationseq" jdbcType="DECIMAL" />
+ </resultMap>
+ 
+
+
+  
+ <select id="selectOrderDetail" parameterType="com.best1.api.entity.vwms.OrderDetail" resultMap="BaseResultMap">		
+		select distinct tac.warehouseid,
+		       cso.shipordercreateddate,
+		       cso.scheduledshipdate,
+		       cso.scheduleddeliverydate,
+		       cso.requireddeliverytime,
+		       cso.orderpriority,
+		       cso.customerid,
+		       aei.receivername as customername,
+		       ca.hometelephonenumber as hometelephone1,
+		       ca.mobilenumber as mobileno1,
+		       ca.zipcode as customerzipcode,
+		       ca.address1 as deliveryaddress,
+		       cso.shipordertype,
+		       Decode(C.Returngoodslevel, '280', '280', '') || OI.INSTRUCTIONTOWMS as INSTRUCTIONTOWMS,
+		       OI.INSTRUCTIONTOSCM,
+		       'crossdockflag' as crossdockflag,
+		       NVL(CSO.CARRIERIDPRIMARY, 0) AS CARRIERIDPRIMARY,
+		       NVL(CSO.CARRIERIDSECONDARY, 0) AS CARRIERIDSECONDARY,
+		       CSO.CODAMOUNT as codamount,
+		       cso.issinglepackaging,
+		       'giftpackmessage' as giftpackmessage,
+		       cso.isoffshoredelivery,
+		       (INV.PREFIX || INV.INVOICEINFOID) AS invoicenumber,
+		       INV.COMPANYNO AS invoicecompanyno,
+		       INV.invoicetitle,
+		       INV.AMOUNT AS invoiceamount,
+		       CA.ZIPCODE AS invoicezipcode,
+		       CA.ADDRESS1 AS invoiceaddress1,
+		       CA.ADDRESS2 AS invoiceaddress2,
+		       cso.orderid,
+		       cso.itemid,
+		       pm.subchannelid,
+		       decode(INV.ISREPRINTED, 'N', 'Y', 'N') AS ISNEEDINVOICE,
+		       inv.invoicetype,
+		       OP.CODPAYMENTMODE AS PAYMENTMODE,
+		       cso.deliveryaddressid,
+		       co.invoiceaddressid,
+		       CO.SERVICEFEE,
+		       CO.OFFSHOREDELIVERYCHARGES,
+		       'N' as ISNEWCUSTOMER,
+		        tac.recordcreatedtime
+		  from et1_china.TVWS_API_CSO           tac,
+		       tscm_customershiporder cso,
+		       toaf_orderedproduct    co,
+		       TCRM_CUSTOMERADDRESS   CA,
+		       TOAF_ADDRESSEXTRAINFO  AEI,
+		       tchm_prodmulticode     PM,
+		       TOAF_ORDERPAYMENT      OP,
+		       TOAF_ORDERINSTRUCTION  OI,
+		       TCRM_CUSTOMER          C,
+		       TOAF_ORDERINVOICEINFO  INV
+		 where tac.shiporderid = cso.shiporderid
+		   and tac.shipordersequence = cso.sequenceno
+		   and cso.orderid = co.orderid
+		   and cso.itemid = co.itemid
+		   and CO.INVOICEADDRESSID = CA.ADDRESSID(+)
+		   AND AEI.ADDRESSID = CSO.DELIVERYADDRESSID
+		   AND AEI.CUSTOMERID = CSO.CUSTOMERID
+		   AND CO.ORDERID = INV.ORDERID(+)
+		   AND CO.ITEMID = INV.ITEMID(+)
+		   AND CO.MULTICODEID = PM.MULTICODEID
+		   AND CSO.ORDERID = OP.ORDERID(+)
+		   AND CSO.ITEMID = OP.ITEMID(+)
+		   AND CSO.ORDERID = OI.ORDERID
+		   AND CSO.ITEMID = OI.ITEMID
+		   and CO.CUSTOMERID = C.CUSTOMERID
+		   and (co.itemid = 1 or (co.ispromotionalproduct = 'N')) 
+ 			<if test="recordcreatedtimeStart != null">
+				AND tac.recordcreatedtime &gt;= #{recordcreatedtimeStart}
+			</if>
+		
+			<if test="recordcreatedtimeEnd != null">
+			   AND tac.recordcreatedtime &lt;= #{recordcreatedtimeEnd}
+			</if>
+	
+	</select>
+	
+ 
+  <select id="selectOrderProductDetail" parameterType="com.best1.api.entity.vwms.OrderProductDetail" resultMap="OrderProductDetailResultMap">	
+  		
+			select cso.shiporderid,
+			       co.productid,
+			       co.productversion,
+			       co.colourclass as productcolourclass,
+			       co.colourcode as productcolourcode,
+			       d1.shortnametaiwaneese as productcolourdescription,
+			       co.styleclass as productstyleclass,
+			       co.stylecode as productstylecode,
+			       d2.shortnametaiwaneese as productstyledescription,
+			       cso.productquantity as productquantity,
+			       cso.sequenceno as shipordersequence,
+			       cso.orderid,
+			       cso.itemid,
+			       co.ispromotionalproduct,
+			       ORE.ITEMID  as promotionrelationseq
+			
+			  from toaf_orderedproduct co,
+			       tscm_customershiporder cso,
+			       (select * from tcmn_domaindata d where d.domainid = 5102) d1,
+			       (select * from tcmn_domaindata dd where dd.domainid = 5103) d2,
+			         TOAF_ORDERPROMOTION ORP,
+			       TOAF_OFFERORDERRELATION ORE
+			 where co.orderid = cso.orderid
+			   and co.itemid = cso.itemid
+			   and co.colourclass = d1.parentcode
+			   and co.colourcode = d1.domaincode
+			   and co.styleclass = d2.parentcode
+			   and co.stylecode = d2.domaincode
+			   AND CO.ORDERID = ORP.ORDERID(+)
+			   AND CO.ITEMID = ORP.PROMOTIONALITEMID(+)
+			   AND ORP.ORDERID = ORE.ORDERID(+)
+			   AND ORP.OFFERNO = ORE.OFFERNO(+)
+			   
+			   <if test="orderid != null">
+				   and co.orderid = #{orderid}
+			</if>
+  	
+  </select>
+	
+
+  
+</mapper> 

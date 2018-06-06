@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafPostacknowledgementMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.oaf.order.ToafPostacknowledgement" >
+   <id column="TRANSACTIONID" property="transactionid" jdbcType="DECIMAL" />
+    <result column="BATCHSTATUS" property="batchstatus" jdbcType="CHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="AMOUNTRECEIVED" property="amountreceived" jdbcType="DECIMAL" />
+    <result column="AMOUNTAPPROPRIATED" property="amountappropriated" jdbcType="DECIMAL" />
+    <result column="EXCESSAMOUNT" property="excessamount" jdbcType="DECIMAL" />
+    <result column="ENTRYDATE" property="entrydate" jdbcType="TIMESTAMP" />
+    <result column="TRANSFERDATE" property="transferdate" jdbcType="TIMESTAMP" />
+    <result column="MATCHEDTOORDER" property="matchedtoorder" jdbcType="CHAR" />
+    <result column="PAYERNAME" property="payername" jdbcType="VARCHAR" />
+    <result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
+    <result column="ISVALID" property="isvalid" jdbcType="CHAR" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="ORDERID" property="orderid" jdbcType="DECIMAL" />
+    <result column="POSTACCOUNTNUMBER" property="postaccountnumber" jdbcType="VARCHAR" />
+    <result column="RECEIPTNO" property="receiptno" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+
+    TRANSACTIONID, BATCHSTATUS, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, 
+    AMOUNTRECEIVED, AMOUNTAPPROPRIATED, EXCESSAMOUNT, ENTRYDATE, TRANSFERDATE, MATCHEDTOORDER, 
+    PAYERNAME, REMARKS, ISVALID, CUSTOMERID, ORDERID, POSTACCOUNTNUMBER, RECEIPTNO
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+ 
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_POSTACKNOWLEDGEMENT
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </select>
+  
+  
+   <select id="selectOrderPayment" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+ 
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_POSTACKNOWLEDGEMENT
+    where TRANSACTIONID = #{transactionid,jdbcType=DECIMAL}
+  </select>
+  
+    
+  <select id="countOrderPost" parameterType="com.best1.api.entity.oaf.order.ToafPostacknowledgement"   resultType="java.lang.Integer" >
+  
+    select count(*) from ET1_CHINA.TOAF_POSTACKNOWLEDGEMENT post
+   <where>
+			1=1
+		</where>
+		
+		<if test="orderid != null">
+			AND post.orderid= #{orderid} 
+		
+		</if>
+		
+		<if test="postaccountnumber != null">
+			AND post.POSTACCOUNTNUMBER= #{postaccountnumber} 
+		
+		</if>
+  </select>
+  
+  
+
+  <insert id="insertSelective" parameterType="com.best1.api.entity.oaf.order.ToafPostacknowledgement" >
+  
+  <selectKey resultType="long"  keyProperty="transactionid" order="BEFORE">
+         SELECT s_postacknowledgement.Nextval FROM DUAL
+      </selectKey>
+      
+    insert into ET1_CHINA.TOAF_POSTACKNOWLEDGEMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transactionid != null" >
+        TRANSACTIONID,
+      </if>
+      <if test="batchstatus != null" >
+        BATCHSTATUS,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="amountreceived != null" >
+        AMOUNTRECEIVED,
+      </if>
+      <if test="amountappropriated != null" >
+        AMOUNTAPPROPRIATED,
+      </if>
+      <if test="excessamount != null" >
+        EXCESSAMOUNT,
+      </if>
+      <if test="entrydate != null" >
+        ENTRYDATE,
+      </if>
+      <if test="transferdate != null" >
+        TRANSFERDATE,
+      </if>
+      <if test="matchedtoorder != null" >
+        MATCHEDTOORDER,
+      </if>
+      <if test="payername != null" >
+        PAYERNAME,
+      </if>
+      <if test="remarks != null" >
+        REMARKS,
+      </if>
+      <if test="isvalid != null" >
+        ISVALID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="postaccountnumber != null" >
+        POSTACCOUNTNUMBER,
+      </if>
+      <if test="receiptno != null" >
+        RECEIPTNO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transactionid != null" >
+        #{transactionid,jdbcType=DECIMAL},
+      </if>
+      <if test="batchstatus != null" >
+        #{batchstatus,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amountreceived != null" >
+        #{amountreceived,jdbcType=DECIMAL},
+      </if>
+      <if test="amountappropriated != null" >
+        #{amountappropriated,jdbcType=DECIMAL},
+      </if>
+      <if test="excessamount != null" >
+        #{excessamount,jdbcType=DECIMAL},
+      </if>
+      <if test="entrydate != null" >
+        #{entrydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transferdate != null" >
+        #{transferdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="matchedtoorder != null" >
+        #{matchedtoorder,jdbcType=CHAR},
+      </if>
+      <if test="payername != null" >
+        #{payername,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=CHAR},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="postaccountnumber != null" >
+        #{postaccountnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptno != null" >
+        #{receiptno,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+ 
+
+</mapper>

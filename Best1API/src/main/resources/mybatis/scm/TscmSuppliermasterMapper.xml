@@ -1,0 +1,1123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.scm.TscmSuppliermasterMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.scm.supplier.TscmSuppliermaster" >
+
+    <id column="SUPPLIERID" property="supplierid" jdbcType="DECIMAL" />
+    <result column="VERSION" property="version" jdbcType="DECIMAL" />
+    <result column="ASSIGNEDUSERID" property="assigneduserid" jdbcType="DECIMAL" />
+    <result column="GROUPID" property="groupid" jdbcType="DECIMAL" />
+    <result column="SUPPLIERSTATUS" property="supplierstatus" jdbcType="DECIMAL" />
+    <result column="SUPPLIERLEVEL" property="supplierlevel" jdbcType="DECIMAL" />
+    <result column="PERMISSIONGRANTSTATUS" property="permissiongrantstatus" jdbcType="DECIMAL" />
+    <result column="PREFERREDCONTACTMETHOD" property="preferredcontactmethod" jdbcType="DECIMAL" />
+    <result column="NOOFEMPLOYEES" property="noofemployees" jdbcType="DECIMAL" />
+    <result column="NOOFPRODUCTSDEALT" property="noofproductsdealt" jdbcType="DECIMAL" />
+    <result column="TURNOVERPREVIOUSYEAR" property="turnoverpreviousyear" jdbcType="DECIMAL" />
+    <result column="REVENUEGENERATED" property="revenuegenerated" jdbcType="DECIMAL" />
+    <result column="PAYMENTMETHOD" property="paymentmethod" jdbcType="DECIMAL" />
+    <result column="MAXLOADQTY" property="maxloadqty" jdbcType="DECIMAL" />
+    <result column="PAYMENTDAY" property="paymentday" jdbcType="DECIMAL" />
+    <result column="HASCOD" property="hascod" jdbcType="CHAR" />
+    <result column="HASSIGNEDCONTRACT" property="hassignedcontract" jdbcType="CHAR" />
+    <result column="DEFAULTPRODUCTNAME" property="defaultproductname" jdbcType="DECIMAL" />
+    <result column="CONTACTPERSON" property="contactperson" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONROLE" property="contactpersonrole" jdbcType="VARCHAR" />
+    <result column="CONTACTDEPARTMENT" property="contactdepartment" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONEMAILID" property="contactpersonemailid" jdbcType="VARCHAR" />
+    <result column="REGISTRATIONDONEBY" property="registrationdoneby" jdbcType="VARCHAR" />
+    <result column="SUPPLIERCOMPANYNAME" property="suppliercompanyname" jdbcType="VARCHAR" />
+    <result column="COMPANYHOMEPAGE" property="companyhomepage" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONNAMEFINANCE" property="contactpersonnamefinance" jdbcType="VARCHAR" />
+    <result column="ACCOUNTHOLDERNAME" property="accountholdername" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONNAMELOGISTICS" property="contactpersonnamelogistics" jdbcType="VARCHAR" />
+    <result column="SUPPLIERNAME" property="suppliername" jdbcType="VARCHAR" />
+    <result column="REPRESENTATIVENAME" property="representativename" jdbcType="VARCHAR" />
+    <result column="ACCOUNTNO" property="accountno" jdbcType="VARCHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="FOUNDATIONDAY" property="foundationday" jdbcType="TIMESTAMP" />
+    <result column="PERMISSIONGRANTDATE" property="permissiongrantdate" jdbcType="TIMESTAMP" />
+    <result column="SUPERVISORNAME" property="supervisorname" jdbcType="VARCHAR" />
+    <result column="OTHERDETAILSFINANCE" property="otherdetailsfinance" jdbcType="VARCHAR" />
+    <result column="LOGISTICDETAILS" property="logisticdetails" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONCOUNTRYCODE" property="contactpersoncountrycode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONAREACODE" property="contactpersonareacode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONPHONENO" property="contactpersonphoneno" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONEXTENSION" property="contactpersonextension" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONFAXCOUNTRYCODE" property="contactpersonfaxcountrycode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONFAXAREACODE" property="contactpersonfaxareacode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONFAXNO" property="contactpersonfaxno" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONMOBILENO" property="contactpersonmobileno" jdbcType="VARCHAR" />
+    <result column="BANKID" property="bankid" jdbcType="DECIMAL" />
+    <result column="PRODUCTDETAILS" property="productdetails" jdbcType="VARCHAR" />
+    <result column="SUPPLIERREGNO" property="supplierregno" jdbcType="VARCHAR" />
+    <result column="WITH_PKI" property="withPki" jdbcType="DECIMAL" />
+    <result column="SUPERIOR" property="superior" jdbcType="CHAR" />
+    <result column="SUPPLIERLASTMODIFIEDTIMESTAMP" property="supplierlastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="SMSCONTACTNAME" property="smscontactname" jdbcType="VARCHAR" />
+    <result column="SMSCONTACTPHONENO" property="smscontactphoneno" jdbcType="VARCHAR" />
+    <result column="SMFLAG" property="smflag" jdbcType="CHAR" />
+    <result column="SMCONTACTPERSON" property="smcontactperson" jdbcType="OTHER" />
+    <result column="SMCONTACTMOBILE" property="smcontactmobile" jdbcType="OTHER" />
+    <result column="SMNOTE" property="smnote" jdbcType="OTHER" />
+    <result column="IGNORESEMINAR" property="ignoreseminar" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+   
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    
+    SUPPLIERID, VERSION, ASSIGNEDUSERID, GROUPID, SUPPLIERSTATUS, SUPPLIERLEVEL, PERMISSIONGRANTSTATUS, 
+    PREFERREDCONTACTMETHOD, NOOFEMPLOYEES, NOOFPRODUCTSDEALT, TURNOVERPREVIOUSYEAR, REVENUEGENERATED, 
+    PAYMENTMETHOD, MAXLOADQTY, PAYMENTDAY, HASCOD, HASSIGNEDCONTRACT, DEFAULTPRODUCTNAME, 
+    CONTACTPERSON, CONTACTPERSONROLE, CONTACTDEPARTMENT, CONTACTPERSONEMAILID, REGISTRATIONDONEBY, 
+    SUPPLIERCOMPANYNAME, COMPANYHOMEPAGE, CONTACTPERSONNAMEFINANCE, ACCOUNTHOLDERNAME, 
+    CONTACTPERSONNAMELOGISTICS, SUPPLIERNAME, REPRESENTATIVENAME, ACCOUNTNO, CREATEDBY, 
+    CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, FOUNDATIONDAY, PERMISSIONGRANTDATE, 
+    SUPERVISORNAME, OTHERDETAILSFINANCE, LOGISTICDETAILS, CONTACTPERSONCOUNTRYCODE, CONTACTPERSONAREACODE, 
+    CONTACTPERSONPHONENO, CONTACTPERSONEXTENSION, CONTACTPERSONFAXCOUNTRYCODE, CONTACTPERSONFAXAREACODE, 
+    CONTACTPERSONFAXNO, CONTACTPERSONMOBILENO, BANKID, PRODUCTDETAILS, SUPPLIERREGNO, 
+    WITH_PKI, SUPERIOR, SUPPLIERLASTMODIFIEDTIMESTAMP, SMSCONTACTNAME, SMSCONTACTPHONENO, 
+    SMFLAG, SMCONTACTPERSON, SMCONTACTMOBILE, SMNOTE, IGNORESEMINAR
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="TscmSuppliermasterExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+   
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERMASTER
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+   
+    delete from ET1_CHINA.TSCM_SUPPLIERMASTER
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="TscmSuppliermasterExample" >
+  
+    delete from ET1_CHINA.TSCM_SUPPLIERMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TscmSuppliermaster" >
+    
+    insert into ET1_CHINA.TSCM_SUPPLIERMASTER (SUPPLIERID, VERSION, ASSIGNEDUSERID, 
+      GROUPID, SUPPLIERSTATUS, SUPPLIERLEVEL, 
+      PERMISSIONGRANTSTATUS, PREFERREDCONTACTMETHOD, 
+      NOOFEMPLOYEES, NOOFPRODUCTSDEALT, TURNOVERPREVIOUSYEAR, 
+      REVENUEGENERATED, PAYMENTMETHOD, MAXLOADQTY, 
+      PAYMENTDAY, HASCOD, HASSIGNEDCONTRACT, 
+      DEFAULTPRODUCTNAME, CONTACTPERSON, CONTACTPERSONROLE, 
+      CONTACTDEPARTMENT, CONTACTPERSONEMAILID, 
+      REGISTRATIONDONEBY, SUPPLIERCOMPANYNAME, 
+      COMPANYHOMEPAGE, CONTACTPERSONNAMEFINANCE, 
+      ACCOUNTHOLDERNAME, CONTACTPERSONNAMELOGISTICS, 
+      SUPPLIERNAME, REPRESENTATIVENAME, ACCOUNTNO, 
+      CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, 
+      LASTMODIFIEDTIMESTAMP, FOUNDATIONDAY, 
+      PERMISSIONGRANTDATE, SUPERVISORNAME, 
+      OTHERDETAILSFINANCE, LOGISTICDETAILS, CONTACTPERSONCOUNTRYCODE, 
+      CONTACTPERSONAREACODE, CONTACTPERSONPHONENO, 
+      CONTACTPERSONEXTENSION, CONTACTPERSONFAXCOUNTRYCODE, 
+      CONTACTPERSONFAXAREACODE, CONTACTPERSONFAXNO, 
+      CONTACTPERSONMOBILENO, BANKID, PRODUCTDETAILS, 
+      SUPPLIERREGNO, WITH_PKI, SUPERIOR, 
+      SUPPLIERLASTMODIFIEDTIMESTAMP, SMSCONTACTNAME, 
+      SMSCONTACTPHONENO, SMFLAG, SMCONTACTPERSON, 
+      SMCONTACTMOBILE, SMNOTE, IGNORESEMINAR
+      )
+    values (#{supplierid,jdbcType=DECIMAL}, #{version,jdbcType=DECIMAL}, #{assigneduserid,jdbcType=DECIMAL}, 
+      #{groupid,jdbcType=DECIMAL}, #{supplierstatus,jdbcType=DECIMAL}, #{supplierlevel,jdbcType=DECIMAL}, 
+      #{permissiongrantstatus,jdbcType=DECIMAL}, #{preferredcontactmethod,jdbcType=DECIMAL}, 
+      #{noofemployees,jdbcType=DECIMAL}, #{noofproductsdealt,jdbcType=DECIMAL}, #{turnoverpreviousyear,jdbcType=DECIMAL}, 
+      #{revenuegenerated,jdbcType=DECIMAL}, #{paymentmethod,jdbcType=DECIMAL}, #{maxloadqty,jdbcType=DECIMAL}, 
+      #{paymentday,jdbcType=DECIMAL}, #{hascod,jdbcType=CHAR}, #{hassignedcontract,jdbcType=CHAR}, 
+      #{defaultproductname,jdbcType=DECIMAL}, #{contactperson,jdbcType=VARCHAR}, #{contactpersonrole,jdbcType=VARCHAR}, 
+      #{contactdepartment,jdbcType=VARCHAR}, #{contactpersonemailid,jdbcType=VARCHAR}, 
+      #{registrationdoneby,jdbcType=VARCHAR}, #{suppliercompanyname,jdbcType=VARCHAR}, 
+      #{companyhomepage,jdbcType=VARCHAR}, #{contactpersonnamefinance,jdbcType=VARCHAR}, 
+      #{accountholdername,jdbcType=VARCHAR}, #{contactpersonnamelogistics,jdbcType=VARCHAR}, 
+      #{suppliername,jdbcType=VARCHAR}, #{representativename,jdbcType=VARCHAR}, #{accountno,jdbcType=VARCHAR}, 
+      #{createdby,jdbcType=DECIMAL}, #{createdtimestamp,jdbcType=TIMESTAMP}, #{lastmodifiedby,jdbcType=DECIMAL}, 
+      #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, #{foundationday,jdbcType=TIMESTAMP}, 
+      #{permissiongrantdate,jdbcType=TIMESTAMP}, #{supervisorname,jdbcType=VARCHAR}, 
+      #{otherdetailsfinance,jdbcType=VARCHAR}, #{logisticdetails,jdbcType=VARCHAR}, #{contactpersoncountrycode,jdbcType=VARCHAR}, 
+      #{contactpersonareacode,jdbcType=VARCHAR}, #{contactpersonphoneno,jdbcType=VARCHAR}, 
+      #{contactpersonextension,jdbcType=VARCHAR}, #{contactpersonfaxcountrycode,jdbcType=VARCHAR}, 
+      #{contactpersonfaxareacode,jdbcType=VARCHAR}, #{contactpersonfaxno,jdbcType=VARCHAR}, 
+      #{contactpersonmobileno,jdbcType=VARCHAR}, #{bankid,jdbcType=DECIMAL}, #{productdetails,jdbcType=VARCHAR}, 
+      #{supplierregno,jdbcType=VARCHAR}, #{withPki,jdbcType=DECIMAL}, #{superior,jdbcType=CHAR}, 
+      #{supplierlastmodifiedtimestamp,jdbcType=TIMESTAMP}, #{smscontactname,jdbcType=VARCHAR}, 
+      #{smscontactphoneno,jdbcType=VARCHAR}, #{smflag,jdbcType=CHAR}, #{smcontactperson,jdbcType=OTHER}, 
+      #{smcontactmobile,jdbcType=OTHER}, #{smnote,jdbcType=OTHER}, #{ignoreseminar,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="TscmSuppliermaster" >
+   
+    insert into ET1_CHINA.TSCM_SUPPLIERMASTER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="supplierid != null" >
+        SUPPLIERID,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="assigneduserid != null" >
+        ASSIGNEDUSERID,
+      </if>
+      <if test="groupid != null" >
+        GROUPID,
+      </if>
+      <if test="supplierstatus != null" >
+        SUPPLIERSTATUS,
+      </if>
+      <if test="supplierlevel != null" >
+        SUPPLIERLEVEL,
+      </if>
+      <if test="permissiongrantstatus != null" >
+        PERMISSIONGRANTSTATUS,
+      </if>
+      <if test="preferredcontactmethod != null" >
+        PREFERREDCONTACTMETHOD,
+      </if>
+      <if test="noofemployees != null" >
+        NOOFEMPLOYEES,
+      </if>
+      <if test="noofproductsdealt != null" >
+        NOOFPRODUCTSDEALT,
+      </if>
+      <if test="turnoverpreviousyear != null" >
+        TURNOVERPREVIOUSYEAR,
+      </if>
+      <if test="revenuegenerated != null" >
+        REVENUEGENERATED,
+      </if>
+      <if test="paymentmethod != null" >
+        PAYMENTMETHOD,
+      </if>
+      <if test="maxloadqty != null" >
+        MAXLOADQTY,
+      </if>
+      <if test="paymentday != null" >
+        PAYMENTDAY,
+      </if>
+      <if test="hascod != null" >
+        HASCOD,
+      </if>
+      <if test="hassignedcontract != null" >
+        HASSIGNEDCONTRACT,
+      </if>
+      <if test="defaultproductname != null" >
+        DEFAULTPRODUCTNAME,
+      </if>
+      <if test="contactperson != null" >
+        CONTACTPERSON,
+      </if>
+      <if test="contactpersonrole != null" >
+        CONTACTPERSONROLE,
+      </if>
+      <if test="contactdepartment != null" >
+        CONTACTDEPARTMENT,
+      </if>
+      <if test="contactpersonemailid != null" >
+        CONTACTPERSONEMAILID,
+      </if>
+      <if test="registrationdoneby != null" >
+        REGISTRATIONDONEBY,
+      </if>
+      <if test="suppliercompanyname != null" >
+        SUPPLIERCOMPANYNAME,
+      </if>
+      <if test="companyhomepage != null" >
+        COMPANYHOMEPAGE,
+      </if>
+      <if test="contactpersonnamefinance != null" >
+        CONTACTPERSONNAMEFINANCE,
+      </if>
+      <if test="accountholdername != null" >
+        ACCOUNTHOLDERNAME,
+      </if>
+      <if test="contactpersonnamelogistics != null" >
+        CONTACTPERSONNAMELOGISTICS,
+      </if>
+      <if test="suppliername != null" >
+        SUPPLIERNAME,
+      </if>
+      <if test="representativename != null" >
+        REPRESENTATIVENAME,
+      </if>
+      <if test="accountno != null" >
+        ACCOUNTNO,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="foundationday != null" >
+        FOUNDATIONDAY,
+      </if>
+      <if test="permissiongrantdate != null" >
+        PERMISSIONGRANTDATE,
+      </if>
+      <if test="supervisorname != null" >
+        SUPERVISORNAME,
+      </if>
+      <if test="otherdetailsfinance != null" >
+        OTHERDETAILSFINANCE,
+      </if>
+      <if test="logisticdetails != null" >
+        LOGISTICDETAILS,
+      </if>
+      <if test="contactpersoncountrycode != null" >
+        CONTACTPERSONCOUNTRYCODE,
+      </if>
+      <if test="contactpersonareacode != null" >
+        CONTACTPERSONAREACODE,
+      </if>
+      <if test="contactpersonphoneno != null" >
+        CONTACTPERSONPHONENO,
+      </if>
+      <if test="contactpersonextension != null" >
+        CONTACTPERSONEXTENSION,
+      </if>
+      <if test="contactpersonfaxcountrycode != null" >
+        CONTACTPERSONFAXCOUNTRYCODE,
+      </if>
+      <if test="contactpersonfaxareacode != null" >
+        CONTACTPERSONFAXAREACODE,
+      </if>
+      <if test="contactpersonfaxno != null" >
+        CONTACTPERSONFAXNO,
+      </if>
+      <if test="contactpersonmobileno != null" >
+        CONTACTPERSONMOBILENO,
+      </if>
+      <if test="bankid != null" >
+        BANKID,
+      </if>
+      <if test="productdetails != null" >
+        PRODUCTDETAILS,
+      </if>
+      <if test="supplierregno != null" >
+        SUPPLIERREGNO,
+      </if>
+      <if test="withPki != null" >
+        WITH_PKI,
+      </if>
+      <if test="superior != null" >
+        SUPERIOR,
+      </if>
+      <if test="supplierlastmodifiedtimestamp != null" >
+        SUPPLIERLASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="smscontactname != null" >
+        SMSCONTACTNAME,
+      </if>
+      <if test="smscontactphoneno != null" >
+        SMSCONTACTPHONENO,
+      </if>
+      <if test="smflag != null" >
+        SMFLAG,
+      </if>
+      <if test="smcontactperson != null" >
+        SMCONTACTPERSON,
+      </if>
+      <if test="smcontactmobile != null" >
+        SMCONTACTMOBILE,
+      </if>
+      <if test="smnote != null" >
+        SMNOTE,
+      </if>
+      <if test="ignoreseminar != null" >
+        IGNORESEMINAR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="supplierid != null" >
+        #{supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=DECIMAL},
+      </if>
+      <if test="assigneduserid != null" >
+        #{assigneduserid,jdbcType=DECIMAL},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierstatus != null" >
+        #{supplierstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierlevel != null" >
+        #{supplierlevel,jdbcType=DECIMAL},
+      </if>
+      <if test="permissiongrantstatus != null" >
+        #{permissiongrantstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredcontactmethod != null" >
+        #{preferredcontactmethod,jdbcType=DECIMAL},
+      </if>
+      <if test="noofemployees != null" >
+        #{noofemployees,jdbcType=DECIMAL},
+      </if>
+      <if test="noofproductsdealt != null" >
+        #{noofproductsdealt,jdbcType=DECIMAL},
+      </if>
+      <if test="turnoverpreviousyear != null" >
+        #{turnoverpreviousyear,jdbcType=DECIMAL},
+      </if>
+      <if test="revenuegenerated != null" >
+        #{revenuegenerated,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentmethod != null" >
+        #{paymentmethod,jdbcType=DECIMAL},
+      </if>
+      <if test="maxloadqty != null" >
+        #{maxloadqty,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentday != null" >
+        #{paymentday,jdbcType=DECIMAL},
+      </if>
+      <if test="hascod != null" >
+        #{hascod,jdbcType=CHAR},
+      </if>
+      <if test="hassignedcontract != null" >
+        #{hassignedcontract,jdbcType=CHAR},
+      </if>
+      <if test="defaultproductname != null" >
+        #{defaultproductname,jdbcType=DECIMAL},
+      </if>
+      <if test="contactperson != null" >
+        #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonrole != null" >
+        #{contactpersonrole,jdbcType=VARCHAR},
+      </if>
+      <if test="contactdepartment != null" >
+        #{contactdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonemailid != null" >
+        #{contactpersonemailid,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationdoneby != null" >
+        #{registrationdoneby,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliercompanyname != null" >
+        #{suppliercompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companyhomepage != null" >
+        #{companyhomepage,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonnamefinance != null" >
+        #{contactpersonnamefinance,jdbcType=VARCHAR},
+      </if>
+      <if test="accountholdername != null" >
+        #{accountholdername,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonnamelogistics != null" >
+        #{contactpersonnamelogistics,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliername != null" >
+        #{suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="representativename != null" >
+        #{representativename,jdbcType=VARCHAR},
+      </if>
+      <if test="accountno != null" >
+        #{accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="foundationday != null" >
+        #{foundationday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permissiongrantdate != null" >
+        #{permissiongrantdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supervisorname != null" >
+        #{supervisorname,jdbcType=VARCHAR},
+      </if>
+      <if test="otherdetailsfinance != null" >
+        #{otherdetailsfinance,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticdetails != null" >
+        #{logisticdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersoncountrycode != null" >
+        #{contactpersoncountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonareacode != null" >
+        #{contactpersonareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonphoneno != null" >
+        #{contactpersonphoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonextension != null" >
+        #{contactpersonextension,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonfaxcountrycode != null" >
+        #{contactpersonfaxcountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonfaxareacode != null" >
+        #{contactpersonfaxareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonfaxno != null" >
+        #{contactpersonfaxno,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonmobileno != null" >
+        #{contactpersonmobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="bankid != null" >
+        #{bankid,jdbcType=DECIMAL},
+      </if>
+      <if test="productdetails != null" >
+        #{productdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierregno != null" >
+        #{supplierregno,jdbcType=VARCHAR},
+      </if>
+      <if test="withPki != null" >
+        #{withPki,jdbcType=DECIMAL},
+      </if>
+      <if test="superior != null" >
+        #{superior,jdbcType=CHAR},
+      </if>
+      <if test="supplierlastmodifiedtimestamp != null" >
+        #{supplierlastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smscontactname != null" >
+        #{smscontactname,jdbcType=VARCHAR},
+      </if>
+      <if test="smscontactphoneno != null" >
+        #{smscontactphoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="smflag != null" >
+        #{smflag,jdbcType=CHAR},
+      </if>
+      <if test="smcontactperson != null" >
+        #{smcontactperson,jdbcType=OTHER},
+      </if>
+      <if test="smcontactmobile != null" >
+        #{smcontactmobile,jdbcType=OTHER},
+      </if>
+      <if test="smnote != null" >
+        #{smnote,jdbcType=OTHER},
+      </if>
+      <if test="ignoreseminar != null" >
+        #{ignoreseminar,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TscmSuppliermasterExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TSCM_SUPPLIERMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERMASTER
+    <set >
+      <if test="record.supplierid != null" >
+        SUPPLIERID = #{record.supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assigneduserid != null" >
+        ASSIGNEDUSERID = #{record.assigneduserid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.groupid != null" >
+        GROUPID = #{record.groupid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.supplierstatus != null" >
+        SUPPLIERSTATUS = #{record.supplierstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.supplierlevel != null" >
+        SUPPLIERLEVEL = #{record.supplierlevel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.permissiongrantstatus != null" >
+        PERMISSIONGRANTSTATUS = #{record.permissiongrantstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.preferredcontactmethod != null" >
+        PREFERREDCONTACTMETHOD = #{record.preferredcontactmethod,jdbcType=DECIMAL},
+      </if>
+      <if test="record.noofemployees != null" >
+        NOOFEMPLOYEES = #{record.noofemployees,jdbcType=DECIMAL},
+      </if>
+      <if test="record.noofproductsdealt != null" >
+        NOOFPRODUCTSDEALT = #{record.noofproductsdealt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.turnoverpreviousyear != null" >
+        TURNOVERPREVIOUSYEAR = #{record.turnoverpreviousyear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.revenuegenerated != null" >
+        REVENUEGENERATED = #{record.revenuegenerated,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentmethod != null" >
+        PAYMENTMETHOD = #{record.paymentmethod,jdbcType=DECIMAL},
+      </if>
+      <if test="record.maxloadqty != null" >
+        MAXLOADQTY = #{record.maxloadqty,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentday != null" >
+        PAYMENTDAY = #{record.paymentday,jdbcType=DECIMAL},
+      </if>
+      <if test="record.hascod != null" >
+        HASCOD = #{record.hascod,jdbcType=CHAR},
+      </if>
+      <if test="record.hassignedcontract != null" >
+        HASSIGNEDCONTRACT = #{record.hassignedcontract,jdbcType=CHAR},
+      </if>
+      <if test="record.defaultproductname != null" >
+        DEFAULTPRODUCTNAME = #{record.defaultproductname,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contactperson != null" >
+        CONTACTPERSON = #{record.contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonrole != null" >
+        CONTACTPERSONROLE = #{record.contactpersonrole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactdepartment != null" >
+        CONTACTDEPARTMENT = #{record.contactdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonemailid != null" >
+        CONTACTPERSONEMAILID = #{record.contactpersonemailid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registrationdoneby != null" >
+        REGISTRATIONDONEBY = #{record.registrationdoneby,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliercompanyname != null" >
+        SUPPLIERCOMPANYNAME = #{record.suppliercompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyhomepage != null" >
+        COMPANYHOMEPAGE = #{record.companyhomepage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonnamefinance != null" >
+        CONTACTPERSONNAMEFINANCE = #{record.contactpersonnamefinance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountholdername != null" >
+        ACCOUNTHOLDERNAME = #{record.accountholdername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonnamelogistics != null" >
+        CONTACTPERSONNAMELOGISTICS = #{record.contactpersonnamelogistics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliername != null" >
+        SUPPLIERNAME = #{record.suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.representativename != null" >
+        REPRESENTATIVENAME = #{record.representativename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountno != null" >
+        ACCOUNTNO = #{record.accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.foundationday != null" >
+        FOUNDATIONDAY = #{record.foundationday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.permissiongrantdate != null" >
+        PERMISSIONGRANTDATE = #{record.permissiongrantdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supervisorname != null" >
+        SUPERVISORNAME = #{record.supervisorname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherdetailsfinance != null" >
+        OTHERDETAILSFINANCE = #{record.otherdetailsfinance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logisticdetails != null" >
+        LOGISTICDETAILS = #{record.logisticdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersoncountrycode != null" >
+        CONTACTPERSONCOUNTRYCODE = #{record.contactpersoncountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonareacode != null" >
+        CONTACTPERSONAREACODE = #{record.contactpersonareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonphoneno != null" >
+        CONTACTPERSONPHONENO = #{record.contactpersonphoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonextension != null" >
+        CONTACTPERSONEXTENSION = #{record.contactpersonextension,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonfaxcountrycode != null" >
+        CONTACTPERSONFAXCOUNTRYCODE = #{record.contactpersonfaxcountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonfaxareacode != null" >
+        CONTACTPERSONFAXAREACODE = #{record.contactpersonfaxareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonfaxno != null" >
+        CONTACTPERSONFAXNO = #{record.contactpersonfaxno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactpersonmobileno != null" >
+        CONTACTPERSONMOBILENO = #{record.contactpersonmobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankid != null" >
+        BANKID = #{record.bankid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productdetails != null" >
+        PRODUCTDETAILS = #{record.productdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierregno != null" >
+        SUPPLIERREGNO = #{record.supplierregno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withPki != null" >
+        WITH_PKI = #{record.withPki,jdbcType=DECIMAL},
+      </if>
+      <if test="record.superior != null" >
+        SUPERIOR = #{record.superior,jdbcType=CHAR},
+      </if>
+      <if test="record.supplierlastmodifiedtimestamp != null" >
+        SUPPLIERLASTMODIFIEDTIMESTAMP = #{record.supplierlastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.smscontactname != null" >
+        SMSCONTACTNAME = #{record.smscontactname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smscontactphoneno != null" >
+        SMSCONTACTPHONENO = #{record.smscontactphoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smflag != null" >
+        SMFLAG = #{record.smflag,jdbcType=CHAR},
+      </if>
+      <if test="record.smcontactperson != null" >
+        SMCONTACTPERSON = #{record.smcontactperson,jdbcType=OTHER},
+      </if>
+      <if test="record.smcontactmobile != null" >
+        SMCONTACTMOBILE = #{record.smcontactmobile,jdbcType=OTHER},
+      </if>
+      <if test="record.smnote != null" >
+        SMNOTE = #{record.smnote,jdbcType=OTHER},
+      </if>
+      <if test="record.ignoreseminar != null" >
+        IGNORESEMINAR = #{record.ignoreseminar,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+   
+    update ET1_CHINA.TSCM_SUPPLIERMASTER
+    set SUPPLIERID = #{record.supplierid,jdbcType=DECIMAL},
+      VERSION = #{record.version,jdbcType=DECIMAL},
+      ASSIGNEDUSERID = #{record.assigneduserid,jdbcType=DECIMAL},
+      GROUPID = #{record.groupid,jdbcType=DECIMAL},
+      SUPPLIERSTATUS = #{record.supplierstatus,jdbcType=DECIMAL},
+      SUPPLIERLEVEL = #{record.supplierlevel,jdbcType=DECIMAL},
+      PERMISSIONGRANTSTATUS = #{record.permissiongrantstatus,jdbcType=DECIMAL},
+      PREFERREDCONTACTMETHOD = #{record.preferredcontactmethod,jdbcType=DECIMAL},
+      NOOFEMPLOYEES = #{record.noofemployees,jdbcType=DECIMAL},
+      NOOFPRODUCTSDEALT = #{record.noofproductsdealt,jdbcType=DECIMAL},
+      TURNOVERPREVIOUSYEAR = #{record.turnoverpreviousyear,jdbcType=DECIMAL},
+      REVENUEGENERATED = #{record.revenuegenerated,jdbcType=DECIMAL},
+      PAYMENTMETHOD = #{record.paymentmethod,jdbcType=DECIMAL},
+      MAXLOADQTY = #{record.maxloadqty,jdbcType=DECIMAL},
+      PAYMENTDAY = #{record.paymentday,jdbcType=DECIMAL},
+      HASCOD = #{record.hascod,jdbcType=CHAR},
+      HASSIGNEDCONTRACT = #{record.hassignedcontract,jdbcType=CHAR},
+      DEFAULTPRODUCTNAME = #{record.defaultproductname,jdbcType=DECIMAL},
+      CONTACTPERSON = #{record.contactperson,jdbcType=VARCHAR},
+      CONTACTPERSONROLE = #{record.contactpersonrole,jdbcType=VARCHAR},
+      CONTACTDEPARTMENT = #{record.contactdepartment,jdbcType=VARCHAR},
+      CONTACTPERSONEMAILID = #{record.contactpersonemailid,jdbcType=VARCHAR},
+      REGISTRATIONDONEBY = #{record.registrationdoneby,jdbcType=VARCHAR},
+      SUPPLIERCOMPANYNAME = #{record.suppliercompanyname,jdbcType=VARCHAR},
+      COMPANYHOMEPAGE = #{record.companyhomepage,jdbcType=VARCHAR},
+      CONTACTPERSONNAMEFINANCE = #{record.contactpersonnamefinance,jdbcType=VARCHAR},
+      ACCOUNTHOLDERNAME = #{record.accountholdername,jdbcType=VARCHAR},
+      CONTACTPERSONNAMELOGISTICS = #{record.contactpersonnamelogistics,jdbcType=VARCHAR},
+      SUPPLIERNAME = #{record.suppliername,jdbcType=VARCHAR},
+      REPRESENTATIVENAME = #{record.representativename,jdbcType=VARCHAR},
+      ACCOUNTNO = #{record.accountno,jdbcType=VARCHAR},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      FOUNDATIONDAY = #{record.foundationday,jdbcType=TIMESTAMP},
+      PERMISSIONGRANTDATE = #{record.permissiongrantdate,jdbcType=TIMESTAMP},
+      SUPERVISORNAME = #{record.supervisorname,jdbcType=VARCHAR},
+      OTHERDETAILSFINANCE = #{record.otherdetailsfinance,jdbcType=VARCHAR},
+      LOGISTICDETAILS = #{record.logisticdetails,jdbcType=VARCHAR},
+      CONTACTPERSONCOUNTRYCODE = #{record.contactpersoncountrycode,jdbcType=VARCHAR},
+      CONTACTPERSONAREACODE = #{record.contactpersonareacode,jdbcType=VARCHAR},
+      CONTACTPERSONPHONENO = #{record.contactpersonphoneno,jdbcType=VARCHAR},
+      CONTACTPERSONEXTENSION = #{record.contactpersonextension,jdbcType=VARCHAR},
+      CONTACTPERSONFAXCOUNTRYCODE = #{record.contactpersonfaxcountrycode,jdbcType=VARCHAR},
+      CONTACTPERSONFAXAREACODE = #{record.contactpersonfaxareacode,jdbcType=VARCHAR},
+      CONTACTPERSONFAXNO = #{record.contactpersonfaxno,jdbcType=VARCHAR},
+      CONTACTPERSONMOBILENO = #{record.contactpersonmobileno,jdbcType=VARCHAR},
+      BANKID = #{record.bankid,jdbcType=DECIMAL},
+      PRODUCTDETAILS = #{record.productdetails,jdbcType=VARCHAR},
+      SUPPLIERREGNO = #{record.supplierregno,jdbcType=VARCHAR},
+      WITH_PKI = #{record.withPki,jdbcType=DECIMAL},
+      SUPERIOR = #{record.superior,jdbcType=CHAR},
+      SUPPLIERLASTMODIFIEDTIMESTAMP = #{record.supplierlastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      SMSCONTACTNAME = #{record.smscontactname,jdbcType=VARCHAR},
+      SMSCONTACTPHONENO = #{record.smscontactphoneno,jdbcType=VARCHAR},
+      SMFLAG = #{record.smflag,jdbcType=CHAR},
+      SMCONTACTPERSON = #{record.smcontactperson,jdbcType=OTHER},
+      SMCONTACTMOBILE = #{record.smcontactmobile,jdbcType=OTHER},
+      SMNOTE = #{record.smnote,jdbcType=OTHER},
+      IGNORESEMINAR = #{record.ignoreseminar,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TscmSuppliermaster" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERMASTER
+    <set >
+      <if test="version != null" >
+        VERSION = #{version,jdbcType=DECIMAL},
+      </if>
+      <if test="assigneduserid != null" >
+        ASSIGNEDUSERID = #{assigneduserid,jdbcType=DECIMAL},
+      </if>
+      <if test="groupid != null" >
+        GROUPID = #{groupid,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierstatus != null" >
+        SUPPLIERSTATUS = #{supplierstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierlevel != null" >
+        SUPPLIERLEVEL = #{supplierlevel,jdbcType=DECIMAL},
+      </if>
+      <if test="permissiongrantstatus != null" >
+        PERMISSIONGRANTSTATUS = #{permissiongrantstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredcontactmethod != null" >
+        PREFERREDCONTACTMETHOD = #{preferredcontactmethod,jdbcType=DECIMAL},
+      </if>
+      <if test="noofemployees != null" >
+        NOOFEMPLOYEES = #{noofemployees,jdbcType=DECIMAL},
+      </if>
+      <if test="noofproductsdealt != null" >
+        NOOFPRODUCTSDEALT = #{noofproductsdealt,jdbcType=DECIMAL},
+      </if>
+      <if test="turnoverpreviousyear != null" >
+        TURNOVERPREVIOUSYEAR = #{turnoverpreviousyear,jdbcType=DECIMAL},
+      </if>
+      <if test="revenuegenerated != null" >
+        REVENUEGENERATED = #{revenuegenerated,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentmethod != null" >
+        PAYMENTMETHOD = #{paymentmethod,jdbcType=DECIMAL},
+      </if>
+      <if test="maxloadqty != null" >
+        MAXLOADQTY = #{maxloadqty,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentday != null" >
+        PAYMENTDAY = #{paymentday,jdbcType=DECIMAL},
+      </if>
+      <if test="hascod != null" >
+        HASCOD = #{hascod,jdbcType=CHAR},
+      </if>
+      <if test="hassignedcontract != null" >
+        HASSIGNEDCONTRACT = #{hassignedcontract,jdbcType=CHAR},
+      </if>
+      <if test="defaultproductname != null" >
+        DEFAULTPRODUCTNAME = #{defaultproductname,jdbcType=DECIMAL},
+      </if>
+      <if test="contactperson != null" >
+        CONTACTPERSON = #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonrole != null" >
+        CONTACTPERSONROLE = #{contactpersonrole,jdbcType=VARCHAR},
+      </if>
+      <if test="contactdepartment != null" >
+        CONTACTDEPARTMENT = #{contactdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonemailid != null" >
+        CONTACTPERSONEMAILID = #{contactpersonemailid,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationdoneby != null" >
+        REGISTRATIONDONEBY = #{registrationdoneby,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliercompanyname != null" >
+        SUPPLIERCOMPANYNAME = #{suppliercompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companyhomepage != null" >
+        COMPANYHOMEPAGE = #{companyhomepage,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonnamefinance != null" >
+        CONTACTPERSONNAMEFINANCE = #{contactpersonnamefinance,jdbcType=VARCHAR},
+      </if>
+      <if test="accountholdername != null" >
+        ACCOUNTHOLDERNAME = #{accountholdername,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonnamelogistics != null" >
+        CONTACTPERSONNAMELOGISTICS = #{contactpersonnamelogistics,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliername != null" >
+        SUPPLIERNAME = #{suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="representativename != null" >
+        REPRESENTATIVENAME = #{representativename,jdbcType=VARCHAR},
+      </if>
+      <if test="accountno != null" >
+        ACCOUNTNO = #{accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="foundationday != null" >
+        FOUNDATIONDAY = #{foundationday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permissiongrantdate != null" >
+        PERMISSIONGRANTDATE = #{permissiongrantdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supervisorname != null" >
+        SUPERVISORNAME = #{supervisorname,jdbcType=VARCHAR},
+      </if>
+      <if test="otherdetailsfinance != null" >
+        OTHERDETAILSFINANCE = #{otherdetailsfinance,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticdetails != null" >
+        LOGISTICDETAILS = #{logisticdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersoncountrycode != null" >
+        CONTACTPERSONCOUNTRYCODE = #{contactpersoncountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonareacode != null" >
+        CONTACTPERSONAREACODE = #{contactpersonareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonphoneno != null" >
+        CONTACTPERSONPHONENO = #{contactpersonphoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonextension != null" >
+        CONTACTPERSONEXTENSION = #{contactpersonextension,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonfaxcountrycode != null" >
+        CONTACTPERSONFAXCOUNTRYCODE = #{contactpersonfaxcountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonfaxareacode != null" >
+        CONTACTPERSONFAXAREACODE = #{contactpersonfaxareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonfaxno != null" >
+        CONTACTPERSONFAXNO = #{contactpersonfaxno,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpersonmobileno != null" >
+        CONTACTPERSONMOBILENO = #{contactpersonmobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="bankid != null" >
+        BANKID = #{bankid,jdbcType=DECIMAL},
+      </if>
+      <if test="productdetails != null" >
+        PRODUCTDETAILS = #{productdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierregno != null" >
+        SUPPLIERREGNO = #{supplierregno,jdbcType=VARCHAR},
+      </if>
+      <if test="withPki != null" >
+        WITH_PKI = #{withPki,jdbcType=DECIMAL},
+      </if>
+      <if test="superior != null" >
+        SUPERIOR = #{superior,jdbcType=CHAR},
+      </if>
+      <if test="supplierlastmodifiedtimestamp != null" >
+        SUPPLIERLASTMODIFIEDTIMESTAMP = #{supplierlastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smscontactname != null" >
+        SMSCONTACTNAME = #{smscontactname,jdbcType=VARCHAR},
+      </if>
+      <if test="smscontactphoneno != null" >
+        SMSCONTACTPHONENO = #{smscontactphoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="smflag != null" >
+        SMFLAG = #{smflag,jdbcType=CHAR},
+      </if>
+      <if test="smcontactperson != null" >
+        SMCONTACTPERSON = #{smcontactperson,jdbcType=OTHER},
+      </if>
+      <if test="smcontactmobile != null" >
+        SMCONTACTMOBILE = #{smcontactmobile,jdbcType=OTHER},
+      </if>
+      <if test="smnote != null" >
+        SMNOTE = #{smnote,jdbcType=OTHER},
+      </if>
+      <if test="ignoreseminar != null" >
+        IGNORESEMINAR = #{ignoreseminar,jdbcType=CHAR},
+      </if>
+    </set>
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TscmSuppliermaster" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERMASTER
+    set VERSION = #{version,jdbcType=DECIMAL},
+      ASSIGNEDUSERID = #{assigneduserid,jdbcType=DECIMAL},
+      GROUPID = #{groupid,jdbcType=DECIMAL},
+      SUPPLIERSTATUS = #{supplierstatus,jdbcType=DECIMAL},
+      SUPPLIERLEVEL = #{supplierlevel,jdbcType=DECIMAL},
+      PERMISSIONGRANTSTATUS = #{permissiongrantstatus,jdbcType=DECIMAL},
+      PREFERREDCONTACTMETHOD = #{preferredcontactmethod,jdbcType=DECIMAL},
+      NOOFEMPLOYEES = #{noofemployees,jdbcType=DECIMAL},
+      NOOFPRODUCTSDEALT = #{noofproductsdealt,jdbcType=DECIMAL},
+      TURNOVERPREVIOUSYEAR = #{turnoverpreviousyear,jdbcType=DECIMAL},
+      REVENUEGENERATED = #{revenuegenerated,jdbcType=DECIMAL},
+      PAYMENTMETHOD = #{paymentmethod,jdbcType=DECIMAL},
+      MAXLOADQTY = #{maxloadqty,jdbcType=DECIMAL},
+      PAYMENTDAY = #{paymentday,jdbcType=DECIMAL},
+      HASCOD = #{hascod,jdbcType=CHAR},
+      HASSIGNEDCONTRACT = #{hassignedcontract,jdbcType=CHAR},
+      DEFAULTPRODUCTNAME = #{defaultproductname,jdbcType=DECIMAL},
+      CONTACTPERSON = #{contactperson,jdbcType=VARCHAR},
+      CONTACTPERSONROLE = #{contactpersonrole,jdbcType=VARCHAR},
+      CONTACTDEPARTMENT = #{contactdepartment,jdbcType=VARCHAR},
+      CONTACTPERSONEMAILID = #{contactpersonemailid,jdbcType=VARCHAR},
+      REGISTRATIONDONEBY = #{registrationdoneby,jdbcType=VARCHAR},
+      SUPPLIERCOMPANYNAME = #{suppliercompanyname,jdbcType=VARCHAR},
+      COMPANYHOMEPAGE = #{companyhomepage,jdbcType=VARCHAR},
+      CONTACTPERSONNAMEFINANCE = #{contactpersonnamefinance,jdbcType=VARCHAR},
+      ACCOUNTHOLDERNAME = #{accountholdername,jdbcType=VARCHAR},
+      CONTACTPERSONNAMELOGISTICS = #{contactpersonnamelogistics,jdbcType=VARCHAR},
+      SUPPLIERNAME = #{suppliername,jdbcType=VARCHAR},
+      REPRESENTATIVENAME = #{representativename,jdbcType=VARCHAR},
+      ACCOUNTNO = #{accountno,jdbcType=VARCHAR},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      FOUNDATIONDAY = #{foundationday,jdbcType=TIMESTAMP},
+      PERMISSIONGRANTDATE = #{permissiongrantdate,jdbcType=TIMESTAMP},
+      SUPERVISORNAME = #{supervisorname,jdbcType=VARCHAR},
+      OTHERDETAILSFINANCE = #{otherdetailsfinance,jdbcType=VARCHAR},
+      LOGISTICDETAILS = #{logisticdetails,jdbcType=VARCHAR},
+      CONTACTPERSONCOUNTRYCODE = #{contactpersoncountrycode,jdbcType=VARCHAR},
+      CONTACTPERSONAREACODE = #{contactpersonareacode,jdbcType=VARCHAR},
+      CONTACTPERSONPHONENO = #{contactpersonphoneno,jdbcType=VARCHAR},
+      CONTACTPERSONEXTENSION = #{contactpersonextension,jdbcType=VARCHAR},
+      CONTACTPERSONFAXCOUNTRYCODE = #{contactpersonfaxcountrycode,jdbcType=VARCHAR},
+      CONTACTPERSONFAXAREACODE = #{contactpersonfaxareacode,jdbcType=VARCHAR},
+      CONTACTPERSONFAXNO = #{contactpersonfaxno,jdbcType=VARCHAR},
+      CONTACTPERSONMOBILENO = #{contactpersonmobileno,jdbcType=VARCHAR},
+      BANKID = #{bankid,jdbcType=DECIMAL},
+      PRODUCTDETAILS = #{productdetails,jdbcType=VARCHAR},
+      SUPPLIERREGNO = #{supplierregno,jdbcType=VARCHAR},
+      WITH_PKI = #{withPki,jdbcType=DECIMAL},
+      SUPERIOR = #{superior,jdbcType=CHAR},
+      SUPPLIERLASTMODIFIEDTIMESTAMP = #{supplierlastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      SMSCONTACTNAME = #{smscontactname,jdbcType=VARCHAR},
+      SMSCONTACTPHONENO = #{smscontactphoneno,jdbcType=VARCHAR},
+      SMFLAG = #{smflag,jdbcType=CHAR},
+      SMCONTACTPERSON = #{smcontactperson,jdbcType=OTHER},
+      SMCONTACTMOBILE = #{smcontactmobile,jdbcType=OTHER},
+      SMNOTE = #{smnote,jdbcType=OTHER},
+      IGNORESEMINAR = #{ignoreseminar,jdbcType=CHAR}
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+  </update>
+</mapper>

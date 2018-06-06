@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.scm.TscmSupplierMapper">
+
+  <sql id="Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+   <select id="selectSupplierpendingByExample" resultType="TscmSupplierpending" parameterType="TscmSupplierpendingExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+       SUPPLIERRECORDID, SUPPLIERID, VERSION, ASSIGNEDUSERID, APPROVALSTATUS, PREFERREDCONTACTMETHOD, 
+    NOOFEMPLOYEES, NOOFPRODUCTSDEALT, TURNOVERPREVIOUSYEAR, REVENUEGENERATED, HASSIGNEDCONTRACT, 
+    SUPPLIERNAME, DEFAULTPRODUCTNAME, CONTACTPERSON, CONTACTPERSONROLE, CONTACTDEPARTMENT, 
+    CONTACTPERSONEMAILID, REGISTRATIONDONEBY, SUPPLIERCOMPANYNAME, COMPANYHOMEPAGE, CREATEDBY, 
+    CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, PAYMENTDAY, PAYMENTMETHOD, 
+    MAXLOADQTY, SUPPLIERLEVEL, GROUPID, PERMISSIONGRANTSTATUS, HASCOD, ISHISTORY, FOUNDATIONDAY, 
+    PERMISSIONGRANTDATE, CONTACTPERSONNAMEFINANCE, CONTACTPERSONNAMELOGISTICS, REPRESENTATIVENAME, 
+    ACCOUNTHOLDERNAME, ACCOUNTNO, SUPERVISORNAME, OTHERDETAILSFINANCE, LOGISTICDETAILS, 
+    CONTACTPERSONCOUNTRYCODE, CONTACTPERSONAREACODE, CONTACTPERSONPHONENO, CONTACTPERSONEXTENSION, 
+    CONTACTPERSONFAXCOUNTRYCODE, CONTACTPERSONFAXAREACODE, CONTACTPERSONFAXNO, TARGETUSERID, 
+    CONTACTPERSONMOBILENO, COMMENTS, BANKID, PRODUCTDETAILS, SUPPLIERREGNO, WITH_PKI, 
+    IGNORESEMINAR
+    from ET1_CHINA.TSCM_SUPPLIERPENDING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  	<select id="supplierAddressSequenceMax" parameterType="com.best1.api.entity.scm.supplier.TscmSupplierpendaddressExample"
+		resultType="java.lang.Integer">
+		select max(ADDRESSSEQUENCE) from ET1_CHINA.TSCM_SUPPLIERPENDADDRESS
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+  
+  
+  
+  <select id="selectSupplierId" resultType="java.lang.Long"  >
+  	select S_SUPPLIERIDPENDING.NEXTVAL from dual
+  </select>
+	<!-- 插入用户： 1.由数据库生成id并赋值到对象 2.输入用对象, -->
+	<insert id="supplierPendingImport" parameterType="TscmSupplierpending" useGeneratedKeys="false" keyProperty="supplierrecordid">
+		<selectKey keyProperty="supplierrecordid" resultType="java.lang.Long" order="BEFORE">
+			select S_SUPPLIERPENDING.NEXTVAL from dual
+		</selectKey>
+
+		insert into ET1_CHINA.TSCM_SUPPLIERPENDING
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="supplierrecordid != null">
+				SUPPLIERRECORDID,
+			</if>
+			<if test="supplierid != null">
+				SUPPLIERID,
+			</if>
+			<if test="version != null">
+				VERSION,
+			</if>
+			<if test="assigneduserid != null">
+				ASSIGNEDUSERID,
+			</if>
+			<if test="approvalstatus != null">
+				APPROVALSTATUS,
+			</if>
+			<if test="preferredcontactmethod != null">
+				PREFERREDCONTACTMETHOD,
+			</if>
+			<if test="noofemployees != null">
+				NOOFEMPLOYEES,
+			</if>
+			<if test="noofproductsdealt != null">
+				NOOFPRODUCTSDEALT,
+			</if>
+			<if test="turnoverpreviousyear != null">
+				TURNOVERPREVIOUSYEAR,
+			</if>
+			<if test="revenuegenerated != null">
+				REVENUEGENERATED,
+			</if>
+			<if test="hassignedcontract != null">
+				HASSIGNEDCONTRACT,
+			</if>
+			<if test="suppliername != null">
+				SUPPLIERNAME,
+			</if>
+			<if test="defaultproductname != null">
+				DEFAULTPRODUCTNAME,
+			</if>
+			<if test="contactperson != null">
+				CONTACTPERSON,
+			</if>
+			<if test="contactpersonrole != null">
+				CONTACTPERSONROLE,
+			</if>
+			<if test="contactdepartment != null">
+				CONTACTDEPARTMENT,
+			</if>
+			<if test="contactpersonemailid != null">
+				CONTACTPERSONEMAILID,
+			</if>
+			<if test="registrationdoneby != null">
+				REGISTRATIONDONEBY,
+			</if>
+			<if test="suppliercompanyname != null">
+				SUPPLIERCOMPANYNAME,
+			</if>
+			<if test="companyhomepage != null">
+				COMPANYHOMEPAGE,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+			<if test="paymentday != null">
+				PAYMENTDAY,
+			</if>
+			<if test="paymentmethod != null">
+				PAYMENTMETHOD,
+			</if>
+			<if test="maxloadqty != null">
+				MAXLOADQTY,
+			</if>
+			<if test="supplierlevel != null">
+				SUPPLIERLEVEL,
+			</if>
+			<if test="groupid != null">
+				GROUPID,
+			</if>
+			<if test="permissiongrantstatus != null">
+				PERMISSIONGRANTSTATUS,
+			</if>
+			<if test="hascod != null">
+				HASCOD,
+			</if>
+			<if test="ishistory != null">
+				ISHISTORY,
+			</if>
+			<if test="foundationday != null">
+				FOUNDATIONDAY,
+			</if>
+			<if test="permissiongrantdate != null">
+				PERMISSIONGRANTDATE,
+			</if>
+			<if test="contactpersonnamefinance != null">
+				CONTACTPERSONNAMEFINANCE,
+			</if>
+			<if test="contactpersonnamelogistics != null">
+				CONTACTPERSONNAMELOGISTICS,
+			</if>
+			<if test="representativename != null">
+				REPRESENTATIVENAME,
+			</if>
+			<if test="accountholdername != null">
+				ACCOUNTHOLDERNAME,
+			</if>
+			<if test="accountno != null">
+				ACCOUNTNO,
+			</if>
+			<if test="supervisorname != null">
+				SUPERVISORNAME,
+			</if>
+			<if test="otherdetailsfinance != null">
+				OTHERDETAILSFINANCE,
+			</if>
+			<if test="logisticdetails != null">
+				LOGISTICDETAILS,
+			</if>
+			<if test="contactpersoncountrycode != null">
+				CONTACTPERSONCOUNTRYCODE,
+			</if>
+			<if test="contactpersonareacode != null">
+				CONTACTPERSONAREACODE,
+			</if>
+			<if test="contactpersonphoneno != null">
+				CONTACTPERSONPHONENO,
+			</if>
+			<if test="contactpersonextension != null">
+				CONTACTPERSONEXTENSION,
+			</if>
+			<if test="contactpersonfaxcountrycode != null">
+				CONTACTPERSONFAXCOUNTRYCODE,
+			</if>
+			<if test="contactpersonfaxareacode != null">
+				CONTACTPERSONFAXAREACODE,
+			</if>
+			<if test="contactpersonfaxno != null">
+				CONTACTPERSONFAXNO,
+			</if>
+			<if test="targetuserid != null">
+				TARGETUSERID,
+			</if>
+			<if test="contactpersonmobileno != null">
+				CONTACTPERSONMOBILENO,
+			</if>
+			<if test="comments != null">
+				COMMENTS,
+			</if>
+			<if test="bankid != null">
+				BANKID,
+			</if>
+			<if test="productdetails != null">
+				PRODUCTDETAILS,
+			</if>
+			<if test="supplierregno != null">
+				SUPPLIERREGNO,
+			</if>
+			<if test="withPki != null">
+				WITH_PKI,
+			</if>
+			<if test="ignoreseminar != null">
+				IGNORESEMINAR,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="supplierrecordid != null">
+				#{supplierrecordid,jdbcType=DECIMAL},
+			</if>
+			<if test="supplierid != null">
+				#{supplierid,jdbcType=DECIMAL},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=DECIMAL},
+			</if>
+			<if test="assigneduserid != null">
+				#{assigneduserid,jdbcType=DECIMAL},
+			</if>
+			<if test="approvalstatus != null">
+				#{approvalstatus,jdbcType=DECIMAL},
+			</if>
+			<if test="preferredcontactmethod != null">
+				#{preferredcontactmethod,jdbcType=DECIMAL},
+			</if>
+			<if test="noofemployees != null">
+				#{noofemployees,jdbcType=DECIMAL},
+			</if>
+			<if test="noofproductsdealt != null">
+				#{noofproductsdealt,jdbcType=DECIMAL},
+			</if>
+			<if test="turnoverpreviousyear != null">
+				#{turnoverpreviousyear,jdbcType=DECIMAL},
+			</if>
+			<if test="revenuegenerated != null">
+				#{revenuegenerated,jdbcType=DECIMAL},
+			</if>
+			<if test="hassignedcontract != null">
+				#{hassignedcontract,jdbcType=CHAR},
+			</if>
+			<if test="suppliername != null">
+				#{suppliername,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultproductname != null">
+				#{defaultproductname,jdbcType=DECIMAL},
+			</if>
+			<if test="contactperson != null">
+				#{contactperson,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonrole != null">
+				#{contactpersonrole,jdbcType=VARCHAR},
+			</if>
+			<if test="contactdepartment != null">
+				#{contactdepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonemailid != null">
+				#{contactpersonemailid,jdbcType=VARCHAR},
+			</if>
+			<if test="registrationdoneby != null">
+				#{registrationdoneby,jdbcType=VARCHAR},
+			</if>
+			<if test="suppliercompanyname != null">
+				#{suppliercompanyname,jdbcType=VARCHAR},
+			</if>
+			<if test="companyhomepage != null">
+				#{companyhomepage,jdbcType=VARCHAR},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="paymentday != null">
+				#{paymentday,jdbcType=DECIMAL},
+			</if>
+			<if test="paymentmethod != null">
+				#{paymentmethod,jdbcType=DECIMAL},
+			</if>
+			<if test="maxloadqty != null">
+				#{maxloadqty,jdbcType=DECIMAL},
+			</if>
+			<if test="supplierlevel != null">
+				#{supplierlevel,jdbcType=DECIMAL},
+			</if>
+			<if test="groupid != null">
+				#{groupid,jdbcType=DECIMAL},
+			</if>
+			<if test="permissiongrantstatus != null">
+				#{permissiongrantstatus,jdbcType=DECIMAL},
+			</if>
+			<if test="hascod != null">
+				#{hascod,jdbcType=CHAR},
+			</if>
+			<if test="ishistory != null">
+				#{ishistory,jdbcType=CHAR},
+			</if>
+			<if test="foundationday != null">
+				#{foundationday,jdbcType=TIMESTAMP},
+			</if>
+			<if test="permissiongrantdate != null">
+				#{permissiongrantdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="contactpersonnamefinance != null">
+				#{contactpersonnamefinance,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonnamelogistics != null">
+				#{contactpersonnamelogistics,jdbcType=VARCHAR},
+			</if>
+			<if test="representativename != null">
+				#{representativename,jdbcType=VARCHAR},
+			</if>
+			<if test="accountholdername != null">
+				#{accountholdername,jdbcType=VARCHAR},
+			</if>
+			<if test="accountno != null">
+				#{accountno,jdbcType=VARCHAR},
+			</if>
+			<if test="supervisorname != null">
+				#{supervisorname,jdbcType=VARCHAR},
+			</if>
+			<if test="otherdetailsfinance != null">
+				#{otherdetailsfinance,jdbcType=VARCHAR},
+			</if>
+			<if test="logisticdetails != null">
+				#{logisticdetails,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersoncountrycode != null">
+				#{contactpersoncountrycode,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonareacode != null">
+				#{contactpersonareacode,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonphoneno != null">
+				#{contactpersonphoneno,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonextension != null">
+				#{contactpersonextension,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonfaxcountrycode != null">
+				#{contactpersonfaxcountrycode,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonfaxareacode != null">
+				#{contactpersonfaxareacode,jdbcType=VARCHAR},
+			</if>
+			<if test="contactpersonfaxno != null">
+				#{contactpersonfaxno,jdbcType=VARCHAR},
+			</if>
+			<if test="targetuserid != null">
+				#{targetuserid,jdbcType=DECIMAL},
+			</if>
+			<if test="contactpersonmobileno != null">
+				#{contactpersonmobileno,jdbcType=VARCHAR},
+			</if>
+			<if test="comments != null">
+				#{comments,jdbcType=VARCHAR},
+			</if>
+			<if test="bankid != null">
+				#{bankid,jdbcType=DECIMAL},
+			</if>
+			<if test="productdetails != null">
+				#{productdetails,jdbcType=VARCHAR},
+			</if>
+			<if test="supplierregno != null">
+				#{supplierregno,jdbcType=VARCHAR},
+			</if>
+			<if test="withPki != null">
+				#{withPki,jdbcType=DECIMAL},
+			</if>
+			<if test="ignoreseminar != null">
+				#{ignoreseminar,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 插入地址 -->
+	<insert id="supplierAddressImport" parameterType="TscmSupplierpendaddress">
+		insert into ET1_CHINA.TSCM_SUPPLIERPENDADDRESS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="supplierrecordid != null">
+				SUPPLIERRECORDID,
+			</if>
+			<if test="addresstype != null">
+				ADDRESSTYPE,
+			</if>
+			<if test="addresssequence != null">
+				ADDRESSSEQUENCE,
+			</if>
+			<if test="country != null">
+				COUNTRY,
+			</if>
+			<if test="address2 != null">
+				ADDRESS2,
+			</if>
+			<if test="address1 != null">
+				ADDRESS1,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+			<if test="mobilenumber != null">
+				MOBILENUMBER,
+			</if>
+			<if test="officephonecountrycode != null">
+				OFFICEPHONECOUNTRYCODE,
+			</if>
+			<if test="officephoneareacode != null">
+				OFFICEPHONEAREACODE,
+			</if>
+			<if test="officephonenumber != null">
+				OFFICEPHONENUMBER,
+			</if>
+			<if test="officeextension != null">
+				OFFICEEXTENSION,
+			</if>
+			<if test="faxcountrycode != null">
+				FAXCOUNTRYCODE,
+			</if>
+			<if test="faxareacode != null">
+				FAXAREACODE,
+			</if>
+			<if test="faxnumber != null">
+				FAXNUMBER,
+			</if>
+			<if test="isdefault != null">
+				ISDEFAULT,
+			</if>
+			<if test="contactpersoname != null">
+				CONTACTPERSONAME,
+			</if>
+			<if test="zipcode != null">
+				ZIPCODE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="supplierrecordid != null">
+				#{supplierrecordid,jdbcType=DECIMAL},
+			</if>
+			<if test="addresstype != null">
+				#{addresstype,jdbcType=DECIMAL},
+			</if>
+			<if test="addresssequence != null">
+				#{addresssequence,jdbcType=DECIMAL},
+			</if>
+			<if test="country != null">
+				#{country,jdbcType=DECIMAL},
+			</if>
+			<if test="address2 != null">
+				#{address2,jdbcType=VARCHAR},
+			</if>
+			<if test="address1 != null">
+				#{address1,jdbcType=VARCHAR},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="mobilenumber != null">
+				#{mobilenumber,jdbcType=VARCHAR},
+			</if>
+			<if test="officephonecountrycode != null">
+				#{officephonecountrycode,jdbcType=VARCHAR},
+			</if>
+			<if test="officephoneareacode != null">
+				#{officephoneareacode,jdbcType=VARCHAR},
+			</if>
+			<if test="officephonenumber != null">
+				#{officephonenumber,jdbcType=VARCHAR},
+			</if>
+			<if test="officeextension != null">
+				#{officeextension,jdbcType=VARCHAR},
+			</if>
+			<if test="faxcountrycode != null">
+				#{faxcountrycode,jdbcType=VARCHAR},
+			</if>
+			<if test="faxareacode != null">
+				#{faxareacode,jdbcType=VARCHAR},
+			</if>
+			<if test="faxnumber != null">
+				#{faxnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="isdefault != null">
+				#{isdefault,jdbcType=CHAR},
+			</if>
+			<if test="contactpersoname != null">
+				#{contactpersoname,jdbcType=VARCHAR},
+			</if>
+			<if test="zipcode != null">
+				#{zipcode,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 增加厂商类别 -->
+	<insert id="supplierPendBusinessImport" parameterType="TscmSupplierpendbusiness">
+		insert into ET1_CHINA.TSCM_SUPPLIERPENDBUSINESS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="supplierrecordid != null">
+				SUPPLIERRECORDID,
+			</if>
+			<if test="businesstype != null">
+				BUSINESSTYPE,
+			</if>
+			<if test="isdefault != null">
+				ISDEFAULT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="supplierrecordid != null">
+				#{supplierrecordid,jdbcType=DECIMAL},
+			</if>
+			<if test="businesstype != null">
+				#{businesstype,jdbcType=DECIMAL},
+			</if>
+			<if test="isdefault != null">
+				#{isdefault,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 增加spm用户 -->
+	<insert id="supplierUserImport" parameterType="TcmnSpmuser" useGeneratedKeys="false" keyProperty="USERID">
+		insert into ET1_CHINA.TCMN_SPMUSER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				USERID,
+			</if>
+			<if test="userloginid != null">
+				USERLOGINID,
+			</if>
+			<if test="startdate != null">
+				STARTDATE,
+			</if>
+			<if test="enddate != null">
+				ENDDATE,
+			</if>
+			<if test="password != null">
+				PASSWORD,
+			</if>
+			<if test="username != null">
+				USERNAME,
+			</if>
+			<if test="roleid != null">
+				ROLEID,
+			</if>
+			<if test="communicationtype != null">
+				COMMUNICATIONTYPE,
+			</if>
+			<if test="mobileno != null">
+				MOBILENO,
+			</if>
+			<if test="emailid != null">
+				EMAILID,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+			<if test="availabletrypasscount != null">
+				AVAILABLETRYPASSCOUNT,
+			</if>
+			<if test="passwordinterval != null">
+				PASSWORDINTERVAL,
+			</if>
+			<if test="lockstatus != null">
+				LOCKSTATUS,
+			</if>
+			<if test="lockstartdatetime != null">
+				LOCKSTARTDATETIME,
+			</if>
+			<if test="lockinterval != null">
+				LOCKINTERVAL,
+			</if>
+			<if test="trypasscount != null">
+				TRYPASSCOUNT,
+			</if>
+			<if test="passwordcreateddatetime != null">
+				PASSWORDCREATEDDATETIME,
+			</if>
+			<if test="logmaximum != null">
+				LOGMAXIMUM,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=DECIMAL},
+			</if>
+			<if test="userloginid != null">
+				#{userloginid,jdbcType=VARCHAR},
+			</if>
+			<if test="startdate != null">
+				#{startdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="enddate != null">
+				#{enddate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="roleid != null">
+				#{roleid,jdbcType=DECIMAL},
+			</if>
+			<if test="communicationtype != null">
+				#{communicationtype,jdbcType=DECIMAL},
+			</if>
+			<if test="mobileno != null">
+				#{mobileno,jdbcType=VARCHAR},
+			</if>
+			<if test="emailid != null">
+				#{emailid,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=DECIMAL},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="availabletrypasscount != null">
+				#{availabletrypasscount,jdbcType=DECIMAL},
+			</if>
+			<if test="passwordinterval != null">
+				#{passwordinterval,jdbcType=DECIMAL},
+			</if>
+			<if test="lockstatus != null">
+				#{lockstatus,jdbcType=CHAR},
+			</if>
+			<if test="lockstartdatetime != null">
+				#{lockstartdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lockinterval != null">
+				#{lockinterval,jdbcType=DECIMAL},
+			</if>
+			<if test="trypasscount != null">
+				#{trypasscount,jdbcType=DECIMAL},
+			</if>
+			<if test="passwordcreateddatetime != null">
+				#{passwordcreateddatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="logmaximum != null">
+				#{logmaximum,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="getRowCount" parameterType="java.lang.String" resultType="int">
+		<![CDATA[
+			SELECT count(userloginid)
+			FROM ET1_CHINA.TCMN_SPMUSER  
+			WHERE userloginid = #{userloginid}
+		]]>
+	</select>
+	
+	<!-- 增加商品类别 -->
+	<insert id="supplierPrdSclassImport" parameterType="TscmProductsclass">
+		insert into ET1_CHINA.TSCM_PRODUCTSCLASS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="supplierid != null">
+				SUPPLIERID,
+			</if>
+			<if test="productsclass != null">
+				PRODUCTSCLASS,
+			</if>
+			<if test="productmclass != null">
+				PRODUCTMCLASS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="supplierid != null">
+				#{supplierid,jdbcType=DECIMAL},
+			</if>
+			<if test="productsclass != null">
+				#{productsclass,jdbcType=DECIMAL},
+			</if>
+			<if test="productmclass != null">
+				#{productmclass,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+</mapper> 

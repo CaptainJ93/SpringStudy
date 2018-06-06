@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ExportAuditSql">
+	<typeAlias alias="ExportAudit" type="com.best1.report.domain.ExportAudit" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select 
+			a.export_id,
+			a.export_file_name,
+			a.export_path,
+			a.export_userid,
+			(select USERNAME||'('||(select m.department_name from tb_best1_department m where m.department_id = n.departmentid)||')' from tb_best1_user n where userid = a.export_userid) as export_User_Name,
+			a.export_date,
+			a.status,
+			a.audit_id,
+			a.sensitive_data,
+			a.menu_name,
+			CASE a.status when '99' then '审核通过'
+            			  when '98' then '审核不通过'
+                          else  (select busi_status_desc from tb_best1_audit_define where audit_id = a.audit_id) end as status_Desc
+		from TB_BEST1_EXPORT_AUDIT a
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="exportId">
+				<![CDATA[
+					a.export_id = #exportId#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="exportUserid">
+				<![CDATA[
+					a.export_userid = #exportUserid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="exportUserName">
+				<![CDATA[
+					a.export_userid in (select userid from tb_best1_user where userloginid like '%$exportUserName$%' or username like '%$exportUserName$%')
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				<![CDATA[
+					a.status = #status#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="notstatus">
+			    a.status not in (
+			        <iterate property="notstatus" conjunction = ",">
+				        #notstatus[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="auditId">
+				<![CDATA[
+					a.audit_id = #auditId#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="exportDate1">
+				<![CDATA[
+					a.export_date >= to_date(#exportDate1#,'yyyy-MM-dd')
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="exportDate2">
+				<![CDATA[
+					a.export_date < to_date(#exportDate2#,'yyyy-MM-dd') + 1
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentId">
+				<![CDATA[
+					a.audit_id in (select AUDIT_ID from  tb_best1_audit_define where DEPARTMENT_ID = #departmentId#)
+				]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询 -->
+	<resultMap class="java.util.HashMap" id="getExportAudit">
+		<result property="exportId" column="EXPORT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="exportFileName" column="EXPORT_FILE_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="exportPath" column="EXPORT_PATH" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="exportUserid" column="EXPORT_USERID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="exportUserName" column="export_User_Name" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="exportDate" column="EXPORT_DATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="status" column="STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="auditId" column="AUDIT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="sensitiveData" column="SENSITIVE_DATA" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menuName" column="MENU_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="statusDesc" column="status_Desc" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getExportAudits" resultMap="getExportAudit" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		order by a.export_id desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countExportAudit" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_export_audit a
+		<include refid="Where_Clause" />
+	</select>
+	
+    <!-- 新增 -->
+	<insert id="insertExportAudit" parameterClass="java.util.HashMap">
+	insert into tb_best1_export_audit(
+	  export_id,
+	  export_file_name,
+	  export_path,
+      export_userid,
+	  export_date,
+	  status,
+	  audit_id,
+	  SENSITIVE_DATA,
+	  FILEPATH_TYPE,
+	  HOSTNAME,
+	  HOST_PORT,
+	  HOST_USERNAME,
+	  HOST_PASSWORD,
+	  MENU_NAME)
+    values(
+      SEQ_EXPORT_ID.NEXTVAL,
+      #exportFileName#,
+      #exportPath#,
+      #exportUserid#,
+      sysdate,
+      #status#,
+      #auditId#,
+      #sensitiveData#,
+      #filepathType#,
+      #hostname#,
+      #hostPort#,
+      #hostUsername#,
+      #hostPassword#,
+      #menuName#)
+    </insert>
+    
+    <!-- 修改 -->
+	<update id="updateExportAudit" parameterClass="java.util.HashMap">
+		update tb_best1_export_audit
+		set	status = #status#,audit_id = #auditId#
+		where export_id = #exportId#
+	</update>
+	
+	
+	<resultMap class="ExportAudit" id="getObj">
+		<result property="exportId" column="EXPORT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="exportFileName" column="EXPORT_FILE_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="exportPath" column="EXPORT_PATH" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="exportUserid" column="EXPORT_USERID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="exportDate" column="EXPORT_DATE" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/> 
+		<result property="status" column="STATUS" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="auditId" column="AUDIT_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="sensitiveData" column="SENSITIVE_DATA" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="filepathType" column="FILEPATH_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostname" column="HOSTNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostPort" column="HOST_PORT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostUsername" column="HOST_USERNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostPassword" column="HOST_PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	
+	<select id="getExportAuditObj" resultMap="getObj" parameterClass="java.util.HashMap">
+		select 
+			a.export_id,
+			a.export_file_name,
+			a.export_path,
+			a.export_userid,
+			a.export_date,
+			a.status,
+			a.audit_id,
+			a.sensitive_data,
+			a.FILEPATH_TYPE,
+			a.HOSTNAME,
+			a.HOST_PORT,
+			a.HOST_USERNAME,
+			a.HOST_PASSWORD
+		from TB_BEST1_EXPORT_AUDIT a
+		<include refid="Where_Clause" />
+	</select>
+	
+</sqlMap>

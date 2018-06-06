@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.vws.dao.CarrierInfoDao">
+    
+	<sql id="carrierInfoColumns">
+		a.carrierid AS "carrierid",
+		a.carriername AS "carriername",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.freeze AS "freeze",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="carrierInfoJoins">
+	</sql>
+    
+	<select id="get" resultType="CarrierInfo">
+		SELECT 
+			<include refid="carrierInfoColumns"/>
+		FROM scm_carrier a
+		<include refid="carrierInfoJoins"/>
+		WHERE a.carrierid = #{id}
+	</select>
+	
+	<select id="findList" resultType="CarrierInfo">
+		SELECT 
+			<include refid="carrierInfoColumns"/>
+		FROM scm_carrier a
+		<include refid="carrierInfoJoins"/>
+		where 	a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="carriername != null and carriername != null and carriername != ''">
+			AND a.carriername like CONCAT('%', #{carriername}, '%')  
+		</if>
+		<if test="carrierid != null and carrierid != null and carrierid != ''">
+			AND a.carrierid= #{carrierid} 
+		</if>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CarrierInfo">
+		SELECT 
+			<include refid="carrierInfoColumns"/>
+		FROM scm_carrier a
+		<include refid="carrierInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_carrier(
+			carrierid,
+			carriername,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			freeze,
+			del_flag
+		) VALUES (
+			#{carrierid},
+			#{carriername},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{freeze},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_carrier SET 	
+			carrierid = #{carrierid},
+			carriername = #{carriername},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			freeze = #{freeze}
+		WHERE carrierid = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE scm_carrier SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE carrierid = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.crm.TcrmCustomeraccountbalanceMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmCustomeraccountbalance" >
+    <id column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <id column="ACCOUNTTYPEID" property="accounttypeid" jdbcType="DECIMAL" />
+    <id column="ACCOUNTNO" property="accountno" jdbcType="DECIMAL" />
+    <result column="EFFECTIVEBALANCE" property="effectivebalance" jdbcType="DECIMAL" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+ 
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    
+    CUSTOMERID, ACCOUNTTYPEID, ACCOUNTNO, EFFECTIVEBALANCE, CREATEDBY, CREATEDTIMESTAMP, 
+    LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.crm.TcrmCustomeraccountbalanceExample" >
+  
+    select 
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.best1.api.entity.crm.TcrmCustomeraccountbalanceKey" >
+  
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+      and ACCOUNTTYPEID = #{accounttypeid,jdbcType=DECIMAL}
+      and ACCOUNTNO = #{accountno,jdbcType=DECIMAL}
+  </select>
+  
+   <select id="sumByPrimaryKey" resultType="java.lang.Double" parameterType="com.best1.api.entity.crm.TcrmCustomeraccountbalanceKey" >
+   SELECT 
+   SUM(EFFECTIVEBALANCE)
+    from ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+      and ACCOUNTTYPEID = #{accounttypeid,jdbcType=DECIMAL}
+      and ACCOUNTNO = #{accountno,jdbcType=DECIMAL}
+  </select>
+  
+  
+
+
+  <insert id="insertSelective" parameterType="com.best1.api.entity.crm.TcrmCustomeraccountbalance" >
+    
+    insert into ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="accounttypeid != null" >
+        ACCOUNTTYPEID,
+      </if>
+      <if test="accountno != null" >
+        ACCOUNTNO,
+      </if>
+      <if test="effectivebalance != null" >
+        EFFECTIVEBALANCE,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="accounttypeid != null" >
+        #{accounttypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="accountno != null" >
+        #{accountno,jdbcType=DECIMAL},
+      </if>
+      <if test="effectivebalance != null" >
+        #{effectivebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.crm.TcrmCustomeraccountbalanceExample" resultType="java.lang.Integer" >
+    
+    select count(*) from ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+
+    update ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    <set >
+      <if test="record.customerid != null" >
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.accounttypeid != null" >
+        ACCOUNTTYPEID = #{record.accounttypeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.accountno != null" >
+        ACCOUNTNO = #{record.accountno,jdbcType=DECIMAL},
+      </if>
+      <if test="record.effectivebalance != null" >
+        EFFECTIVEBALANCE = #{record.effectivebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="TcrmCustomeraccountbalance" >
+  
+    update ET1_CHINA.TCRM_CUSTOMERACCOUNTBALANCE
+    <set >
+      <if test="effectivebalance != null" >
+        EFFECTIVEBALANCE = #{effectivebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+      and ACCOUNTTYPEID = #{accounttypeid,jdbcType=DECIMAL}
+      and ACCOUNTNO = #{accountno,jdbcType=DECIMAL}
+  </update>
+ 
+</mapper>

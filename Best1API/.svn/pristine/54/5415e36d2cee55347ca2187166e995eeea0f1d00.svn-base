@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.best1.api.mapper.cmn.TcmnBatchMapper">
+
+<insert id="batchrequest" parameterType="TcmnBatchrequest" useGeneratedKeys="false" keyProperty="requestid">
+
+<selectKey keyProperty="requestid" resultType="java.lang.Long" order="BEFORE">  
+    select S_BATCHREQUEST.NEXTVAL from dual  
+</selectKey>
+
+<![CDATA[
+INSERT INTO TCMN_BATCHREQUEST
+  (REQUESTID,
+   BATCHID,
+   RUNDATE,
+   REQUESTEDBY,
+   REQUESTEDTIMESTAMP,
+   REQUESTSTATUS)
+VALUES
+  (#{requestid:DECIMAL}, #{batchid:DECIMAL},  sysdate, 
+  #{requestedby:DECIMAL}, sysdate, #{requeststatus:DECIMAL})
+]]>
+</insert>
+
+</mapper> 

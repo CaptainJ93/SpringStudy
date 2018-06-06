@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="QuerySql">
+	<typeAlias alias="FilePathCof" type="com.best1.report.domain.FilePathCof" />
+	
+	<resultMap class="FilePathCof" id="getFilePathCof">
+		<result property="businessCode" column="BUSINESS_CODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="filepathType" column="FILEPATH_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="filepath" column="FILEPATH" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostname" column="HOSTNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostPort" column="HOST_PORT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostUsername" column="HOST_USERNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostPassword" column="HOST_PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="remark" column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<!-- 查询文件导出配置信息 -->
+	<select id="getFilePathCofs" resultMap="getFilePathCof" parameterClass="java.util.HashMap">
+		select 
+		   a.business_code,
+	       a.filepath_type,
+	       a.filepath,
+	       a.hostname,
+	       a.host_port,
+	       a.host_username,
+	       a.host_password,
+	       a.remark
+		from tb_best1_filepath_cof a
+ 		where a.business_code = #businessCode#
+	</select>
+    
+	<resultMap class="com.best1.report.domain.QueryModel" id="getQueryModel">
+		<result property="id" column="id" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="pId" column="pId" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="name" column="name" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="openFlag" column="openFlag" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+    <!-- 查询会员等级 -->
+	<select id="getMemberShipLevel" resultMap="getQueryModel" parameterClass="java.util.HashMap">
+		select 0 as id,-1 as pId,'全部' as name,'true' as openFlag from dual
+		union all 
+		select membershiplevelid as id,0 as pId,membershiplevelexternalname||membershiplevelinternalname as name,'false' as openFlag from tcrm_membershipleveldefinition 
+		where valid='Y' order by id
+	</select>
+	
+	<!-- tcmn_domaindata表通用查询-->
+	<select id="getDomainData" resultMap="getQueryModel" parameterClass="java.util.HashMap">
+		select 0 as id,-1 as pId,'全部' as name,'true' as openFlag from dual
+		union all 
+		select domaincode as id,parentcode as pid,shortnametaiwaneese as name,'false' as openFlag from tcmn_domaindata where domainname=#domainname#
+	</select>
+	
+	<!-- 商品大、中、小类 -->
+	<select id="getProductClass" resultMap="getQueryModel" parameterClass="java.util.HashMap">
+		select 0 as id,-1 as pId,'全部' as name,'true' as openFlag from dual
+		union all
+		select domaincode as id, parentcode as pId,shortnametaiwaneese as name,'false' as openFlag from tcmn_productclasscodes
+	</select>
+	
+	<!-- 查询通路 -->
+	<select id="getSubchannel" resultMap="getQueryModel" parameterClass="java.util.HashMap">
+		select 0 as id,-1 as pId,'全部' as name,'true' as openFlag from dual
+		union all
+		select id,pId,name, openFlag from (
+		select a.subchannelid as id, 0 as pId, a.subchannelname as name,'false' as openFlag from TB_CHANNELINFODETAIL a order by a.ordercc desc)
+	</select>
+	
+	<!-- 客诉主因 -->
+	<select id="getComplaintCategory" resultMap="getQueryModel" parameterClass="java.util.HashMap">
+		select 0 as id,-1 as pId,'全部' as name,'true' as openFlag from dual
+		union all  
+		select a.headingid id,0 as pId,a.headingname as name,'flase' as openFlag from et1_warehouse.TCRM_COMPLAINTHEADINGDETAILS a where a.headingid in (
+		       select distinct hd1.headingid
+		      from (select decode(ctt.headinglevelid, 0, a2, a1) as node1,
+		                   decode(ctt.headinglevelid, 1, a2, null) as node2,
+		                   ctt.complaintcategoryid
+		              from (select ct.headinglevelid,
+		                           nodeid,
+		                           substr(ct.nodeid, 1, instr(ct.nodeid, '|', 1) - 1) a1,
+		                           substr(ct.nodeid, instr(ct.nodeid, '|', 1) + 1) as a2,
+		                           ct.complaintcategoryid
+		                      from TCRM_CATEGORYTREE CT) ctt
+		             start with ctt.headinglevelid = 0 　　connect by prior a2 = a1) ct1,
+		           et1_warehouse.TCRM_COMPLAINTHEADINGDETAILS hd1,
+		           et1_warehouse.TCRM_COMPLAINTHEADINGDETAILS hd2
+		     where ct1.node1 = hd1.HEADINGID
+		       and ct1.node2 = hd2.HEADINGID
+		   )
+		union all   
+		select ct1.complaintcategoryid as id,hd1.headingid as pId,hd2.headingname as name,'flase' as openFlag
+		  from (select decode(ctt.headinglevelid, 0, a2, a1) as node1,
+		               decode(ctt.headinglevelid, 1, a2, null) as node2,
+		               ctt.complaintcategoryid
+		          from (select ct.headinglevelid,
+		                       nodeid,
+		                       substr(ct.nodeid, 1, instr(ct.nodeid, '|', 1) - 1) a1,
+		                       substr(ct.nodeid, instr(ct.nodeid, '|', 1) + 1) as a2,
+		                       ct.complaintcategoryid
+		                  from TCRM_CATEGORYTREE CT) ctt
+		         start with ctt.headinglevelid = 0 　　connect by prior a2 = a1) ct1,
+		       et1_warehouse.TCRM_COMPLAINTHEADINGDETAILS hd1,
+		       et1_warehouse.TCRM_COMPLAINTHEADINGDETAILS hd2
+		 where ct1.node1 = hd1.HEADINGID
+		   and ct1.node2 = hd2.HEADINGID
+	</select>
+	
+	<resultMap class="com.best1.report.domain.AreaZipCodeModel" id="getAreaZipCode">
+		<result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pId" column="pId" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="name" column="name" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="openFlag" column="openFlag" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+    <!-- 查询省市区，将浙江省放在首位 -->
+	<select id="getAreaZipCodes" resultMap="getAreaZipCode" parameterClass="java.util.HashMap">
+		select '0' as id,'-1' as pId,'全国' as name,'true' as openFlag from dual
+		union all 
+		select distinct province id,'0' pId,province as name,'false' as openFlag from tb_areazipcode where province = '浙江省'
+	    union all 
+	    select distinct province id,'0' pId,province as name,'false' as openFlag from tb_areazipcode where province != '浙江省'
+	    union all
+	    select distinct city id,province,city as name,'false' as openFlag from tb_areazipcode where province != '澳门' and province != '香港'
+	    union all
+	    select distinct to_char(ZIPCODE) id,city,AREA as name,'false' as openFlag from tb_areazipcode where province != '澳门' and province != '香港'
+	</select>
+	
+	<!-- 查询省市，将浙江省放在首位 -->
+	<select id="getCityCodes" resultMap="getAreaZipCode" parameterClass="java.util.HashMap">
+		select '0' as id,'-1' as pId,'全国' as name,'true' as openFlag from dual
+		union all 
+		select distinct province id,'0' pId,province as name,'false' as openFlag from tb_areazipcode where province = '浙江省'
+	    union all 
+	    select distinct province id,'0' pId,province as name,'false' as openFlag from tb_areazipcode where province != '浙江省'
+	    union all
+	    select distinct to_char(TELCODE) id,province,city as name,'false' as openFlag from tb_areazipcode where province != '澳门' and province != '香港'
+	</select>
+	
+</sqlMap>

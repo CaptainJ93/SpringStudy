@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.chm.TchmWebchannelproductselMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.chm.TchmWebchannelproductsel" >
+    <id column="WEBPRODUCTTOBECAMPAIGNEDID" property="webproducttobecampaignedid" jdbcType="DECIMAL" />
+    <result column="WEBSUBCHANNELID" property="websubchannelid" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="STARTDATE" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="PLANNEDQUANTITY" property="plannedquantity" jdbcType="DECIMAL" />
+    <result column="PRICE" property="price" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="MULTICODEID" property="multicodeid" jdbcType="DECIMAL" />
+    <result column="ENDDATE" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="NEWVERSION" property="newversion" jdbcType="DECIMAL" />
+    <result column="PURCHASEREQUESTNO" property="purchaserequestno" jdbcType="DECIMAL" />
+    <result column="CHANGETYPE" property="changetype" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="PRODUCTTYPE" property="producttype" jdbcType="DECIMAL" />
+    <result column="PARENTPRODUCTID" property="parentproductid" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+   
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    WEBPRODUCTTOBECAMPAIGNEDID, WEBSUBCHANNELID, PRODUCTID, COLOURCODE, COLOURCLASS, 
+    STYLECODE, STYLECLASS, STARTDATE, PLANNEDQUANTITY, PRICE, STATUS, MULTICODEID, ENDDATE, 
+    CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, NEWVERSION, PURCHASEREQUESTNO, 
+    CHANGETYPE, PRODUCTVERSION, PRODUCTTYPE, PARENTPRODUCTID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.chm.TchmWebchannelproductselExample" >
+   select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCHM_WEBCHANNELPRODUCTSEL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCHM_WEBCHANNELPRODUCTSEL
+    where WEBPRODUCTTOBECAMPAIGNEDID = #{webproducttobecampaignedid,jdbcType=DECIMAL}
+  </select>
+  
+</mapper>

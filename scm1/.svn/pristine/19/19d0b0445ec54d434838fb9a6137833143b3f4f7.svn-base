@@ -1,0 +1,727 @@
+请求地址：http://localhost:8080/scm/a/express/listfordeliveryorder
+请求方法：POST
+
+header:
+
+code:
+username:
+validatecode:
+userid:
+type:1002
+
+请求参数：
+createdtime
+
+
+结果:
+
+
+[
+    {
+        "trackingnumber": "zj--004",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": []
+    },
+    {
+        "trackingnumber": "zj--009",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--002",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": []
+    },
+    {
+        "trackingnumber": "zj--008",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--001",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": []
+    },
+    {
+        "trackingnumber": "zj--002",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": []
+    },
+    {
+        "trackingnumber": "zj--a11",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--010",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--006",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--110",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--110",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--a11",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--002",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": []
+    },
+    {
+        "trackingnumber": "zj--006",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1001",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--110",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--004",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": []
+    },
+    {
+        "trackingnumber": "zj--008",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1001",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--007",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1001",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    },
+    {
+        "trackingnumber": "zj--008",
+        "customerid": "3100002",
+        "customermobnumber": "0571-87650150",
+        "customertelnumber": "15024457933",
+        "customername": "张杰",
+        "receivingzipcode": "310000",
+        "receivingaddress1": "浙江省杭州市江干区",
+        "receivingaddress2": "浙江传媒学院演播大楼一楼",
+        "packagecodnum": "31100.0",
+        "packageweight": "7895.2",
+        "actualshipdate": "Thu Mar 10 13:36:00 CST 2016",
+        "remarks": "null",
+        "packagetype": "1000",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productnum": "1"
+            }
+        ]
+    }
+]

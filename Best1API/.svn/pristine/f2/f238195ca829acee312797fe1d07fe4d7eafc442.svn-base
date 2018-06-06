@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiSuppliermasterMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiSuppliermaster" >
+  
+    <result column="SUPPLIERID" property="supplierid" jdbcType="DECIMAL" />
+    <result column="SUPPLIERCOMPANYNAME" property="suppliercompanyname" jdbcType="VARCHAR" />
+    <result column="SUPPLIERREGNO" property="supplierregno" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSON" property="contactperson" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONNAMELOGISTICS" property="contactpersonnamelogistics" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONCOUNTRYCODE" property="contactpersoncountrycode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONAREACODE" property="contactpersonareacode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONPHONENO" property="contactpersonphoneno" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONEXTENSION" property="contactpersonextension" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONFAXCOUNTRYCODE" property="contactpersonfaxcountrycode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONFAXAREACODE" property="contactpersonfaxareacode" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONFAXNO" property="contactpersonfaxno" jdbcType="VARCHAR" />
+    <result column="SUPPLIERLEVEL" property="supplierlevel" jdbcType="VARCHAR" />
+    <result column="LOGISTICDETAILS" property="logisticdetails" jdbcType="VARCHAR" />
+    <result column="CONTACTPERSONMOBILENO" property="contactpersonmobileno" jdbcType="VARCHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="BATCHID" property="batchid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+  
+    SUPPLIERID, SUPPLIERCOMPANYNAME, SUPPLIERREGNO, CONTACTPERSON, CONTACTPERSONNAMELOGISTICS, 
+    CONTACTPERSONCOUNTRYCODE, CONTACTPERSONAREACODE, CONTACTPERSONPHONENO, CONTACTPERSONEXTENSION, 
+    CONTACTPERSONFAXCOUNTRYCODE, CONTACTPERSONFAXAREACODE, CONTACTPERSONFAXNO, SUPPLIERLEVEL, 
+    LOGISTICDETAILS, CONTACTPERSONMOBILENO, RECORDCREATEDTIME, BATCHID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiSuppliermasterExample" >
+    
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_SUPPLIERMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.best1.api.entity.vwms.TvwsApiSuppliermasterExample" resultType="java.lang.Integer" >
+  
+    select count(*) from ET1_CHINA.TVWS_API_SUPPLIERMASTER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+</mapper>

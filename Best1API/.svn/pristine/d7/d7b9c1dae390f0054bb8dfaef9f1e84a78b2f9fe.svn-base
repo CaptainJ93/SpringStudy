@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafOrderedproductMapper">
+
+<resultMap id="BaseResultMap" type="com.best1.api.entity.oaf.order.ToafOrderedproduct" >
+  
+    <id column="ORDERID" property="orderid" jdbcType="DECIMAL" />
+    <id column="ITEMID" property="itemid" jdbcType="DECIMAL" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="COMPANYID" property="companyid" jdbcType="DECIMAL" />
+    <result column="MULTICODEID" property="multicodeid" jdbcType="DECIMAL" />
+    <result column="DELIVERYADDRESSID" property="deliveryaddressid" jdbcType="DECIMAL" />
+    <result column="INVOICEADDRESSID" property="invoiceaddressid" jdbcType="DECIMAL" />
+    <result column="QUANTITY" property="quantity" jdbcType="DECIMAL" />
+    <result column="DELIVERYTYPE" property="deliverytype" jdbcType="DECIMAL" />
+    <result column="PRIORITY" property="priority" jdbcType="DECIMAL" />
+    <result column="SALETYPE" property="saletype" jdbcType="DECIMAL" />
+    <result column="ISOFFSHOREDELIVERY" property="isoffshoredelivery" jdbcType="CHAR" />
+    <result column="ISKIT" property="iskit" jdbcType="CHAR" />
+    <result column="PAYMENTSTATUS" property="paymentstatus" jdbcType="DECIMAL" />
+    <result column="ORDERSTATUS" property="orderstatus" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="ISCODPAYMENT" property="iscodpayment" jdbcType="CHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="PRICE" property="price" jdbcType="DECIMAL" />
+    <result column="TAX" property="tax" jdbcType="DECIMAL" />
+    <result column="TAXTYPE" property="taxtype" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="SERVICEFEE" property="servicefee" jdbcType="DECIMAL" />
+    <result column="BONUSPOINTSGAINED" property="bonuspointsgained" jdbcType="DECIMAL" />
+    <result column="DISCOUNTAMOUNT" property="discountamount" jdbcType="DECIMAL" />
+    <result column="OFFSHOREDELIVERYCHARGES" property="offshoredeliverycharges" jdbcType="DECIMAL" />
+    <result column="PRODUCTAMOUNT" property="productamount" jdbcType="DECIMAL" />
+    <result column="READYTOSHIPDATE" property="readytoshipdate" jdbcType="TIMESTAMP" />
+    <result column="ADDRESSTYPE" property="addresstype" jdbcType="CHAR" />
+    <result column="ISPROMOTIONALPRODUCT" property="ispromotionalproduct" jdbcType="CHAR" />
+    <result column="PRODUCTNAME" property="productname" jdbcType="VARCHAR" />
+    <result column="VERIFICATIONSTATUS" property="verificationstatus" jdbcType="DECIMAL" />
+    <result column="TRAVELCARDUSED" property="travelcardused" jdbcType="CHAR" />
+    <result column="CHANGEDPRICE" property="changedprice" jdbcType="DECIMAL" />
+    <result column="PRICECHANGEAPPROVEDBY" property="pricechangeapprovedby" jdbcType="DECIMAL" />
+    <result column="VERIFICATIONRESULT" property="verificationresult" jdbcType="DECIMAL" />
+    <result column="SHIPREADY" property="shipready" jdbcType="CHAR" />
+    <result column="ONEDAYSHIPPREF" property="onedayshippref" jdbcType="VARCHAR" />
+  </resultMap>
+ <sql id="Update_OrderedProduct_Where_Clause" >
+  
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+ <sql id="Base_OrderPorductColumn_List" >
+    ORDERID, ITEMID, CUSTOMERID, PRODUCTID, COMPANYID, MULTICODEID, DELIVERYADDRESSID, 
+    INVOICEADDRESSID, QUANTITY, DELIVERYTYPE, PRIORITY, SALETYPE, ISOFFSHOREDELIVERY, 
+    ISKIT, PAYMENTSTATUS, ORDERSTATUS, PRODUCTVERSION, ISCODPAYMENT, CREATEDBY, CREATEDTIMESTAMP, 
+    LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, PRICE, TAX, TAXTYPE, COLOURCODE, COLOURCLASS, 
+    STYLECODE, STYLECLASS, SERVICEFEE, BONUSPOINTSGAINED, DISCOUNTAMOUNT, OFFSHOREDELIVERYCHARGES, 
+    PRODUCTAMOUNT, READYTOSHIPDATE, ADDRESSTYPE, ISPROMOTIONALPRODUCT, PRODUCTNAME, VERIFICATIONSTATUS, 
+    TRAVELCARDUSED, CHANGEDPRICE, PRICECHANGEAPPROVEDBY, VERIFICATIONRESULT, SHIPREADY, 
+    ONEDAYSHIPPREF
+  </sql>
+
+<update id="updateOrderedproductByExampleSelective" parameterType="map" >
+  
+    update ET1_CHINA.TOAF_ORDEREDPRODUCT
+    <set >
+      <if test="record.orderid != null" >
+        ORDERID = #{record.orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.itemid != null" >
+        ITEMID = #{record.itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null" >
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productid != null" >
+        PRODUCTID = #{record.productid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.companyid != null" >
+        COMPANYID = #{record.companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.multicodeid != null" >
+        MULTICODEID = #{record.multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliveryaddressid != null" >
+        DELIVERYADDRESSID = #{record.deliveryaddressid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.invoiceaddressid != null" >
+        INVOICEADDRESSID = #{record.invoiceaddressid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantity != null" >
+        QUANTITY = #{record.quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliverytype != null" >
+        DELIVERYTYPE = #{record.deliverytype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.priority != null" >
+        PRIORITY = #{record.priority,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saletype != null" >
+        SALETYPE = #{record.saletype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isoffshoredelivery != null" >
+        ISOFFSHOREDELIVERY = #{record.isoffshoredelivery,jdbcType=CHAR},
+      </if>
+      <if test="record.iskit != null" >
+        ISKIT = #{record.iskit,jdbcType=CHAR},
+      </if>
+      <if test="record.paymentstatus != null" >
+        PAYMENTSTATUS = #{record.paymentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderstatus != null" >
+        ORDERSTATUS = #{record.orderstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productversion != null" >
+        PRODUCTVERSION = #{record.productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.iscodpayment != null" >
+        ISCODPAYMENT = #{record.iscodpayment,jdbcType=CHAR},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.price != null" >
+        PRICE = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tax != null" >
+        TAX = #{record.tax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.taxtype != null" >
+        TAXTYPE = #{record.taxtype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.colourcode != null" >
+        COLOURCODE = #{record.colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.colourclass != null" >
+        COLOURCLASS = #{record.colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stylecode != null" >
+        STYLECODE = #{record.stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.styleclass != null" >
+        STYLECLASS = #{record.styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="record.servicefee != null" >
+        SERVICEFEE = #{record.servicefee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bonuspointsgained != null" >
+        BONUSPOINTSGAINED = #{record.bonuspointsgained,jdbcType=DECIMAL},
+      </if>
+      <if test="record.discountamount != null" >
+        DISCOUNTAMOUNT = #{record.discountamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.offshoredeliverycharges != null" >
+        OFFSHOREDELIVERYCHARGES = #{record.offshoredeliverycharges,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productamount != null" >
+        PRODUCTAMOUNT = #{record.productamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.readytoshipdate != null" >
+        READYTOSHIPDATE = #{record.readytoshipdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addresstype != null" >
+        ADDRESSTYPE = #{record.addresstype,jdbcType=CHAR},
+      </if>
+      <if test="record.ispromotionalproduct != null" >
+        ISPROMOTIONALPRODUCT = #{record.ispromotionalproduct,jdbcType=CHAR},
+      </if>
+      <if test="record.productname != null" >
+        PRODUCTNAME = #{record.productname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verificationstatus != null" >
+        VERIFICATIONSTATUS = #{record.verificationstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.travelcardused != null" >
+        TRAVELCARDUSED = #{record.travelcardused,jdbcType=CHAR},
+      </if>
+      <if test="record.changedprice != null" >
+        CHANGEDPRICE = #{record.changedprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pricechangeapprovedby != null" >
+        PRICECHANGEAPPROVEDBY = #{record.pricechangeapprovedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.verificationresult != null" >
+        VERIFICATIONRESULT = #{record.verificationresult,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shipready != null" >
+        SHIPREADY = #{record.shipready,jdbcType=CHAR},
+      </if>
+      <if test="record.onedayshippref != null" >
+        ONEDAYSHIPPREF = #{record.onedayshippref,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_OrderedProduct_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <select id="fetchOrderId"  resultType="Long"   >
+     select  Platform_API.sf_get_orderid() as result from dual
+  </select>
+     
+<select id="createTempOrder" statementType="CALLABLE" parameterType="java.util.Map" >
+    <![CDATA[
+     {call Platform_API.sp_ins_tbieorder(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_ORDERTYPE,mode=IN,jdbcType=DECIMAL},
+     #{P_ITEMID,mode=IN,jdbcType=DECIMAL},
+     #{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+     #{P_CUSTOMERNAME,mode=IN,jdbcType=VARCHAR},
+     #{P_CALLATTENDEDBY,mode=IN,jdbcType=DECIMAL},
+     #{P_MULTICODEID,mode=IN,jdbcType=DECIMAL},
+     #{P_PRODUCTID,mode=IN,jdbcType=DECIMAL},
+     #{P_PRODUCTVERSION,mode=IN,jdbcType=DECIMAL},
+     #{P_ISOFFSHOREDELIVERY,mode=IN,jdbcType=VARCHAR},
+     #{P_COLOURCODE,mode=IN,jdbcType=DECIMAL},
+     #{P_COLOURCLASS,mode=IN,jdbcType=DECIMAL},
+     #{P_STYLECODE,mode=IN,jdbcType=DECIMAL},
+     #{P_STYLECLASS,mode=IN,jdbcType=DECIMAL},
+     #{P_SERVICEFEE,mode=IN,jdbcType=DECIMAL},
+     #{P_BOUNSPOINTSGAINED,mode=IN,jdbcType=DECIMAL},
+     #{P_OFFSHOREDELIVERYCHARGES,mode=IN,jdbcType=DECIMAL},
+     #{P_DISCOUNT,mode=IN,jdbcType=DECIMAL},
+     #{P_PRODUCTNAME,mode=IN,jdbcType=VARCHAR},
+     #{P_RECEIVERNAME,mode=IN,jdbcType=VARCHAR},
+     #{P_ADDRESSID,mode=IN,jdbcType=DECIMAL},
+     #{P_SELLINGPRICE,mode=IN,jdbcType=DECIMAL},
+     #{P_INVOICETYPE,mode=IN,jdbcType=DECIMAL},
+     #{P_TAXTYPE,mode=IN,jdbcType=DECIMAL},
+     #{P_PAYMENTMODEID,mode=IN,jdbcType=DECIMAL},
+     #{P_INVOICETITLE,mode=IN,jdbcType=VARCHAR},
+     #{P_ISREPRINTED,mode=IN,jdbcType=VARCHAR},
+     #{P_ISEINVOICE,mode=IN,jdbcType=VARCHAR},
+     #{P_COMPANYNO,mode=IN,jdbcType=DECIMAL}, 
+     #{P_INVOICERECEIVERNAME,mode=IN,jdbcType=VARCHAR},
+     #{P_INSTRUCTIONTOSCM,mode=IN,jdbcType=VARCHAR},
+     #{P_ORDER_DESC,mode=IN,jdbcType=VARCHAR},
+     #{P_ISPROMOTIONALPRODUCT,mode=IN,jdbcType=VARCHAR},
+     #{P_STORECHAINID,mode=IN,jdbcType=DECIMAL},
+     #{P_STOREID,mode=IN,jdbcType=DECIMAL},
+     #{P_SUBDELIVERYTYPE,mode=IN,jdbcType=DECIMAL},
+     #{ri_RtnCode,mode=OUT,jdbcType=DECIMAL}
+     )}
+     ]]>
+  </select>
+
+ 
+   <select id="createTempPayment" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.sp_ins_tbiepayment(
+     #{ai_Orderid,mode=IN,jdbcType=DECIMAL},
+     #{ai_IsAcntFirst,mode=IN,jdbcType=DECIMAL},
+     #{ai_IsHongliOK,mode=IN,jdbcType=DECIMAL},
+     #{ai_PaymentModeID,mode=IN,jdbcType=DECIMAL},
+     #{ai_Transferaccno,mode=IN,jdbcType=DECIMAL},
+     #{ri_RtnCode,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+     <select id="createOrderTempPayment" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.insert_orderpayment(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_PAYMENTMODEID,mode=IN,jdbcType=DECIMAL},
+     #{P_TRANSFERACCNO,mode=IN,jdbcType=DECIMAL},
+     #{ri_RtnCode,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+  
+
+    <select id="createOrder" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.insert_platfororder(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+     #{P_CALLATTENDEDBY,mode=IN,jdbcType=DECIMAL},
+     #{P_LOTTERYBONUS,mode=IN,jdbcType=DECIMAL},
+     #{P_SUBCHANNELID,mode=IN,jdbcType=DECIMAL},
+     #{P_AREACODE,mode=IN,jdbcType=VARCHAR},
+     #{P_REFEREEID,mode=IN,jdbcType=VARCHAR},
+     #{P_REFEREETYPE,mode=IN,jdbcType=DECIMAL},
+     #{P_RTN_PAYMENTAMOUNT,mode=OUT,jdbcType=DECIMAL},
+     #{P_RTN_CODE,mode=OUT,jdbcType=VARCHAR},
+     #{P_RTN_MSG,mode=OUT,jdbcType=VARCHAR})}
+  </select>
+  
+  
+<select id="postOrderReceivable" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.sp_ins_postacknowledgement(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+     #{P_PAYERNAME,mode=IN,jdbcType=VARCHAR},
+     #{P_RECEIPTNO,mode=IN,jdbcType=VARCHAR},
+     #{P_RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+     #{P_RTN_MSG,mode=OUT,jdbcType=VARCHAR})}
+ </select>
+  
+     <select id="webLotteryBonusPay" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.Web_LotteryBonusPay(
+     #{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_ITEMID,mode=IN,jdbcType=DECIMAL},
+     #{P_USERID,mode=IN,jdbcType=DECIMAL},
+     #{P_PRODUCTPRICE,mode=IN,jdbcType=DECIMAL},
+     #{r_payneed,mode=IN,jdbcType=VARCHAR},
+     #{r_status,mode=OUT,jdbcType=VARCHAR})}
+  </select>
+  
+  
+ <select id="selectCustomerOrderInfo" parameterType="com.best1.api.entity.oaf.order.CustomerOrderInfo" resultType="com.best1.api.entity.oaf.order.CustomerOrderInfo">		
+select od.ordertype,
+       od.createdby,
+       od.createdtimestamp,
+       op.orderid,
+       op.itemid,
+       op.customerid,
+       op.companyid,
+       op.productid,
+       op.productname,
+       op.colourcode,
+       op.colourclass,
+       op.stylecode,
+       op.styleclass,
+       op.quantity,
+       op.orderstatus,
+       op.paymentstatus,
+       op.iscodpayment,
+       op.addresstype,
+       op.price,
+       op.productamount,
+       op.discountamount,
+       op.ispromotionalproduct,
+       op.isoffshoredelivery,
+       op.offshoredeliverycharges,
+       op.changedprice,
+       op.multicodeid,
+       op.deliverytype,
+       ad.address1,
+       ad.address2,
+       ad.hometelephoneareacode,
+       ad.hometelephonenumber,
+       ad.mobilenumber,
+       adx.receivername,
+       cso.shiporderid,
+       cso.sequenceno,
+       cso.warehouseid,
+       cso.selectedcarrier,
+       cso.deliveryorderid,
+       cso.actualshippeddate,
+       cso.actualdeliverydate,
+       cso.arriveatstoredate,
+       cso.scheduleddeliverydate,
+       cso.codamount,
+       cso.status,
+       cso.supplierid,
+       cso.reasoncode
+
+  from toaf_order             od,
+       toaf_orderedproduct    op,
+       tscm_customershiporder cso,
+       tcrm_customeraddress   ad,
+       Toaf_Addressextrainfo  adx
+ where od.orderid = op.orderid
+   and op.orderid= cso.orderid(+)
+   and op.itemid= cso.itemid(+)
+   and op.deliveryaddressid = ad.addressid
+   and op.customerid = ad.customerid
+   and adx.addressid = ad.addressid
+   <if test="orderid == null">
+   and op.createdtimestamp>=trunc(sysdate-(365))
+   </if>
+	<if test="customerid != null">
+			and 	op.customerid=#{customerid}
+		</if>
+		<if test="orderid != null">
+				and op.orderid=#{orderid}
+		</if>
+		<if test="itemid != null">
+				and op.itemid=#{itemid}
+		</if>
+		
+	
+	</select>
+	
+	
+	
+	  
+ <select id="selectOrderreasoninfo" parameterType="com.best1.api.entity.oaf.order.TscmOrderreasoninfo" resultType="com.best1.api.entity.oaf.order.TscmOrderreasoninfo">		
+select  *
+
+  from TSCM_ORDERREASONINFO
+  
+<trim prefix="where" prefixOverrides="and |or">
+   
+	<if test="rosoid != null">
+		rosoid=#{rosoid}
+		</if>
+		<if test="rososequence != null">
+				and rososequence=#{rososequence}
+		</if>
+		<if test="isshiporder != null">
+				and isshiporder=#{isshiporder}
+		</if>
+
+		</trim>
+	
+	</select>
+	
+	
+	<select id="offerSearch" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.OFFER_SEARCH(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+     #{P_RTN_MSG,mode=OUT,jdbcType=VARCHAR})}
+ </select>
+ 
+ 	<select id="offerInsert" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.INSERT_OFFER(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_CouponNumber,mode=IN,jdbcType=DECIMAL},
+     #{P_coupontype,mode=IN,jdbcType=DECIMAL},
+     #{p_coupongroupnumber,mode=IN,jdbcType=DECIMAL},
+     #{p_usage,mode=IN,jdbcType=DECIMAL},
+     #{P_offervalue_percent,mode=IN,jdbcType=DECIMAL},
+     #{p_offervalue,mode=IN,jdbcType=DECIMAL},
+     #{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+     #{P_CALLATTENDEDBY,mode=IN,jdbcType=DECIMAL},
+     #{P_PRODUCTID,mode=IN,jdbcType=DECIMAL},
+     #{P_PRODUCTVERSION,mode=IN,jdbcType=DECIMAL},
+     #{P_SELLINGPRICE,mode=IN,jdbcType=DECIMAL},
+     #{P_QTY,mode=IN,jdbcType=DECIMAL},
+     #{P_RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+     #{P_rtn_msg,mode=OUT,jdbcType=VARCHAR})}
+ </select>
+ 
+ 	<select id="insertOrderOffer" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.insert_orderoffer(
+       #{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+       #{P_CUSTOMERNAME,mode=IN,jdbcType=VARCHAR},
+       #{p_TAIWANID,mode=IN,jdbcType=VARCHAR},
+       #{P_ADDRESSID,mode=IN,jdbcType=DECIMAL},
+       #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+       #{P_ISOFFSHOREDELIVERY,mode=IN,jdbcType=VARCHAR},
+       #{P_RSTRECORDID,mode=IN,jdbcType=DECIMAL},
+       #{P_EXCLUSIVEFLAG,mode=IN,jdbcType=VARCHAR},
+       #{P_ISRETURNABLE,mode=IN,jdbcType=DECIMAL},
+       #{P_RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+       #{P_RTN_MSG,mode=OUT,jdbcType=VARCHAR})}
+ </select>
+ 
+ 	<select id="insertOrderafter" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.insert_order_after(
+     #{P_ORDERID,mode=IN,jdbcType=DECIMAL},
+     #{P_RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+     #{P_RTN_MSG,mode=OUT,jdbcType=VARCHAR})}
+ </select>
+ 
+ 
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="ToafOrderedproductKey" >
+    
+    select 
+    <include refid="Base_OrderPorductColumn_List" />
+    from ET1_CHINA.TOAF_ORDEREDPRODUCT
+    where ORDERID = #{orderid,jdbcType=DECIMAL}
+      and ITEMID = #{itemid,jdbcType=DECIMAL}
+  </select>
+  
+  
+  
+ <update id="updateByPrimaryKeySelective" parameterType="ToafOrderedproduct" >
+   
+    update ET1_CHINA.TOAF_ORDEREDPRODUCT
+    <set >
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null" >
+        PRODUCTID = #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="companyid != null" >
+        COMPANYID = #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="multicodeid != null" >
+        MULTICODEID = #{multicodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryaddressid != null" >
+        DELIVERYADDRESSID = #{deliveryaddressid,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceaddressid != null" >
+        INVOICEADDRESSID = #{invoiceaddressid,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        QUANTITY = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverytype != null" >
+        DELIVERYTYPE = #{deliverytype,jdbcType=DECIMAL},
+      </if>
+      <if test="priority != null" >
+        PRIORITY = #{priority,jdbcType=DECIMAL},
+      </if>
+      <if test="saletype != null" >
+        SALETYPE = #{saletype,jdbcType=DECIMAL},
+      </if>
+      <if test="isoffshoredelivery != null" >
+        ISOFFSHOREDELIVERY = #{isoffshoredelivery,jdbcType=CHAR},
+      </if>
+      <if test="iskit != null" >
+        ISKIT = #{iskit,jdbcType=CHAR},
+      </if>
+      <if test="paymentstatus != null" >
+        PAYMENTSTATUS = #{paymentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="orderstatus != null" >
+        ORDERSTATUS = #{orderstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="productversion != null" >
+        PRODUCTVERSION = #{productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="iscodpayment != null" >
+        ISCODPAYMENT = #{iscodpayment,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="tax != null" >
+        TAX = #{tax,jdbcType=DECIMAL},
+      </if>
+      <if test="taxtype != null" >
+        TAXTYPE = #{taxtype,jdbcType=DECIMAL},
+      </if>
+      <if test="colourcode != null" >
+        COLOURCODE = #{colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="colourclass != null" >
+        COLOURCLASS = #{colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="stylecode != null" >
+        STYLECODE = #{stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="styleclass != null" >
+        STYLECLASS = #{styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="servicefee != null" >
+        SERVICEFEE = #{servicefee,jdbcType=DECIMAL},
+      </if>
+      <if test="bonuspointsgained != null" >
+        BONUSPOINTSGAINED = #{bonuspointsgained,jdbcType=DECIMAL},
+      </if>
+      <if test="discountamount != null" >
+        DISCOUNTAMOUNT = #{discountamount,jdbcType=DECIMAL},
+      </if>
+      <if test="offshoredeliverycharges != null" >
+        OFFSHOREDELIVERYCHARGES = #{offshoredeliverycharges,jdbcType=DECIMAL},
+      </if>
+      <if test="productamount != null" >
+        PRODUCTAMOUNT = #{productamount,jdbcType=DECIMAL},
+      </if>
+      <if test="readytoshipdate != null" >
+        READYTOSHIPDATE = #{readytoshipdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addresstype != null" >
+        ADDRESSTYPE = #{addresstype,jdbcType=CHAR},
+      </if>
+      <if test="ispromotionalproduct != null" >
+        ISPROMOTIONALPRODUCT = #{ispromotionalproduct,jdbcType=CHAR},
+      </if>
+      <if test="productname != null" >
+        PRODUCTNAME = #{productname,jdbcType=VARCHAR},
+      </if>
+      <if test="verificationstatus != null" >
+        VERIFICATIONSTATUS = #{verificationstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="travelcardused != null" >
+        TRAVELCARDUSED = #{travelcardused,jdbcType=CHAR},
+      </if>
+      <if test="changedprice != null" >
+        CHANGEDPRICE = #{changedprice,jdbcType=DECIMAL},
+      </if>
+      <if test="pricechangeapprovedby != null" >
+        PRICECHANGEAPPROVEDBY = #{pricechangeapprovedby,jdbcType=DECIMAL},
+      </if>
+      <if test="verificationresult != null" >
+        VERIFICATIONRESULT = #{verificationresult,jdbcType=DECIMAL},
+      </if>
+      <if test="shipready != null" >
+        SHIPREADY = #{shipready,jdbcType=CHAR},
+      </if>
+      <if test="onedayshippref != null" >
+        ONEDAYSHIPPREF = #{onedayshippref,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORDERID = #{orderid,jdbcType=DECIMAL}
+      and ITEMID = #{itemid,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="selectCustomerOrderPay" parameterType="com.best1.api.entity.oaf.order.CustomerOrderPayment" resultType="com.best1.api.entity.oaf.order.CustomerOrderPayment">		
+ SELECT op.customerid,
+        OP.Orderid,
+        OP.itemid,
+        op.productid,
+        OP.Productname,
+        op.colourcode,
+        op.colourclass,
+        op.stylecode,
+        op.styleclass,
+        OP.createdtimestamp,
+        PM.PAYMENTID,
+        PM.PAYMENTSTATUS,
+        PM.PAYMENTAMOUNT,
+        PM.PAYMENTMODEID,
+        PM.Balanceamount,
+        TA.payableto,
+        TA.transferaccno
+   FROM Toaf_Orderedproduct     OP,
+        TOAF_ORDERPAYMENT       PM,
+        TOAF_PAYBYPOST          PAY,
+        TOAF_TRANSFERACCNOSETUP TA
+  WHERE OP.Orderid = PM.Orderid
+    AND OP.Itemid = PM.Itemid
+    AND PM.PAYMENTID = PAY.PAYMENTID
+    AND PAY.TRANSFERACCNO = TA.TRANSFERACCNO
+    and TA.transferacctype=1006
+    and PM.paymentstatus=3202
+    and op.createdby!=30184
+	<if test="customerid != null">
+	and op.customerid=#{customerid}
+	</if>
+	<if test="orderid != null">
+	and op.orderid=#{orderid}
+	</if>
+	<if test="itemid != null">
+	and op.itemid=#{itemid}
+	</if>
+	<if test="paymentid != null">
+	and 	PM.PAYMENTID=#{paymentid}
+	</if>
+	
+	<if test="transferaccno != null">
+	and 	TA.transferaccno=#{transferaccno}
+	</if>
+	order by OP.Orderid desc 
+	</select>
+	
+  
+</mapper> 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"> 
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+   <dubbo:application name="dubbo-webService-app"/>
+   <!-- 使用zookeeper注册中心暴露服务地址 -->
+  <dubbo:registry address="zookeeper://192.168.100.218:2181" />
+
+    <!-- 用webservice协议在8080端口暴露服务 -->
+  <dubbo:protocol name="webservice" port="10080" server="servlet" />
+
+
+    <!-- 声明需要暴露的服务接口 -->
+  <dubbo:service interface="com.best1.api.webservice.soap.view.SupplierViewSoapService"  ref="supplierViewSoapService" />
+  
+  <dubbo:service interface="com.best1.api.webservice.soap.view.OrderedProductViewSoapService"  ref="orderedProductViewSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.view.SupplierShipOrderViewSoapService"  ref="supplierShipOrderViewSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.view.ReturnToVenderViewSoapService"  ref="returnToVenderViewSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.view.ReturnOrderViewSoapService"  ref="returnOrderViewSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.view.OrderPaymentViewSoapService"  ref="orderPaymentViewSoapService" /> 
+   
+  
+  <dubbo:service interface="com.best1.api.webservice.soap.oaf.CustomerOrderSoapService"  ref="customerOrderSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.crm.CustomerSoapService"  ref="customerSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.scm.ProductSoapService"  ref="productSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.chm.PgmSoapService"  ref="pgmSoapService" />
+  <dubbo:service interface="com.best1.api.webservice.soap.scm.SupplierSoapService"  ref="supplierSoapService" />
+     
+    <!-- 和本地bean一样实现服务 -->
+   <bean id="supplierViewSoapService" class="com.best1.api.webservice.soap.view.impl.SupplierViewSoapServiceImpl" />
+   <bean id="orderedProductViewSoapService"	class="com.best1.api.webservice.soap.view.impl.OrderedProductViewSoapServiceImpl" />
+
+   <bean id="supplierShipOrderViewSoapService"	class="com.best1.api.webservice.soap.view.impl.SupplierShipOrderViewSoapServiceImpl" />
+
+   <bean id="returnToVenderViewSoapService"	class="com.best1.api.webservice.soap.view.impl.ReturnToVenderViewSoapServiceImpl" />
+
+   <bean id="returnOrderViewSoapService"	class="com.best1.api.webservice.soap.view.impl.ReturnOrderViewSoapServiceImpl" />
+
+   <bean id="orderPaymentViewSoapService"	class="com.best1.api.webservice.soap.view.impl.OrderPaymentViewSoapServiceImpl" />
+    
+    
+   <bean id="customerSoapService"  class="com.best1.api.webservice.soap.crm.impl.CustomerSoapServiceImpl" />
+
+   <bean id="customerOrderSoapService" class="com.best1.api.webservice.soap.oaf.impl.CustomerOrderSoapServiceImpl" />
+
+   <bean id="productSoapService"	class="com.best1.api.webservice.soap.scm.impl.ProductSoapServiceImpl" />
+
+   <bean id="pgmSoapService"	class="com.best1.api.webservice.soap.chm.impl.PgmSoapServiceImpl" />
+
+   <bean id="supplierSoapService"	class="com.best1.api.webservice.soap.scm.impl.SupplierSoapServiceImpl" />
+
+	
+</beans>

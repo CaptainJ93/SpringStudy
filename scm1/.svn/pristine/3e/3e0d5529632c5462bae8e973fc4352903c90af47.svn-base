@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.supplier.dao.ScmSupplierSupplierinfoDao">
+    
+	<sql id="scmSupplierSupplierinfoColumns">
+		a.id AS "id",
+		a.supplierid AS "supplierid",
+		a.supplierregno AS "supplierregno",
+		a.supplierregpassword AS "supplierregpassword",
+		a.suppliercompanyname AS "suppliercompanyname",
+		a.zipcode AS "zipcode",
+		a.address1 AS "address1",
+		a.address2 AS "address2",
+		a.contactperson AS "contactperson",
+		a.contactphone AS "contactphone",
+		a.supplierlevel AS "supplierlevel",
+		a.logisticdetails AS "logisticdetails",
+		a.supplierstatus AS "supplierstatus",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="scmSupplierSupplierinfoJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmSupplierSupplierinfo">
+		SELECT 
+			<include refid="scmSupplierSupplierinfoColumns"/>
+		FROM scm_supplier_supplierinfo a
+		<include refid="scmSupplierSupplierinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmSupplierSupplierinfo">
+		SELECT 
+			<include refid="scmSupplierSupplierinfoColumns"/>
+		FROM scm_supplier_supplierinfo a
+		<include refid="scmSupplierSupplierinfoJoins"/>
+		<where>
+			<if test="supplierid != null and supplierid != ''">
+				supplierid = #{supplierid}
+		   </if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmSupplierSupplierinfo">
+		SELECT 
+			<include refid="scmSupplierSupplierinfoColumns"/>
+		FROM scm_supplier_supplierinfo a
+		<include refid="scmSupplierSupplierinfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_supplier_supplierinfo(
+			id,
+			supplierid,
+			supplierregno,
+			supplierregpassword,
+			suppliercompanyname,
+			zipcode,
+			address1,
+			address2,
+			contactperson,
+			contactphone,
+			supplierlevel,
+			logisticdetails,
+			supplierstatus,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{supplierid},
+			#{supplierregno},
+			#{supplierregpassword},
+			#{suppliercompanyname},
+			#{zipcode},
+			#{address1},
+			#{address2},
+			#{contactperson},
+			#{contactphone},
+			#{supplierlevel},
+			#{logisticdetails},
+			#{supplierstatus},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_supplier_supplierinfo SET 	
+			supplierid = #{supplierid},
+			supplierregno = #{supplierregno},
+			<if test="supplierregpassword != null and supplierregpassword != ''">
+				supplierregpassword = #{supplierregpassword},
+		   </if>
+		
+			suppliercompanyname = #{suppliercompanyname},
+			zipcode = #{zipcode},
+			address1 = #{address1},
+			address2 = #{address2},
+			contactperson = #{contactperson},
+			contactphone = #{contactphone},
+			supplierlevel = #{supplierlevel},
+			logisticdetails = #{logisticdetails},
+			supplierstatus = #{supplierstatus},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_supplier_supplierinfo
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

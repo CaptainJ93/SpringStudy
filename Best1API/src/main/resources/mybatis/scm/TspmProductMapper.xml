@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.scm.TspmProductMapper">
+
+	<sql id="Example_Where_Clause">
+
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+
+
+  <select id="selectSpmscmproductByExample" resultType="TscmSpmscmproduct" parameterType="TscmSpmscmproductExample" >
+
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+     SEQUENCENO, SPMPRODUCTID, SCMPRODUCTID
+    from ET1_CHINA.TSCM_SPMSCMPRODUCT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+  <select id="selectSpmProductByExample" resultType="TspmProduct" parameterType="TspmProductExample" >
+  
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+   PRODUCTID, SUPPLIERID, MANUFACTURERNAME, PRODUCTCATEGORY, PRODUCTSTATUS, MAXIMUMQUANTITY, 
+    COSTPRICE, REALSUPPLIERID, REALSUPPLIERNAME, PRODUCTNAME1, PRODUCTNAME2, CREATEDBY, 
+    CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, LEADTIME, ECONOMICORDERQUANTITY, 
+    MAXIMUMDISCOUNTQUANTITY, QUANTITYPROCESSEDPERDAY, WIDTHBEFOREPACKING, WIDTHAFTERPACKING, 
+    HEIGHTBEFOREPACKING, HEIGHTAFTERPACKING, LENGTHBEFOREPACKING, LENGTHAFTERPACKING, 
+    WEIGHTBEFOREPACKING, WEIGHTAFTERPACKING, WARRANTYPERIOD, SELLINGPRICE, MARKETPRICE, 
+    SHIPPINGPRICE, OFFSHOREDELIVERY, GIFTPACKAGE, USERMANUAL, WARRANTY, BRANDNAME, MANUFACTURINGPLACE, 
+    NOTESFORDELIVERY, PRODUCTIMAGEPATH, BOXID, DELIVERYTYPE, RETURNTYPE, SUBDELIVERYTYPE, 
+    SUBRETURNTYPE, SALESTYPE, COMMISIONTYPE, COMMISSIONRATE, LCLASSCODE, MCLASSCODE, 
+    SCLASSCODE, PURCHASEID, MDID, POTYPE, COMPANYID
+    
+    from ET1_CHINA.TSPM_PRODUCT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+ 
+  <select id="selectProductwarehouseByExample" resultType="TspmProductwarehouse" parameterType="TspmProductwarehouseExample" >
+    
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    PRODUCTID, WAREHOUSEID, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP
+    from ET1_CHINA.TSPM_PRODUCTWAREHOUSE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectProductcolourstyleByExample" resultType="TspmProductcolourstyle" parameterType="TspmProductcolourstyleExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    COLOURSTYLEID, PRODUCTID, COLOURCODE, STYLECODE, COLOURCLASS, STYLECLASS, FORSALE, 
+    CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, QUANTITY
+    from ET1_CHINA.TSPM_PRODUCTCOLOURSTYLE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+
+  <select id="selectProductattributeByExample" resultType="TspmProductattribute" parameterType="TspmProductattributeExample" >
+  
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+      PRODUCTID, ATTRIBUTECATEGORYID, ATTRIBUTEVALUE, CREATEDBY, CREATEDTIMESTAMP
+    from ET1_CHINA.TSPM_PRODUCTATTRIBUTE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <sql id="SpmProduct_Base_Column_List" >
+ 
+    PRODUCTID, SUPPLIERID, MANUFACTURERNAME, PRODUCTCATEGORY, PRODUCTSTATUS, MAXIMUMQUANTITY, 
+    COSTPRICE, REALSUPPLIERID, REALSUPPLIERNAME, PRODUCTNAME1, PRODUCTNAME2, CREATEDBY, 
+    CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, LEADTIME, ECONOMICORDERQUANTITY, 
+    MAXIMUMDISCOUNTQUANTITY, QUANTITYPROCESSEDPERDAY, WIDTHBEFOREPACKING, WIDTHAFTERPACKING, 
+    HEIGHTBEFOREPACKING, HEIGHTAFTERPACKING, LENGTHBEFOREPACKING, LENGTHAFTERPACKING, 
+    WEIGHTBEFOREPACKING, WEIGHTAFTERPACKING, WARRANTYPERIOD, SELLINGPRICE, MARKETPRICE, 
+    SHIPPINGPRICE, OFFSHOREDELIVERY, GIFTPACKAGE, USERMANUAL, WARRANTY, BRANDNAME, MANUFACTURINGPLACE, 
+    NOTESFORDELIVERY, PRODUCTIMAGEPATH, BOXID, DELIVERYTYPE, RETURNTYPE, SUBDELIVERYTYPE, 
+    SUBRETURNTYPE, SALESTYPE, COMMISIONTYPE, COMMISSIONRATE, LCLASSCODE, MCLASSCODE, 
+    SCLASSCODE, PURCHASEID, MDID, POTYPE, COMPANYID
+  </sql>
+  
+    <select id="selectSpmProductByPrimaryKey" resultType="TspmProduct" parameterType="java.lang.Long" >
+  
+    select 
+    <include refid="SpmProduct_Base_Column_List" />
+    from ET1_CHINA.TSPM_PRODUCT
+    where PRODUCTID = #{productid,jdbcType=DECIMAL}
+  </select>
+	<!-- 插入用户： 1.由数据库生成id并赋值到对象 2.输入用对象, -->
+
+	<insert id="createspmProduct" parameterType="TspmProduct"
+		useGeneratedKeys="false" keyProperty="productid">
+		<selectKey keyProperty="productid" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_SPMPRODUCT.nextval from dual
+		</selectKey>
+		insert into ET1_CHINA.TSPM_PRODUCT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				PRODUCTID,
+			</if>
+			<if test="supplierid != null">
+				SUPPLIERID,
+			</if>
+			<if test="manufacturername != null">
+				MANUFACTURERNAME,
+			</if>
+			<if test="productcategory != null">
+				PRODUCTCATEGORY,
+			</if>
+			<if test="productstatus != null">
+				PRODUCTSTATUS,
+			</if>
+			<if test="maximumquantity != null">
+				MAXIMUMQUANTITY,
+			</if>
+			<if test="costprice != null">
+				COSTPRICE,
+			</if>
+			<if test="realsupplierid != null">
+				REALSUPPLIERID,
+			</if>
+			<if test="realsuppliername != null">
+				REALSUPPLIERNAME,
+			</if>
+			<if test="productname1 != null">
+				PRODUCTNAME1,
+			</if>
+			<if test="productname2 != null">
+				PRODUCTNAME2,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+			<if test="leadtime != null">
+				LEADTIME,
+			</if>
+			<if test="economicorderquantity != null">
+				ECONOMICORDERQUANTITY,
+			</if>
+			<if test="maximumdiscountquantity != null">
+				MAXIMUMDISCOUNTQUANTITY,
+			</if>
+			<if test="quantityprocessedperday != null">
+				QUANTITYPROCESSEDPERDAY,
+			</if>
+			<if test="widthbeforepacking != null">
+				WIDTHBEFOREPACKING,
+			</if>
+			<if test="widthafterpacking != null">
+				WIDTHAFTERPACKING,
+			</if>
+			<if test="heightbeforepacking != null">
+				HEIGHTBEFOREPACKING,
+			</if>
+			<if test="heightafterpacking != null">
+				HEIGHTAFTERPACKING,
+			</if>
+			<if test="lengthbeforepacking != null">
+				LENGTHBEFOREPACKING,
+			</if>
+			<if test="lengthafterpacking != null">
+				LENGTHAFTERPACKING,
+			</if>
+			<if test="weightbeforepacking != null">
+				WEIGHTBEFOREPACKING,
+			</if>
+			<if test="weightafterpacking != null">
+				WEIGHTAFTERPACKING,
+			</if>
+			<if test="warrantyperiod != null">
+				WARRANTYPERIOD,
+			</if>
+			<if test="sellingprice != null">
+				SELLINGPRICE,
+			</if>
+			<if test="marketprice != null">
+				MARKETPRICE,
+			</if>
+			<if test="shippingprice != null">
+				SHIPPINGPRICE,
+			</if>
+			<if test="offshoredelivery != null">
+				OFFSHOREDELIVERY,
+			</if>
+			<if test="giftpackage != null">
+				GIFTPACKAGE,
+			</if>
+			<if test="usermanual != null">
+				USERMANUAL,
+			</if>
+			<if test="warranty != null">
+				WARRANTY,
+			</if>
+			<if test="brandname != null">
+				BRANDNAME,
+			</if>
+			<if test="manufacturingplace != null">
+				MANUFACTURINGPLACE,
+			</if>
+			<if test="notesfordelivery != null">
+				NOTESFORDELIVERY,
+			</if>
+			<if test="productimagepath != null">
+				PRODUCTIMAGEPATH,
+			</if>
+			<if test="boxid != null">
+				BOXID,
+			</if>
+			<if test="deliverytype != null">
+				DELIVERYTYPE,
+			</if>
+			<if test="returntype != null">
+				RETURNTYPE,
+			</if>
+			<if test="subdeliverytype != null">
+				SUBDELIVERYTYPE,
+			</if>
+			<if test="subreturntype != null">
+				SUBRETURNTYPE,
+			</if>
+			<if test="salestype != null">
+				SALESTYPE,
+			</if>
+			<if test="commisiontype != null">
+				COMMISIONTYPE,
+			</if>
+			<if test="commissionrate != null">
+				COMMISSIONRATE,
+			</if>
+			<if test="lclasscode != null">
+				LCLASSCODE,
+			</if>
+			<if test="mclasscode != null">
+				MCLASSCODE,
+			</if>
+			<if test="sclasscode != null">
+				SCLASSCODE,
+			</if>
+			<if test="purchaseid != null">
+				PURCHASEID,
+			</if>
+			<if test="mdid != null">
+				MDID,
+			</if>
+			<!-- Added by fanxuankai 2014-09-17 采购单类别 -->
+			<if test="potype != null">
+				POTYPE,
+			</if>
+			<!-- Added by fanxuankai 2014-09-25 专属公司 -->
+			<if test="companyid != null">
+				COMPANYID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				#{productid,jdbcType=DECIMAL},
+			</if>
+			<if test="supplierid != null">
+				#{supplierid,jdbcType=DECIMAL},
+			</if>
+			<if test="manufacturername != null">
+				#{manufacturername,jdbcType=VARCHAR},
+			</if>
+			<if test="productcategory != null">
+				#{productcategory,jdbcType=DECIMAL},
+			</if>
+			<if test="productstatus != null">
+				#{productstatus,jdbcType=DECIMAL},
+			</if>
+			<if test="maximumquantity != null">
+				#{maximumquantity,jdbcType=DECIMAL},
+			</if>
+			<if test="costprice != null">
+				#{costprice,jdbcType=DECIMAL},
+			</if>
+			<if test="realsupplierid != null">
+				#{realsupplierid,jdbcType=DECIMAL},
+			</if>
+			<if test="realsuppliername != null">
+				#{realsuppliername,jdbcType=VARCHAR},
+			</if>
+			<if test="productname1 != null">
+				#{productname1,jdbcType=VARCHAR},
+			</if>
+			<if test="productname2 != null">
+				#{productname2,jdbcType=VARCHAR},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="leadtime != null">
+				#{leadtime,jdbcType=DECIMAL},
+			</if>
+			<if test="economicorderquantity != null">
+				#{economicorderquantity,jdbcType=DECIMAL},
+			</if>
+			<if test="maximumdiscountquantity != null">
+				#{maximumdiscountquantity,jdbcType=DECIMAL},
+			</if>
+			<if test="quantityprocessedperday != null">
+				#{quantityprocessedperday,jdbcType=DECIMAL},
+			</if>
+			<if test="widthbeforepacking != null">
+				#{widthbeforepacking,jdbcType=DECIMAL},
+			</if>
+			<if test="widthafterpacking != null">
+				#{widthafterpacking,jdbcType=DECIMAL},
+			</if>
+			<if test="heightbeforepacking != null">
+				#{heightbeforepacking,jdbcType=DECIMAL},
+			</if>
+			<if test="heightafterpacking != null">
+				#{heightafterpacking,jdbcType=DECIMAL},
+			</if>
+			<if test="lengthbeforepacking != null">
+				#{lengthbeforepacking,jdbcType=DECIMAL},
+			</if>
+			<if test="lengthafterpacking != null">
+				#{lengthafterpacking,jdbcType=DECIMAL},
+			</if>
+			<if test="weightbeforepacking != null">
+				#{weightbeforepacking,jdbcType=DECIMAL},
+			</if>
+			<if test="weightafterpacking != null">
+				#{weightafterpacking,jdbcType=DECIMAL},
+			</if>
+			<if test="warrantyperiod != null">
+				#{warrantyperiod,jdbcType=DECIMAL},
+			</if>
+			<if test="sellingprice != null">
+				#{sellingprice,jdbcType=DECIMAL},
+			</if>
+			<if test="marketprice != null">
+				#{marketprice,jdbcType=DECIMAL},
+			</if>
+			<if test="shippingprice != null">
+				#{shippingprice,jdbcType=DECIMAL},
+			</if>
+			<if test="offshoredelivery != null">
+				#{offshoredelivery,jdbcType=CHAR},
+			</if>
+			<if test="giftpackage != null">
+				#{giftpackage,jdbcType=CHAR},
+			</if>
+			<if test="usermanual != null">
+				#{usermanual,jdbcType=CHAR},
+			</if>
+			<if test="warranty != null">
+				#{warranty,jdbcType=CHAR},
+			</if>
+			<if test="brandname != null">
+				#{brandname,jdbcType=VARCHAR},
+			</if>
+			<if test="manufacturingplace != null">
+				#{manufacturingplace,jdbcType=VARCHAR},
+			</if>
+			<if test="notesfordelivery != null">
+				#{notesfordelivery,jdbcType=VARCHAR},
+			</if>
+			<if test="productimagepath != null">
+				#{productimagepath,jdbcType=VARCHAR},
+			</if>
+			<if test="boxid != null">
+				#{boxid,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverytype != null">
+				#{deliverytype,jdbcType=DECIMAL},
+			</if>
+			<if test="returntype != null">
+				#{returntype,jdbcType=DECIMAL},
+			</if>
+			<if test="subdeliverytype != null">
+				#{subdeliverytype,jdbcType=DECIMAL},
+			</if>
+			<if test="subreturntype != null">
+				#{subreturntype,jdbcType=DECIMAL},
+			</if>
+			<if test="salestype != null">
+				#{salestype,jdbcType=DECIMAL},
+			</if>
+			<if test="commisiontype != null">
+				#{commisiontype,jdbcType=DECIMAL},
+			</if>
+			<if test="commissionrate != null">
+				#{commissionrate,jdbcType=DECIMAL},
+			</if>
+			<if test="lclasscode != null">
+				#{lclasscode,jdbcType=DECIMAL},
+			</if>
+			<if test="mclasscode != null">
+				#{mclasscode,jdbcType=DECIMAL},
+			</if>
+			<if test="sclasscode != null">
+				#{sclasscode,jdbcType=DECIMAL},
+			</if>
+			<if test="purchaseid != null">
+				#{purchaseid,jdbcType=DECIMAL},
+			</if>
+			<if test="mdid != null">
+				#{mdid,jdbcType=DECIMAL},
+			</if>
+			<!-- Added by fanxuankai 2014-09-17 采购单类别 -->
+			<if test="potype != null">
+				#{potype,jdbcType=DECIMAL},
+			</if>
+			<!-- Added by fanxuankai 2014-09-25 专属公司 -->
+			<if test="companyid != null">
+				#{companyid,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+
+	<insert id="spmProductImageImport" parameterType="TscmProductimage">
+		<selectKey keyProperty="imagekey" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_PRODUCTIMAGE.NEXTVAL from dual
+		</selectKey>
+		insert into ET1_CHINA.TSCM_PRODUCTIMAGE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				PRODUCTID,
+			</if>
+			<if test="productversion != null">
+				PRODUCTVERSION,
+			</if>
+			<if test="spmproductid != null">
+				SPMPRODUCTID,
+			</if>
+			<if test="imagekey != null">
+				IMAGEKEY,
+			</if>
+			<if test="imagepath != null">
+				IMAGEPATH,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="imagedescrption != null">
+				IMAGEDESCRPTION,
+			</if>
+			<if test="imagetype != null">
+				IMAGETYPE,
+			</if>
+			<if test="orginalfilename != null">
+				ORGINALFILENAME,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				#{productid,jdbcType=DECIMAL},
+			</if>
+			<if test="productversion != null">
+				#{productversion,jdbcType=DECIMAL},
+			</if>
+			<if test="spmproductid != null">
+				#{spmproductid,jdbcType=DECIMAL},
+			</if>
+			<if test="imagekey != null">
+				#{imagekey,jdbcType=DECIMAL},
+			</if>
+			<if test="imagepath != null">
+				#{imagepath,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=DECIMAL},
+			</if>
+			<if test="imagedescrption != null">
+				#{imagedescrption,jdbcType=VARCHAR},
+			</if>
+			<if test="imagetype != null">
+				#{imagetype,jdbcType=DECIMAL},
+			</if>
+			<if test="orginalfilename != null">
+				#{orginalfilename,jdbcType=VARCHAR},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="spmProductGeneralImport" parameterType="TspmProductgeneral">
+
+		<selectKey keyProperty="productmiscinfoid" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_SPMPRODUCTGENERAL.nextval from dual
+		</selectKey>
+
+		insert into ET1_CHINA.TSPM_PRODUCTGENERAL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productmiscinfoid != null">
+				PRODUCTMISCINFOID,
+			</if>
+			<if test="productid != null">
+				PRODUCTID,
+			</if>
+			<if test="generalinfocode != null">
+				GENERALINFOCODE,
+			</if>
+			<if test="commentsequence != null">
+				COMMENTSEQUENCE,
+			</if>
+			<if test="comments != null">
+				COMMENTS,
+			</if>
+			<if test="commenttype != null">
+				COMMENTTYPE,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productmiscinfoid != null">
+				#{productmiscinfoid,jdbcType=DECIMAL},
+			</if>
+			<if test="productid != null">
+				#{productid,jdbcType=DECIMAL},
+			</if>
+			<if test="generalinfocode != null">
+				#{generalinfocode,jdbcType=DECIMAL},
+			</if>
+			<if test="commentsequence != null">
+				#{commentsequence,jdbcType=DECIMAL},
+			</if>
+			<if test="comments != null">
+				#{comments,jdbcType=VARCHAR},
+			</if>
+			<if test="commenttype != null">
+				#{commenttype,jdbcType=CHAR},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<insert id="spmProductColourStyleImport" parameterType="TspmProductcolourstyle">
+
+		<selectKey keyProperty="colourstyleid" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_SPMPRODUCTCOLOURSTYLE.nextval from dual
+		</selectKey>
+		insert into ET1_CHINA.TSPM_PRODUCTCOLOURSTYLE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="colourstyleid != null">
+				COLOURSTYLEID,
+			</if>
+			<if test="productid != null">
+				PRODUCTID,
+			</if>
+			<if test="colourcode != null">
+				COLOURCODE,
+			</if>
+			<if test="stylecode != null">
+				STYLECODE,
+			</if>
+			<if test="colourclass != null">
+				COLOURCLASS,
+			</if>
+			<if test="styleclass != null">
+				STYLECLASS,
+			</if>
+			<if test="forsale != null">
+				FORSALE,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+			<if test="quantity != null">
+				QUANTITY,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="colourstyleid != null">
+				#{colourstyleid,jdbcType=DECIMAL},
+			</if>
+			<if test="productid != null">
+				#{productid,jdbcType=DECIMAL},
+			</if>
+			<if test="colourcode != null">
+				#{colourcode,jdbcType=DECIMAL},
+			</if>
+			<if test="stylecode != null">
+				#{stylecode,jdbcType=DECIMAL},
+			</if>
+			<if test="colourclass != null">
+				#{colourclass,jdbcType=DECIMAL},
+			</if>
+			<if test="styleclass != null">
+				#{styleclass,jdbcType=DECIMAL},
+			</if>
+			<if test="forsale != null">
+				#{forsale,jdbcType=CHAR},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="quantity != null">
+				#{quantity,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+
+
+	<select id="spmProductGeneralSequenceMax"
+		parameterType="com.best1.api.entity.scm.spm.TspmProductgeneralExample"
+		resultType="java.lang.Integer">
+		select max(commentsequence) from ET1_CHINA.TSPM_PRODUCTGENERAL
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+
+
+
+	<insert id="spmProductWarehouseImport" parameterType="TspmProductwarehouse">
+
+		insert into ET1_CHINA.TSPM_PRODUCTWAREHOUSE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				PRODUCTID,
+			</if>
+			<if test="warehouseid != null">
+				WAREHOUSEID,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY,
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				#{productid,jdbcType=DECIMAL},
+			</if>
+			<if test="warehouseid != null">
+				#{warehouseid,jdbcType=DECIMAL},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				#{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				#{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="spmProductattributeImport" parameterType="TspmProductattribute">
+
+		insert into ET1_CHINA.TSPM_PRODUCTATTRIBUTE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				PRODUCTID,
+			</if>
+			<if test="attributecategoryid != null">
+				ATTRIBUTECATEGORYID,
+			</if>
+			<if test="attributevalue != null">
+				ATTRIBUTEVALUE,
+			</if>
+			<if test="createdby != null">
+				CREATEDBY,
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productid != null">
+				#{productid,jdbcType=DECIMAL},
+			</if>
+			<if test="attributecategoryid != null">
+				#{attributecategoryid,jdbcType=DECIMAL},
+			</if>
+			<if test="attributevalue != null">
+				#{attributevalue,jdbcType=DECIMAL},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				#{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+
+</mapper> 

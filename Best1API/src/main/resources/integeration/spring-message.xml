@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:stream="http://www.springframework.org/schema/integration/stream"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration 
+		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/integration/stream
+		http://www.springframework.org/schema/integration/stream/spring-integration-stream-4.0.xsd
+		http://www.springframework.org/schema/integration/jdbc 
+		http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc-4.0.xsd">
+		
+		
+<context:property-placeholder location="classpath:config/*.properties,classpath*:/application.properties"/>
+	
+<context:component-scan base-package="com.best1.integration"/>
+<!--  
+  <int:channel id="jdbcChannel"/> 
+   <int-jdbc:inbound-channel-adapter channel="jdbcChannel" 
+         data-source="dataSource"
+query="select  CUSTOMERMESSAGEID  , CUSTOMERID , MESSAGETYPE  ,CREATEDBY  ,CREATEDTIMESTAMP ,LASTMODIFIEDBY ,LASTMODIFIEDTIMESTAMP ,TARGETOBJ,PRIORITY , MESSAGE ,PLAN_TIME ,SEND_TIME ,STATUS ,VALUEID,VALUETYPE from et1_china.TCRM_CUSTOMERMESSAGE where STATUS=1000 and MESSAGETYPE=2003 order by PRIORITY"
+update="update et1_china.TCRM_CUSTOMERMESSAGE  set status='1001',LASTMODIFIEDBY=1,LASTMODIFIEDTIMESTAMP=sysdate where CUSTOMERMESSAGEID in (:CUSTOMERMESSAGEID)">
+        每隔多少毫秒去抓取  
+       <int:poller fixed-rate="5000" >
+            <int:transactional/>
+        </int:poller>
+    </int-jdbc:inbound-channel-adapter>
+    
+  <int:service-activator input-channel="jdbcChannel" ref="jdbcMessageHandler"/>   
+  
+  
+  
+  
+  <int:channel id="payChannel"/> 
+   <int-jdbc:inbound-channel-adapter channel="payChannel" 
+         data-source="dataSource"
+query="select  CUSTOMERMESSAGEID  , CUSTOMERID , MESSAGETYPE  ,CREATEDBY  ,CREATEDTIMESTAMP ,LASTMODIFIEDBY ,LASTMODIFIEDTIMESTAMP ,TARGETOBJ,PRIORITY , MESSAGE ,PLAN_TIME ,SEND_TIME ,STATUS ,VALUEID,VALUETYPE from et1_china.TCRM_CUSTOMERMESSAGE where STATUS=1000 and MESSAGETYPE=1000 order by PRIORITY"
+update="update et1_china.TCRM_CUSTOMERMESSAGE  set status='1001',LASTMODIFIEDBY=1,LASTMODIFIEDTIMESTAMP=sysdate where CUSTOMERMESSAGEID in (:CUSTOMERMESSAGEID)">
+        每隔多少毫秒去抓取  
+       <int:poller fixed-rate="5000" >
+            <int:transactional/>
+        </int:poller>
+    </int-jdbc:inbound-channel-adapter>
+    
+  <int:service-activator input-channel="payChannel" ref="payMessageHandler"/>   
+  
+  -->
+  
+  
+    <int:channel id="messageChannel"/> 
+   <int-jdbc:inbound-channel-adapter channel="messageChannel" 
+         data-source="dataSource"
+query="select sms.CUSTOMERMESSAGEID,  CUSTOMERID,   MESSAGETYPE,   CREATEDBY,     CREATEDTIMESTAMP,     LASTMODIFIEDBY,    LASTMODIFIEDTIMESTAMP,     TARGETOBJ,     PRIORITY,      MESSAGE,     PLAN_TIME,     SEND_TIME,    STATUS,    VALUEID,    VALUETYPE from et1_china.TCRM_CUSTOMERMESSAGE sms,  (select *       from (select b.CUSTOMERMESSAGEID               from  et1_china.TCRM_CUSTOMERMESSAGE b ,(select black.contactnumber from et1_china.Tcrm_Customerblacklist black  where black.sms=1001)blac      where b.STATUS = 1000       and b.MESSAGETYPE in (1000,2000,2002,2003,2004,3000,3001)  and b.PLAN_TIME &lt;=  sysdate    and b.TARGETOBJ=blac.contactnumber(+) and blac.contactnumber is null        order by b.priority,   b.PLAN_TIME,  b.CUSTOMERMESSAGEID)        where rownum &lt;= 800) send   where sms.CUSTOMERMESSAGEID = send.CUSTOMERMESSAGEID "
+update="update et1_china.TCRM_CUSTOMERMESSAGE  set status='1001',LASTMODIFIEDBY=1,LASTMODIFIEDTIMESTAMP=sysdate where CUSTOMERMESSAGEID in (:CUSTOMERMESSAGEID)">
+       <!--  每隔多少毫秒去抓取    -->
+       <int:poller fixed-rate="5000" >
+            <int:transactional/>
+        </int:poller>
+</int-jdbc:inbound-channel-adapter>
+    
+<int:service-activator input-channel="messageChannel" ref="messageHandler"/>   
+ 
+ 
+ 
+ 
+    <int:channel id="messagemarketingChannel"/> 
+   <int-jdbc:inbound-channel-adapter channel="messagemarketingChannel" 
+         data-source="dataSource"
+query="select sms.MARKETINGID,  CUSTOMERID,   MESSAGETYPE,   CREATEDBY,     CREATEDTIMESTAMP,     LASTMODIFIEDBY,    LASTMODIFIEDTIMESTAMP,     TARGETOBJ,     PRIORITY,      MESSAGE,     PLAN_TIME,     STATUS    from et1_china.TCRM_CUSTOMERMESSAGEmarketing sms,  (select *       from (select b.MARKETINGID               from  et1_china.TCRM_CUSTOMERMESSAGEmarketing b ,(select black.contactnumber from et1_china.Tcrm_Customerblacklist black  where black.sms=1001)blac      where b.STATUS = 1000       and b.MESSAGETYPE in (2002)  and b.PLAN_TIME &lt;=  sysdate    and b.TARGETOBJ=blac.contactnumber(+) and blac.contactnumber is null        order by b.priority,   b.PLAN_TIME,  b.MARKETINGID   )     where rownum &lt;= 800) send   where sms.MARKETINGID = send.MARKETINGID "
+update="update et1_china.TCRM_CUSTOMERMESSAGEmarketing  set status='1001',LASTMODIFIEDBY=1,LASTMODIFIEDTIMESTAMP=sysdate where MARKETINGID in (:MARKETINGID)">
+       <!--  每隔多少毫秒去抓取    -->
+       <int:poller fixed-rate="5000" >
+            <int:transactional/>
+        </int:poller>
+</int-jdbc:inbound-channel-adapter>
+    
+<int:service-activator input-channel="messagemarketingChannel" ref="messagemarketingHandler"/>   
+
+
+
+ 	<!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+
+		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+			
+			<property name="driverClassName" value="${jdbc.driver}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+			<property name="maxActive" value="${jdbc.pool.maxActive}" />
+			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+			<property name="minIdle" value="0" />
+			<property name="defaultAutoCommit" value="false" />
+	
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />
+			<property name="minEvictableIdleTimeMillis" value="600000" />
+		</bean>
+	
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+ 
+</beans>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.deliveryfee.dao.ScmDeliveryfeePriceDao">
+    
+	<sql id="scmDeliveryfeePriceColumns">
+		a.id AS "id",
+		a.zipcode AS "zipcode",
+		a.selectedcarrier AS "selectedcarrier",
+		a.fheavy AS "fheavy",
+		a.fheavyprice AS "fheavyprice",
+		a.cheavyunit AS "cheavyunit",
+		a.cheavyunitprice AS "cheavyunitprice",
+		a.type AS "type",
+		a.expbegindate AS "expbegindate",
+		a.expenddate AS "expenddate"
+	</sql>
+	
+	<sql id="scmDeliveryfeePriceJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmDeliveryfeePrice">
+		SELECT 
+			<include refid="scmDeliveryfeePriceColumns"/>
+		FROM scm_deliveryfee_price a
+		<include refid="scmDeliveryfeePriceJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmDeliveryfeePrice">
+		SELECT 
+			<include refid="scmDeliveryfeePriceColumns"/>
+		FROM scm_deliveryfee_price a
+		<include refid="scmDeliveryfeePriceJoins"/>
+		<where>
+			1 = 1
+		    <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+			  <if test="zipcode != null  and zipcode != '' ">
+				AND a.zipcode = #{zipcode}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmDeliveryfeePrice">
+		SELECT 
+			<include refid="scmDeliveryfeePriceColumns"/>
+		FROM scm_deliveryfee_price a
+		<include refid="scmDeliveryfeePriceJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_deliveryfee_price(
+			id,
+			zipcode,
+			selectedcarrier,
+			fheavy,
+			fheavyprice,
+			cheavyunit,
+			cheavyunitprice,
+			type,
+			expbegindate,
+			expenddate
+		) VALUES (
+			#{id},
+			#{zipcode},
+			#{selectedcarrier},
+			#{fheavy},
+			#{fheavyprice},
+			#{cheavyunit},
+			#{cheavyunitprice},
+			#{type},
+			#{expbegindate},
+			#{expenddate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_deliveryfee_price SET 	
+			zipcode = #{zipcode},
+			selectedcarrier = #{selectedcarrier},
+			fheavy = #{fheavy},
+			fheavyprice = #{fheavyprice},
+			cheavyunit = #{cheavyunit},
+			cheavyunitprice = #{cheavyunitprice},
+			type = #{type},
+			expbegindate = #{expbegindate},
+			expenddate = #{expenddate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_deliveryfee_price
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

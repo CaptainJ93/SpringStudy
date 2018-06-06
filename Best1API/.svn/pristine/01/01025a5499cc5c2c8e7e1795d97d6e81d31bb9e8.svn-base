@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>Best1 API 的 SOAP Web Service配置</description>
+
+	<!-- jax-ws endpoint定义 -->
+     <jaxws:endpoint address="/cmn/batchInfoService">
+		<jaxws:implementor ref="batchInfoSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	<jaxws:endpoint address="/crm/customerservice">
+		<jaxws:implementor ref="customerSoapService" />
+	</jaxws:endpoint>
+	<jaxws:endpoint address="/oaf/customerorderservice">
+		<jaxws:implementor ref="customerorderSoapService" />
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/scm/productservice">
+		<jaxws:implementor ref="productSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+
+	<jaxws:endpoint address="/chm/pgmservice">
+		<jaxws:implementor ref="pgmSoapService" />
+	</jaxws:endpoint>
+
+
+	<jaxws:endpoint address="/scm/supplierservice">
+		<jaxws:implementor ref="supplierSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/view/orderservice">
+		<jaxws:implementor ref="orderedProductViewSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/view/supplierShipOrderService">
+		<jaxws:implementor ref="supplierShipOrderViewSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/view/returnToVenderService">
+		<jaxws:implementor ref="returnToVenderViewSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/view/returnOrderService">
+		<jaxws:implementor ref="returnOrderViewSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/view/orderPaymentService">
+		<jaxws:implementor ref="orderPaymentViewSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint address="/view/supplierservice">
+		<jaxws:implementor ref="supplierViewSoapService" />
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+
+	
+	<!-- WebService的实现Bean定义 -->
+<bean id="batchInfoSoapService"
+		class="com.best1.api.webservice.soap.cmn.impl.BatchInfoSoapServiceImpl" />
+
+
+	<bean id="customerSoapService"
+		class="com.best1.api.webservice.soap.crm.impl.CustomerSoapServiceImpl" />
+
+	<bean id="customerorderSoapService"
+		class="com.best1.api.webservice.soap.oaf.impl.CustomerOrderSoapServiceImpl" />
+
+	<bean id="productSoapService"
+		class="com.best1.api.webservice.soap.scm.impl.ProductSoapServiceImpl" />
+
+	<bean id="pgmSoapService"
+		class="com.best1.api.webservice.soap.chm.impl.PgmSoapServiceImpl" />
+
+	<bean id="supplierSoapService"
+		class="com.best1.api.webservice.soap.scm.impl.SupplierSoapServiceImpl" />
+
+	<bean id="orderedProductViewSoapService"
+		class="com.best1.api.webservice.soap.view.impl.OrderedProductViewSoapServiceImpl" />
+
+	<bean id="supplierViewSoapService"
+		class="com.best1.api.webservice.soap.view.impl.SupplierViewSoapServiceImpl" />
+
+	<bean id="supplierShipOrderViewSoapService"
+		class="com.best1.api.webservice.soap.view.impl.SupplierShipOrderViewSoapServiceImpl" />
+
+	<bean id="returnToVenderViewSoapService"
+		class="com.best1.api.webservice.soap.view.impl.ReturnToVenderViewSoapServiceImpl" />
+
+	<bean id="returnOrderViewSoapService"
+		class="com.best1.api.webservice.soap.view.impl.ReturnOrderViewSoapServiceImpl" />
+
+	<bean id="orderPaymentViewSoapService"
+		class="com.best1.api.webservice.soap.view.impl.OrderPaymentViewSoapServiceImpl" />
+
+</beans>

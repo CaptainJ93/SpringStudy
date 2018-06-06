@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Best1_MianDan_subreport1" language="groovy" pageWidth="297" pageHeight="94" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="394a1567-d685-4323-8a02-1d2acb0665a0">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/DataSets/one/RowData]]>
+	</queryString>
+	<field name="productColorDesc" class="java.lang.String">
+		<fieldDescription><![CDATA[productColorDesc]]></fieldDescription>
+	</field>
+	<field name="productId" class="java.lang.String">
+		<fieldDescription><![CDATA[productId]]></fieldDescription>
+	</field>
+	<field name="productStyleDesc" class="java.lang.String">
+		<fieldDescription><![CDATA[productStyleDesc]]></fieldDescription>
+	</field>
+	<field name="productName" class="java.lang.String">
+		<fieldDescription><![CDATA[productName]]></fieldDescription>
+	</field>
+	<field name="packageWeight" class="java.lang.String">
+		<fieldDescription><![CDATA[packageWeight]]></fieldDescription>
+	</field>
+	<field name="codAmount" class="java.lang.String">
+		<fieldDescription><![CDATA[codAmount]]></fieldDescription>
+	</field>
+	<field name="codAmountCN" class="java.lang.String">
+		<fieldDescription><![CDATA[codAmountCN]]></fieldDescription>
+	</field>
+	<field name="orderId" class="java.lang.String">
+		<fieldDescription><![CDATA[orderId]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="37" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="95" y="1" width="111" height="16" uuid="c63f550d-f30a-4883-a23a-decb1885ac10"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["计费重量："+$F{packageWeight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="1" width="89" height="16" uuid="59fa0c76-9571-4b31-8f29-53633e380c78"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["订单号："+$F{orderId}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="251" y="1" width="46" height="16" uuid="5ed03cdb-1f4c-4ad1-a04d-039555276dce"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codAmount}+"(元)"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="17" width="57" height="20" uuid="e1e29da1-f71c-407b-8dc5-0eef19f87adc"/>
+				<textElement>
+					<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[代收货款：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="65" y="17" width="218" height="20" uuid="71b2233f-16a6-41b1-a2e0-2012471085f2"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["￥"+$F{codAmountCN}+"(元)"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="193" y="1" width="60" height="16" uuid="8d4b5d9e-f8de-4b84-b5dc-278059895ac9"/>
+				<textElement>
+					<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[代收货款：]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="65" y="0" width="221" height="16" isPrintWhenDetailOverflows="true" uuid="bfd6da26-f17d-4380-9bc7-f6c07db63a02"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productId}+" "+$F{productName}+" "+$F{productStyleDesc}+" "+$F{productColorDesc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="8" y="0" width="57" height="16" uuid="4d1e4c67-8831-4638-860e-89e010484b36"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT} == 1 ? "商品明细：":""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

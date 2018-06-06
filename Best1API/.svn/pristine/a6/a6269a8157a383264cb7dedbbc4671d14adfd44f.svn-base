@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+<classPathEntry location="C:\Users\Hwh\.m2\repository\com\oracle\ojdbc6\11.2.0.2.0\ojdbc6-11.2.0.2.0.jar"/>
+  <context id="context1" >
+    <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@192.168.43.151:1521:qaet1" userId="etmall" password="goetmall147" />
+     <javaModelGenerator targetPackage="com.app.oaf.mybatis.model.aa" targetProject="Best1API" />  
+    <sqlMapGenerator targetPackage="com.app.oaf.mybatis.model.mapper.aa" targetProject="Best1API" ></sqlMapGenerator>  
+    <javaClientGenerator targetPackage="com.app.oaf.mybatis.model.client.aa" targetProject="Best1API"  type="XMLMAPPER" />  
+    <table schema="et1_china" tableName="TCRM_CUSTOMERMESSAGEmarketing" ></table> 
+    <!--   <table schema="et1_china" tableName="toaf_api_fedirefundresponse" ></table> 
+   <table schema="et1_china" tableName="TOAF_ORDERCANCELDETAILS" ></table>  
+   <table schema="et1_china" tableName="tscm_productsalesquantity" ></table>  
+   <table schema="et1_china" tableName="TOAF_ORDEREDPRODUCTHISTORY" ></table> 
+    <table schema="et1_china" tableName="TOAF_CUSTOMERRESPONSE" ></table> 
+ -->  
+  </context>
+</generatorConfiguration>

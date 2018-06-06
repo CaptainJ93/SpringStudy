@@ -1,0 +1,21 @@
+1.如下seq付值给,etmall
+S_SPMPRODUCTGENERAL.nextval
+S_SPMPRODUCT.nextval
+S_SPMPRODUCTCOLOURSTYLE.nextval
+S_PRODUCTIMAGE.NEXTVAL
+
+
+2.tspm_product  新增两个字体
+
+  DELIVERYTYPE            NUMBER(4),
+  RETURNTYPE              NUMBER(4),
+  SUBDELIVERYTYPE         NUMBER(4),
+  SUBRETURNTYPE           NUMBER(4),
+  SALESTYPE               NUMBER(4),
+  COMMISIONTYPE           NUMBER(4),
+  COMMISSIONRATE          NUMBER(10,2),
+  LCLASSCODE              NUMBER(6),
+  MCLASSCODE              NUMBER(6),
+  SCLASSCODE              NUMBER(6),
+  PURCHASEID                NUMBER(10),
+  MDID                      NUMBER(10)

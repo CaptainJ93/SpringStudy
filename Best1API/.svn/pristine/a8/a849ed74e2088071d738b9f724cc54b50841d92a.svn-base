@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiProductdetailMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiProductdetail" >
+   
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="COMMENTSEQUENCE" property="commentsequence" jdbcType="DECIMAL" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="BATCHID" property="batchid" jdbcType="VARCHAR" />
+     <result column="WAREHOUSEID" property="warehouseid" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+ 
+  <sql id="Base_Column_List" >
+   
+    PRODUCTID, PRODUCTVERSION, COLOURCODE, COLOURCLASS, STYLECODE, STYLECLASS, COMMENTSEQUENCE, 
+    COMMENTS, RECORDCREATEDTIME, BATCHID,WAREHOUSEID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiProductdetailExample" >
+  
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_PRODUCTDETAIL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+ 
+  <select id="countByExample" parameterType="com.best1.api.entity.vwms.TvwsApiProductdetailExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TVWS_API_PRODUCTDETAIL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+ 
+</mapper>

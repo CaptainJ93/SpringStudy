@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryQualityReportEveryDayDao">
+    
+	
+	<select id="findList" resultType="DeliveryQualityReportEveryDay">
+	
+				select DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") as everyday,
+			       a.selectedcarrier AS "selectedcarrier",
+			       carrier.carriername AS "carrier.carriername",
+			       count(*) as deliverynum,
+			       sum(case
+			             when a.trackingstatus = '1002' then
+			              1
+			             else
+			              0
+			           end) as 'signNum',
+			       sum(case
+			             when a.trackingstatus = '1003' then
+			              1
+			             else
+			              0
+			           end) as 'rejectnum',
+			         t1.totalDeliverynum,
+							 t1.totalSignNum,
+			         t1.totalRejectnum
+			  FROM scm_delivery_orderintransit a
+			  LEFT JOIN scm_carrier carrier
+			    on carrier.carrierid = a.selectedcarrier
+			  LEFT JOIN (select DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") as everyday1,
+			                    count(*) as totalDeliverynum,
+			                    sum(case
+			                          when a.trackingstatus = '1002' then
+			                           1
+			                          else
+			                           0
+			                        end) as 'totalSignNum',
+			                    sum(case
+			                          when a.trackingstatus = '1003' then
+			                           1
+			                          else
+			                           0
+			                        end) as 'totalRejectnum'
+			               FROM scm_delivery_orderintransit a
+			              where 1 = 1
+								<if test="createDateStart != null">
+									AND a.actualshipdate &gt;= #{createDateStart}
+								</if>
+								<if test="createDateEnd != null">
+									AND a.actualshipdate &lt;= #{createDateEnd}
+								</if> 	
+			              GROUP BY DATE_FORMAT(a.actualshipdate, "%Y-%m-%d")) t1
+			     on   DATE_FORMAT(a.actualshipdate, '%Y%m%d') =  DATE_FORMAT(t1.everyday1, '%Y%m%d') 
+			 where 1 = 1
+			  
+			 <if test="createDateStart != null">
+				AND a.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a.actualshipdate &lt;= #{createDateEnd}
+			</if>
+			
+			 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+			  
+			 GROUP BY DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"),
+			          a.selectedcarrier,
+			          carrier.carriername
+
+	</select>
+	
+</mapper>

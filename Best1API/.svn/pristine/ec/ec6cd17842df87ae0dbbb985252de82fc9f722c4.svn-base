@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.api.mapper.crm.TcrmCustomerreceiveMapper">
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmCustomerreceive">
+   
+    <id column="RECEIVEID" jdbcType="DECIMAL" property="receiveid" />
+    <result column="CUSTOMERID" jdbcType="DECIMAL" property="customerid" />
+    <result column="CREATEDBY" jdbcType="DECIMAL" property="createdby" />
+    <result column="CREATEDTIMESTAMP" jdbcType="TIMESTAMP" property="createdtimestamp" />
+    <result column="LASTMODIFIEDBY" jdbcType="DECIMAL" property="lastmodifiedby" />
+    <result column="LASTMODIFIEDTIMESTAMP" jdbcType="TIMESTAMP" property="lastmodifiedtimestamp" />
+    <result column="RECEIVETYPE" jdbcType="DECIMAL" property="receivetype" />
+    <result column="RECVTIME" jdbcType="TIMESTAMP" property="recvtime" />
+    <result column="TARGETOBJ" jdbcType="VARCHAR" property="targetobj" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="RECEIVEUMBER" jdbcType="VARCHAR" property="receiveumber" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+   
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+  
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+  
+    RECEIVEID, CUSTOMERID, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, 
+    RECEIVETYPE, RECVTIME, TARGETOBJ, CONTENT, RECEIVEUMBER
+  </sql>
+  <select id="selectByExample" parameterType="com.best1.api.entity.crm.TcrmCustomerreceiveExample" resultMap="BaseResultMap">
+   
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    where RECEIVEID = #{receiveid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  
+    delete from ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    where RECEIVEID = #{receiveid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.crm.TcrmCustomerreceiveExample">
+  
+    delete from ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.best1.api.entity.crm.TcrmCustomerreceive">
+   
+   <selectKey resultType="long"  keyProperty="receiveid" order="BEFORE">
+         SELECT ET1_CHINA.S_CUSTOMERRECEIVEID.Nextval FROM DUAL
+      </selectKey>
+      
+    insert into ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="receiveid != null">
+        RECEIVEID,
+      </if>
+      <if test="customerid != null">
+        CUSTOMERID,
+      </if>
+      <if test="createdby != null">
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="receivetype != null">
+        RECEIVETYPE,
+      </if>
+      <if test="recvtime != null">
+        RECVTIME,
+      </if>
+      <if test="targetobj != null">
+        TARGETOBJ,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+      <if test="receiveumber != null">
+        RECEIVEUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="receiveid != null">
+        #{receiveid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null">
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivetype != null">
+        #{receivetype,jdbcType=DECIMAL},
+      </if>
+      <if test="recvtime != null">
+        #{recvtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="targetobj != null">
+        #{targetobj,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveumber != null">
+        #{receiveumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.crm.TcrmCustomerreceiveExample" resultType="java.lang.Integer">
+   
+    select count(*) from ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+  
+    update ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    <set>
+      <if test="record.receiveid != null">
+        RECEIVEID = #{record.receiveid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null">
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null">
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null">
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null">
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.receivetype != null">
+        RECEIVETYPE = #{record.receivetype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.recvtime != null">
+        RECVTIME = #{record.recvtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.targetobj != null">
+        TARGETOBJ = #{record.targetobj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        CONTENT = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiveumber != null">
+        RECEIVEUMBER = #{record.receiveumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.crm.TcrmCustomerreceive">
+ 
+    update ET1_CHINA.TCRM_CUSTOMERRECEIVE
+    <set>
+      <if test="customerid != null">
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivetype != null">
+        RECEIVETYPE = #{receivetype,jdbcType=DECIMAL},
+      </if>
+      <if test="recvtime != null">
+        RECVTIME = #{recvtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="targetobj != null">
+        TARGETOBJ = #{targetobj,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveumber != null">
+        RECEIVEUMBER = #{receiveumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RECEIVEID = #{receiveid,jdbcType=DECIMAL}
+  </update>
+ 
+</mapper>

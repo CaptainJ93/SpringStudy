@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="RoleSql">
+    <typeAlias alias="Role" type="com.best1.domain.Role" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select
+	      a.ROLEID as ROLEID,
+	      a.ROLENAME as ROLENAME,
+	      a.CREATEDBY as CREATEDBY,
+	      (select b.username from tb_best1_user b where b.userid = a.CREATEDBY) as CREATEDBYNAME,
+	      a.CREATEDTIMESTAMP as CREATEDTIMESTAMP,
+	      a.LASTMODIFIEDBY as LASTMODIFIEDBY,
+	      (select b.username from tb_best1_user b where b.userid = a.LASTMODIFIEDBY) as LASTMODIFIEDBYNAME,
+	      a.LASTMODIFIEDTIMESTAMP as LASTMODIFIEDTIMESTAMP,
+	      a.ROLEDESC as ROLEDESC
+	    from tb_best1_role a
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="roleid">
+				<![CDATA[
+					a.roleid = #roleid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="rolename">
+				<![CDATA[
+					a.rolename like '%$rolename$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="roleids">
+			    a.roleid in (
+			        <iterate property="roleids" conjunction = ",">
+				        #roleids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询 -->
+	<resultMap class="java.util.HashMap" id="getRole">
+		<result property="roleid" column="ROLEID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="rolename" column="ROLENAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createdby" column="CREATEDBY" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="createdbyname" column="CREATEDBYNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createdtimestamp" column="CREATEDTIMESTAMP" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastmodifiedby" column="LASTMODIFIEDBY" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="lastmodifiedbyname" column="LASTMODIFIEDBYNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastmodifiedtimestamp" column="LASTMODIFIEDTIMESTAMP" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="roledesc" column="ROLEDESC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getRoles" resultMap="getRole" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		order by ROLEID desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countRole" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_role a
+		<include refid="Where_Clause" />
+	</select>
+	
+    <!-- 新增 -->
+	<insert id="insertRole" parameterClass="Role">
+	insert into tb_best1_role(
+	  ROLEID,
+	  ROLENAME,
+	  CREATEDBY,
+	  CREATEDTIMESTAMP,
+	  ROLEDESC)
+    values(
+      SEQ_ROLE_ID.NEXTVAL,
+      #rolename#,
+      #createdby#,
+      sysdate,
+      #roledesc#)
+    </insert>
+    
+    <!-- 修改 -->
+	<update id="updateRole" parameterClass="Role">
+		update tb_best1_role
+		set	rolename = #rolename#,
+			roledesc = #roledesc#,
+			lastmodifiedby = #lastmodifiedby#,
+			lastmodifiedtimestamp = sysdate
+		where roleid = #roleid#
+	</update>
+    
+    <!-- 删除 -->
+	<delete id="deleteRole" parameterClass="java.util.HashMap" >
+		delete from tb_best1_role a 
+		<include refid="Where_Clause" />
+	</delete> 
+	
+	<!-- 删除特定角色下的菜单 -->
+	<delete id="deleteRoleMenu" parameterClass="java.util.HashMap" >
+		delete from tb_best1_role_source a where a.sourcetype = '10' and a.roleid = #roleid#
+	</delete> 
+	
+	 <!-- 菜单与角色绑定 -->
+	<insert id="insertRoleMenu" parameterClass="java.util.HashMap">
+		insert into tb_best1_role_source select SEQ_ROLESOURCEID.NEXTVAL,#roleid#,a.menuid,'10' from tb_best1_menu a where a.menutype = 1 
+	     and a.menuid in (
+	        <iterate property="menuids" conjunction = ",">
+		        #menuids[]#
+		    </iterate>
+	    )
+    </insert>
+    
+    <!-- 删除特定角色下的权限 -->
+	<delete id="deleteRolePrivilege" parameterClass="java.util.HashMap" >
+		delete from tb_best1_role_source a where a.sourcetype = '11' 
+		and a.rolesourceid in (
+			<iterate property="roleSourceIds" conjunction = ",">
+		        #roleSourceIds[]#
+		    </iterate>
+		)
+	</delete> 
+    
+    <!-- 权限与角色绑定 -->
+	<insert id="insertRolePrivilege" parameterClass="java.util.HashMap">
+		insert into tb_best1_role_source select SEQ_ROLESOURCEID.NEXTVAL,#roleid#,a.privilege_id,'11' from tb_best1_privilege a 
+		where a.privilege_id in (
+			<iterate property="privilegeIds" conjunction = ",">
+		        #privilegeIds[]#
+		    </iterate>
+		)
+    </insert>
+    
+    <!-- 角色权限查询 -->
+	<sql id="Select_Clause_Privilege">
+		select 
+	         b.rolesourceid,
+	         b.roleid,
+	         (select c.rolename from tb_best1_role c where c.roleid = b.roleid) as role_name,
+	         a.privilege_id,
+	         a.module_name,
+	         a.module_code,
+	         a.privilege_name,
+	         a.privilege_code,
+	         a.privilege_value,
+	         a.privilege_desc,
+	         a.privilege_type
+       from tb_best1_privilege a ,tb_best1_role_source b where a.privilege_id = b.sourceid and b.sourcetype = '11'
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause_Privilege">
+		<isNotEmpty prepend="and" property="privilegeId">
+			<![CDATA[
+				a.privilege_id = #privilegeId#
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="moduleName">
+			<![CDATA[
+				a.module_name like '%$moduleName$%'
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="moduleCode">
+			<![CDATA[
+				a.module_code = #moduleCode#
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="privilegeName">
+			<![CDATA[
+				a.privilege_name like '%$privilegeName$%'
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="privilegeCode">
+			<![CDATA[
+				a.privilege_code = #privilegeCode#
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="privilegeType">
+			<![CDATA[
+				a.privilege_type = #privilegeType#
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="privilegeIds">
+		    a.privilege_id in (
+		        <iterate property="privilegeIds" conjunction = ",">
+			        #privilegeIds[]#
+			    </iterate>
+		    )
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="roleid">
+			<![CDATA[
+				b.roleid = #roleid#
+			]]>
+		</isNotEmpty>
+	</sql>
+	
+	<!-- 角色权限查询 -->
+	<resultMap class="java.util.HashMap" id="getPrivilege">
+		<result property="roleSourceId" column="rolesourceid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="roleId" column="roleid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="roleName" column="role_name" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="privilegeId" column="PRIVILEGE_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="moduleName" column="MODULE_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="moduleCode" column="MODULE_CODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="privilegeName" column="PRIVILEGE_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="privilegeCode" column="PRIVILEGE_CODE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="privilegeValue" column="PRIVILEGE_VALUE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="privilegeDesc" column="PRIVILEGE_DESC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="privilegeType" column="PRIVILEGE_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getPrivileges" resultMap="getPrivilege" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause_Privilege" />
+		<include refid="Where_Clause_Privilege" />
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 角色权限统计 -->
+	<select id="countPrivilege" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_privilege a ,tb_best1_role_source b where a.privilege_id = b.sourceid and b.sourcetype = '11'
+		<include refid="Where_Clause_Privilege" />
+	</select>
+    
+    
+    
+    
+    
+    
+    
+    
+</sqlMap>

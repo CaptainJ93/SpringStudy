@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.168.100.211:1521:elitedb" />
+		<property name="username" value="hawkdata" />
+		<property name="password" value="hd20140701^" />
+		<!-- 初始化连接 -->
+		<property name="initialSize" value="10" />
+		<!-- 最大空闲连接 -->
+		<property name="maxIdle" value="30" />
+		<!-- 最小空闲连接-->
+		<property name="minIdle" value="5" /> 
+		<!-- 最大连接数 -->
+		<property name="maxActive" value="200" />
+		<!-- 是否在自动回收超时连接的时候打印连接的超时错误 -->
+		<property name="logAbandoned" value="true" />
+		<!-- 是否自动回收超时连接 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 超时时间（以秒为单位） -->
+		<property name="removeAbandonedTimeout" value="300" />
+		<!-- 超时等待时间，以毫秒为单位-->
+		<property name="maxWait" value="1000" /> 
+	</bean>
+	
+	
+	<bean id="DataSource2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.168.43.163:1521:best1" />
+		<property name="username" value="et1_china" />
+		<property name="password" value="et1_china" />
+		<!-- 初始化连接 -->
+		<property name="initialSize" value="10" />
+		<!-- 最大空闲连接 -->
+		<property name="maxIdle" value="30" />
+		<!-- 最小空闲连接-->
+		<property name="minIdle" value="5" /> 
+		<!-- 最大连接数 -->
+		<property name="maxActive" value="200" />
+		<!-- 是否在自动回收超时连接的时候打印连接的超时错误 -->
+		<property name="logAbandoned" value="true" />
+		<!-- 是否自动回收超时连接 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 超时时间（以秒为单位） -->
+		<property name="removeAbandonedTimeout" value="300" />
+		<!-- 超时等待时间，以毫秒为单位-->
+		<property name="maxWait" value="1000" /> 
+	</bean>
+
+    <!-- Spring iBatis Template -->
+  	
+  	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+    	<property name="configLocation" value="classpath:system/system-sqlmap-config.xml"/>
+    	<property name="dataSource" ref="DataSource"/>
+  	</bean>
+
+  	<!-- 工具类配置 -->
+  	<bean id="BaseDAO" class="com.best1.base.BaseDAO">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient"/>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"  "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 公用的struts配置文件 -->
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />  
+	<package name="default" namespace="/" extends="struts-default">
+		
+		<action name="*!*" class="{1}Action" method="{2}">
+		    <result name="add">/system/{1}/{1}Edit.jsp</result>
+		    <result name="edit">/system/{1}/{1}Edit.jsp</result>
+		</action>
+	</package>
+</struts>

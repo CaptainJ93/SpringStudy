@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryQualityReportMonthKpiDao">
+    
+	
+	<select id="findList" resultType="DeliveryQualityReportMonthKpi">
+	
+				select a13.selectedcarrier as selectedcarrier,
+			       carrier.carriername AS "carrier.carriername",
+			       IFNULL(zz.limitations, 0) as timearea,
+			       sum(case
+			             when a13.trackingstatus = 1002 and
+			                  a13.receiptorrejecttime is not NULL and
+			                  IFNULL(zz.limitations, 0) >
+			                  (TO_SECONDS(a13.receiptorrejecttime) -
+			                  TO_SECONDS(a13.actualshipdate)) / (60 * 60) then
+			              1
+			             else
+			              0
+			           end) as 'signNum',
+			       sum(1) as 'deliverytotalNumByCarrier', --  如果时效表配置两条 会出现多条数据
+			       t1.timeareaToatlNum as timeareaToatlNum,
+			       (SELECT COUNT(*)
+			          from scm_delivery_orderintransit a
+			         where 1 = 1
+			            <if test="createDateStart != null">
+							AND a.actualshipdate &gt;= #{createDateStart}
+						</if>
+						<if test="createDateEnd != null">
+							AND a.actualshipdate &lt;= #{createDateEnd}
+						</if>
+			        
+			        ) as deliverytotalNum
+			
+			  from scm_delivery_orderintransit a13
+			  LEFT JOIN (select zipcode, limitations,carrierid  from scm_carrierzipcode) zz
+			    on a13.receivingzipcode = zz.zipcode
+			    and a13.selectedcarrier =zz.carrierid
+			  LEFT JOIN scm_carrier carrier
+			    on carrier.carrierid = a13.selectedcarrier
+			
+			  LEFT JOIN (SELECT IFNULL(zz.limitations, 0) as limitations1,
+			                    count(*) as timeareaToatlNum
+			               from scm_delivery_orderintransit a
+			               LEFT JOIN (select zipcode, limitations, CARRIERID from scm_carrierzipcode) zz
+			                 on a.receivingzipcode = zz.zipcode
+			                 and a.selectedcarrier = zz.CARRIERID
+			              where 1 = 1
+			                 <if test="createDateStart != null">
+									AND a.actualshipdate &gt;= #{createDateStart}
+								</if>
+								<if test="createDateEnd != null">
+									AND a.actualshipdate &lt;= #{createDateEnd}
+								</if>
+			              GROUP BY IFNULL(zz.limitations, 0)) t1
+			
+			    on IFNULL(zz.limitations, 0) = t1.limitations1
+			
+			 where 1 = 1
+				    <if test="createDateStart != null">
+						AND a13.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a13.actualshipdate &lt;= #{createDateEnd}
+					</if>
+			
+			 GROUP BY a13.selectedcarrier,
+			          carrier.carriername,
+			          IFNULL(zz.limitations, 0)
+				    	
+				
+
+	</select>
+	
+</mapper>

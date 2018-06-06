@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+body {
+background:url(images/bg.gif) repeat-x top #e8dec4;
+margin:0px;
+padding:0px;
+font: 10px  verdana, arial, helvetica;
+color:#000;
+}
+#main_container{
+width:100%;
+height:auto;
+margin:auto;
+}
+input.contact_input{
+width:150px;
+height:24px;
+float:left;
+border:1px #BFB28F solid;
+background-color:#E8DEC4;
+color: #6F664C;
+}
+.title{
+font-size:48px;
+color:#000000;
+padding:10px 0 0 0px;
+font-family:Arial, Helvetica, sans-serif;
+}
+#contact_form {
+height: auto;
+padding: 20px 0 0 20px;
+width: 370px;
+}
+input.send_message {
+    float: right;
+    color: #6F664C;
+    background-color: #E8DEC4;
+}
+#form_row{
+padding:7px 0 7px 0;
+}
+th{
+line-height:42px;
+}
+span{
+color: red;
+}

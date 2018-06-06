@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafAddressextrainfoMapper">
+
+
+	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
+	<select id="selectByPrimaryKey" parameterType="com.best1.api.entity.oaf.order.ToafAddressextrainfoKey" resultType="com.best1.api.entity.oaf.order.ToafAddressextrainfo" useCache="true">
+	select ADDRESSID, ADDRESSTYPE, CUSTOMERID, COMPANYNO, RECEIVERNAME, INVOICETITLE, PERSONALID,
+      CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP
+    from    TOAF_ADDRESSEXTRAINFO
+		<trim prefix="where" prefixOverrides="and |or">  
+			<if test="customerid != null">
+				customerid=#{customerid}
+			</if>
+			<if test="ADDRESSID != null">
+				and addressid=#{addressid}
+			</if>
+			<if test="addresstype != null">
+				and addresstype=#{addresstype}
+			</if>
+		
+		</trim>
+	</select>
+
+
+ 
+
+  
+  <select id="modifyAddressExtraInfo" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.ModifyAddressExtraInfo(
+     #{an_customerid,mode=IN,jdbcType=DECIMAL},
+     #{an_addressid,mode=IN,jdbcType=DECIMAL},
+     #{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+  
+</mapper> 

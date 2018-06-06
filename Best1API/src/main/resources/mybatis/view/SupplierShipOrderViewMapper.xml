@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.SupplierShipOrderViewMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.best1.api.entity.view.SupplierShipOrderView">
+
+		<id column="suppliershiporderid" property="supplierShipOrderID"
+			jdbcType="DECIMAL" />
+		<result column="supplierid" property="supplierID" jdbcType="DECIMAL" />
+		<result column="deliverydate" property="deliveryDate" jdbcType="CHAR" />
+		<result column="productid" property="productID" jdbcType="DECIMAL" />
+		<result column="productversion" property="productVersion"
+			jdbcType="DECIMAL" />
+		<result column="colourclass" property="colourClass" jdbcType="DECIMAL" />
+		<result column="colourcode" property="colourCode" jdbcType="DECIMAL" />
+		<result column="styleclass" property="styleClass" jdbcType="DECIMAL" />
+		<result column="stylecode" property="styleCode" jdbcType="DECIMAL" />
+		<result column="recievedquantity" property="recievedQuantity" jdbcType="DECIMAL" />
+		<result column="warehouseid" property="warehouseid" jdbcType="DECIMAL" />
+		
+	</resultMap>
+
+	<select id="fetchSupplierShipOrders" parameterType="com.best1.api.entity.view.SupplierShipOrderView"
+		resultMap="BaseResultMap">
+		select sso.suppliershiporderid,
+		sso.supplierid,
+		to_char(sso.deliverydate, 'yyyymmdd') as deliverydate,
+		sso.productid,
+		sso.productversion,
+		sso.warehouseid,
+		sso.colourclass,
+		sso.colourcode,
+		sso.styleclass,
+		sso.stylecode,
+		ts.recievedquantity
+		from tscm_suppliershiporder sso,
+		tscm_suppliershiporderreceived ts
+		where sso.suppliershiporderid =
+		ts.suppliershiporderid
+		and sso.suppliershiporderstatus = 1006
+		<if test="supplierShipOrderID != null">
+			and sso.suppliershiporderid =
+			#{supplierShipOrderID}
+		</if>
+		<if test="deliveryDateFrom != null">
+			AND sso.deliverydate &gt;=
+			to_date(#{deliveryDateFrom},
+			'yyyymmdd')
+		</if>
+		<if test="deliveryDateTo != null">
+			AND sso.deliverydate &lt;
+			to_date(#{deliveryDateTo},
+			'yyyymmdd')
+		</if>
+	</select>
+
+</mapper> 

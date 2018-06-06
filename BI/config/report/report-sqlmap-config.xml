@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" lazyLoadingEnabled="true" enhancementEnabled="true" useStatementNamespaces="true"/>
+       <!-- 公共部分 begin -->
+       <sqlMap resource="com/best1/report/sqlmap/QuerySQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/ExportAuditSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/AuditDefineSQL.xml"/>
+       <!-- 公共部分 end -->
+       
+       <!-- 功能 begin -->
+       <sqlMap resource="com/best1/report/sqlmap/ProductStatSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/ChannelStatSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/AssessStatSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/DetailStatSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/CustomerStatSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/CampainStatSQL.xml"/>
+       <sqlMap resource="com/best1/report/sqlmap/SummaryStatSQL.xml"/>
+       
+       <sqlMap resource="com/best1/report/sqlmap/FinanceSQL.xml"/>
+       <!-- 功能 end -->
+       
+</sqlMapConfig>

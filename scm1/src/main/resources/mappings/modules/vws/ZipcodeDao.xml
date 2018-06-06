@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.vws.dao.ZipcodeDao">
+    
+	<sql id="scmZipcodeColumns">
+		a.zipcode AS "zipcode",
+		a.zipcodedetail AS "zipcodedetail",
+		a.city AS "city",
+		a.area AS "area"
+	</sql>
+	
+	<sql id="scmZipcodeJoins">
+	</sql>
+    
+	<select id="get" resultType="Zipcode">
+		SELECT 
+			<include refid="scmZipcodeColumns"/>
+		FROM scm_zipcode a
+		<include refid="scmZipcodeJoins"/>
+		WHERE a.zipcode = #{zipcode}
+	</select>
+	
+	<select id="findList" resultType="Zipcode">
+		SELECT 
+			<include refid="scmZipcodeColumns"/>
+		FROM scm_zipcode a
+		<include refid="scmZipcodeJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Zipcode">
+		SELECT 
+			<include refid="scmZipcodeColumns"/>
+		FROM scm_zipcode a
+		<include refid="scmZipcodeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_zipcode(
+			zipcode,
+			zipcodedetail,
+			city,
+			area
+		) VALUES (
+			#{zipcode},
+			#{zipcodedetail},
+			#{city},
+			#{area}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_zipcode SET 	
+			zipcode = #{zipcode},
+			zipcodedetail = #{zipcodedetail},
+			city = #{city},
+			area = #{area}
+		WHERE zipcode = #{zipcode}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_zipcode
+		WHERE zipcode = #{zipcode}
+	</update>
+	
+</mapper>

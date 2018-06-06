@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SummaryStatSql">
+	<typeAlias alias="DailyStatistic" type="com.best1.report.domain.DailyStatistic" />
+	<typeAlias alias="ProductinfoToday" type="com.best1.report.domain.ProductinfoToday" />
+	<!-- 销退主因查客诉明细-->
+	<resultMap class="DailyStatistic" id="getDailyStatistic">
+		<result property="saledate" column="SALEDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="validordertimes" column="VALIDORDERTIMES" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="validorderamount" column="VALIDORDERAMOUNT" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="maolisum" column="MAOLISUM" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+	</resultMap>
+	<select id="getDailyStatistics" resultMap="getDailyStatistic" parameterClass="java.util.HashMap">
+		select 
+			<isEqual property="statCycle" compareValue="10">
+				to_char(a.saledate,'yyyy-mm-dd') as saledate ,
+			</isEqual>
+			<isEqual property="statCycle" compareValue="11">
+				to_char(a.saledate,'yyyy-mm') as saledate ,
+			</isEqual>
+			<isEqual property="statCycle" compareValue="12">
+				to_char(a.saledate,'yyyy') as saledate ,
+			</isEqual>
+			sum(a.validordertimes) as validordertimes,
+			sum(a.validorderamount) as validorderamount,
+			sum(a.MAOLISUM) as maolisum 
+		from TB_dailystatistics a
+        where 1=1
+        <isNotEmpty prepend="and" property="startTime">
+        	<isEqual property="statCycle" compareValue="10">
+        		<![CDATA[
+					a.saledate >= trunc(to_date(#startTime#,'yyyy-MM-dd'), 'dd')
+				]]>
+        	</isEqual>
+        	<isEqual property="statCycle" compareValue="11">
+        		<![CDATA[
+					a.saledate >= trunc(to_date(#startTime#,'yyyy-MM-dd'), 'MM')
+				]]>
+        	</isEqual>
+        	<isEqual property="statCycle" compareValue="12">
+        		<![CDATA[
+					a.saledate >= trunc(to_date(#startTime#,'yyyy-MM-dd'), 'yyyy')
+				]]>
+        	</isEqual>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endTime">
+			<isEqual property="statCycle" compareValue="10">
+				<![CDATA[
+					a.saledate < trunc(to_date(#endTime#,'yyyy-MM-dd'), 'dd') + 1
+				]]>
+			</isEqual>
+			<isEqual property="statCycle" compareValue="11">
+				<![CDATA[
+					a.saledate < ADD_MONTHS(trunc(to_date(#endTime#,'yyyy-MM-dd'), 'MM'),1)
+				]]>
+			</isEqual>
+			<isEqual property="statCycle" compareValue="12">
+				<![CDATA[
+					a.saledate < ADD_MONTHS(trunc(to_date(#endTime#,'yyyy-MM-dd'), 'yyyy'),12)
+				]]>
+			</isEqual>
+		</isNotEmpty>
+        <isEqual property="statCycle" compareValue="10">
+			group by to_char(a.saledate,'yyyy-mm-dd')
+		</isEqual>
+		<isEqual property="statCycle" compareValue="11">
+			group by to_char(a.saledate,'yyyy-mm')
+		</isEqual>
+		<isEqual property="statCycle" compareValue="12">
+			group by to_char(a.saledate,'yyyy')
+		</isEqual>
+		order by saledate
+	</select>
+	
+	<!-- 当日商品各通路销售情况-->
+	<resultMap class="ProductinfoToday" id="getProductinfoToday">
+		<result property="subchannelname" column="subchannelname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hour" column="hour" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="ordercc" column="ordercc" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="sumamount" column="sumamount" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+	</resultMap>
+	<select id="getProductinfoTodays" resultMap="getProductinfoToday" parameterClass="java.util.HashMap">
+		select subchannelname, 
+	       to_number(hour) as hour, 
+	       ordercc, 
+	       sumamount
+  	    from et1_warehouse.tb_productinfo_today
+  	    where batchid = #userid#
+		union all
+		<!-- 9999不作为任何子通路，作为当日总业绩 -->
+		select '9999' as subchannelname, 
+       		to_number(hour) as hour, 
+       		sum(ordercc) as ordercc, 
+       		sum(sumamount) as sumamount
+  		from et1_warehouse.tb_productinfo_today
+  		where batchid = #userid#
+  		group by hour
+	</select>
+	
+	<resultMap class="java.lang.String" id="getSubChannelName">
+		<result property="subchannelname" column="subchannelname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getSubChannelNames" resultMap="getSubChannelName" parameterClass="java.util.HashMap">
+		select distinct a.subchannelname from et1_warehouse.tb_productinfo_today a where batchid = #userid#
+	</select>
+	
+	<resultMap class="java.lang.String" id="getSubChannelHour">
+		<result property="hour" column="HOUR" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getSubChannelHours" resultMap="getSubChannelHour" parameterClass="java.util.HashMap">
+		select distinct a.hour from et1_warehouse.tb_productinfo_today a where batchid = #userid# order by a.hour
+	</select>
+	
+	<!-- 执行存储过程 -->
+	<parameterMap id="mapProductinfoToday" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="productid" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doProductinfoToday" parameterMap="mapProductinfoToday">
+         {call et1_warehouse.pkg_today.sp_productinfo(?,?,?,?,?)}
+    </procedure>
+    
+    <!-- 节目业绩-->
+	<resultMap class="java.util.HashMap" id="getPgminfoDetail">
+		<result property="md" column="md" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="nfmpgmscheduleid" column="nfmpgmscheduleid" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="liveid" column="liveid" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="cueid" column="cueid" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="mday" column="Mday" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="prdqstarttime" column="prdqstarttime" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="prdqendtime" column="prdqendtime" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="prdqstarttimestarthour" column="prdqstarttimestarthour" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="prdqstarttimeendhour" column="prdqstarttimeendhour" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="day" column="day" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="subchannelid" column="subchannelid" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="subchannelname" column="subchannelname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="shiduan" column="shiduan" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pgmlength" column="pgmlength" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="productname" column="productname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="productid" column="productid" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="supplierid" column="supplierid" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sellingprice" column="sellingprice" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="istape" column="istape" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="plannedtargetrevenue" column="plannedtargetrevenue" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="pd1" column="pd1" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pd2" column="pd2" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pd3" column="pd3" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="pd4" column="pd4" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sh1" column="sh1" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sh2" column="sh2" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sh3" column="sh3" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sh4" column="sh4" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="ordercc" column="ORDERCC" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="validordercc" column="VALIDORDERCC" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="validorderquantity" column="VALIDORDERQUANTITY" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="validproductamount" column="VALIDPRODUCTAMOUNT" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="validmaoli" column="VALIDMAOLI" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="returnordercc" column="RETURNORDERCC" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="returnorderamount" column="RETURNORDERAMOUNT" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="changeordercount" column="CHANGEORDERCOUNT" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="changeamount" column="CHANGEAMOUNT" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount1d" column="NEWCUSTORDCOUNT1D" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount30d" column="NEWCUSTORDCOUNT30D" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount90d" column="NEWCUSTORDCOUNT90D" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount1y" column="NEWCUSTORDCOUNT1Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount2y" column="NEWCUSTORDCOUNT2Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount3y" column="NEWCUSTORDCOUNT3Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount5y" column="NEWCUSTORDCOUNT5Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="newcustordcount7y" column="NEWCUSTORDCOUNT7Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="custcount" column="CUSTCOUNT" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="complaintcount" column="complaintcount" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="minorderdate" column="MINORDERDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="maxorderdate" column="MAXORDERDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getPgminfoDetails" resultMap="getPgminfoDetail" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+			md, 
+			to_char(nfmpgmscheduleid) as nfmpgmscheduleid, 
+			to_char(liveid) as liveid ,
+			to_char(cueid) as cueid, 
+			to_char(prdqstarttime,'yyyy-MM-dd') as mday,
+			to_char(prdqstarttime,'yyyy-mm-dd hh24:mi:ss') as prdqstarttime, 
+			to_char(prdqendtime,'yyyy-mm-dd hh24:mi:ss')as prdqendtime, 
+			to_char(prdqstarttimestarthour) as prdqstarttimestarthour, 
+			to_char(prdqstarttimeendhour) as prdqstarttimeendhour, 
+			day, 
+			to_char(subchannelid) as subchannelid, 
+			subchannelname, 
+			shiduan, 
+			to_char(pgmlength) as pgmlength, 
+			productname, 
+			to_char(productid) as productid, 
+			to_char(supplierid) as supplierid, 
+			sellingprice, 
+			case istape when 'Y' then '是' else '否' end as istape,
+			plannedtargetrevenue, 
+			pd1, 
+			pd2, 
+			pd3, 
+			pd4, 
+			sh1, 
+			sh2, 
+			sh3, 
+			sh4, 
+			nvl(ORDERCC,0) as ORDERCC,
+            nvl(VALIDORDERCC,0) as VALIDORDERCC,
+            nvl(VALIDORDERQUANTITY,0) as VALIDORDERQUANTITY,
+            nvl(VALIDPRODUCTAMOUNT,0) as VALIDPRODUCTAMOUNT,
+            nvl(VALIDMAOLI,0) as VALIDMAOLI,
+            nvl(RETURNORDERCC,0) as RETURNORDERCC,
+            nvl(RETURNORDERAMOUNT,0) as RETURNORDERAMOUNT,
+            nvl(CHANGEORDERCOUNT,0) as CHANGEORDERCOUNT,
+            nvl(CHANGEAMOUNT,0) as CHANGEAMOUNT,
+            nvl(NEWCUSTORDCOUNT1D,0) as NEWCUSTORDCOUNT1D,
+            nvl(NEWCUSTORDCOUNT30D,0) as NEWCUSTORDCOUNT30D,
+            nvl(NEWCUSTORDCOUNT90D,0) as NEWCUSTORDCOUNT90D,
+            nvl(NEWCUSTORDCOUNT1Y,0) as NEWCUSTORDCOUNT1Y,
+            nvl(NEWCUSTORDCOUNT2Y,0) as NEWCUSTORDCOUNT2Y,
+            nvl(NEWCUSTORDCOUNT3Y,0) as NEWCUSTORDCOUNT3Y,
+            nvl(NEWCUSTORDCOUNT5Y,0) as NEWCUSTORDCOUNT5Y,
+            nvl(NEWCUSTORDCOUNT7Y,0) as NEWCUSTORDCOUNT7Y,
+            nvl(CUSTCOUNT,0) as CUSTCOUNT,
+            nvl(complaintcount,0) as complaintcount,
+			to_char(MINORDERDATE,'yyyy-mm-dd hh24:mi:ss') as MINORDERDATE, 
+			to_char(MAXORDERDATE,'yyyy-mm-dd hh24:mi:ss') as MAXORDERDATE
+		from et1_warehouse.TB_PGMINFODETAIL_T a 
+        where a.batchid = #userid#
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countPgminfoDetail" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from et1_warehouse.TB_PGMINFODETAIL_T a where a.batchid = #userid#
+	</select>
+    
+    <!-- 执行存储过程 -->
+	<parameterMap id="mapPgminfoDetail" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="subchannelId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doPgminfoDetail" parameterMap="mapPgminfoDetail">
+         {call et1_warehouse.pkg_today.sp_pgminfodetail(?,?,?,?)}
+    </procedure>
+    
+     <!-- 指定商品节目历史业绩-->
+    <select id="getPgminfoDetailHis" resultMap="getPgminfoDetail" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+			md, 
+			to_char(nfmpgmscheduleid) as nfmpgmscheduleid, 
+			to_char(liveid) as liveid ,
+			to_char(cueid) as cueid, 
+			to_char(prdqstarttime,'yyyy-MM-dd') as mday,
+			to_char(prdqstarttime,'yyyy-mm-dd hh24:mi:ss') as prdqstarttime, 
+			to_char(prdqendtime,'yyyy-mm-dd hh24:mi:ss')as prdqendtime, 
+			to_char(prdqstarttimestarthour) as prdqstarttimestarthour, 
+			to_char(prdqstarttimeendhour) as prdqstarttimeendhour, 
+			day, 
+			to_char(subchannelid) as subchannelid, 
+			subchannelname, 
+			shiduan, 
+			to_char(pgmlength) as pgmlength, 
+			productname, 
+			to_char(productid) as productid, 
+			to_char(supplierid) as supplierid, 
+			sellingprice, 
+			case istape when 'Y' then '是' else '否' end as istape,
+			plannedtargetrevenue, 
+			pd1, 
+			pd2, 
+			pd3, 
+			pd4, 
+			sh1, 
+			sh2, 
+			sh3, 
+			sh4, 
+			nvl(ORDERCC,0) as ORDERCC,
+            nvl(VALIDORDERCC,0) as VALIDORDERCC,
+            nvl(VALIDORDERQUANTITY,0) as VALIDORDERQUANTITY,
+            nvl(VALIDPRODUCTAMOUNT,0) as VALIDPRODUCTAMOUNT,
+            nvl(VALIDMAOLI,0) as VALIDMAOLI,
+            nvl(RETURNORDERCC,0) as RETURNORDERCC,
+            nvl(RETURNORDERAMOUNT,0) as RETURNORDERAMOUNT,
+            nvl(CHANGEORDERCOUNT,0) as CHANGEORDERCOUNT,
+            nvl(CHANGEAMOUNT,0) as CHANGEAMOUNT,
+            nvl(NEWCUSTORDCOUNT1D,0) as NEWCUSTORDCOUNT1D,
+            nvl(NEWCUSTORDCOUNT30D,0) as NEWCUSTORDCOUNT30D,
+            nvl(NEWCUSTORDCOUNT90D,0) as NEWCUSTORDCOUNT90D,
+            nvl(NEWCUSTORDCOUNT1Y,0) as NEWCUSTORDCOUNT1Y,
+            nvl(NEWCUSTORDCOUNT2Y,0) as NEWCUSTORDCOUNT2Y,
+            nvl(NEWCUSTORDCOUNT3Y,0) as NEWCUSTORDCOUNT3Y,
+            nvl(NEWCUSTORDCOUNT5Y,0) as NEWCUSTORDCOUNT5Y,
+            nvl(NEWCUSTORDCOUNT7Y,0) as NEWCUSTORDCOUNT7Y,
+            nvl(CUSTCOUNT,0) as CUSTCOUNT,
+            nvl(complaintcount,0) as complaintcount,
+			to_char(MINORDERDATE,'yyyy-mm-dd hh24:mi:ss') as MINORDERDATE, 
+			to_char(MAXORDERDATE,'yyyy-mm-dd hh24:mi:ss') as MAXORDERDATE
+		from et1_warehouse.tb_pgminfodetail_his a 
+        where a.batchid = #userid#
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countPgminfoDetailHis" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from et1_warehouse.tb_pgminfodetail_his a where a.batchid = #userid#
+	</select>
+    
+    <!-- 执行存储过程 -->
+	<parameterMap id="mapPgminfoDetailHis" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="productid" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doPgminfoDetailHis" parameterMap="mapPgminfoDetailHis">
+         {call et1_warehouse.pkg_today.sp_pgminfodetailhistory(?,?,?,?)}
+    </procedure>
+    
+    <!-- 行销活动业绩-->
+	<resultMap class="java.util.HashMap" id="getCampainsinfoDetail">
+		<result property="campaigntypename" column="campaigntypename" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="campaignname" column="campaignname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="campaignno" column="campaignno" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="actualstartdate" column="actualstartdate" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="actualenddate" column="actualenddate" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="days" column="days" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="ordercc" column="ordercc" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validordercc" column="validordercc" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validorderquantity" column="validorderquantity" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validproductamount" column="validproductamount" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="validmaoli" column="validmaoli" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="newcustordcount1d" column="NEWCUSTORDCOUNT1D" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount30d" column="NEWCUSTORDCOUNT30D" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount90d" column="NEWCUSTORDCOUNT90D" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount1y" column="NEWCUSTORDCOUNT1Y" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount2y" column="NEWCUSTORDCOUNT2Y" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount3y" column="NEWCUSTORDCOUNT3Y" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount5y" column="NEWCUSTORDCOUNT5Y" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="newcustordcount7y" column="NEWCUSTORDCOUNT7Y" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="custcount" column="CUSTCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="prodcounts" column="prodcounts" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="offcount" column="offcount" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="prodcountquantity" column="prodcountquantity" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="offquantity" column="offquantity" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="freeprodcounts" column="freeprodcounts" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="givecash" column="givecash" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="zhekou" column="zhekou" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="zhejiaquan" column="zhejiaquan" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getCampainsinfoDetails" resultMap="getCampainsinfoDetail" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+			 campaigntypename,
+			 campaignname,
+			 to_char(campaignno) as campaignno,
+			 to_char(actualstartdate,'yyyy-mm-dd hh24:mi:ss') as actualstartdate,
+			 to_char(actualenddate,'yyyy-mm-dd hh24:mi:ss') as actualenddate,
+			 nvl(days,0) as days,
+			 nvl(ordercc,0) as ordercc,
+			 nvl(validordercc,0) as validordercc,
+			 nvl(validorderquantity,0) as validorderquantity,
+			 to_char(validproductamount) as validproductamount,
+			 to_char(validmaoli) as validmaoli,
+			 nvl(newcustordcount1d,0) as newcustordcount1d,
+			 nvl(newcustordcount30d,0) as newcustordcount30d,
+			 nvl(newcustordcount90d,0) as newcustordcount90d,
+			 nvl(newcustordcount1y,0) as newcustordcount1y,
+			 nvl(newcustordcount2y,0) as newcustordcount2y,
+			 nvl(newcustordcount3y,0) as newcustordcount3y,
+			 nvl(newcustordcount5y,0) as newcustordcount5y,
+			 nvl(newcustordcount7y,0) as newcustordcount7y,
+			 nvl(custcount,0) as custcount,
+			 nvl(prodcounts,0) as prodcounts,
+			 nvl(offcount,0) as offcount,
+			 nvl(prodcountquantity,0) as prodcountquantity,
+			 nvl(offquantity,0) as offquantity,
+			 nvl(freeprodcounts,0) as freeprodcounts,
+			 nvl(givecash,0) as givecash,
+			 to_char(zhekou) as zhekou,
+			 to_char(zhejiaquan) as zhejiaquan
+		from et1_warehouse.TB_CAMPAINSINFODETAIL_today a 
+        where a.batchid = #userid#
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countCampainsinfoDetail" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from et1_warehouse.TB_CAMPAINSINFODETAIL_today a where a.batchid = #userid#
+	</select>
+	
+	
+	<!-- 执行存储过程 -->
+	<parameterMap id="mapCampainsinfoDetail" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="subchannelId2" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doCampainsinfoDetail" parameterMap="mapCampainsinfoDetail">
+         {call et1_warehouse.pkg_today.sp_campainsdetail(?,?,?,?)}
+    </procedure>
+    
+    
+    <!--时间别订单统计-->
+	<resultMap class="java.util.HashMap" id="getTimeOrder">
+		<result property="orderdate" column="ORDERDATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="orderamout" column="ORDERAMOUT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maoli" column="MAOLI" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maoliv" column="maoliv" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="amountbianhua" column="amountbianhua" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="amountbianhualv" column="AMOUNTBIANHUALV" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="amountbianhualv1" column="AMOUNTBIANHUALV1" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maolibianhua" column="maolibianhua" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maolibianhualv" column="MAOLIBIANHUALV" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maolibianhualv1" column="MAOLIBIANHUALV1" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+	</resultMap>
+	<select id="getTimeOrders" resultMap="getTimeOrder" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+		   a.orderdate,
+	       a.orderamout,
+	       a.maoli,
+	       a.maoliv||'%' as maoliv,
+	       a.amountbianhua,
+	       a.amountbianhualv as amountbianhualv,
+	       a.amountbianhualv||'%' as amountbianhualv1,
+	       a.maolibianhua,
+	       a.maolibianhualv as maolibianhualv,
+	       a.maolibianhualv||'%' as maolibianhualv1
+        from tb_TimeOrder a
+        where a.batchid = #userid#
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countTimeOrder" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_TimeOrder a where a.batchid = #userid#
+	</select>
+	
+	<!-- 执行存储过程 -->
+	<parameterMap id="mapTimeOrder" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="username" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="userip" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="subchannelId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="statCycle" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doTimeOrder" parameterMap="mapTimeOrder">
+         {call pkg_channel.sp_timeorder(?,?,?,?,?,?,?,?,?)}
+    </procedure>
+    
+    <!--地图市级有效订单统计-->
+	<resultMap class="java.util.HashMap" id="getAreaOrder">
+		<result property="province" column="PROVINCE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="city" column="CITY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="ordercc" column="ORDERCC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="sumamount" column="SUMAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="city_longitude" column="CITY_LONGITUDE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="city_latitude" column="CITY_LATITUDE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="city_offset_x" column="CITY_OFFSET_X" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="city_offset_y" column="CITY_OFFSET_Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="city_image_fix" column="CITY_IMAGE_FIX" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="area_longitude" column="AREA_LONGITUDE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="area_latitude" column="AREA_LATITUDE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="area_offset_x" column="AREA_OFFSET_X" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="area_offset_y" column="AREA_OFFSET_Y" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="area_image_fix" column="AREA_IMAGE_FIX" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="area_map_lvl" column="AREA_MAP_LVL" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="0"/>
+		<result property="ranking" column="ranking" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+	</resultMap>
+	<select id="getAreaOrders" resultMap="getAreaOrder" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+				select t.*,row_number() over(partition by province order by SUMAMOUNT desc) as ranking 
+				 from ( 
+					select 
+					   a.province,
+		               a.city,
+		               a.ordercc,
+		               a.sumamount,
+		               b.city_longitude,
+		               b.city_latitude,
+		               b.city_offset_x,
+		               b.city_offset_y,
+		               b.city_image_fix,
+		               nvl(b.area_longitude, b.city_longitude) as area_longitude,
+		               nvl(b.area_latitude, b.city_latitude) as area_latitude,
+		               nvl(b.area_offset_x, b.city_offset_x) as area_offset_x,
+		               nvl(b.area_offset_y, b.city_offset_y) as area_offset_y,
+		               nvl(b.area_image_fix, b.city_image_fix) as area_image_fix,
+		               b.area_map_lvl
+					from 
+					(select t.province,
+					       t.city,
+					       sum(t.ORDERCC) as ORDERCC,
+					       sum(t.SUMAMOUNT) as SUMAMOUNT
+					  from et1_warehouse.TB_areaINFO_TODAY t
+					  <dynamic prepend="where">
+						<isNotEmpty prepend="and" property="subchannelIds">
+				    		t.subchannelid in (
+				    			<iterate property="subchannelIds" conjunction = ",">
+									#subchannelIds[]#
+								</iterate>
+				      		)
+				    	</isNotEmpty>
+					</dynamic>
+					 group by t.province, t.city) a,tb_areazipcode b
+					 where a.city = b.city and b.area = '其他'
+					) t
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!--地图区级有效订单统计-->
+	<resultMap class="java.util.HashMap" id="getZipOrder">
+		<result property="province" column="PROVINCE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="city" column="CITY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="area" column="AREA" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="ordercc" column="ORDERCC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="sumamount" column="SUMAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="ranking" column="ranking" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+	</resultMap>
+	<select id="getZipOrders" resultMap="getZipOrder" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+				select t.*,row_number() over(partition by province order by SUMAMOUNT desc) as ranking 
+				 from ( 
+						select 
+							a.province,
+	                        a.city,
+	                        a.area,
+	                        sum(a.ORDERCC) as ORDERCC,
+	                        sum(a.SUMAMOUNT) as SUMAMOUNT
+	                   from et1_warehouse.TB_areaINFO_TODAY a
+	                   where a.city = #city#
+						<isNotEmpty prepend="and" property="subchannelIds">
+				    		a.subchannelid in (
+				    			<iterate property="subchannelIds" conjunction = ",">
+									#subchannelIds[]#
+								</iterate>
+				      		)
+				    	</isNotEmpty>
+				    	group by a.province,a.city,a.area
+					) t
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!--地图通路有效订单统计-->
+	<resultMap class="java.util.HashMap" id="getSubChannelOrder">
+		<result property="subchannelname" column="SUBCHANNELNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="ordercc" column="ORDERCC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="sumamount" column="SUMAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="subchannelid" column="SUBCHANNELID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maoli" column="MAOLI" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+	</resultMap>
+	<select id="getSubChannelOrders" resultMap="getSubChannelOrder" parameterClass="java.util.HashMap">
+		select a.subchannelname,a.ordercc,a.sumamount,a.subchannelid,a.maoli from et1_warehouse.TB_channelINFO_TODAY a order by a.sumamount desc 
+	</select>
+	
+</sqlMap>

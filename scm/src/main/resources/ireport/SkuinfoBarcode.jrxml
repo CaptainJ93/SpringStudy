@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SkuinfoBarcode" language="groovy" pageWidth="226" pageHeight="113" columnWidth="226" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="fd1e38a4-e89a-4f62-894d-67705c69feda">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="productid" class="java.lang.Long"/>
+	<field name="productname" class="java.lang.String"/>
+	<field name="colorvalue" class="java.lang.String"/>
+	<field name="stylevalue" class="java.lang.String"/>
+	<field name="productskucode" class="java.lang.String"/>
+	<detail>
+		<band height="113" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="58" width="41" height="20" uuid="0f52cbd2-4b22-4965-b92d-e70855083901"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="58" width="127" height="43" uuid="4d768547-4dae-4401-9ffd-b5c544eb66fc"/>
+				<textElement>
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="58" width="25" height="20" uuid="063cb34f-01bd-487c-a4a7-4b8f8feca7ba"/>
+				<textElement>
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{colorvalue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="58" width="30" height="31" uuid="4530707f-d2a9-4427-b48e-b67d8a9f3841"/>
+				<textElement>
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stylevalue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="37" width="226" height="21" uuid="f63b8333-0100-481f-8ed9-67756961a7ca"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productskucode}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="21" y="10" width="187" height="27" uuid="6407d5f2-1bd6-4d97-af45-ca887de4bf44"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="2.0" textPosition="none">
+					<jr:codeExpression><![CDATA[$F{productskucode}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryQualityReportTimeAreaProportionDao">
+    
+	
+	<select id="findList" resultType="DeliveryQualityReportTimeAreaProportion">
+	
+	select DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") as everyday ,
+         a.selectedcarrier AS "selectedcarrier",
+				 carrier.carriername AS "carrier.carriername",
+				 zip.limitations as timearea,
+				 COUNT(*) as "timeareatotalnum",
+				 t1.num1  as "carriertimeareatotalnum",
+				 t3.num3 as   "signInTimeNum",
+				 t4.num4 as   "signNum"
+		FROM scm_delivery_orderintransit a
+		LEFT JOIN scm_carrier carrier
+			on carrier.carrierid = a.selectedcarrier
+    LEFT JOIN (select DISTINCT zipcode,limitations from scm_carrierzipcode) zip
+		on a.receivingzipcode = zip.zipcode
+
+		LEFT JOIN  (
+					select DATE_FORMAT(a1.actualshipdate, "%Y-%m-%d") as day1  ,zip1.limitations as limitations1 ,count(*) as num1 from scm_delivery_orderintransit a1  
+					LEFT JOIN (select DISTINCT zipcode,limitations from scm_carrierzipcode) zip1 
+					on a1.receivingzipcode  = zip1.zipcode
+					where 1=1
+					
+					<if test="createDateStart != null">
+						AND a1.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a1.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					
+					
+						GROUP BY DATE_FORMAT(a1.actualshipdate, "%Y-%m-%d"),zip1.limitations 
+		)t1
+		on CONCAT_WS('-',DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"), zip.limitations ) = CONCAT_WS('-',t1.day1,t1.limitations1)
+
+
+		LEFT JOIN  (
+			select DATE_FORMAT(a13.actualshipdate, "%Y-%m-%d") as day3,a13.selectedcarrier as selectedcarrier13,zz.limitations as limitations3, count(*) as num3
+          from scm_delivery_orderintransit  a13
+						LEFT JOIN scm_carrier carrier13
+			      on carrier13.carrierid = a13.selectedcarrier
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID  from scm_carrierzipcode)  zz
+						on a13.receivingzipcode  = zz.zipcode
+						and a13.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 	<if test="createDateStart != null">
+						AND a13.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a13.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					
+					 and   a13.trackingstatus =1002
+					 and   a13.receiptorrejecttime is not NULL
+					 and IFNULL(zz.limitations,0) &gt; (TO_SECONDS(a13.receiptorrejecttime)-TO_SECONDS(a13.actualshipdate))/(60*60) 
+	group by DATE_FORMAT(a13.actualshipdate, "%Y-%m-%d"),a13.selectedcarrier,zz.limitations
+		)t3
+   on CONCAT_WS('-',DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"), a.selectedcarrier, zip.limitations ) = CONCAT_WS('-',t3.day3,t3.selectedcarrier13,t3.limitations3)
+   
+   
+   LEFT JOIN  (
+			select DATE_FORMAT(a14.actualshipdate, "%Y-%m-%d") as day4,a14.selectedcarrier as selectedcarrier14,zz.limitations as limitations4, count(*) as num4
+          from scm_delivery_orderintransit  a14
+						LEFT JOIN scm_carrier carrier14
+			      on carrier14.carrierid = a14.selectedcarrier
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID  from scm_carrierzipcode)  zz
+						on a14.receivingzipcode  = zz.zipcode
+						and a14.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 	<if test="createDateStart != null">
+						AND a14.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a14.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					
+					 and   a14.trackingstatus =1002
+					 and   a14.receiptorrejecttime is not NULL
+				group by DATE_FORMAT(a14.actualshipdate, "%Y-%m-%d"),a14.selectedcarrier,zz.limitations
+		)t4
+   on CONCAT_WS('-',DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"), a.selectedcarrier, zip.limitations ) = CONCAT_WS('-',t4.day4,t4.selectedcarrier14,t4.limitations4)
+
+
+	 WHERE
+	 1=1 
+	             <if test="createDateStart != null">
+						AND a.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+						AND a.selectedcarrier = #{selectedcarrier}
+					</if>
+					
+	 GROUP BY 
+            DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") ,
+             a.selectedcarrier,
+			 carrier.carriername,
+			 zip.limitations
+					
+	</select>
+	
+	
+	
+	<select id="findAllList" resultType="DeliveryQualityReportTimeAreaProportion">
+	
+	select 
+         a.selectedcarrier AS "selectedcarrier",
+				 carrier.carriername AS "carrier.carriername",
+				 zip.limitations as timearea,
+				 COUNT(*) as "timeareatotalnum",
+				 t1.num1  as "carriertimeareatotalnum",
+				 t3.num3 as   "signInTimeNum",
+				 t4.num4 as   "signNum"
+		FROM scm_delivery_orderintransit a
+		LEFT JOIN scm_carrier carrier
+			on carrier.carrierid = a.selectedcarrier
+    LEFT JOIN (select DISTINCT zipcode,limitations from scm_carrierzipcode) zip
+		on a.receivingzipcode = zip.zipcode
+
+		LEFT JOIN  (
+					select zip1.limitations as limitations1 ,count(*) as num1 from scm_delivery_orderintransit a1  
+					LEFT JOIN (select DISTINCT zipcode,limitations from scm_carrierzipcode) zip1 
+					on a1.receivingzipcode  = zip1.zipcode
+					where 1=1
+					
+					<if test="createDateStart != null">
+						AND a1.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a1.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					
+					
+						GROUP BY zip1.limitations 
+		)t1
+		on CONCAT_WS('-','1', zip.limitations ) = CONCAT_WS('-','1',t1.limitations1)
+
+
+		LEFT JOIN  (
+			select a13.selectedcarrier as selectedcarrier13,zz.limitations as limitations3, count(*) as num3
+          from scm_delivery_orderintransit  a13
+						LEFT JOIN scm_carrier carrier13
+			      on carrier13.carrierid = a13.selectedcarrier
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID  from scm_carrierzipcode)  zz
+						on a13.receivingzipcode  = zz.zipcode
+						and a13.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 	<if test="createDateStart != null">
+						AND a13.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a13.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					
+					 and   a13.trackingstatus =1002
+					 and   a13.receiptorrejecttime is not NULL
+					 and IFNULL(zz.limitations,0) &gt; (TO_SECONDS(a13.receiptorrejecttime)-TO_SECONDS(a13.actualshipdate))/(60*60) 
+	group by a13.selectedcarrier,zz.limitations
+		)t3
+   on CONCAT_WS('-',a.selectedcarrier, zip.limitations ) = CONCAT_WS('-',t3.selectedcarrier13,t3.limitations3)
+   
+   
+   LEFT JOIN  (
+			select a14.selectedcarrier as selectedcarrier14,zz.limitations as limitations4, count(*) as num4
+          from scm_delivery_orderintransit  a14
+						LEFT JOIN scm_carrier carrier14
+			      on carrier14.carrierid = a14.selectedcarrier
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID  from scm_carrierzipcode)  zz
+						on a14.receivingzipcode  = zz.zipcode
+						and a14.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 	<if test="createDateStart != null">
+						AND a14.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a14.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					
+					 and   a14.trackingstatus =1002
+					 and   a14.receiptorrejecttime is not NULL
+	group by a14.selectedcarrier,zz.limitations
+		)t4
+   on CONCAT_WS('-',a.selectedcarrier, zip.limitations ) = CONCAT_WS('-',t4.selectedcarrier14,t4.limitations4)
+
+
+	 WHERE
+	 1=1 
+	             <if test="createDateStart != null">
+						AND a.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+						AND a.selectedcarrier = #{selectedcarrier}
+					</if>
+					
+	 GROUP BY 
+            
+             a.selectedcarrier,
+			 carrier.carriername,
+			 zip.limitations
+					
+	</select>
+	
+</mapper>

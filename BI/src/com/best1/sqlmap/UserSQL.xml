@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UserSql">
+    <typeAlias alias="UserInfo" type="com.best1.domain.UserInfo" />
+    <typeAlias alias="Role" type="com.best1.domain.Role" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select
+	      a.userid as userid,
+	      a.username as username,
+	      a.userloginid as userloginid,
+	      a.emailid as emailid,
+	      to_char(a.startdate,'yyyy-MM-dd') as startdate,
+	      to_char(a.enddate,'yyyy-MM-dd') as enddate,
+	      a.mobileno as mobileno,
+	      a.status as status,
+	      (select b.username from tb_best1_user b where b.userid=a.createby) as createby,
+	      a.createdate as createdate,
+	      (select b.username from tb_best1_user b where b.userid=a.lastcreateby) as lastcreateby,
+	      a.lastcreatedate as lastcreatedate,
+	      a.passworderrornum as passworderrornum,
+	      a.post_lvl as postlevel,
+	      a.departmentid as departmentid,
+	      (select d.department_name from tb_best1_department d where d.department_id = a.departmentid) as departmentname
+	    from tb_best1_user a
+	</sql>
+    <!-- 通用查询条件-->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					a.userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="password">
+				<![CDATA[
+					a.password = #password#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="username">
+				<![CDATA[
+					a.username like '%$username$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userloginid">
+				<![CDATA[
+					a.userloginid = #userloginid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userloginidblur">
+				<![CDATA[
+					a.userloginid like '%$userloginidblur$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="mobileno">
+				<![CDATA[
+					a.mobileno = #mobileno#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				<![CDATA[
+					a.status = #status#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="postlevel">
+				<![CDATA[
+					a.post_lvl = #postlevel#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentid">
+				<![CDATA[
+					a.departmentid = #departmentid#
+					
+				]]>
+				<!--in (
+				       SELECT a.department_id FROM tb_best1_department a START WITH a.department_pid = #departmentid# CONNECT BY PRIOR a.department_id = a.department_pid
+					)-->
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userids">
+			    a.userid in (
+			        <iterate property="userids" conjunction = ",">
+				        #userids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询-->
+	<resultMap class="UserInfo" id="getUser">
+		<result property="userid" column="USERID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="username" column="USERNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="userloginid" column="USERLOGINID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="emailid" column="EMAILID" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="startdate" column="STARTDATE" javaType="java.lang.String" jdbcType="TIMESTAMP"/>
+		<result property="enddate" column="ENDDATE" javaType="java.lang.String" jdbcType="TIMESTAMP"/>
+		<result property="mobileno" column="MOBILENO" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="status" column="STATUS" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="createby" column="CREATEBY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createdate" column="CREATEDATE" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+		<result property="lastcreateby" column="LASTCREATEBY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastcreatedate" column="LASTCREATEDATE" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+		<result property="passworderrornum" column="PASSWORDERRORNUM" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="postlevel" column="postlevel" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="departmentid" column="departmentid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="departmentname" column="departmentname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getUserInfo" resultMap="getUser" parameterClass="java.util.HashMap">
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+	</select>
+	
+    <!-- 修改用户密码错误输入次数 -->
+	<update id="updateUserpwdErrorNum" parameterClass="java.util.HashMap" >
+		update tb_best1_user
+		set	passworderrornum = #passworderrornum#
+		where userloginid = #userloginid#
+	</update>
+   
+    <!-- 修改用户状态 -->
+	<update id="lockUserStatus" parameterClass="java.util.HashMap" >
+		update tb_best1_user
+		set	status = #status#
+		where userloginid = #userloginid#
+	</update>
+	
+     <!-- 修改用户密码 -->
+	<update id="updateUserPwd" parameterClass="java.util.HashMap" >
+		update tb_best1_user
+		set	password = #password#,passworderrornum = #passworderrornum#
+		where userid = #userid#
+	</update>
+     
+	<!-- 统计 -->
+	<select id="countUsers" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_user a
+		<include refid="Where_Clause" />
+	</select>
+	
+	<!-- 分页显示 -->
+    <select id="getUserByPage" resultMap="getUser" parameterClass="java.util.HashMap">
+		
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		order by a.userid desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex# 
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 分页显示 Select_UserRole_Clause-->
+	<sql id="Select_UserRole_Clause">
+		select
+	      r.ROLEID as ROLEID,
+	      r.ROLENAME as ROLENAME,
+	      r.CREATEDBY as CREATEDBY,
+	      (select b.username from tb_best1_user b where b.userid = r.CREATEDBY) as CREATEDBYNAME,
+	      r.CREATEDTIMESTAMP as CREATEDTIMESTAMP,
+	      r.LASTMODIFIEDBY as LASTMODIFIEDBY,
+	      (select b.username from tb_best1_user b where b.userid = r.LASTMODIFIEDBY) as LASTMODIFIEDBYNAME,
+	      r.LASTMODIFIEDTIMESTAMP as LASTMODIFIEDTIMESTAMP,
+	      r.ROLEDESC as ROLEDESC
+	    from tb_best1_role r
+	</sql>
+    <!-- 通用查询条件 Where_UserRole_Clause-->
+	<sql id="Where_UserRole_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="roleid">
+				<![CDATA[
+					r.roleid = #roleid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="rolename">
+				<![CDATA[
+					r.rolename like '%$rolename$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="roleids">
+			    r.roleid in (
+			        <iterate property="roleids" conjunction = ",">
+				        #roleids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userid">
+			    r.roleid in (SELECT ur.roleid FROM tb_best1_userrole ur where ur.userid=#userid#)
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 统计 countUserRoles-->
+	<select id="countUserRoles" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_role r
+		<include refid="Where_UserRole_Clause" />
+	</select>
+	
+	<!-- 查询getRole -->
+	<resultMap class="java.util.HashMap" id="getRole">
+		<result property="roleid" column="ROLEID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="rolename" column="ROLENAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createdby" column="CREATEDBY" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="createdbyname" column="CREATEDBYNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createdtimestamp" column="CREATEDTIMESTAMP" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastmodifiedby" column="LASTMODIFIEDBY" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="lastmodifiedbyname" column="LASTMODIFIEDBYNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastmodifiedtimestamp" column="LASTMODIFIEDTIMESTAMP" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="roledesc" column="ROLEDESC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+    <select id="listUserRole" resultMap="getRole" parameterClass="java.util.HashMap">
+		
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_UserRole_Clause" />
+		<include refid="Where_UserRole_Clause" />
+		order by r.roleid desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex# 
+			]]>
+		</isGreaterThan>
+	</select>
+	
+    <!-- 通用查询条件 Where_AllUnincludedRole_Clause-->
+	<sql id="Where_AllUnincludedRole_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="roleid">
+			    r.roleid =  #roleid#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="rolename">
+				<![CDATA[
+					r.rolename like '%$rolename$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="roleids">
+			    r.roleid not in (
+			        <iterate property="roleids" conjunction = ",">
+				        #roleids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userid">
+			    r.roleid not in (
+			    select ROLEID  from TB_BEST1_USERROLE where userid = #userid#
+			    ) 
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 统计 countAllUnincludedRole-->
+	<select id="countAllUnincludedRole" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_role r
+		<include refid="Where_AllUnincludedRole_Clause" />
+	</select>
+	
+	<!-- 查询listAllUnincludedRole -->
+    <select id="listAllUnincludedRole" resultMap="getRole" parameterClass="java.util.HashMap">
+		
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_UserRole_Clause" />
+		<include refid="Where_AllUnincludedRole_Clause" />
+				order by r.roleid desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex# 
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	
+    <!-- 添加用户与角色绑定 -->
+	<insert id="addUserRole" parameterClass="java.util.HashMap">
+		INSERT INTO TB_BEST1_USERROLE(USERROLEID, USERID, ROLEID)
+ 		 SELECT SEQ_USERROLE_ID.NEXTVAL,#userid#,r.roleid FROM tb_best1_role r
+		where r.roleid in (
+			<iterate property="roleids" conjunction = ",">
+		        #roleids[]#
+		    </iterate>
+		)
+    </insert>
+	
+    <!-- 删除用户与角色绑定 -->
+	<delete id="deleteUserRole" parameterClass="java.util.HashMap" >
+		delete from tb_best1_userrole usrr
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					usrr.userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="roleids">
+			   usrr.roleid in (
+					<iterate property="roleids" conjunction = ",">
+		        		#roleids[]#
+		    		</iterate>
+				)
+			</isNotEmpty>
+		</dynamic> 
+	</delete>
+	
+     <!-- select -->
+	<select id="getPk" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+      SELECT SEQ_USER_ID.Nextval FROM dual
+    </select>
+	
+    <!-- 新增 -->
+	<insert id="insertUserInfo" parameterClass="UserInfo">
+		INSERT INTO TB_BEST1_USER(USERID,
+   			STARTDATE,
+   		    ENDDATE,
+   		    USERNAME,
+   		    PASSWORD,
+   		    EMAILID,
+   		    USERLOGINID,
+   		    STATUS,
+   		    DEPARTMENTID,
+   		    MOBILENO,
+   		    CREATEDATE,
+   		    CREATEBY,
+   		    LASTCREATEDATE,
+   		    LASTCREATEBY,
+   		    PASSWORDERRORNUM,
+   		    POST_LVL)
+   		    VALUES
+   		    (SEQ_USER_ID.NEXTVAL,
+   		    to_date(#startdate#,'yyyy-MM-dd'),
+   		    to_date(#enddate#,'yyyy-MM-dd'),
+   		    #username#,
+   		    #password#,
+   		    #emailid#,
+   		    #userloginid#,
+   		    1,
+   		    #departmentid#,
+   		    #mobileno#,
+   		    sysdate,
+   		    #tmpcreateby#,
+   		    NULL,
+   		    NULL,
+   		    #passworderrornum#,
+   		    #postlevel#)
+    </insert>
+    
+    <!-- 修改 -->
+	<update id="updateUserInfo" parameterClass="UserInfo">
+		update tb_best1_user
+		set	username = #username#,userloginid = #userloginid#,
+		mobileno = #mobileno#,emailid = #emailid#,
+		startdate = to_date(#startdate#,'yyyy-MM-dd'),
+		enddate = to_date(#enddate#,'yyyy-MM-dd'),
+		lastcreateby = #tmplastcreateby#,lastcreatedate = sysdate,
+		post_lvl = #postlevel#,departmentid = #departmentid#
+		where userid = #userid#
+	</update>
+	
+     <!-- 解锁用户 -->
+	<update id="updateUserStatus" parameterClass="java.util.HashMap" >
+		update tb_best1_user
+		set	status = #status#,passworderrornum = #passworderrornum#,lastcreateby = #lastcreateby#,lastcreatedate = sysdate
+		<isNotEmpty prepend="," property="password">
+				<![CDATA[
+					password = #password#
+				]]>
+			</isNotEmpty>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userids">
+			    userid in (
+			        <iterate property="userids" conjunction = ",">
+				        #userids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic>
+	</update>
+    
+    <!-- 删除 -->
+	<delete id="deleteUserInfo" parameterClass="java.util.HashMap" >
+		delete from tb_best1_user a 
+		<include refid="Where_Clause" />
+	</delete> 
+	
+	<delete id="deleteUserRoleInfo" parameterClass="java.util.HashMap" >
+		delete from tb_best1_userrole usrr
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					usrr.userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userids">
+			    usrr.userid in (
+			        <iterate property="userids" conjunction = ",">
+				        #userids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic> 
+	</delete>
+	
+	<delete id="deleteUserPrivilegeInfo" parameterClass="java.util.HashMap" >
+		delete from tb_best1_user_privilege usrp
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					usrp.userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userids">
+			    usrp.userid in (
+			        <iterate property="userids" conjunction = ",">
+				        #userids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic> 
+	</delete>
+</sqlMap>

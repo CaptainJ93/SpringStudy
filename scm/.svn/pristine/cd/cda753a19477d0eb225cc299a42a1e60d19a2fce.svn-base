@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.supplier.dao.ScmSupplierCsoinfoDao">
+    
+	<sql id="scmSupplierCsoinfoColumns">
+		a.id AS "id",
+		a.shiporderid AS "shiporderid",
+		a.orderid AS "orderid",
+		a.itemid AS "itemid",
+		a.orderstatus AS "orderstatus",
+		a.productid AS "productid",
+		a.productname AS "productname",
+		a.productversion AS "productversion",
+		a.productquantity AS "productquantity",
+		a.productstyledescription AS "productstyledescription",
+		a.productcolourdescription AS "productcolourdescription",
+		a.supplierid AS "supplierid",
+		si.suppliercompanyname AS "suppliercompanyname",
+		a.deliveryaddress1 AS "deliveryaddress1",
+		a.deliveryaddress2 AS "deliveryaddress2",
+		a.customerid AS "customerid",
+		a.customername AS "customername",
+		a.hometelephone1 AS "hometelephone1",
+		a.mobileno1 AS "mobileno1",
+		a.customerzipcode AS "customerzipcode",
+		a.isneedinvoice AS "isneedinvoice",
+		a.invoicenumber AS "invoicenumber",
+		a.invoicecompanyno AS "invoicecompanyno",
+		a.invoicetitle AS "invoicetitle",
+		a.invoiceamount AS "invoiceamount",
+		a.invoicezipcode AS "invoicezipcode",
+		a.invoiceaddress1 AS "invoiceaddress1",
+		a.invoiceaddress2 AS "invoiceaddress2",
+		a.invoicetype AS "invoicetype",
+		a.invoiceaddressid AS "invoiceaddressid",
+		a.deliveryorderid AS "deliveryorderid",
+		a.deliverytype AS "deliverytype",
+		a.subdeliverytype AS "subdeliverytype",
+		a.carrieridprimary AS "carrieridprimary",
+		carrieridprimary.carriername AS "carrieridprimaryname",
+		a.selectedcarrier AS "selectedcarrier",
+		selectedcarrier.carriername AS "selectedcarriername",
+		a.scheduledshipdate AS "scheduledshipdate",
+		a.scheduleddeliverydate AS "scheduleddeliverydate",
+		a.requireddeliverytime AS "requireddeliverytime",
+		a.deliveryaddressid AS "deliveryaddressid",
+		a.warehouseid AS "warehouseid",
+		a.orderpriority AS "orderpriority",
+		a.shipordertype AS "shipordertype",
+		a.crossdockflag AS "crossdockflag",
+		a.isspecialpacking AS "isspecialpacking",
+		a.isoffshoredelivery AS "isoffshoredelivery",
+		a.shipordersequence AS "shipordersequence",
+		a.giftpackmessage AS "giftpackmessage",
+		a.instructiontowms AS "instructiontowms",
+		a.instructiontoscm AS "instructiontoscm",
+		a.productcolourclass AS "productcolourclass",
+		a.productcolourcode AS "productcolourcode",
+		a.productstyleclass AS "productstyleclass",
+		a.productstylecode AS "productstylecode",
+		a.codamount AS "codamount",
+		a.subchannelid AS "subchannelid",
+		a.paymentmode AS "paymentmode",
+		a.ispromotionalproduct AS "ispromotionalproduct",
+		a.promotionrelationseq AS "promotionrelationseq",
+		a.servicefee AS "servicefee",
+		a.offshoredeliverycharges AS "offshoredeliverycharges",
+		a.isnewcustomer AS "isnewcustomer",
+		a.membershiplevelid AS "membershiplevelid",
+		a.actualshipdate AS "actualshipdate",
+		a.shipordercreateddate AS "shipordercreateddate",
+		a.toet1flag AS "toet1flag",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="scmSupplierCsoinfoJoins">
+		LEFT JOIN scm_carrier carrieridprimary ON carrieridprimary.carrierid = a.carrieridprimary
+		LEFT JOIN scm_carrier selectedcarrier ON selectedcarrier.carrierid = a.selectedcarrier
+		LEFT JOIN scm_supplier_supplierinfo si ON si.supplierid = a.supplierid
+	</sql>
+	
+	<!-- 出货确认的订单，配送公司和供应商只能查看60天以内的数据，保证数据的安全性。 -->
+	<sql id="scmSupplierCsoinfoPrivateDataCondition">
+		AND (a.orderstatus = ${@com.best1.scm.common.utils.SCMConstants@ORDER_STATUS_SHIPPING_IN_PROGRESS} 
+			OR a.recordcreatedtime >= 
+				<if test="dbName == 'oracle'">SYSDATE - 60</if>
+				<if test="dbName == 'mysql'">date_sub(curdate(), INTERVAL 60 DAY)</if>)
+	</sql>
+	
+	<sql id="scmSupplierCsoinfoConditions">
+		<if test="id != null and id != ''">
+			AND a.id = #{id}
+		</if>
+		<if test="shiporderid != null and shiporderid != ''">
+			AND a.shiporderid = #{shiporderid}
+		</if>
+		<if test="shipordersequence != null and shipordersequence != ''">
+			AND a.shipordersequence = #{shipordersequence}
+		</if>
+		
+		<if test="orderid != null and orderid != ''">
+			AND a.orderid = #{orderid}
+		</if>
+		<if test="itemid != null and itemid != ''">
+			AND a.itemid = #{itemid}
+		</if>
+		
+		<if test="toet1flag != null and toet1flag != ''">
+			AND a.toet1flag = #{toet1flag}
+		</if>
+		
+		<if test="orderstatus != null and orderstatus != ''">
+			AND a.orderstatus = #{orderstatus}
+		</if>
+		<if test="productid != null and productid != ''">
+			AND a.productid = #{productid}
+		</if>
+		<if test="productname != null and productname != ''">
+			AND a.productname LIKE
+			<if test="dbName == 'oracle'">'%'||#{productname}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{productname}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{productname},'%')</if>
+		</if>
+		<if test="productstyledescription != null and productstyledescription != ''">
+			AND a.productstyledescription LIKE
+			<if test="dbName == 'oracle'">'%'||#{productstyledescription}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{productstyledescription}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{productstyledescription},'%')</if>
+		</if>
+		<if
+			test="productcolourdescription != null and productcolourdescription != ''">
+			AND a.productcolourdescription LIKE
+			<if test="dbName == 'oracle'">'%'||#{productcolourdescription}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{productcolourdescription}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{productcolourdescription},'%')</if>
+		</if>
+		<if test="supplierid != null and supplierid != ''">
+			AND a.supplierid = #{supplierid}
+		</if>
+		<if test="deliveryaddress1 != null and deliveryaddress1 != ''">
+			AND a.deliveryaddress1 LIKE
+			<if test="dbName == 'oracle'">'%'||#{deliveryaddress1}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{deliveryaddress1}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{deliveryaddress1},'%')</if>
+		</if>
+		<if test="deliveryaddress2 != null and deliveryaddress2 != ''">
+			AND a.deliveryaddress2 LIKE
+			<if test="dbName == 'oracle'">'%'||#{deliveryaddress2}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{deliveryaddress2}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{deliveryaddress2},'%')</if>
+		</if>
+		<if test="customerid != null and customerid != ''">
+			AND a.customerid = #{customerid}
+		</if>
+		<if test="customername != null and customername != ''">
+			AND a.customername = #{customername}
+		</if>
+		<if test="deliveryorderid != null and deliveryorderid != ''">
+			AND a.deliveryorderid = #{deliveryorderid}
+		</if>
+		<if test="subdeliverytype != null and subdeliverytype != ''">
+			AND a.subdeliverytype = #{subdeliverytype}
+		</if>
+		<if test="carrieridprimary != null and carrieridprimary != ''">
+			AND a.carrieridprimary = #{carrieridprimary}
+		</if>
+		<if test="criteria.createDateFrom != null and criteria.createDateFrom != ''">
+			AND a.recordcreatedtime &gt; #{criteria.createDateFrom}
+		</if>
+		<if test="criteria.createDateTo != null and criteria.createDateTo != ''">
+			AND a.recordcreatedtime &lt; #{criteria.createDateTo}
+		</if>
+		<if test="criteria.bySupplier or criteria.byCarrier">
+			<include refid="scmSupplierCsoinfoPrivateDataCondition" />
+		</if>
+		<if test="criteria.byCarrier">
+			AND (a.orderstatus = ${@com.best1.scm.common.utils.SCMConstants@ORDER_STATUS_SHIPPING_IN_PROGRESS} 
+					OR a.selectedcarrier = #{carrieridprimary})
+			AND a.subdeliverytype = ${@com.best1.scm.common.utils.SCMConstants@SUB_DELIVERY_TYPE_CARRIER_TO_SUPPLIER_PICKUP} 
+		</if>
+		<if test="criteria.bySupplier">
+			AND a.subdeliverytype = ${@com.best1.scm.common.utils.SCMConstants@SUB_DELIVERY_TYPE_NORMAL}
+		</if>
+	</sql>
+    
+	<select id="get" resultType="ScmSupplierCsoinfo">
+		SELECT 
+			<include refid="scmSupplierCsoinfoColumns"/>
+		FROM scm_supplier_csoinfo a
+		<include refid="scmSupplierCsoinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmSupplierCsoinfo">
+		SELECT 
+			<include refid="scmSupplierCsoinfoColumns"/>
+		FROM scm_supplier_csoinfo a
+		<include refid="scmSupplierCsoinfoJoins"/>
+		<where>
+			<include refid="scmSupplierCsoinfoConditions"/>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findDeliveryOrderList" resultType="com.best1.scm.modules.supplier.entity.ScmSupplierDeliveryOrder">
+		SELECT 
+		a.deliveryorderid AS "deliveryorderid",
+		a.customername AS "customername",
+		a.hometelephone1 AS "hometelephone1",
+		a.mobileno1 AS "mobileno1",
+		a.deliveryaddress1 AS "deliveryaddress1",
+		a.deliveryaddress2 AS "deliveryaddress2",
+		a.orderid AS "orderid",
+		a.codamount AS "codamount",
+		a.productid AS "productid",
+		a.productname AS "productname",
+		dot.packageWeight AS "packageWeight",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.orderstatus AS "orderstatus",
+		a.actualshipdate AS "actualshipdate"
+		FROM scm_supplier_csoinfo a
+		LEFT JOIN scm_delivery_orderintransit dot
+			ON dot.trackingnumber is not null 
+			AND dot.trackingnumber = a.deliveryorderid
+		<where>
+			<include refid="scmSupplierCsoinfoConditions"/>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmSupplierCsoinfo">
+		SELECT 
+			<include refid="scmSupplierCsoinfoColumns"/>
+		FROM scm_supplier_csoinfo a
+		<include refid="scmSupplierCsoinfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_supplier_csoinfo(
+			id,
+			shiporderid,
+			orderid,
+			itemid,
+			orderstatus,
+			productid,
+			productname,
+			productversion,
+			productquantity,
+			productstyledescription,
+			productcolourdescription,
+			supplierid,
+			deliveryaddress1,
+			deliveryaddress2,
+			customerid,
+			customername,
+			hometelephone1,
+			mobileno1,
+			customerzipcode,
+			isneedinvoice,
+			invoicenumber,
+			invoicecompanyno,
+			invoicetitle,
+			invoiceamount,
+			invoicezipcode,
+			invoiceaddress1,
+			invoiceaddress2,
+			invoicetype,
+			invoiceaddressid,
+			deliveryorderid,
+			deliverytype,
+			subdeliverytype,
+			carrieridprimary,
+			selectedcarrier,
+			scheduledshipdate,
+			scheduleddeliverydate,
+			requireddeliverytime,
+			deliveryaddressid,
+			warehouseid,
+			orderpriority,
+			shipordertype,
+			crossdockflag,
+			isspecialpacking,
+			isoffshoredelivery,
+			shipordersequence,
+			giftpackmessage,
+			instructiontowms,
+			instructiontoscm,
+			productcolourclass,
+			productcolourcode,
+			productstyleclass,
+			productstylecode,
+			codamount,
+			subchannelid,
+			paymentmode,
+			ispromotionalproduct,
+			promotionrelationseq,
+			servicefee,
+			offshoredeliverycharges,
+			isnewcustomer,
+			membershiplevelid,
+			actualshipdate,
+			shipordercreateddate,
+			toet1flag,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{shiporderid},
+			#{orderid},
+			#{itemid},
+			#{orderstatus},
+			#{productid},
+			#{productname},
+			#{productversion},
+			#{productquantity},
+			#{productstyledescription},
+			#{productcolourdescription},
+			#{supplierid},
+			#{deliveryaddress1},
+			#{deliveryaddress2},
+			#{customerid},
+			#{customername},
+			#{hometelephone1},
+			#{mobileno1},
+			#{customerzipcode},
+			#{isneedinvoice},
+			#{invoicenumber},
+			#{invoicecompanyno},
+			#{invoicetitle},
+			#{invoiceamount},
+			#{invoicezipcode},
+			#{invoiceaddress1},
+			#{invoiceaddress2},
+			#{invoicetype},
+			#{invoiceaddressid},
+			#{deliveryorderid},
+			#{deliverytype},
+			#{subdeliverytype},
+			#{carrieridprimary},
+			#{selectedcarrier},
+			#{scheduledshipdate},
+			#{scheduleddeliverydate},
+			#{requireddeliverytime},
+			#{deliveryaddressid},
+			#{warehouseid},
+			#{orderpriority},
+			#{shipordertype},
+			#{crossdockflag},
+			#{isspecialpacking},
+			#{isoffshoredelivery},
+			#{shipordersequence},
+			#{giftpackmessage},
+			#{instructiontowms},
+			#{instructiontoscm},
+			#{productcolourclass},
+			#{productcolourcode},
+			#{productstyleclass},
+			#{productstylecode},
+			#{codamount},
+			#{subchannelid},
+			#{paymentmode},
+			#{ispromotionalproduct},
+			#{promotionrelationseq},
+			#{servicefee},
+			#{offshoredeliverycharges},
+			#{isnewcustomer},
+			#{membershiplevelid},
+			#{actualshipdate},
+			#{shipordercreateddate},
+			#{toet1flag},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_supplier_csoinfo SET 	
+			shiporderid = #{shiporderid},
+			orderid = #{orderid},
+			itemid = #{itemid},
+			orderstatus = #{orderstatus},
+			productid = #{productid},
+			productname = #{productname},
+			productversion = #{productversion},
+			productquantity = #{productquantity},
+			productstyledescription = #{productstyledescription},
+			productcolourdescription = #{productcolourdescription},
+			supplierid = #{supplierid},
+			deliveryaddress1 = #{deliveryaddress1},
+			deliveryaddress2 = #{deliveryaddress2},
+			customerid = #{customerid},
+			customername = #{customername},
+			hometelephone1 = #{hometelephone1},
+			mobileno1 = #{mobileno1},
+			customerzipcode = #{customerzipcode},
+			isneedinvoice = #{isneedinvoice},
+			invoicenumber = #{invoicenumber},
+			invoicecompanyno = #{invoicecompanyno},
+			invoicetitle = #{invoicetitle},
+			invoiceamount = #{invoiceamount},
+			invoicezipcode = #{invoicezipcode},
+			invoiceaddress1 = #{invoiceaddress1},
+			invoiceaddress2 = #{invoiceaddress2},
+			invoicetype = #{invoicetype},
+			invoiceaddressid = #{invoiceaddressid},
+			deliveryorderid = #{deliveryorderid},
+			deliverytype = #{deliverytype},
+			subdeliverytype = #{subdeliverytype},
+			carrieridprimary = #{carrieridprimary},
+			selectedcarrier = #{selectedcarrier},
+			scheduledshipdate = #{scheduledshipdate},
+			scheduleddeliverydate = #{scheduleddeliverydate},
+			requireddeliverytime = #{requireddeliverytime},
+			deliveryaddressid = #{deliveryaddressid},
+			warehouseid = #{warehouseid},
+			orderpriority = #{orderpriority},
+			shipordertype = #{shipordertype},
+			crossdockflag = #{crossdockflag},
+			isspecialpacking = #{isspecialpacking},
+			isoffshoredelivery = #{isoffshoredelivery},
+			shipordersequence = #{shipordersequence},
+			giftpackmessage = #{giftpackmessage},
+			instructiontowms = #{instructiontowms},
+			instructiontoscm = #{instructiontoscm},
+			productcolourclass = #{productcolourclass},
+			productcolourcode = #{productcolourcode},
+			productstyleclass = #{productstyleclass},
+			productstylecode = #{productstylecode},
+			codamount = #{codamount},
+			subchannelid = #{subchannelid},
+			paymentmode = #{paymentmode},
+			ispromotionalproduct = #{ispromotionalproduct},
+			promotionrelationseq = #{promotionrelationseq},
+			servicefee = #{servicefee},
+			offshoredeliverycharges = #{offshoredeliverycharges},
+			isnewcustomer = #{isnewcustomer},
+			membershiplevelid = #{membershiplevelid},
+			actualshipdate = #{actualshipdate},
+			shipordercreateddate = #{shipordercreateddate},
+			toet1flag = #{toet1flag},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_supplier_csoinfo
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

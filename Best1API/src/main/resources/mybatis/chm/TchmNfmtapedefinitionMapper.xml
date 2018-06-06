@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.chm.TchmNfmtapedefinitionMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.chm.TchmNfmtapedefinition" >
+
+    <id column="TAPEID" property="tapeid" jdbcType="DECIMAL" />
+    <result column="NFMSUBCHANNELID" property="nfmsubchannelid" jdbcType="DECIMAL" />
+    <result column="TAPETYPE" property="tapetype" jdbcType="DECIMAL" />
+    <result column="TAPESTATUS" property="tapestatus" jdbcType="DECIMAL" />
+    <result column="CONTENTSTATUS" property="contentstatus" jdbcType="DECIMAL" />
+    <result column="OVERWRITINGNUMBER" property="overwritingnumber" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="TAPERETENTIONPERIOD" property="taperetentionperiod" jdbcType="TIMESTAMP" />
+    <result column="TAPEDEADLINE" property="tapedeadline" jdbcType="TIMESTAMP" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="TAPENAME" property="tapename" jdbcType="VARCHAR" />
+    <result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
+    <result column="FATHERTAPENAME" property="fathertapename" jdbcType="VARCHAR" />
+    <result column="CHILDTAPENAME" property="childtapename" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+  
+    TAPEID, NFMSUBCHANNELID, TAPETYPE, TAPESTATUS, CONTENTSTATUS, OVERWRITINGNUMBER, 
+    STATUS, TAPERETENTIONPERIOD, TAPEDEADLINE, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, 
+    LASTMODIFIEDTIMESTAMP, TAPENAME, REMARKS, FATHERTAPENAME, CHILDTAPENAME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinitionExample" >
+
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+ 
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  
+    delete from ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinitionExample" >
+
+    delete from ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinition" >
+   
+  <selectKey resultType="long"  keyProperty="tapeid" order="BEFORE">
+         SELECT s_nfmtapedefinition.nextval FROM DUAL
+      </selectKey>
+      
+    insert into ET1_CHINA.TCHM_NFMTAPEDEFINITION (TAPEID, NFMSUBCHANNELID, TAPETYPE, 
+      TAPESTATUS, CONTENTSTATUS, OVERWRITINGNUMBER, 
+      STATUS, TAPERETENTIONPERIOD, TAPEDEADLINE, 
+      CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, 
+      LASTMODIFIEDTIMESTAMP, TAPENAME, REMARKS, 
+      FATHERTAPENAME, CHILDTAPENAME)
+    values (#{tapeid,jdbcType=DECIMAL}, #{nfmsubchannelid,jdbcType=DECIMAL}, #{tapetype,jdbcType=DECIMAL}, 
+      #{tapestatus,jdbcType=DECIMAL}, #{contentstatus,jdbcType=DECIMAL}, #{overwritingnumber,jdbcType=DECIMAL}, 
+      #{status,jdbcType=DECIMAL}, #{taperetentionperiod,jdbcType=TIMESTAMP}, #{tapedeadline,jdbcType=TIMESTAMP}, 
+      #{createdby,jdbcType=DECIMAL}, #{createdtimestamp,jdbcType=TIMESTAMP}, #{lastmodifiedby,jdbcType=DECIMAL}, 
+      #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, #{tapename,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{fathertapename,jdbcType=VARCHAR}, #{childtapename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinition" >
+    
+  <selectKey resultType="long"  keyProperty="tapeid" order="BEFORE">
+         SELECT s_nfmtapedefinition.nextval FROM DUAL
+      </selectKey>
+      
+      
+    insert into ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tapeid != null" >
+        TAPEID,
+      </if>
+      <if test="nfmsubchannelid != null" >
+        NFMSUBCHANNELID,
+      </if>
+      <if test="tapetype != null" >
+        TAPETYPE,
+      </if>
+      <if test="tapestatus != null" >
+        TAPESTATUS,
+      </if>
+      <if test="contentstatus != null" >
+        CONTENTSTATUS,
+      </if>
+      <if test="overwritingnumber != null" >
+        OVERWRITINGNUMBER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="taperetentionperiod != null" >
+        TAPERETENTIONPERIOD,
+      </if>
+      <if test="tapedeadline != null" >
+        TAPEDEADLINE,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="tapename != null" >
+        TAPENAME,
+      </if>
+      <if test="remarks != null" >
+        REMARKS,
+      </if>
+      <if test="fathertapename != null" >
+        FATHERTAPENAME,
+      </if>
+      <if test="childtapename != null" >
+        CHILDTAPENAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tapeid != null" >
+        #{tapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="nfmsubchannelid != null" >
+        #{nfmsubchannelid,jdbcType=DECIMAL},
+      </if>
+      <if test="tapetype != null" >
+        #{tapetype,jdbcType=DECIMAL},
+      </if>
+      <if test="tapestatus != null" >
+        #{tapestatus,jdbcType=DECIMAL},
+      </if>
+      <if test="contentstatus != null" >
+        #{contentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="overwritingnumber != null" >
+        #{overwritingnumber,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="taperetentionperiod != null" >
+        #{taperetentionperiod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tapedeadline != null" >
+        #{tapedeadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tapename != null" >
+        #{tapename,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fathertapename != null" >
+        #{fathertapename,jdbcType=VARCHAR},
+      </if>
+      <if test="childtapename != null" >
+        #{childtapename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinitionExample" resultType="java.lang.Integer" >
+ 
+    select count(*) from ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+
+    update ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    <set >
+      <if test="record.tapeid != null" >
+        TAPEID = #{record.tapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.nfmsubchannelid != null" >
+        NFMSUBCHANNELID = #{record.nfmsubchannelid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tapetype != null" >
+        TAPETYPE = #{record.tapetype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tapestatus != null" >
+        TAPESTATUS = #{record.tapestatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contentstatus != null" >
+        CONTENTSTATUS = #{record.contentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.overwritingnumber != null" >
+        OVERWRITINGNUMBER = #{record.overwritingnumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.taperetentionperiod != null" >
+        TAPERETENTIONPERIOD = #{record.taperetentionperiod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tapedeadline != null" >
+        TAPEDEADLINE = #{record.tapedeadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tapename != null" >
+        TAPENAME = #{record.tapename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarks != null" >
+        REMARKS = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fathertapename != null" >
+        FATHERTAPENAME = #{record.fathertapename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.childtapename != null" >
+        CHILDTAPENAME = #{record.childtapename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+
+    update ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    set TAPEID = #{record.tapeid,jdbcType=DECIMAL},
+      NFMSUBCHANNELID = #{record.nfmsubchannelid,jdbcType=DECIMAL},
+      TAPETYPE = #{record.tapetype,jdbcType=DECIMAL},
+      TAPESTATUS = #{record.tapestatus,jdbcType=DECIMAL},
+      CONTENTSTATUS = #{record.contentstatus,jdbcType=DECIMAL},
+      OVERWRITINGNUMBER = #{record.overwritingnumber,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      TAPERETENTIONPERIOD = #{record.taperetentionperiod,jdbcType=TIMESTAMP},
+      TAPEDEADLINE = #{record.tapedeadline,jdbcType=TIMESTAMP},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      TAPENAME = #{record.tapename,jdbcType=VARCHAR},
+      REMARKS = #{record.remarks,jdbcType=VARCHAR},
+      FATHERTAPENAME = #{record.fathertapename,jdbcType=VARCHAR},
+      CHILDTAPENAME = #{record.childtapename,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinition" >
+ 
+    update ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    <set >
+      <if test="nfmsubchannelid != null" >
+        NFMSUBCHANNELID = #{nfmsubchannelid,jdbcType=DECIMAL},
+      </if>
+      <if test="tapetype != null" >
+        TAPETYPE = #{tapetype,jdbcType=DECIMAL},
+      </if>
+      <if test="tapestatus != null" >
+        TAPESTATUS = #{tapestatus,jdbcType=DECIMAL},
+      </if>
+      <if test="contentstatus != null" >
+        CONTENTSTATUS = #{contentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="overwritingnumber != null" >
+        OVERWRITINGNUMBER = #{overwritingnumber,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="taperetentionperiod != null" >
+        TAPERETENTIONPERIOD = #{taperetentionperiod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tapedeadline != null" >
+        TAPEDEADLINE = #{tapedeadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tapename != null" >
+        TAPENAME = #{tapename,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        REMARKS = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fathertapename != null" >
+        FATHERTAPENAME = #{fathertapename,jdbcType=VARCHAR},
+      </if>
+      <if test="childtapename != null" >
+        CHILDTAPENAME = #{childtapename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.best1.api.entity.chm.TchmNfmtapedefinition" >
+ 
+    update ET1_CHINA.TCHM_NFMTAPEDEFINITION
+    set NFMSUBCHANNELID = #{nfmsubchannelid,jdbcType=DECIMAL},
+      TAPETYPE = #{tapetype,jdbcType=DECIMAL},
+      TAPESTATUS = #{tapestatus,jdbcType=DECIMAL},
+      CONTENTSTATUS = #{contentstatus,jdbcType=DECIMAL},
+      OVERWRITINGNUMBER = #{overwritingnumber,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=DECIMAL},
+      TAPERETENTIONPERIOD = #{taperetentionperiod,jdbcType=TIMESTAMP},
+      TAPEDEADLINE = #{tapedeadline,jdbcType=TIMESTAMP},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      TAPENAME = #{tapename,jdbcType=VARCHAR},
+      REMARKS = #{remarks,jdbcType=VARCHAR},
+      FATHERTAPENAME = #{fathertapename,jdbcType=VARCHAR},
+      CHILDTAPENAME = #{childtapename,jdbcType=VARCHAR}
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+  </update>
+</mapper>

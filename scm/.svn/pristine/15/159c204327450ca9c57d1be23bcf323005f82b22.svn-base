@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.ScmComplaintHeaderDao">
+    
+	<sql id="scmComplaintHeaderColumns">
+		a.id AS "id",
+		a.cpid AS "cpid",
+		a.cptype AS "cptype",
+		a.cphandledid AS "cphandledid",
+		a.orderid AS "orderid",
+		a.itemid AS "itemid",
+		a.trackingnumber AS "trackingnumber",
+		a.cpreason1 AS "cpreason1",
+		a.cpreason2 AS "cpreason2",
+		a.cpcreatedtime AS "cpcreatedtime",
+		a.productid AS "productid",
+		a.productname AS "productname",
+		a.receivername AS "receivername",
+		a.cpdesc AS "cpdesc",
+		a.actualshiptime AS "actualshiptime",
+		a.returnid AS "returnid",
+		a.returncreatedtime AS "returncreatedtime",
+		a.cphandledprogress AS "cphandledprogress",
+		a.cpselectedcarrier AS "cpselectedcarrier",
+		a.cphandledovertime AS "cphandledovertime",
+		a.cphandledupdatetime AS "cphandledupdatetime",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime",
+		carrier.carriername AS "carrier.carriername"
+	</sql>
+	
+	<sql id="scmComplaintHeaderJoins">
+	,scm_carrier carrier
+		<if test="loginid !=null and loginid !=''">
+			,sys_user user,scm_supplier_supplierinfo company,scm_supplier_skuinfo product
+		</if>
+	</sql>
+    
+	<select id="get" resultType="ScmComplaintHeader">
+		SELECT 
+			<include refid="scmComplaintHeaderColumns"/>
+		FROM scm_complaint_header a
+		<include refid="scmComplaintHeaderJoins"/>
+		WHERE a.id = #{id}
+			and carrier.carrierid=a.cpselectedcarrier
+	</select>
+	
+	<select id="findList" resultType="ScmComplaintHeader">
+		SELECT distinct 
+			<include refid="scmComplaintHeaderColumns"/>
+		FROM scm_complaint_header a
+		<include refid="scmComplaintHeaderJoins"/>
+		<where>
+			carrier.carrierid=a.cpselectedcarrier
+		</where>
+		<if test="cpid != null and cpid != ''">
+			AND a.cpid = #{cpid}
+		</if>
+		<if test="cptype != null and cptype != '' and cptype != '-1'">
+			AND a.cptype = #{cptype}
+		</if>
+		<if test="cphandledid != null and cphandledid != ''">
+			AND a.cphandledid = #{cphandledid}
+		</if>
+		<if test="orderid != null and orderid != ''">
+			AND a.orderid = #{orderid}
+		</if>
+		<if test="returnid != null and returnid != ''">
+			AND a.returnid = #{returnid}
+		</if>
+		<if test="itemid != null and itemid != ''">
+			AND a.itemid = #{itemid}
+		</if>
+		<if test="trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber = #{trackingnumber}
+		</if>
+		<if test="productid != null and productid != ''">
+			AND a.productid = #{productid}
+		</if>
+		<if test="productname != null and productname != ''">
+			AND a.productname LIKE 
+				<if test="dbName == 'oracle'">'%'||#{productname}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{productname}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{productname},'%')</if>
+		</if>
+		<if test="cpselectedcarrier != null and cpselectedcarrier != ''">
+			AND a.cpselectedcarrier = #{cpselectedcarrier}
+		</if>
+		<if test="cphandledprogress != null and cphandledprogress != '' and cphandledprogress != '-1'">
+			AND a.cphandledprogress = #{cphandledprogress}
+		</if>
+		<if test="createDateStart != null">
+			AND a.cpcreatedtime &gt;= #{createDateStart}
+		</if>
+		<if test="createDateEnd != null">
+			AND a.cpcreatedtime &lt;= #{createDateEnd}
+		</if>
+		<if test="loginid !=null and loginid !=''">
+			AND a.productid=product.productid 
+			AND company.supplierid=product.supplierid 
+			AND company.supplierregno=user.login_name 
+			AND user.id=#{loginid} 	
+		</if>			
+	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.cphandledupdatetime DESC,${page.orderBy} ASC
+			</when>
+			<otherwise>
+				ORDER BY a.cphandledupdatetime DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmComplaintHeader">
+		SELECT 
+			<include refid="scmComplaintHeaderColumns"/>
+		FROM scm_complaint_header a
+		<include refid="scmComplaintHeaderJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.cphandledupdatetime DESC,${page.orderBy} ASC
+			</when>
+			<otherwise>
+				ORDER BY a.cphandledupdatetime DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_complaint_header(
+			id,
+			cpid,
+			cptype,
+			cphandledid,
+			orderid,
+			itemid,
+			trackingnumber,
+			cpreason1,
+			cpreason2,
+			cpcreatedtime,
+			productid,
+			productname,
+			receivername,
+			cpdesc,
+			actualshiptime,
+			returnid,
+			returncreatedtime,
+			cphandledprogress,
+			cpselectedcarrier,
+			cphandledovertime,
+			cphandledupdatetime,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{cpid},
+			#{cptype},
+			#{cphandledid},
+			#{orderid},
+			#{itemid},
+			#{trackingnumber},
+			#{cpreason1},
+			#{cpreason2},
+			#{cpcreatedtime},
+			#{productid},
+			#{productname},
+			#{receivername},
+			#{cpdesc},
+			#{actualshiptime},
+			#{returnid},
+			#{returncreatedtime},
+			#{cphandledprogress},
+			#{cpselectedcarrier},
+			#{cphandledovertime},
+			#{cphandledupdatetime},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_complaint_header SET 	
+			cpid = #{cpid},
+			cptype = #{cptype},
+			cphandledid = #{cphandledid},
+			orderid = #{orderid},
+			itemid = #{itemid},
+			trackingnumber = #{trackingnumber},
+			cpreason1 = #{cpreason1},
+			cpreason2 = #{cpreason2},
+			cpcreatedtime = #{cpcreatedtime},
+			productid = #{productid},
+			productname = #{productname},
+			receivername = #{receivername},
+			cpdesc = #{cpdesc},
+			actualshiptime = #{actualshiptime},
+			returnid = #{returnid},
+			returncreatedtime = #{returncreatedtime},
+			cphandledprogress = #{cphandledprogress},
+			cpselectedcarrier = #{cpselectedcarrier},
+			cphandledovertime = #{cphandledovertime},
+			cphandledupdatetime = #{cphandledupdatetime},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_complaint_header
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

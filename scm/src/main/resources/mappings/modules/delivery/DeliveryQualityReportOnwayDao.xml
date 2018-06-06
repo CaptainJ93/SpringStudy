@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryQualityReportOnwayDao">
+    
+	
+	<select id="findList" resultType="DeliveryQualityReportOnway">
+	    
+	     select a.*   from (
+	     
+	    select o.selectedcarrier  AS "selectedcarrier", 
+	    carrier.CARRIERNAME AS "carrier.carriername",
+	    
+	    o.receivingzipcode,
+	    s.`name` as areaname,
+	    count(*) as 'deliverynum',
+       sum(case
+			   when o.trackingstatus = '1002' then
+			              1
+			             else
+			              0
+			           end) as 'signNum',          
+			    sum(case
+			             when o.trackingstatus = '1003' then
+			              1
+			             else
+			              0
+			           end) as 'rejectnum'
+                  from scm_delivery_orderintransit   o
+                   LEFT JOIN  sys_area  s 
+                   on   o.receivingzipcode  = s.`code` 	
+                   LEFT JOIN scm_carrier carrier
+			       on carrier.carrierid = o.selectedcarrier 
+			       
+			      where (s.type=4 OR s.type is NULL) 
+			<if test="createDateStart != null">
+				AND o.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND o.actualshipdate &lt;= #{createDateEnd}
+			</if>
+			
+			 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND o.selectedcarrier = #{selectedcarrier}
+			</if>
+			     GROUP BY o.selectedcarrier, carrier.CARRIERNAME,o.receivingzipcode,s.`name`
+			
+			) a ORDER BY  (a.deliverynum-a.signNum-a.rejectnum )  DESC
+	</select>
+	
+</mapper>

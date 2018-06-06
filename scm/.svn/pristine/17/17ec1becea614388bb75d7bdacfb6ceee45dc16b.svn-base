@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DelieryOrderReportDao">
+    
+	<sql id="deliveryOrderintransitColumns">
+		packagesum,
+		packagesamount,
+		deliveredsum,
+		refusedsum,
+		receivedpayments,
+		carrier.carriername AS "carrier.carriername"
+	</sql>
+	
+	<sql id="deliveryOrderJoins">
+	,scm_carrier carrier
+	</sql>
+    
+	<sql id="deliveryOrderCarrierJoins">
+	,scm_carrier carrier,scm_carrierzipcode zipcode
+	</sql>
+	
+<select id="findList" resultType="DelieryOrderReport">
+select 
+carrier.CARRIERNAME AS "carrier.carriername",
+COUNT(package.packagecodnum) as packagesum,
+SUM(package.packagecodnum) as packagesamount,
+SUM(CASE package.trackingstatus 
+    WHEN 1002 THEN 1
+   END  ) AS deliveredsum,
+SUM(CASE package.trackingstatus 
+    WHEN 1002 THEN package.packagecodnum
+   END  ) AS deliveredamount,
+SUM(CASE package.trackingstatus 
+    WHEN 1003 THEN 1
+   END  ) AS refusedsum ,
+SUM(CASE package.trackingstatus 
+    WHEN 1003 THEN package.packagecodnum
+   END  ) AS refusedamount ,
+SUM(CASE package.trackingstatus 
+    WHEN 1000 THEN 1
+ WHEN 1001 THEN 1
+   END  ) AS distributioninsum,
+SUM(CASE package.trackingstatus 
+    WHEN 1000 THEN package.packagecodnum
+ WHEN 1001 THEN package.packagecodnum
+   END ) AS distributioninamount,
+SUM(CASE package.trackingstatus 
+    WHEN 1004 THEN 1
+END  ) AS signforpackage,
+SUM(CASE package.trackingstatus 
+    WHEN 1004 THEN package.packagecodnum
+   END ) AS signforpackageamout
+
+FROM scm_delivery_orderintransit  package
+
+		<include refid="deliveryOrderJoins"/>
+		<where>
+			 carrier.carrierid=package.selectedcarrier
+		</where>
+		
+			<if test="selectedcarrier != null and selectedcarrier != null and selectedcarrier != ''">
+			AND package.selectedcarrier= #{selectedcarrier} 
+		
+		</if>
+				
+		
+		<if test="createDateStart != null">
+			AND package.actualshipdate &gt;= #{createDateStart}
+		</if>
+		<if test="createDateEnd != null">
+			AND package.actualshipdate &lt;= #{createDateEnd}
+		</if>
+		
+		
+			<if test="trackingstatus != null and trackingstatus != null and trackingstatus != ''and trackingstatus != -1">
+			AND package.trackingstatus= #{trackingstatus} 
+		
+		</if>
+		
+		<if test="packagetype != null and packagetype != null and packagetype != ''and packagetype != -1">
+			AND package.packagetype= #{packagetype} 
+		
+		</if>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<when test="page !=null and page.groupBy != null and page.groupBy != ''">
+				GROUP BY ${page.groupBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+<select id="findAllList" resultType="DelieryOrderReport">
+select 
+carrier.CARRIERNAME AS "carrier.carriername",
+zipcode.limitations,
+COUNT(package.packagecodnum) as packagesum,
+SUM(package.packagecodnum) as packagesamount,
+SUM(CASE package.trackingstatus 
+    WHEN 1002 THEN 1
+   END  ) AS deliveredsum,
+SUM(CASE package.trackingstatus 
+    WHEN 1002 THEN package.packagecodnum
+   END  ) AS deliveredamount,
+SUM(CASE package.trackingstatus 
+    WHEN 1003 THEN 1
+   END  ) AS refusedsum ,
+SUM(CASE package.trackingstatus 
+    WHEN 1003 THEN package.packagecodnum
+   END  ) AS refusedamount ,
+SUM(CASE package.trackingstatus 
+    WHEN 1000 THEN 1
+ WHEN 1001 THEN 1
+   END  ) AS distributioninsum,
+SUM(CASE package.trackingstatus 
+    WHEN 1000 THEN package.packagecodnum
+ WHEN 1001 THEN package.packagecodnum
+   END ) AS distributioninamount,
+SUM(CASE package.trackingstatus 
+    WHEN 1004 THEN 1
+END  ) AS signforpackage,
+SUM(CASE package.trackingstatus 
+    WHEN 1004 THEN package.packagecodnum
+   END ) AS signforpackageamout
+
+ FROM scm_delivery_orderintransit  package
+	 
+		left join  scm_carrierzipcode zipcode
+		on 
+		package.receivingzipcode=zipcode.zipcode
+		and  package.selectedcarrier = zipcode.CARRIERID
+		left join scm_carrier carrier
+		on package.selectedcarrier = carrier.CARRIERID 
+		where 1=1
+
+		<if test="selectedcarrier != null and selectedcarrier != null and selectedcarrier != ''">
+			AND package.selectedcarrier= #{selectedcarrier} 
+		</if>
+		<if test="limitations != null and limitations != null and limitations != '' and limitations>0">
+			AND zipcode.limitations= #{limitations} 
+		</if>
+		
+		<if test="trackingstatus != null and trackingstatus != null and trackingstatus != ''">
+			AND package.trackingstatus= #{trackingstatus} 
+		</if>
+		
+		<if test="createDateStart != null">
+			AND package.actualshipdate &gt;= #{createDateStart}
+		</if>
+		
+		<if test="createDateEnd != null">
+			AND package.actualshipdate &lt;= #{createDateEnd}
+		</if>
+		
+		<if test="trackingstatus != null  and trackingstatus != ''and trackingstatus != -1">
+			AND package.trackingstatus= #{trackingstatus} 
+		</if>
+		
+	 	<if test="packagetype != null  and packagetype != ''and packagetype != -1">
+			AND package.packagetype= #{packagetype} 
+
+		</if>
+		
+		<if test="limitations != null  and limitations != '' and limitations!= -1">
+			AND zipcode.limitations &lt;= #{limitations} 	
+		</if>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<when test="page !=null and page.groupBy != null and page.groupBy != ''">
+				GROUP BY ${page.groupBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	
+</mapper>

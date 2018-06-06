@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.crm.TcrmCustomerMapper">
+	<resultMap type="com.best1.api.entity.crm.TcrmCustomer" id="CustomerAndAddress">
+		<result column="customerid" jdbcType="DECIMAL" property="customerid" />
+		<result column="addressid" jdbcType="DECIMAL" property="addressid" />
+		<result column="customername" jdbcType="VARCHAR" property="customername" />
+		<result column="personid" jdbcType="VARCHAR" property="personid" />
+		<result column="gender" jdbcType="CHAR" property="gender" />
+		<result column="credentialtype" jdbcType="DECIMAL" property="credentialtype" />
+		<result column="zipcode" jdbcType="DECIMAL" property="zipcode" />
+		<result column="address1" jdbcType="VARCHAR" property="address1" />
+		<result column="address2" jdbcType="VARCHAR" property="address2" />
+		<result column="mobilenumber" jdbcType="VARCHAR" property="mobilenumber" />
+		<result column="hometelephoneareacode" jdbcType="VARCHAR"
+			property="hometelephoneareacode" />
+		<result column="hometelephonenumber" jdbcType="VARCHAR"
+			property="hometelephonenumber" />
+	</resultMap>
+
+
+	<resultMap type="com.best1.api.entity.crm.TcrmCustomeraccountbalance"
+		id="CustomerAccountBalance">
+		<result column="customerid" jdbcType="DECIMAL" property="customerid" />
+		<result column="accounttypeid" jdbcType="VARCHAR" property="accounttypeid" />
+		<result column="effectivebalance" jdbcType="DECIMAL" property="effectivebalance" />
+	</resultMap>
+
+	<resultMap type="com.best1.api.entity.crm.TcrmLotterybonus" id="customerLotteryBonus">
+		<result column="transactionid" jdbcType="DECIMAL" property="transactionid" />
+		<result column="lotterybonusno" jdbcType="DECIMAL" property="lotterybonusno" />
+		<result column="transactiontypeid" jdbcType="DECIMAL" property="transactiontypeid" />
+		<result column="transactiondate" jdbcType="DATE" property="transactiondate" />
+		<result column="transactionamount" jdbcType="DOUBLE" property="transactionamount" />
+		<result column="startdate" jdbcType="DATE" property="startdate" />
+		<result column="enddate" jdbcType="DATE" property="enddate" />
+		<result column="exceptiondesc" jdbcType="VARCHAR" property="exceptiondesc" />
+		<result column="referencevalue" jdbcType="DECIMAL" property="referencevalue" />
+		<result column="referenceitem" jdbcType="DECIMAL" property="referenceitem" />
+	</resultMap>
+
+
+
+
+	<resultMap type="com.best1.api.entity.crm.TcrmCustomer" id="customerVIPMap">
+		<result column="CUSTOMERID"  jdbcType="DECIMAL" property="customerid" />
+		<result column="RECEPTIONID"  jdbcType="DECIMAL" property="receptionid" />
+		<result column="LASTCALL" jdbcType="TIMESTAMP" property="lastcall" />
+		<result column="userloginid" jdbcType="VARCHAR" property="userloginid" />
+	
+	</resultMap>
+
+
+<select id="selectCustomerVIP" parameterType="com.best1.api.entity.crm.TcrmCustomer"  resultMap="customerVIPMap"  useCache="true">
+		 <![CDATA[
+		
+		select 
+		cust.customerid,
+		cust.membershiplevelid,
+		custrvip.LASTCALL,
+		custrvip.receptionid,
+		custrvip.userloginid,
+		custrvip.viptype
+		from tcrm_customer cust,tcrm_customeraddress custad,tcrm_customerpassword custrvip
+where cust.customerid=custad.customerid
+and custad.iscontactaddress='Y'
+and cust.customerid=custrvip.customerid(+)
+
+]]>
+<if test="mobilenumber != null">
+<![CDATA[
+and (
+(
+cust.CREDENTIALTYPE=#{credentialtype} and cust.TAIWANID=#{mobilenumber})
+or
+( custad.MOBILENUMBER=#{mobilenumber})
+)
+  ]]>
+  <![CDATA[
+  ORDER BY custrvip.viptype desc,custrvip.LASTCALL desc
+  ]]>
+</if>
+
+<if test="hometelephonenumber != null">
+<![CDATA[
+
+and (
+ 
+ custad.HOMETELEPHONEAREACODE=#{hometelephoneareacode}
+ and 
+ custad.HOMETELEPHONENUMBER=#{hometelephonenumber}
+ )
+
+  ]]>
+  
+  <![CDATA[
+
+  ORDER BY custrvip.viptype,cust.LASTCALL desc
+
+  ]]> 
+</if>
+
+
+
+</select>
+
+	<select id="countByCustomerLotteryBonusvalid" parameterType="Long"
+		resultType="Double" useCache="true">
+	<![CDATA[
+		SELECT sum(AVAILABLELOTTERYBONUS) AS AVAILABLELOTTERYBONUS
+  FROM (SELECT CASE
+                 WHEN LB.TRANSACTIONAMOUNT > 0 THEN
+                  (SELECT SUM(D.TRANSACTIONAMOUNT)
+                     FROM et1_china.TCRM_LOTTERYBONUS D
+                    WHERE D.STARTDATE <= trunc(sysdate)
+                      AND D.ENDDATE >= trunc(sysdate)
+                      AND D.LOTTERYBONUSNO = LB.LOTTERYBONUSNO)
+               END AVAILABLELOTTERYBONUS,
+               CUSTOMERID,
+               LOTTERYBONUSNO,
+               STARTDATE,
+               ENDDATE,
+               TRANSACTIONTYPEID,
+               COMPANYID,
+               EXCEPTIONDESC
+          FROM et1_china.TCRM_LOTTERYBONUS LB
+         WHERE LB.CUSTOMERID = #{customerid}) A
+ WHERE AVAILABLELOTTERYBONUS > 0
+ ORDER BY CUSTOMERID, ENDDATE, STARTDATE, LOTTERYBONUSNO
+		
+		  ]]>
+	</select>
+	<!-- 获取用户: 输出直接映射到对象 -->
+	<select id="customerLotteryBonusvalid" parameterType="Long"
+		resultType="com.best1.api.entity.crm.TcrmLotterybonus" useCache="true">
+		 <![CDATA[
+		SELECT CUSTOMERID,
+       LOTTERYBONUSNO,
+       AVAILABLELOTTERYBONUS ,
+       STARTDATE,
+       ENDDATE,
+       TRANSACTIONTYPEID,
+       COMPANYID,
+       EXCEPTIONDESC
+  FROM (SELECT CASE
+                 WHEN LB.TRANSACTIONAMOUNT > 0 THEN
+                  (SELECT SUM(D.TRANSACTIONAMOUNT)
+                     FROM et1_china.TCRM_LOTTERYBONUS D
+                    WHERE D.STARTDATE <= sysdate
+                      AND D.ENDDATE >= sysdate
+                      AND D.LOTTERYBONUSNO = LB.LOTTERYBONUSNO)
+               END AVAILABLELOTTERYBONUS,
+               CUSTOMERID,
+               LOTTERYBONUSNO,
+               STARTDATE,
+               ENDDATE,
+               TRANSACTIONTYPEID,
+               COMPANYID,
+               EXCEPTIONDESC
+          FROM et1_china.TCRM_LOTTERYBONUS LB
+         WHERE LB.CUSTOMERID = #{customerid}) A
+ WHERE AVAILABLELOTTERYBONUS > 0
+ ORDER BY CUSTOMERID, ENDDATE, STARTDATE, LOTTERYBONUSNO
+		
+		  ]]>
+	</select>
+
+
+
+
+	<!-- 获取用户: 输出直接映射到对象 -->
+	<select id="selectByPrimaryKey" parameterType="long"
+		resultType="com.best1.api.entity.crm.TcrmCustomer" useCache="true">
+		select
+		CUSTOMERID, MEMBERSHIPLEVELID, SOURCEINFORMATION, CUSTOMERNAME,
+		CREATEDBY,
+		CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP,
+		CUSTOMERTYPE, BLOODGROUP,
+		RELIGION,
+		PREFERREDTIMEFROMHOUR,
+		PREFERREDTIMETOHOUR, PREFERREDTIMEFROMMINUTE, PREFERREDTIMETOMINUTE,
+		TOTALPURCHASEVALUE, RETURNGOODSVALUE, EMOTICONID, CREATEDUSER,
+		DATEOFBIRTH, LASTCALL,
+		FIRSTPURCHASEON, LASTPURCHASEON, MODIFIEDDATE,
+		INFORMATIONTYPE, GENDER, TAIWANID AS
+		PERSONID, EMAIL1,
+		EMAIL2,
+		CUSTOMERCREDITLIMIT, INTRODUCERID, PERSONALRISKSCORE,
+		CUSTOMERCREDITLEVELID,
+		RETURNGOODSLEVEL, CREDENTIALTYPE
+		from
+		TCRM_CUSTOMER
+		where customerid=#{customerid}
+	</select>
+
+	<!-- 插入用户： 1.由数据库生成id并赋值到user对象 2.输入用对象, -->
+	<insert id="insert" parameterType="TcrmCustomer"
+		useGeneratedKeys="false" keyProperty="CUSTOMERID">
+		insert into TCRM_CUSTOMER
+		(CUSTOMERID, MEMBERSHIPLEVELID, SOURCEINFORMATION,
+		CUSTOMERNAME,
+		CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY,
+		LASTMODIFIEDTIMESTAMP,
+		CUSTOMERTYPE, BLOODGROUP, RELIGION, PREFERREDTIMEFROMHOUR,
+		PREFERREDTIMETOHOUR,
+		PREFERREDTIMEFROMMINUTE, PREFERREDTIMETOMINUTE,
+		TOTALPURCHASEVALUE,
+		RETURNGOODSVALUE,
+		EMOTICONID, CREATEDUSER,
+		DATEOFBIRTH, LASTCALL, FIRSTPURCHASEON, LASTPURCHASEON,
+		MODIFIEDDATE,
+		INFORMATIONTYPE, GENDER, TAIWANID, EMAIL1, EMAIL2,
+		CUSTOMERCREDITLIMIT, INTRODUCERID,
+		PERSONALRISKSCORE,
+		CUSTOMERCREDITLEVELID, RETURNGOODSLEVEL,
+		CREDENTIALTYPE)
+		values
+		(#{customerid:DECIMAL}, #{membershiplevelid:DECIMAL},
+		#{sourceinformation:DECIMAL},
+		#{customername:VARCHAR}#,
+		#{createdby:DECIMAL}, #{createdtimestamp:DATE}#,
+		#{lastmodifiedby:DECIMAL}, #{lastmodifiedtimestamp:DATE}#,
+		#{customertype},
+		#{bloodgroup}, #{religion}, #{preferredtimefromhour},
+		#{preferredtimetohour}, #{preferredtimefromminute},
+		#{preferredtimetominute}, #{totalpurchasevalue}, #{returngoodsvalue},
+		#{emoticonid}, #{createduser}, #{dateofbirth:DATE}#,
+		#{lastcall:DATE}#,
+		#{firstpurchaseon:DATE}#, #{lastpurchaseon:DATE}#,
+		#{modifieddate:DATE}#, #{informationtype:CHAR}#,
+		#{gender:CHAR}#,
+		#{personid:VARCHAR}#, #{email1:VARCHAR}#, #{email2:VARCHAR}#,
+		#{customercreditlimit}, #{introducerid}, #{personalriskscore},
+		#{customercreditlevelid}, #{returngoodslevel}, #{credentialtype})
+	</insert>
+
+
+	<!-- 修改用户 -->
+	
+	
+	<update id="updateByPrimaryKey" parameterType="com.best1.api.entity.crm.TcrmCustomer">
+ 
+    update ET1_CHINA.TCRM_CUSTOMER
+    <set>
+      <if test="membershiplevelid != null">
+        MEMBERSHIPLEVELID = #{membershiplevelid,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceinformation != null">
+        SOURCEINFORMATION = #{sourceinformation,jdbcType=DECIMAL},
+      </if>
+      <if test="customername != null">
+        CUSTOMERNAME = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customertype != null">
+        CUSTOMERTYPE = #{customertype,jdbcType=DECIMAL},
+      </if>
+      <if test="bloodgroup != null">
+        BLOODGROUP = #{bloodgroup,jdbcType=DECIMAL},
+      </if>
+      <if test="religion != null">
+        RELIGION = #{religion,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimefromhour != null">
+        PREFERREDTIMEFROMHOUR = #{preferredtimefromhour,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimetohour != null">
+        PREFERREDTIMETOHOUR = #{preferredtimetohour,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimefromminute != null">
+        PREFERREDTIMEFROMMINUTE = #{preferredtimefromminute,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimetominute != null">
+        PREFERREDTIMETOMINUTE = #{preferredtimetominute,jdbcType=DECIMAL},
+      </if>
+      <if test="totalpurchasevalue != null">
+        TOTALPURCHASEVALUE = #{totalpurchasevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="returngoodsvalue != null">
+        RETURNGOODSVALUE = #{returngoodsvalue,jdbcType=DECIMAL},
+      </if>
+      <if test="emoticonid != null">
+        EMOTICONID = #{emoticonid,jdbcType=DECIMAL},
+      </if>
+      <if test="createduser != null">
+        CREATEDUSER = #{createduser,jdbcType=DECIMAL},
+      </if>
+      <if test="dateofbirth != null">
+        DATEOFBIRTH = #{dateofbirth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastcall != null">
+        LASTCALL = #{lastcall,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstpurchaseon != null">
+        FIRSTPURCHASEON = #{firstpurchaseon,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastpurchaseon != null">
+        LASTPURCHASEON = #{lastpurchaseon,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifieddate != null">
+        MODIFIEDDATE = #{modifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="informationtype != null">
+        INFORMATIONTYPE = #{informationtype,jdbcType=CHAR},
+      </if>
+      <if test="gender != null">
+        GENDER = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="taiwanid != null">
+        TAIWANID = #{taiwanid,jdbcType=VARCHAR},
+      </if>
+      <if test="email1 != null">
+        EMAIL1 = #{email1,jdbcType=VARCHAR},
+      </if>
+      <if test="email2 != null">
+        EMAIL2 = #{email2,jdbcType=VARCHAR},
+      </if>
+      <if test="customercreditlimit != null">
+        CUSTOMERCREDITLIMIT = #{customercreditlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="introducerid != null">
+        INTRODUCERID = #{introducerid,jdbcType=DECIMAL},
+      </if>
+      <if test="personalriskscore != null">
+        PERSONALRISKSCORE = #{personalriskscore,jdbcType=DECIMAL},
+      </if>
+      <if test="customercreditlevelid != null">
+        CUSTOMERCREDITLEVELID = #{customercreditlevelid,jdbcType=DECIMAL},
+      </if>
+      <if test="returngoodslevel != null">
+        RETURNGOODSLEVEL = #{returngoodslevel,jdbcType=DECIMAL},
+      </if>
+      <if test="credentialtype != null">
+        CREDENTIALTYPE = #{credentialtype,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+  </update>
+	
+
+
+	<select id="fetchCustomerId" resultType="Long">
+		select
+		Platform_API.get_custid() as result from dual
+	</select>
+
+	<select id="fetchMemberShipLevelId" resultType="Long">
+		select
+		Platform_API.get_custmemberid() as result from dual
+	</select>
+
+	<select id="createTempCustomer" statementType="CALLABLE"
+		parameterType="java.util.Map">
+    <![CDATA[
+     {call Platform_API.sp_ins_tbextcust(
+     #{ai_CustomerID,mode=IN,jdbcType=DECIMAL},
+     #{ai_Sourceinformation,mode=IN,jdbcType=DECIMAL},
+     #{ai_AddressID,mode=IN,jdbcType=DECIMAL},
+     #{ai_customername,mode=IN,jdbcType=VARCHAR},
+     #{ai_Createdby,mode=IN,jdbcType=DECIMAL},
+     #{ai_Customertype,mode=IN,jdbcType=DECIMAL},
+     #{ai_Gender,mode=IN,jdbcType=VARCHAR},
+     #{ai_personid,mode=IN,jdbcType=VARCHAR},
+     #{ai_Email1,mode=IN,jdbcType=VARCHAR},
+     #{ai_Email2,mode=IN,jdbcType=VARCHAR},
+     #{ai_Introducerid,mode=IN,jdbcType=DECIMAL},
+     #{ai_CredentialType,mode=IN,jdbcType=DECIMAL},
+     #{ai_zipcode,mode=IN,jdbcType=DECIMAL},
+     #{ai_address1,mode=IN,jdbcType=VARCHAR},
+     #{ai_address2,mode=IN,jdbcType=VARCHAR},
+     #{ai_Mobile,mode=IN,jdbcType=VARCHAR},
+     #{ai_HomeNum_Area,mode=IN,jdbcType=VARCHAR},
+     #{ai_HomeNum_Dtl,mode=IN,jdbcType=VARCHAR},
+     #{ri_RtnCode,mode=OUT,jdbcType=DECIMAL}
+     )}
+     ]]>
+	</select>
+
+
+
+	<select id="createCustomer" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.InsertNewCustomer(
+		#{ai_CustomerID,mode=IN,jdbcType=DECIMAL},
+		#{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+	</select>
+
+
+
+	<select id="modifyCustomer" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.ModifyCustomerData(
+		#{an_customerid,mode=IN,jdbcType=DECIMAL},
+		#{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+	</select>
+
+
+
+	<select id="rollbacknewCustomer" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.rollbacknewcustomer(
+		#{an_custid,mode=IN,jdbcType=DECIMAL},#{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+	</select>
+
+
+
+
+	<select id="selectByPersonAndType" resultType="Long"
+		parameterType="java.util.Map">
+		select Platform_API.sf_getCustidFromPsnidAndIdType(
+		#{ai_personid,mode=IN,jdbcType=VARCHAR},
+		#{ai_CredentialType,mode=IN,jdbcType=DECIMAL}
+		) as result from dual
+	</select>
+
+
+	<select id="selectByCustomerAccountBalance" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.sp_getCustAccounts(
+		#{ai_CustID,mode=IN,jdbcType=DECIMAL},
+		#{ri_Msgs,jdbcType=CURSOR,mode=OUT,resultMap=CustomerAccountBalance,javaType=java.sql.ResultSet})}
+	</select>
+
+	<select id="selectByCustomerLotteryBonus" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.sp_getCustLOTTERYBONUS(
+		#{ai_CustID,mode=IN,jdbcType=DECIMAL},
+		#{ri_Msgs,jdbcType=CURSOR,mode=OUT,resultMap=customerLotteryBonus,javaType=java.sql.ResultSet})}
+	</select>
+
+	<select id="selectByCustomerAndAddress" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.sp_getCustInfoFromPsnidIdType(
+		#{ai_personid,mode=IN,jdbcType=VARCHAR},
+		#{ai_CredentialType,mode=IN,jdbcType=DECIMAL},
+		#{ri_CustInfo,jdbcType=CURSOR,mode=OUT,resultMap=CustomerAndAddress,javaType=java.sql.ResultSet})}
+	</select>
+
+	<select id="selectCustomerAndAddressById" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.sp_getCustInfoFromCustid(
+		#{ai_CustID,mode=IN,jdbcType=DECIMAL},
+		#{ri_CustInfo,jdbcType=CURSOR,mode=OUT,resultMap=CustomerAndAddress,javaType=java.sql.ResultSet})}
+	</select>
+
+	<select id="customerAvaiamount" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call Platform_API.WEB_AVAIAMOUNT(
+		#{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+		#{R_AVAIAMOUNT,mode=OUT,jdbcType=DECIMAL},
+		#{R_AVAIQUANTITY,mode=OUT,jdbcType=DECIMAL},
+		#{R_STATUS,mode=OUT,jdbcType=DECIMAL}
+		)}
+	</select>
+
+
+
+	<select id="checkCustomerCard" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call pkg_customercard.CHECKCUSTOMERCARD(
+		#{P_COUPONID,mode=IN,jdbcType=VARCHAR},
+		#{P_CARDPWD,mode=OUT,jdbcType=VARCHAR},
+		#{P_TRANSACTIONAMOUNT,mode=OUT,jdbcType=DECIMAL},
+		#{RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+		#{RTN_MSG,mode=OUT,jdbcType=VARCHAR}
+		)}
+	</select>
+
+
+	<select id="updCustomerBalance" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call pkg_customercard.UPD_BALANCE(
+		#{P_CUSTOMERID,mode=IN,jdbcType=DECIMAL},
+		#{P_COUPONID,mode=IN,jdbcType=VARCHAR},
+		#{P_CARDPWD,mode=IN,jdbcType=VARCHAR},
+		#{R_ACOUNT,mode=OUT,jdbcType=DECIMAL},
+		#{RTN_CODE,mode=OUT,jdbcType=DECIMAL},
+		#{RTN_MSG,mode=OUT,jdbcType=VARCHAR}
+		)}
+	</select>
+
+	<select id="customerEleccoupons" parameterType="com.best1.api.entity.crm.TcrmCustomerEleccoupons" resultType="com.best1.api.entity.crm.TcrmCustomerEleccoupons">
+		select
+		cs.coupongroupnumber,
+		cs.fromid,
+	   cs.ELECTRONICNO,
+       dis.discountunit,
+       dis.discountvalue,
+       cs.startdate,
+       cs.enddate,
+       cs.ELECTRONICTYPE,
+       cs.SUMMARY
+		from ET1_CHINA.TCRM_CUSTOMERELECCOUPONS cs,ET1_CHINA.tcrm_discountcoupongroupmaster dis
+		<where>
+	    <![CDATA[
+	   cs.coupongroupnumber = dis.coupongroupnumber
+	and cs.status=1001
+    AND cs.ENDDATE > trunc(sysdate)
+      ]]>
+			<if test="customerid != null"> and customerid=#{customerid}	</if>
+		</where>
+	</select>
+
+
+	<select id="customerPaymentCod" statementType="CALLABLE"  parameterType="java.util.Map">
+		{call Platform_API.PAYMENT_COD(
+		#{as_productid,mode=IN,jdbcType=DECIMAL},
+		#{as_productversion,mode=IN,jdbcType=DECIMAL},
+		#{as_customerid,mode=IN,jdbcType=DECIMAL},
+		#{av_creditlevelcode,mode=IN,jdbcType=DECIMAL},
+		#{as_zipcode,mode=IN,jdbcType=DECIMAL},
+		#{as_rtn_code,mode=OUT,jdbcType=DECIMAL}
+		)}
+	</select>
+
+
+	<select id="sendCustomerSms" statementType="CALLABLE"
+		parameterType="java.util.Map">
+		{call smsuser.SP_smssendforapi(
+		#{ai_Mobile,mode=IN,jdbcType=VARCHAR},
+		#{ai_SendMsg,mode=IN,jdbcType=VARCHAR})}
+	</select>
+
+
+
+ <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.crm.TcrmCustomer" >
+  
+    update ET1_CHINA.TCRM_CUSTOMER
+    <set >
+      <if test="membershiplevelid != null" >
+        MEMBERSHIPLEVELID = #{membershiplevelid,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceinformation != null" >
+        SOURCEINFORMATION = #{sourceinformation,jdbcType=DECIMAL},
+      </if>
+      <if test="customername != null" >
+        CUSTOMERNAME = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customertype != null" >
+        CUSTOMERTYPE = #{customertype,jdbcType=DECIMAL},
+      </if>
+      <if test="bloodgroup != null" >
+        BLOODGROUP = #{bloodgroup,jdbcType=DECIMAL},
+      </if>
+      <if test="religion != null" >
+        RELIGION = #{religion,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimefromhour != null" >
+        PREFERREDTIMEFROMHOUR = #{preferredtimefromhour,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimetohour != null" >
+        PREFERREDTIMETOHOUR = #{preferredtimetohour,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimefromminute != null" >
+        PREFERREDTIMEFROMMINUTE = #{preferredtimefromminute,jdbcType=DECIMAL},
+      </if>
+      <if test="preferredtimetominute != null" >
+        PREFERREDTIMETOMINUTE = #{preferredtimetominute,jdbcType=DECIMAL},
+      </if>
+      <if test="totalpurchasevalue != null" >
+        TOTALPURCHASEVALUE = #{totalpurchasevalue,jdbcType=DECIMAL},
+      </if>
+      <if test="returngoodsvalue != null" >
+        RETURNGOODSVALUE = #{returngoodsvalue,jdbcType=DECIMAL},
+      </if>
+      <if test="emoticonid != null" >
+        EMOTICONID = #{emoticonid,jdbcType=DECIMAL},
+      </if>
+      <if test="createduser != null" >
+        CREATEDUSER = #{createduser,jdbcType=DECIMAL},
+      </if>
+      <if test="dateofbirth != null" >
+        DATEOFBIRTH = #{dateofbirth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastcall != null" >
+        LASTCALL = #{lastcall,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstpurchaseon != null" >
+        FIRSTPURCHASEON = #{firstpurchaseon,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastpurchaseon != null" >
+        LASTPURCHASEON = #{lastpurchaseon,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifieddate != null" >
+        MODIFIEDDATE = #{modifieddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="informationtype != null" >
+        INFORMATIONTYPE = #{informationtype,jdbcType=CHAR},
+      </if>
+      <if test="gender != null" >
+        GENDER = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="taiwanid != null" >
+        TAIWANID = #{taiwanid,jdbcType=VARCHAR},
+      </if>
+      <if test="email1 != null" >
+        EMAIL1 = #{email1,jdbcType=VARCHAR},
+      </if>
+      <if test="email2 != null" >
+        EMAIL2 = #{email2,jdbcType=VARCHAR},
+      </if>
+      <if test="customercreditlimit != null" >
+        CUSTOMERCREDITLIMIT = #{customercreditlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="introducerid != null" >
+        INTRODUCERID = #{introducerid,jdbcType=DECIMAL},
+      </if>
+      <if test="personalriskscore != null" >
+        PERSONALRISKSCORE = #{personalriskscore,jdbcType=DECIMAL},
+      </if>
+      <if test="customercreditlevelid != null" >
+        CUSTOMERCREDITLEVELID = #{customercreditlevelid,jdbcType=DECIMAL},
+      </if>
+      <if test="returngoodslevel != null" >
+        RETURNGOODSLEVEL = #{returngoodslevel,jdbcType=DECIMAL},
+      </if>
+      <if test="credentialtype != null" >
+        CREDENTIALTYPE = #{credentialtype,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+  </update>
+
+
+
+ <update id="updateCustomernetwork" parameterType="com.best1.api.entity.crm.TcrmCustomerNetwork" >
+  
+    update ET1_CHINA.TCRM_CUSTOMERNETWORK
+    <set>
+    
+      <if test="networktype != null" >
+        networktype = #{networktype,jdbcType=DECIMAL},
+      </if>
+      <if test="networkaccount != null" >
+        networkaccount = #{networkaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="accountstate != null" >
+        accountstate = #{accountstate,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL} and NETWORKTYPE = #{networktype,jdbcType=DECIMAL}
+  </update>
+
+
+ <insert id="insertCustomernetwork" parameterType="com.best1.api.entity.crm.TcrmCustomerNetwork" >
+    
+    insert into ET1_CHINA.TCRM_CUSTOMERNETWORK
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+        <if test="networktype != null" >
+        NETWORKTYPE,
+      </if>
+      <if test="networkaccount != null" >
+        NETWORKACCOUNT,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="accountstate != null" >
+        ACCOUNTSTATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="networktype != null" >
+        #{networktype,jdbcType=DECIMAL},
+      </if>
+      <if test="networkaccount != null" >
+        #{networkaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+       <if test="accountstate != null" >
+        #{accountstate,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+<select id="selectCustomerNetwork" parameterType="com.best1.api.entity.crm.TcrmCustomerNetwork" resultType="com.best1.api.entity.crm.TcrmCustomerNetwork">
+	select
+	   CUSTOMERID,
+	   NETWORKTYPE,
+	   networkaccount,
+       accountstate
+	from ET1_CHINA.TCRM_CUSTOMERNETWORK	
+	<where>
+			1=1
+	</where>
+	  <if test="customerid != null" >
+     and   customerid= #{customerid,jdbcType=DECIMAL}
+      </if>
+      <if test="networktype != null" >
+     and  networktype= #{networktype,jdbcType=DECIMAL}
+      </if>
+      <if test="networkaccount != null" >
+      and  networkaccount=#{networkaccount,jdbcType=VARCHAR}
+      </if>
+	
+
+		
+	</select>
+	
+  
+</mapper> 

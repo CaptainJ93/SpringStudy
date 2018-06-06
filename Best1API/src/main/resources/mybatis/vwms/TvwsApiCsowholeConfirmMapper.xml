@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiCsowholeConfirmMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiCsowholeConfirm" >
+   
+    <result column="WAREHOUSEID" property="warehouseid" jdbcType="DECIMAL" />
+    <result column="SHIPORDERID" property="shiporderid" jdbcType="DECIMAL" />
+    <result column="SHIPORDERSEQUENCE" property="shipordersequence" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="PRODUCTQUANTITY" property="productquantity" jdbcType="DECIMAL" />
+    <result column="INTRANSITQUANTITY" property="intransitquantity" jdbcType="DECIMAL" />
+    <result column="ACTUALSHIPPEDDATE" property="actualshippeddate" jdbcType="TIMESTAMP" />
+    <result column="SELECTEDCARRIER" property="selectedcarrier" jdbcType="DECIMAL" />
+    <result column="DELIVERYNUMBER" property="deliverynumber" jdbcType="VARCHAR" />
+    <result column="REASON" property="reason" jdbcType="VARCHAR" />
+    <result column="CSOSTATUS" property="csostatus" jdbcType="DECIMAL" />
+    <result column="DELIVERYAREA" property="deliveryarea" jdbcType="VARCHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="RECORDSTATUS" property="recordstatus" jdbcType="DECIMAL" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+ 
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+
+    WAREHOUSEID, SHIPORDERID, SHIPORDERSEQUENCE, PRODUCTID, PRODUCTVERSION, COLOURCLASS, 
+    COLOURCODE, STYLECLASS, STYLECODE, PRODUCTQUANTITY, INTRANSITQUANTITY, ACTUALSHIPPEDDATE, 
+    SELECTEDCARRIER, DELIVERYNUMBER, REASON, CSOSTATUS, DELIVERYAREA, RECORDCREATEDTIME, 
+    RECORDSTATUS,CREATEDBY
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiCsowholeConfirmExample" >
+
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_CSOWHOLECONFIRM
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.vwms.TvwsApiCsowholeConfirmExample" >
+   
+    delete from ET1_CHINA.TVWS_API_CSOWHOLECONFIRM
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.best1.api.entity.vwms.TvwsApiCsowholeConfirm" >
+  
+    insert into ET1_CHINA.TVWS_API_CSOWHOLECONFIRM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="warehouseid != null" >
+        WAREHOUSEID,
+      </if>
+      <if test="shiporderid != null" >
+        SHIPORDERID,
+      </if>
+      <if test="shipordersequence != null" >
+        SHIPORDERSEQUENCE,
+      </if>
+      <if test="productid != null" >
+        PRODUCTID,
+      </if>
+      <if test="productversion != null" >
+        PRODUCTVERSION,
+      </if>
+      <if test="colourclass != null" >
+        COLOURCLASS,
+      </if>
+      <if test="colourcode != null" >
+        COLOURCODE,
+      </if>
+      <if test="styleclass != null" >
+        STYLECLASS,
+      </if>
+      <if test="stylecode != null" >
+        STYLECODE,
+      </if>
+      <if test="productquantity != null" >
+        PRODUCTQUANTITY,
+      </if>
+      <if test="intransitquantity != null" >
+        INTRANSITQUANTITY,
+      </if>
+      <if test="actualshippeddate != null" >
+        ACTUALSHIPPEDDATE,
+      </if>
+      <if test="selectedcarrier != null" >
+        SELECTEDCARRIER,
+      </if>
+      <if test="deliverynumber != null" >
+        DELIVERYNUMBER,
+      </if>
+      <if test="reason != null" >
+        REASON,
+      </if>
+      <if test="csostatus != null" >
+        CSOSTATUS,
+      </if>
+      <if test="deliveryarea != null" >
+        DELIVERYAREA,
+      </if>
+      <if test="recordcreatedtime != null" >
+        RECORDCREATEDTIME,
+      </if>
+      <if test="recordstatus != null" >
+        RECORDSTATUS,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="warehouseid != null" >
+        #{warehouseid,jdbcType=DECIMAL},
+      </if>
+      <if test="shiporderid != null" >
+        #{shiporderid,jdbcType=DECIMAL},
+      </if>
+      <if test="shipordersequence != null" >
+        #{shipordersequence,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="productversion != null" >
+        #{productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="colourclass != null" >
+        #{colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="colourcode != null" >
+        #{colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="styleclass != null" >
+        #{styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="stylecode != null" >
+        #{stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="productquantity != null" >
+        #{productquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="intransitquantity != null" >
+        #{intransitquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="actualshippeddate != null" >
+        #{actualshippeddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="selectedcarrier != null" >
+        #{selectedcarrier,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverynumber != null" >
+        #{deliverynumber,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="csostatus != null" >
+        #{csostatus,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryarea != null" >
+        #{deliveryarea,jdbcType=VARCHAR},
+      </if>
+      <if test="recordcreatedtime != null" >
+        #{recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordstatus != null" >
+        #{recordstatus,jdbcType=DECIMAL},
+      </if> 
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.vwms.TvwsApiCsowholeConfirmExample" resultType="java.lang.Integer" >
+  
+    select count(*) from ET1_CHINA.TVWS_API_CSOWHOLECONFIRM
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    
+    update ET1_CHINA.TVWS_API_CSOWHOLECONFIRM
+    <set >
+      <if test="record.warehouseid != null" >
+        WAREHOUSEID = #{record.warehouseid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shiporderid != null" >
+        SHIPORDERID = #{record.shiporderid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shipordersequence != null" >
+        SHIPORDERSEQUENCE = #{record.shipordersequence,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productid != null" >
+        PRODUCTID = #{record.productid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productversion != null" >
+        PRODUCTVERSION = #{record.productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.colourclass != null" >
+        COLOURCLASS = #{record.colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="record.colourcode != null" >
+        COLOURCODE = #{record.colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.styleclass != null" >
+        STYLECLASS = #{record.styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stylecode != null" >
+        STYLECODE = #{record.stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productquantity != null" >
+        PRODUCTQUANTITY = #{record.productquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.intransitquantity != null" >
+        INTRANSITQUANTITY = #{record.intransitquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.actualshippeddate != null" >
+        ACTUALSHIPPEDDATE = #{record.actualshippeddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.selectedcarrier != null" >
+        SELECTEDCARRIER = #{record.selectedcarrier,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliverynumber != null" >
+        DELIVERYNUMBER = #{record.deliverynumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reason != null" >
+        REASON = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csostatus != null" >
+        CSOSTATUS = #{record.csostatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliveryarea != null" >
+        DELIVERYAREA = #{record.deliveryarea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recordcreatedtime != null" >
+        RECORDCREATEDTIME = #{record.recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recordstatus != null" >
+        RECORDSTATUS = #{record.recordstatus,jdbcType=DECIMAL},
+      </if>
+       <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+</mapper>

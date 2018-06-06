@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MenuSql">
+    <typeAlias alias="Menu" type="com.best1.domain.Menu" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select 
+		   a.menuid,
+		   a.menuname,
+		   a.menupid,
+		   (select b.menuname from tb_best1_menu b where b.menuid = a.menupid) as menupname,
+		   a.menudesc,
+		   a.menutype,
+		   a.menuurl,
+		   a.status,
+		   a.menuorder
+		from tb_best1_menu a
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="menuid">
+				<![CDATA[
+					a.menuid = #menuid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="menuname">
+				<![CDATA[
+					a.menuname like '%$menuname$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="menupname">
+				<![CDATA[
+					a.menupid in (select b.menuid from tb_best1_menu b where b.menuname like '%$menupname$%')
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="menupid">
+				<![CDATA[
+					a.menupid = #menupid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="menutype">
+				<![CDATA[
+					a.menutype = #menutype#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				<![CDATA[
+					a.status = #status#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="menuids">
+			    a.menuid in (
+			        <iterate property="menuids" conjunction = ",">
+				        #menuids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询 -->
+	<resultMap class="java.util.HashMap" id="getMenu">
+		<result property="menuid" column="menuid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="menuname" column="menuname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menupid" column="menupid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="menupname" column="menupname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menudesc" column="menudesc" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menutype" column="menutype" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menuurl" column="menuurl" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="status" column="status" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menuorder" column="menuorder" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getMenus" resultMap="getMenu" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		order by a.menuid desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countMenu" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_menu a
+		<include refid="Where_Clause" />
+	</select>
+	
+    <!-- 新增 -->
+	<insert id="insertMenu" parameterClass="Menu">
+	insert into tb_best1_menu(
+	   menuid,
+	   menuname,
+	   menupid,
+	   menudesc,
+	   menutype,
+	   menuurl,
+	   status,
+	   menuorder)
+    values(
+      SEQ_MENU_ID.NEXTVAL,
+      #menuname#,
+	  #menupid#,
+	  #menudesc#,
+	  #menutype#,
+	  #menuurl#,
+	  #status#,
+	  #menuorder#)
+    </insert>
+    
+    <!-- 修改 -->
+	<update id="updateMenu" parameterClass="Menu">
+		update tb_best1_menu
+		set	menuname = #menuname#,
+			menupid = #menupid#,
+			menudesc = #menudesc#,
+			menutype = #menutype#,
+			menuurl = #menuurl#,
+			status = #status#,
+			menuorder = #menuorder#
+		where menuid = #menuid#
+	</update>
+    
+    <!-- 删除 -->
+	<delete id="deleteMenu" parameterClass="java.util.HashMap" >
+		delete from tb_best1_menu a 
+		<include refid="Where_Clause" />
+	</delete> 
+	
+	<!-- 统计目录下未删除菜单 -->
+	<select id="countMenuUndeleted" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_menu b where b.menupid in (
+				<iterate property="menuids" conjunction = ",">
+				        #menuids[]#
+				</iterate>
+			)
+			and b.menuid not in (
+				<iterate property="menuids" conjunction = ",">
+					        #menuids[]#
+				</iterate>
+			)
+	</select>
+	
+</sqlMap>

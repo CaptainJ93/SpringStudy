@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LoggingSql">
+    <typeAlias alias="LoggingInfo" type="com.best1.domain.LoggingInfo" />
+    
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select 
+			  a.log_id,
+			  a.userid,
+			  (select b.username from tb_best1_user b where b.userid=a.userid) as username,
+			  a.host_name,
+			  a.host_ip,
+			  a.busi_desc,
+			  a.menuid,
+			  a.menuname,
+			  a.query_condition,
+			  a.remark,
+			  a.create_date,
+			  a.log_type,
+			  a.sql,
+			  a.sensitive_data
+		from busi_log a 
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					a.userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="username">
+				<![CDATA[
+					a.userid in (select c.userid from tb_best1_user c where c.username like '%$username$%')
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="menuname">
+				<![CDATA[
+					a.menuname like '%$menuname$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="createDate1">
+				<![CDATA[
+					a.create_date >= to_date(#createDate1#,'yyyy-MM-dd')
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="createDate2">
+				<![CDATA[
+					a.create_date < to_date(#createDate2#,'yyyy-MM-dd') + 1
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_sensitiveData">
+				<![CDATA[
+					a.sensitive_data is not null
+				]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询 -->
+	<resultMap class="java.util.HashMap" id="getLogging">
+		<result property="logId" column="LOG_ID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="userId" column="USERID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="userName" column="USERNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostName" column="HOST_NAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="hostIp" column="HOST_IP" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="busiDesc" column="BUSI_DESC" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="menuId" column="MENUID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="menuName" column="MENUNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="queryCondition" column="QUERY_CONDITION" javaType="java.lang.String" jdbcType="CLOB" nullValue=""/>
+		<result property="remark" column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createDate" column="CREATE_DATE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="logType" column="LOG_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sql" column="SQL" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sensitiveData" column="SENSITIVE_DATA" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getLoggings" resultMap="getLogging" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countLogging" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from busi_log a
+		<include refid="Where_Clause" />
+	</select>
+    
+    
+    <!-- 新增 执行存储过程 -->
+	<parameterMap id="logginMap" class="java.util.HashMap">
+		<parameter property="userId" javaType="java.lang.Long" jdbcType="DECIMAL" mode="IN"/>
+		<parameter property="hostName" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="hostIp" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="busiDesc" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="menuId" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="menuName" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="queryCondition" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="remark" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="logType" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="sql" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="sensitiveData" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+    </parameterMap>
+    
+	<procedure id="insertLoggingInfo" parameterMap="logginMap">
+         {call P_LOGGING(?,?,?,?,?,?,?,?,?,?,?)}
+    </procedure>
+</sqlMap>

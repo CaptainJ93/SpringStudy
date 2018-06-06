@@ -1,0 +1,3595 @@
+CREATE OR REPLACE PACKAGE BODY PLATFORM_SDK
+-----------------------------------------------------------------------
+-- 程式說明：ETMALL CUSTOMER程式
+-- 程式設計：
+-- 更新日期：
+-----------------------------------------------------------------------
+ IS
+
+  --------------------------------------------------------------------
+  -- 目的：產生customerid
+  -- 參數：傳入：actioncode number
+  --       回傳：rtn_code number  成功：傳回客戶代碼
+  --                              失敗：-1
+  --------------------------------------------------------------------
+  FUNCTION get_custid RETURN NUMBER IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    SELECT S_CUSTOMER.NEXTVAL INTO rtn_code FROM DUAL;
+
+    dbms_output.put_line(rtn_code);
+    RETURN rtn_code;
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_code := -1;
+      RETURN rtn_code;
+  END get_custid;
+
+  --------------------------------------------------------------------
+  -- 目的：產生customerid
+  -- 參數：傳入：actioncode number
+  --       回傳：rtn_code number  成功：傳回客戶地址流水號
+  --                              失敗：-1
+  --------------------------------------------------------------------
+  FUNCTION get_custaddrseq RETURN NUMBER IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    SELECT S_CUSTOMERADDRESS.NEXTVAL INTO rtn_code FROM DUAL;
+
+    dbms_output.put_line(rtn_code);
+    RETURN rtn_code;
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_code := -1;
+      RETURN rtn_code;
+  END get_custaddrseq;
+
+  --------------------------------------------------------------------
+  -- 目的：產生customerid
+  -- 參數：傳入：actioncode number
+  --       回傳：rtn_code number  成功：傳回客戶預設會員等級
+  --                              失敗：-1
+  --------------------------------------------------------------------
+  FUNCTION get_custmemberid RETURN NUMBER IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    SELECT MEMBERSHIPLEVELID
+      INTO rtn_code
+      FROM TCRM_MEMBERSHIPLEVELDEFINITION
+     WHERE ISDEFAULTFLAG = 'Y'
+       AND VALID = 'Y';
+
+    dbms_output.put_line(rtn_code);
+    RETURN rtn_code;
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_code := -1;
+      RETURN rtn_code;
+  END get_custmemberid;
+
+  --------------------------------------------------------------------
+  -- 目的：產生customerid
+  -- 參數：傳入：actioncode number
+  --       回傳：rtn_code number  成功：傳回客戶預設會員等級
+  --                              失敗：-1
+  --------------------------------------------------------------------
+  FUNCTION get_customeraddress(an_custid   IN NUMBER, --客代
+                               an_zipcode  IN NUMBER, --地址序號
+                               an_address2 IN VARCHAR2) RETURN NUMBER IS
+    rtn_code        NUMBER := 0;
+    v_addressid     NUMBER := 0;
+    v_FailureReason VARCHAR2(4000);
+  BEGIN
+    SELECT ADDRESSID
+      INTO v_addressid
+      FROM TCRM_CUSTOMERADDRESS
+     WHERE CUSTOMERID = an_custid
+       AND ZIPCODE = an_zipcode
+       AND ADDRESS2 = trim(an_address2);
+    rtn_code := v_addressid;
+    RETURN rtn_code;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := 0;
+      RETURN rtn_code;
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('get_customeraddress',
+         an_zipcode || ' , ' || an_address2,
+         an_custid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -1;
+      RETURN rtn_code;
+  END get_customeraddress;
+
+  --------------------------------------------------------------------
+  -- 目的：新增會員資料
+  -- 參數：傳入：customerid     number
+  --       回傳：rtn_code       number   成功：0
+  --                                     失敗：-1
+  --------------------------------------------------------------------
+  PROCEDURE InsertNewCustomer(an_customerid IN NUMBER, rtn_code OUT NUMBER) IS
+    cust_rec1         tcrm_customer%ROWTYPE;
+    cust_rec2         TB_EXT_CUSTOMERFAMILY%ROWTYPE;
+    cust_rec3         TB_EXT_CUSTOMEROCCUPATION%ROWTYPE;
+    cust_rec4         TB_EXT_CUSTOMERPREFERENCE%ROWTYPE;
+    i                 NUMBER(4);
+    v_informationtype CHAR(1);
+    v_FailureReason   VARCHAR2(4000);
+    v_membershiplevelid     NUMBER := 100;
+
+    CURSOR cur1 IS
+      SELECT addressid,
+             customerid,
+             country,
+             zipcode,
+             iscontactaddress,
+             isdefault,
+             isisland,
+             address1,
+             address2,
+             createdby,
+             createdtimestamp,
+             lastmodifiedby,
+             lastmodifiedtimestamp,
+             hometelephonecountrycode,
+             hometelephoneareacode,
+             hometelephonenumber,
+             mobilenumber,
+             officeetelephonecountrycode,
+             officetelephoneareacode,
+             officetelephonenumber,
+             officetelephoneextension,
+             faxcountrycode,
+             faxareacode,
+             faxnumber
+        FROM TB_EXT_CUSTOMERADDRESS
+       WHERE customerid = an_customerid;
+
+    CURSOR cur2 IS
+      SELECT creditcardno,
+             customerid,
+             createdby,
+             createdtimestamp,
+             lastmodifiedby,
+             lastmodifiedtimestamp,
+             bankid,
+             creditcardtype,
+             last3digits,
+             addressid,
+             personalid,
+             lastuseddate,
+             expirydate,
+             status,
+             creditcarddescription
+        FROM TB_EXT_CUSTOMERCREDITCARD
+       WHERE customerid = an_customerid;
+
+    --------------------------------------------------------------------
+    --  判斷客戶CustomerID是否存在。true：存在，false：不存在。
+    --------------------------------------------------------------------
+    FUNCTION check_customerid(an_custid IN NUMBER) RETURN BOOLEAN IS
+      id_rtn        BOOLEAN := FALSE;
+      ln_customerid NUMBER(9);
+    BEGIN
+      SELECT CUSTOMERID
+        INTO ln_customerid
+        FROM tcrm_customer
+       WHERE customerid = an_custid;
+      id_rtn := TRUE;
+      RETURN id_rtn;
+    EXCEPTION
+      WHEN NO_DATA_FOUND THEN
+        id_rtn := FALSE;
+        RETURN id_rtn;
+    END check_customerid;
+
+  BEGIN
+    IF check_customerid(an_customerid) THEN
+      rtn_code := -1; --客戶已存在
+    ELSE
+
+SELECT membershiplevelid INTO v_membershiplevelid FROM TCRM_MEMBERSHIPLEVELDEFINITION WHERE ISDEFAULTFLAG = 'I';
+      --TCRM_CUSTOMER
+      SELECT *
+        INTO cust_rec1
+        FROM TB_EXT_CUSTOMER
+       WHERE TB_EXT_CUSTOMER.customerid = an_customerid;
+
+      IF cust_rec1.sourceinformation IS NOT NULL THEN
+        IF LENGTH(cust_rec1.sourceinformation) = 4 THEN
+          v_informationtype := 'D';
+        ELSE
+          v_informationtype := 'C';
+        END IF;
+      END IF;
+
+      INSERT INTO TCRM_CUSTOMER
+        (customerid,
+         membershiplevelid,
+         sourceinformation,
+         customername,
+         createdby,
+         createdtimestamp,
+         lastmodifiedby,
+         lastmodifiedtimestamp,
+         customertype,
+         bloodgroup,
+         religion,
+         preferredtimefromhour,
+         preferredtimetohour,
+         preferredtimefromminute,
+         preferredtimetominute,
+         totalpurchasevalue,
+         returngoodsvalue,
+         emoticonid,
+         createduser,
+         dateofbirth,
+         lastcall,
+         firstpurchaseon,
+         lastpurchaseon,
+         modifieddate,
+         informationtype,
+         gender,
+         taiwanid,
+         email1,
+         email2,
+         customercreditlimit,
+         introducerid,
+         personalriskscore,
+         customercreditlevelid,
+         returngoodslevel,
+         CREDENTIALTYPE
+         )
+      VALUES
+        (cust_rec1.customerid,
+         v_membershiplevelid,
+         cust_rec1.sourceinformation,
+         cust_rec1.customername,
+         cust_rec1.createdby,
+         SYSDATE,
+         cust_rec1.createdby,
+         SYSDATE,
+         cust_rec1.customertype,
+         cust_rec1.bloodgroup,
+         cust_rec1.religion,
+         cust_rec1.preferredtimefromhour,
+         cust_rec1.preferredtimetohour,
+         cust_rec1.preferredtimefromminute,
+         cust_rec1.preferredtimetominute,
+         cust_rec1.totalpurchasevalue,
+         cust_rec1.returngoodsvalue,
+         cust_rec1.emoticonid,
+         cust_rec1.createduser,
+         cust_rec1.dateofbirth,
+         cust_rec1.lastcall,
+         NULL,
+         NULL,
+         cust_rec1.modifieddate,
+         v_informationtype,
+         cust_rec1.gender,
+         cust_rec1.taiwanid,
+         cust_rec1.email1,
+         cust_rec1.email2,
+         1000000,
+         cust_rec1.introducerid,
+         NULL,
+         1,
+         NULL,
+         cust_rec1.credentialtype);
+
+      --accounttypeid: 4184購物金/4185現金/4186禮券/4187提貨券
+      --accountno    : 3001      /3002    /3003    /3004
+      FOR i IN 0 .. 4 LOOP
+        INSERT INTO TCRM_CUSTOMERACCOUNTBALANCE
+          (customerid,
+           accounttypeid,
+           accountno,
+           effectivebalance,
+           createdby,
+           createdtimestamp,
+           lastmodifiedby,
+           lastmodifiedtimestamp)
+        VALUES
+          (an_customerid,
+           (4184 + i),
+           (3001 + i),
+           0,
+           cust_rec1.createdby,
+           SYSDATE,
+           cust_rec1.createdby,
+           SYSDATE);
+      END LOOP;
+
+      --TCRM_CUSTOMERADDRESS
+      FOR c1 IN cur1 LOOP
+        InsertCustomerAddress(c1.addressid, rtn_code);
+      END LOOP;
+
+      --先呼叫新增信用卡SP TCRM_CUSTOMERCREDITCARD
+      FOR c2 IN cur2 LOOP
+        InsertCustomerCreditCard(c2.customerid, c2.creditcardno, rtn_code);
+      END LOOP;
+
+      --TCRM_CUSTOMERFAMILY
+      SELECT *
+        INTO cust_rec2
+        FROM TB_EXT_CUSTOMERFAMILY
+       WHERE TB_EXT_CUSTOMERFAMILY.customerid = an_customerid;
+
+      INSERT INTO TCRM_CUSTOMERFAMILY
+        (customerid,
+         monthlyincome,
+         maritalstatus,
+         noofchildren,
+         noofseniors,
+         spousedateofbirth,
+         weddinganniversary,
+         pregnantdeliverydate,
+         child1dateofbirth,
+         child2dateofbirth,
+         pregnant,
+         child1gender,
+         child2gender,
+         child1school,
+         child2school,
+         primarymember,
+         secondarymember)
+      VALUES
+        (cust_rec2.customerid,
+         cust_rec2.monthlyincome,
+         cust_rec2.maritalstatus,
+         cust_rec2.noofchildren,
+         cust_rec2.noofseniors,
+         cust_rec2.spousedateofbirth,
+         cust_rec2.weddinganniversary,
+         cust_rec2.pregnantdeliverydate,
+         cust_rec2.child1dateofbirth,
+         cust_rec2.child2dateofbirth,
+         cust_rec2.pregnant,
+         cust_rec2.child1gender,
+         cust_rec2.child2gender,
+         cust_rec2.child1school,
+         cust_rec2.child2school,
+         cust_rec2.primarymember,
+         cust_rec2.secondarymember);
+
+      --TCRM_CUSTOMEROCCUPATION
+      SELECT *
+        INTO cust_rec3
+        FROM TB_EXT_CUSTOMEROCCUPATION
+       WHERE TB_EXT_CUSTOMEROCCUPATION.customerid = an_customerid;
+
+      INSERT INTO TCRM_CUSTOMEROCCUPATION
+        (customerid,
+         education,
+         occupation,
+         yearsofexperience,
+         monthlyincome,
+         yearsofservice,
+         companyno,
+         companyname,
+         position)
+      VALUES
+        (cust_rec3.customerid,
+         cust_rec3.education,
+         cust_rec3.occupation,
+         cust_rec3.yearsofexperience,
+         cust_rec3.monthlyincome,
+         cust_rec3.yearsofservice,
+         cust_rec3.companyno,
+         cust_rec3.companyname,
+         cust_rec3.position);
+
+      --TCRM_CUSTOMERPREFERENCE
+      SELECT *
+        INTO cust_rec4
+        FROM TB_EXT_CUSTOMERPREFERENCE
+       WHERE TB_EXT_CUSTOMERPREFERENCE.customerid = an_customerid;
+
+      INSERT INTO TCRM_CUSTOMERPREFERENCE
+        (customerid,
+         channelforservice,
+         interestproduct,
+         groceryamount,
+         politicalinclination,
+         wishes,
+         interests,
+         groceryservice,
+         participateincustomersurvey,
+         notacceptingjcici,
+         usingivr,
+         receiveemail,
+         receivepost,
+         receivefax,
+         receivecall,
+         receivesms,
+         invoicetarget)
+      VALUES
+        (cust_rec4.customerid,
+         cust_rec4.channelforservice,
+         cust_rec4.interestproduct,
+         cust_rec4.groceryamount,
+         cust_rec4.politicalinclination,
+         cust_rec4.wishes,
+         cust_rec4.interests,
+         cust_rec4.groceryservice,
+         'Y',
+         'N',
+         'Y',
+         'Y',
+         'Y',
+         'Y',
+         'Y',
+         'Y',
+         cust_rec4.invoicetarget);
+
+      rtn_code := 0;
+    END IF;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := -2; --denotes no data found
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('InsertNewCustomer',
+         'InsertNewCustomer',
+         an_customerid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -3; --denotes fail
+  END InsertNewCustomer;
+
+  --------------------------------------------------------------------
+  -- 目的：修改會員資料
+  -- 參數：傳入：customerid     number
+  --       回傳：rtn_code       number   成功：0
+  --                                     失敗：-1
+  --------------------------------------------------------------------
+  PROCEDURE ModifyCustomerData(an_customerid IN NUMBER,
+                               rtn_code      OUT NUMBER) IS
+    cust_rec1        tcrm_customer%ROWTYPE;
+    cust_rec2        TB_EXT_CUSTOMERFAMILY%ROWTYPE;
+    cust_rec3        TB_EXT_CUSTOMEROCCUPATION%ROWTYPE;
+    cust_rec4        TB_EXT_CUSTOMERPREFERENCE%ROWTYPE;
+    v_FailureReason  VARCHAR2(4000);
+    v_CountIsContact NUMBER(3);
+    v_CountIsDefault NUMBER(3);
+    ln_cnt           NUMBER(3);
+    v_eInvalidAddress EXCEPTION;
+    v_informationtype CHAR(1);
+
+    CURSOR cur1 IS
+      SELECT addressid,
+             customerid,
+             country,
+             zipcode,
+             iscontactaddress,
+             isdefault,
+             isisland,
+             address1,
+             address2,
+             createdby,
+             createdtimestamp,
+             lastmodifiedby,
+             lastmodifiedtimestamp,
+             hometelephonecountrycode,
+             hometelephoneareacode,
+             hometelephonenumber,
+             mobilenumber,
+             officeetelephonecountrycode,
+             officetelephoneareacode,
+             officetelephonenumber,
+             officetelephoneextension,
+             faxcountrycode,
+             faxareacode,
+             faxnumber
+        FROM TB_EXT_CUSTOMERADDRESS
+       WHERE customerid = an_customerid;
+  BEGIN
+    --UPDATE TCRM_CUSTOMER
+    SELECT *
+      INTO cust_rec1
+      FROM TB_EXT_CUSTOMER
+     WHERE TB_EXT_CUSTOMER.customerid = an_customerid;
+
+    IF cust_rec1.sourceinformation IS NOT NULL THEN
+      IF LENGTH(cust_rec1.sourceinformation) = 4 THEN
+        v_informationtype := 'D';
+      ELSE
+        v_informationtype := 'C';
+      END IF;
+    END IF;
+
+    UPDATE TCRM_CUSTOMER
+       SET sourceinformation       = cust_rec1.sourceinformation,
+           customername            = cust_rec1.customername,
+           lastmodifiedby          = cust_rec1.lastmodifiedby,
+           lastmodifiedtimestamp   = SYSDATE,
+           bloodgroup              = cust_rec1.bloodgroup,
+           religion                = cust_rec1.religion,
+           preferredtimefromhour   = cust_rec1.preferredtimefromhour,
+           preferredtimetohour     = cust_rec1.preferredtimetohour,
+           preferredtimefromminute = cust_rec1.preferredtimefromminute,
+           preferredtimetominute   = cust_rec1.preferredtimetominute,
+           emoticonid              = cust_rec1.emoticonid,
+           createduser             = cust_rec1.createduser,
+           dateofbirth             = cust_rec1.dateofbirth,
+           modifieddate            = cust_rec1.modifieddate,
+           informationtype         = v_informationtype,
+           gender                  = cust_rec1.gender,
+           taiwanid                = cust_rec1.taiwanid,
+           email1                  = cust_rec1.email1,
+           email2                  = cust_rec1.email2,
+           introducerid            = cust_rec1.introducerid,
+           CREDENTIALTYPE          = cust_rec1.credentialtype
+     WHERE TCRM_CUSTOMER.customerid = an_customerid;
+
+    --UPDATE TCRM_CUSTOMERFAMILY
+    SELECT *
+      INTO cust_rec2
+      FROM TB_EXT_CUSTOMERFAMILY
+     WHERE TB_EXT_CUSTOMERFAMILY.customerid = an_customerid;
+
+    UPDATE TCRM_CUSTOMERFAMILY
+       SET monthlyincome        = cust_rec2.monthlyincome,
+           maritalstatus        = cust_rec2.maritalstatus,
+           noofchildren         = cust_rec2.noofchildren,
+           noofseniors          = cust_rec2.noofseniors,
+           spousedateofbirth    = cust_rec2.spousedateofbirth,
+           weddinganniversary   = cust_rec2.weddinganniversary,
+           pregnantdeliverydate = cust_rec2.pregnantdeliverydate,
+           child1dateofbirth    = cust_rec2.child1dateofbirth,
+           child2dateofbirth    = cust_rec2.child2dateofbirth,
+           pregnant             = cust_rec2.pregnant,
+           child1gender         = cust_rec2.child1gender,
+           child2gender         = cust_rec2.child2gender,
+           child1school         = cust_rec2.child1school,
+           child2school         = cust_rec2.child2school,
+           primarymember        = cust_rec2.primarymember,
+           secondarymember      = cust_rec2.secondarymember
+     WHERE TCRM_CUSTOMERFAMILY.customerid = an_customerid;
+
+    --UPDATE TCRM_CUSTOMERADDRESS
+    FOR c1 IN cur1 LOOP
+      SELECT COUNT(*)
+        INTO ln_cnt
+        FROM TCRM_CUSTOMERADDRESS
+       WHERE addressid = c1.addressid
+         AND customerid = an_customerid;
+
+      IF ln_cnt = 0 THEN
+        RAISE v_eInvalidAddress;
+      ELSE
+        IF c1.iscontactaddress = 'Y' THEN
+          UPDATE tcrm_customeraddress
+             SET iscontactaddress = 'N'
+           WHERE customerid = c1.customerid;
+        ELSE
+          SELECT COUNT(*)
+            INTO v_CountIsContact
+            FROM tcrm_customeraddress
+           WHERE customerid = c1.customerid
+             AND iscontactaddress = 'Y'
+             AND addressid <> c1.addressid;
+
+          IF v_CountIsContact = 0 THEN
+            c1.iscontactaddress := 'Y'; --客戶無預設聯絡地
+          END IF;
+        END IF;
+
+        IF c1.isdefault = 'Y' THEN
+          UPDATE tcrm_customeraddress
+             SET isdefault = 'N'
+           WHERE customerid = c1.customerid;
+        ELSE
+          SELECT COUNT(*)
+            INTO v_CountIsDefault
+            FROM tcrm_customeraddress
+           WHERE customerid = c1.customerid
+             AND isdefault = 'Y'
+             AND addressid <> c1.addressid;
+
+          IF v_CountIsDefault = 0 THEN
+            c1.isdefault := 'Y'; --客戶無預設配送地
+          END IF;
+        END IF;
+
+        UPDATE TCRM_CUSTOMERADDRESS
+           SET iscontactaddress            = c1.iscontactaddress,
+               isdefault                   = c1.isdefault,
+               lastmodifiedby              = c1.lastmodifiedby,
+               lastmodifiedtimestamp       = SYSDATE,
+               hometelephonecountrycode    = c1.hometelephonecountrycode,
+               hometelephoneareacode       = c1.hometelephoneareacode,
+               hometelephonenumber         = c1.hometelephonenumber,
+               mobilenumber                = c1.mobilenumber,
+               officeetelephonecountrycode = c1.officeetelephonecountrycode,
+               officetelephoneareacode     = c1.officetelephoneareacode,
+               officetelephonenumber       = c1.officetelephonenumber,
+               officetelephoneextension    = c1.officetelephoneextension,
+               faxcountrycode              = c1.faxcountrycode,
+               faxareacode                 = c1.faxareacode,
+               faxnumber                   = c1.faxnumber
+         WHERE TCRM_CUSTOMERADDRESS.addressid = c1.addressid
+           AND TCRM_CUSTOMERADDRESS.customerid = an_customerid;
+      END IF;
+    END LOOP;
+
+    --UPDATE TCRM_CUSTOMEROCCUPATION
+    SELECT *
+      INTO cust_rec3
+      FROM TB_EXT_CUSTOMEROCCUPATION
+     WHERE TB_EXT_CUSTOMEROCCUPATION.customerid = an_customerid;
+
+    UPDATE TCRM_CUSTOMEROCCUPATION
+       SET education         = cust_rec3.education,
+           occupation        = cust_rec3.occupation,
+           yearsofexperience = cust_rec3.yearsofexperience,
+           monthlyincome     = cust_rec3.monthlyincome,
+           yearsofservice    = cust_rec3.yearsofservice,
+           companyno         = cust_rec3.companyno,
+           companyname       = cust_rec3.companyname,
+           position          = cust_rec3.position
+     WHERE TCRM_CUSTOMEROCCUPATION.customerid = an_customerid;
+
+    --UPDATE TCRM_CUSTOMERPREFERENCE
+    SELECT *
+      INTO cust_rec4
+      FROM TB_EXT_CUSTOMERPREFERENCE
+     WHERE TB_EXT_CUSTOMERPREFERENCE.customerid = an_customerid;
+
+    UPDATE TCRM_CUSTOMERPREFERENCE
+       SET channelforservice           = cust_rec4.channelforservice,
+           interestproduct             = cust_rec4.interestproduct,
+           groceryamount               = cust_rec4.groceryamount,
+           politicalinclination        = cust_rec4.politicalinclination,
+           wishes                      = cust_rec4.wishes,
+           interests                   = cust_rec4.interests,
+           groceryservice              = cust_rec4.groceryservice,
+           participateincustomersurvey = cust_rec4.participateincustomersurvey,
+           notacceptingjcici           = cust_rec4.notacceptingjcici,
+           usingivr                    = cust_rec4.usingivr,
+           receiveemail                = cust_rec4.receiveemail,
+           receivepost                 = cust_rec4.receivepost,
+           receivefax                  = cust_rec4.receivefax,
+           receivecall                 = cust_rec4.receivecall,
+           receivesms                  = cust_rec4.receivesms,
+           INVOICETARGET               = cust_rec4.invoicetarget
+     WHERE TCRM_CUSTOMERPREFERENCE.customerid = an_customerid;
+
+    rtn_code := 0;
+
+  EXCEPTION
+    WHEN v_eInvalidAddress THEN
+      rtn_code := -3;
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := -1; --no data found
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('ModifyCustomerData',
+         'ModifyCustomerData',
+         an_customerid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -2; --fail
+
+  END ModifyCustomerData;
+
+  --------------------------------------------------------------------
+  -- 目的：新增配送資料
+  -- 參數：傳入：addressid      number
+  --       回傳：rtn_code       number    0:成功    ，-1:資料已存在
+  --                                     -2:讀取失敗，-3:其他失敗
+  --                                     -4:郵遞區號不正確
+  --------------------------------------------------------------------
+  PROCEDURE InsertCustomerAddress(an_addressid IN NUMBER,
+                                  rtn_code     OUT NUMBER) IS
+    cust_rec1        TB_EXT_CUSTOMERADDRESS%ROWTYPE;
+    ln_cnt           NUMBER(3);
+    v_customername   VARCHAR2(64);
+    v_taiwanid       VARCHAR2(20);
+    v_FailureReason  VARCHAR2(4000);
+    v_count          NUMBER(2);
+    v_addressid      NUMBER;
+    v_CountIsContact NUMBER(3);
+    v_CountIsDefault NUMBER(3);
+    v_offshoreisland CHAR(1);
+    v_addressline1   VARCHAR2(120);
+
+    /*custadd_EXT TB_EXT_CUSTOMERADDRESS%rowtype; --added by TQ
+    li_Count    number(2); --added by TQ */
+    li_AddID number;
+
+  BEGIN
+    SELECT COUNT(*)
+      INTO ln_cnt
+      FROM TCRM_CUSTOMERADDRESS
+     WHERE TCRM_CUSTOMERADDRESS.addressid = an_addressid;
+    /*--added by TQ
+    select *
+      into custadd_EXT
+      from TB_EXT_CUSTOMERADDRESS
+     where addressid = an_addressid;
+    select count(*) --查看资料是否已在表中存在
+      into li_Count
+      from TCRM_CUSTOMERADDRESS
+     where zipcode = trim(custadd_EXT.Zipcode)
+       and address1 = trim(custadd_EXT.Address1)
+       and address2 = trim(custadd_EXT.Address2);
+    -- end add*/
+
+    IF ln_cnt > 0 THEN
+      rtn_code := -1; --資料已存在，無法新增
+      /*-- added by TQ
+      elsif li_Count = 1 then
+        select addressid --如果存在，则更新，不insert
+          into li_AddID
+          from TCRM_CUSTOMERADDRESS
+         where zipcode = trim(custadd_EXT.Zipcode)
+           and address1 = trim(custadd_EXT.Address1)
+           and address2 = trim(custadd_EXT.Address2);
+        update TCRM_CUSTOMERADDRESS
+           set createdtimestamp = sysdate, lastmodifiedtimestamp = sysdate
+         where addressid = li_AddID;
+        -- end add*/
+    ELSE
+
+      --INSERT TCRM_CUSTOMERADDRESS
+      SELECT *
+        INTO cust_rec1
+        FROM TB_EXT_CUSTOMERADDRESS
+       WHERE TB_EXT_CUSTOMERADDRESS.addressid = an_addressid;
+
+      IF LENGTH(cust_rec1.zipcode) = 6 THEN
+        v_addressid := get_customeraddress(cust_rec1.customerid,
+                                           cust_rec1.zipcode,
+                                           cust_rec1.address2);
+
+        SELECT offshoreisland, addressline1
+          INTO v_offshoreisland, v_addressline1
+          FROM tcmn_zipcodedetails
+         WHERE zipcode = cust_rec1.zipcode;
+
+        IF v_addressid = 0 THEN
+
+          IF cust_rec1.iscontactaddress = 'Y' THEN
+            UPDATE tcrm_customeraddress
+               SET iscontactaddress = 'N'
+             WHERE customerid = cust_rec1.customerid
+               AND addressid <> cust_rec1.addressid;
+          ELSE
+            SELECT COUNT(*)
+              INTO v_CountIsContact
+              FROM tcrm_customeraddress
+             WHERE customerid = cust_rec1.customerid
+               AND iscontactaddress = 'Y'
+               AND addressid <> cust_rec1.addressid;
+
+            IF v_CountIsContact = 0 THEN
+              cust_rec1.iscontactaddress := 'Y'; --客戶無預設聯絡地
+            END IF;
+          END IF;
+
+          IF cust_rec1.isdefault = 'Y' THEN
+            UPDATE tcrm_customeraddress
+               SET isdefault = 'N'
+             WHERE customerid = cust_rec1.customerid
+               AND addressid <> cust_rec1.addressid;
+          ELSE
+            SELECT COUNT(*)
+              INTO v_CountIsDefault
+              FROM tcrm_customeraddress
+             WHERE customerid = cust_rec1.customerid
+               AND isdefault = 'Y'
+               AND addressid <> cust_rec1.addressid;
+
+            IF v_CountIsDefault = 0 THEN
+              cust_rec1.isdefault := 'Y'; --客戶無預設配送地
+            END IF;
+          END IF;
+
+          SELECT COUNT(*)
+            INTO v_count
+            FROM tcrm_customeraddress
+           WHERE customerid = cust_rec1.customerid;
+
+          IF v_count = 0 THEN
+
+            INSERT INTO TCRM_CUSTOMERADDRESS
+              (addressid,
+               customerid,
+               country,
+               zipcode,
+               iscontactaddress,
+               isdefault,
+               isisland,
+               address1,
+               address2,
+               createdby,
+               createdtimestamp,
+               lastmodifiedby,
+               lastmodifiedtimestamp,
+               hometelephonecountrycode,
+               hometelephoneareacode,
+               hometelephonenumber,
+               mobilenumber,
+               officeetelephonecountrycode,
+               officetelephoneareacode,
+               officetelephonenumber,
+               officetelephoneextension,
+               faxcountrycode,
+               faxareacode,
+               faxnumber)
+            VALUES
+              (cust_rec1.addressid,
+               cust_rec1.customerid,
+               cust_rec1.country,
+               cust_rec1.zipcode,
+               'Y',
+               'Y',
+               v_offshoreisland,
+               v_addressline1,
+               cust_rec1.address2,
+               cust_rec1.createdby,
+               SYSDATE,
+               cust_rec1.createdby,
+               SYSDATE,
+               cust_rec1.hometelephonecountrycode,
+               cust_rec1.hometelephoneareacode,
+               cust_rec1.hometelephonenumber,
+               cust_rec1.mobilenumber,
+               cust_rec1.officeetelephonecountrycode,
+               cust_rec1.officetelephoneareacode,
+               cust_rec1.officetelephonenumber,
+               cust_rec1.officetelephoneextension,
+               cust_rec1.faxcountrycode,
+               cust_rec1.faxareacode,
+               cust_rec1.faxnumber);
+
+            SELECT customername, taiwanid
+              INTO v_customername, v_taiwanid
+              FROM tcrm_customer
+             WHERE tcrm_customer.customerid = cust_rec1.customerid;
+
+            --TOAF_ADDRESSEXTRAINFO
+            INSERT INTO TOAF_ADDRESSEXTRAINFO
+              (addressid,
+               addresstype,
+               customerid,
+               companyno,
+               receivername,
+               invoicetitle,
+               personalid,
+               createdby,
+               createdtimestamp,
+               lastmodifiedby,
+               lastmodifiedtimestamp)
+            VALUES
+              (cust_rec1.addressid,
+               'D',
+               cust_rec1.customerid,
+               NULL,
+               decode(cust_rec1.receivername, NULL, v_customername, cust_rec1.receivername),
+               NULL,
+               v_taiwanid,
+               cust_rec1.createdby,
+               SYSDATE,
+               cust_rec1.lastmodifiedby,
+               SYSDATE);
+
+            rtn_code := 0; --成功
+          ELSE
+            INSERT INTO TCRM_CUSTOMERADDRESS
+              (addressid,
+               customerid,
+               country,
+               zipcode,
+               iscontactaddress,
+               isdefault,
+               isisland,
+               address1,
+               address2,
+               createdby,
+               createdtimestamp,
+               lastmodifiedby,
+               lastmodifiedtimestamp,
+               hometelephonecountrycode,
+               hometelephoneareacode,
+               hometelephonenumber,
+               mobilenumber,
+               officeetelephonecountrycode,
+               officetelephoneareacode,
+               officetelephonenumber,
+               officetelephoneextension,
+               faxcountrycode,
+               faxareacode,
+               faxnumber)
+            VALUES
+              (cust_rec1.addressid,
+               cust_rec1.customerid,
+               cust_rec1.country,
+               cust_rec1.zipcode,
+               cust_rec1.iscontactaddress,
+               cust_rec1.isdefault,
+               v_offshoreisland,
+               v_addressline1,
+               cust_rec1.address2,
+               cust_rec1.createdby,
+               SYSDATE,
+               cust_rec1.createdby,
+               SYSDATE,
+               cust_rec1.hometelephonecountrycode,
+               cust_rec1.hometelephoneareacode,
+               cust_rec1.hometelephonenumber,
+               cust_rec1.mobilenumber,
+               cust_rec1.officeetelephonecountrycode,
+               cust_rec1.officetelephoneareacode,
+               cust_rec1.officetelephonenumber,
+               cust_rec1.officetelephoneextension,
+               cust_rec1.faxcountrycode,
+               cust_rec1.faxareacode,
+               cust_rec1.faxnumber);
+
+            SELECT customername, taiwanid
+              INTO v_customername, v_taiwanid
+              FROM tcrm_customer
+             WHERE tcrm_customer.customerid = cust_rec1.customerid;
+
+            --TOAF_ADDRESSEXTRAINFO
+            INSERT INTO TOAF_ADDRESSEXTRAINFO
+              (addressid,
+               addresstype,
+               customerid,
+               companyno,
+               receivername,
+               invoicetitle,
+               personalid,
+               createdby,
+               createdtimestamp,
+               lastmodifiedby,
+               lastmodifiedtimestamp)
+            VALUES
+              (cust_rec1.addressid,
+               'D',
+               cust_rec1.customerid,
+               NULL,
+               decode(cust_rec1.receivername, null, v_customername, cust_rec1.receivername),
+               NULL,
+               v_taiwanid,
+               cust_rec1.createdby,
+               SYSDATE,
+               cust_rec1.lastmodifiedby,
+               SYSDATE);
+
+            rtn_code := 0; --成功
+          END IF;
+        ELSE
+          rtn_code := -1;
+        END IF;
+      ELSE
+        rtn_code := -4;
+      END IF;
+    END IF;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := -2; --no data found
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('InsertCustomerAddress',
+         'InsertCustomerAddress',
+         an_addressid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -3; --fail
+
+  END InsertCustomerAddress;
+
+  --------------------------------------------------------------------
+  -- 目的：更改配送地
+  -- 參數：傳入：customerid     number
+  --             addressid      number
+  --       回傳：rtn_code       number    0：成功    ，-1：資料不存在
+  --                                     -2：讀取失敗，-3：其他失敗
+  --------------------------------------------------------------------
+  PROCEDURE ModifyCustomerAddress(an_customerid IN NUMBER,
+                                  an_addressid  IN NUMBER,
+                                  rtn_code      OUT NUMBER) IS
+    cust_rec1        TB_EXT_CUSTOMERADDRESS%ROWTYPE;
+    ln_cnt           NUMBER(3);
+    v_FailureReason  VARCHAR2(4000);
+    v_CountIsContact NUMBER(3);
+    v_CountIsDefault NUMBER(3);
+  BEGIN
+    SELECT COUNT(*)
+      INTO ln_cnt
+      FROM TCRM_CUSTOMERADDRESS
+     WHERE addressid = an_addressid
+       AND customerid = an_customerid;
+
+    IF ln_cnt = 0 THEN
+      rtn_code := -1; --資料不存在，無法修改
+    ELSE
+
+      --INSERT TCRM_CUSTOMERADDRESS
+      SELECT *
+        INTO cust_rec1
+        FROM TB_EXT_CUSTOMERADDRESS
+       WHERE TB_EXT_CUSTOMERADDRESS.addressid = an_addressid;
+
+      IF cust_rec1.iscontactaddress = 'Y' THEN
+        UPDATE tcrm_customeraddress
+           SET iscontactaddress = 'N'
+         WHERE customerid = cust_rec1.customerid;
+      ELSE
+        SELECT COUNT(*)
+          INTO v_CountIsContact
+          FROM tcrm_customeraddress
+         WHERE customerid = cust_rec1.customerid
+           AND iscontactaddress = 'Y'
+           AND addressid <> cust_rec1.addressid;
+
+        IF v_CountIsContact = 0 THEN
+          cust_rec1.iscontactaddress := 'Y';
+        END IF;
+      END IF;
+
+      IF cust_rec1.isdefault = 'Y' THEN
+        UPDATE tcrm_customeraddress
+           SET isdefault = 'N'
+         WHERE customerid = cust_rec1.customerid;
+      ELSE
+        SELECT COUNT(*)
+          INTO v_CountIsDefault
+          FROM tcrm_customeraddress
+         WHERE customerid = cust_rec1.customerid
+           AND isdefault = 'Y'
+           AND addressid <> cust_rec1.addressid;
+
+        IF v_CountIsDefault = 0 THEN
+          cust_rec1.isdefault := 'Y';
+        END IF;
+      END IF;
+
+      UPDATE TCRM_CUSTOMERADDRESS
+         SET iscontactaddress            = cust_rec1.iscontactaddress,
+             isdefault                   = cust_rec1.isdefault,
+             lastmodifiedby              = cust_rec1.lastmodifiedby,
+             lastmodifiedtimestamp       = SYSDATE,
+             hometelephonecountrycode    = cust_rec1.hometelephonecountrycode,
+             hometelephoneareacode       = cust_rec1.hometelephoneareacode,
+             hometelephonenumber         = cust_rec1.hometelephonenumber,
+             mobilenumber                = cust_rec1.mobilenumber,
+             officeetelephonecountrycode = cust_rec1.officeetelephonecountrycode,
+             officetelephoneareacode     = cust_rec1.officetelephoneareacode,
+             officetelephonenumber       = cust_rec1.officetelephonenumber,
+             officetelephoneextension    = cust_rec1.officetelephoneextension,
+             faxcountrycode              = cust_rec1.faxcountrycode,
+             faxareacode                 = cust_rec1.faxareacode,
+             faxnumber                   = cust_rec1.faxnumber,
+             zipcode                     = cust_rec1.zipcode,
+             address1                    = cust_rec1.address1,
+             address2                    = cust_rec1.address2
+       WHERE customerid = an_customerid
+         AND addressid = an_addressid;
+
+      rtn_code := 0; --成功
+
+    END IF;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code        := -2; --no data found
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('ModifyCustomerAddress',
+         an_customerid,
+         an_addressid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('ModifyCustomerAddress',
+         an_customerid,
+         an_addressid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -3; --fail
+
+  END ModifyCustomerAddress;
+
+  --------------------------------------------------------------------
+  -- 目的：新增信用卡資料
+  -- 參數：傳入：customerid     number
+  --       回傳：rtn_code       number    0：成功    ，-1：資料已存在
+  --                                     -2：讀取失敗，-3：無效卡號
+  --                                     -4:其他失敗 ，-5:無法取得信用卡相關資訊
+  --                                     -6:客戶無預設聯絡地
+  --------------------------------------------------------------------
+  PROCEDURE InsertCustomerCreditCard(av_customerid   IN NUMBER,
+                                     av_creditcardno IN VARCHAR2,
+                                     rtn_code        OUT NUMBER) IS
+    cust_rec1        TB_EXT_CUSTOMERCREDITCARD%ROWTYPE;
+    ln_cnt           NUMBER(3);
+    isvalid          CHAR(1);
+    v_creditcardinfo VARCHAR2(15);
+    v_creditcardtype TB_EXT_CUSTOMERCREDITCARD.creditcardtype%TYPE;
+    v_bankid         TB_EXT_CUSTOMERCREDITCARD.bankid%TYPE;
+    v_addressid      NUMBER(10);
+    v_FailureReason  VARCHAR2(4000);
+  BEGIN
+    v_creditcardinfo := Pkie_Comm.wf_get_carddata(av_creditcardno);
+
+    IF v_creditcardinfo = '-1' OR v_creditcardinfo = '-2' THEN
+      isvalid := 'I';
+    ELSE
+      IF Pkie_Comm.wf_chk_card_no(av_creditcardno) = 1 THEN
+        isvalid          := 'Y';
+        v_creditcardtype := Pkie_Comm.wf_get_left(v_creditcardinfo);
+        v_bankid         := Pkie_Comm.wf_get_right(v_creditcardinfo);
+      ELSE
+        IF Pkie_Comm.wf_chk_card_no1(av_creditcardno) = 1 THEN
+          isvalid          := 'Y';
+          v_creditcardtype := Pkie_Comm.wf_get_left(v_creditcardinfo);
+          v_bankid         := Pkie_Comm.wf_get_right(v_creditcardinfo);
+        ELSE
+          isvalid := 'N';
+        END IF;
+      END IF;
+    END IF;
+
+    IF isvalid = 'Y' THEN
+
+      SELECT COUNT(*)
+        INTO ln_cnt
+        FROM TCRM_CUSTOMERCREDITCARD
+       WHERE TCRM_CUSTOMERCREDITCARD.customerid = av_customerid
+         AND TCRM_CUSTOMERCREDITCARD.creditcardno = av_creditcardno;
+
+      IF ln_cnt > 0 THEN
+        rtn_code := -1; --資料已存在，無法新增
+      ELSE
+        --INSERT TCRM_CUSTOMERCREDITCARD
+        SELECT *
+          INTO cust_rec1
+          FROM TB_EXT_CUSTOMERCREDITCARD
+         WHERE TB_EXT_CUSTOMERCREDITCARD.customerid = av_customerid
+           AND TB_EXT_CUSTOMERCREDITCARD.creditcardno = av_creditcardno;
+
+        BEGIN
+          SELECT addressid
+            INTO v_addressid
+            FROM tcrm_customeraddress
+           WHERE customerid = cust_rec1.customerid
+             AND iscontactaddress = 'Y'
+             AND ROWNUM = 1;
+        EXCEPTION
+          WHEN NO_DATA_FOUND THEN
+            rtn_code := -6;
+        END;
+
+        IF v_addressid IS NOT NULL THEN
+          INSERT INTO TCRM_CUSTOMERCREDITCARD
+            (creditcardno,
+             customerid,
+             createdby,
+             createdtimestamp,
+             lastmodifiedby,
+             lastmodifiedtimestamp,
+             bankid,
+             creditcardtype,
+             last3digits,
+             addressid,
+             personalid,
+             lastuseddate,
+             expirydate,
+             status,
+             creditcarddescription)
+          VALUES
+            (cust_rec1.creditcardno,
+             cust_rec1.customerid,
+             cust_rec1.createdby,
+             SYSDATE,
+             cust_rec1.createdby,
+             SYSDATE,
+             v_bankid,
+             v_creditcardtype,
+             cust_rec1.last3digits,
+             v_addressid,
+             cust_rec1.personalid,
+             cust_rec1.lastuseddate,
+             cust_rec1.expirydate,
+             cust_rec1.status,
+             cust_rec1.creditcarddescription);
+
+          UPDATE TB_EXT_CUSTOMERCREDITCARD
+             SET bankid = v_bankid, creditcardtype = v_creditcardtype
+           WHERE customerid = av_customerid
+             AND creditcardno = av_creditcardno;
+
+          rtn_code := 0;
+        END IF;
+      END IF;
+
+    ELSIF isvalid = 'I' THEN
+      rtn_code := -5;
+    ELSE
+      rtn_code := -3; --無效卡號
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('InsertCustomerCreditCard',
+         av_creditcardno,
+         av_customerid,
+         isvalid,
+         30184,
+         SYSDATE);
+      --commit
+    END IF;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := -2; --no data found
+    WHEN OTHERS THEN
+      rtn_code        := -4; --fail
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('InsertCustomerCreditCard',
+         av_creditcardno,
+         av_customerid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+
+  END InsertCustomerCreditCard;
+
+  --------------------------------------------------------------------
+  -- 目的：修改信用卡資料
+  -- 參數：傳入：customerid     number
+  --             creditcardno   VARCHAR2
+  --       回傳：rtn_code       number    0：成功    ，-1：無資料
+  --                                     -2：其他失敗, -3: 無地址資料
+  -- 說明：維護客戶的信用卡資料時，不允許修改creditcardno，
+  --       此處條件加上customerid，是因為介面是從客戶資料帶信用卡資料
+  --       ，不可能倒過來修改改信用卡的customerid。
+  --------------------------------------------------------------------
+  PROCEDURE ModifyCustomerCreditCard(an_customerid   IN NUMBER,
+                                     av_creditcardno IN VARCHAR2,
+                                     rtn_code        OUT NUMBER) IS
+    cust_rec1       TB_EXT_CUSTOMERCREDITCARD%ROWTYPE;
+    v_addressid     NUMBER(10);
+    v_FailureReason VARCHAR2(4000);
+  BEGIN
+    --UPDATE TCRM_CUSTOMERCREDITCARD
+    SELECT *
+      INTO cust_rec1
+      FROM TB_EXT_CUSTOMERCREDITCARD
+     WHERE TB_EXT_CUSTOMERCREDITCARD.creditcardno = av_creditcardno
+       AND TB_EXT_CUSTOMERCREDITCARD.customerid = an_customerid;
+
+    BEGIN
+      SELECT addressid
+        INTO v_addressid
+        FROM tcrm_customeraddress
+       WHERE customerid = cust_rec1.customerid
+         AND iscontactaddress = 'Y'
+         AND ROWNUM = 1;
+    EXCEPTION
+      WHEN NO_DATA_FOUND THEN
+        rtn_code := -3;
+    END;
+
+    IF v_addressid IS NOT NULL THEN
+      UPDATE TCRM_CUSTOMERCREDITCARD
+         SET lastmodifiedby        = cust_rec1.lastmodifiedby,
+             lastmodifiedtimestamp = SYSDATE,
+             last3digits           = cust_rec1.last3digits,
+             addressid             = v_addressid,
+             lastuseddate          = cust_rec1.lastuseddate,
+             expirydate            = cust_rec1.expirydate,
+             creditcarddescription = cust_rec1.creditcarddescription,
+             status                = cust_rec1.status
+       WHERE TCRM_CUSTOMERCREDITCARD.creditcardno = av_creditcardno
+         AND TCRM_CUSTOMERCREDITCARD.customerid = an_customerid;
+
+      rtn_code := 0;
+    END IF;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := -1; --no data found
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('ModifyCustomerCreditCard',
+         av_creditcardno,
+         an_customerid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -2; --fail
+
+  END ModifyCustomerCreditCard;
+
+  --------------------------------------------------------------------
+  -- 目的：更改配送地資訊
+  -- 參數：傳入：customerid     number
+  --             addressid      number
+  --             companyno      varchar2
+  --             receivername   varchar2
+  --             invoicetitle   varchar2
+  --             personalid     varchar2
+  --       回傳：rtn_code       number    0：成功    ，-1：資料不存在
+  --                                     -2: 其他失敗
+  --------------------------------------------------------------------
+  PROCEDURE ModifyAddressExtraInfo(V_CUST_ID      IN NUMBER, --客代
+                                   V_ADDRESSID    IN NUMBER, --地址序號
+                                   V_RECEIVERNAME IN VARCHAR2, --寄件人
+                                   V_CreatedBy    IN number, ---建立人
+                                   rtn_code       OUT NUMBER) IS
+    cust_rec1       toaf_addressextrainfo%ROWTYPE;
+    ln_cnt          NUMBER(3);
+    v_FailureReason VARCHAR2(4000);
+  BEGIN
+
+    SELECT *
+      INTO cust_rec1
+      FROM toaf_addressextrainfo
+     WHERE toaf_addressextrainfo.customerid = V_CUST_ID
+       AND toaf_addressextrainfo.addressid = V_ADDRESSID
+       AND toaf_addressextrainfo.addresstype = 'D';
+
+    UPDATE toaf_addressextrainfo
+       SET receivername = V_RECEIVERNAME
+     WHERE customerid = V_CUST_ID
+       AND addressid = V_ADDRESSID
+       AND addresstype = 'D';
+
+    rtn_code := 0; --成功
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code        := -1; --no data found
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('ModifyAddressExtraInfo',
+         V_CUST_ID,
+         V_ADDRESSID,
+         v_FailureReason,
+         V_CreatedBy,
+         SYSDATE);
+      --commit
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('ModifyAddressExtraInfo',
+         V_CUST_ID,
+         V_ADDRESSID,
+         v_FailureReason,
+         V_CreatedBy,
+         SYSDATE);
+      --commit
+      rtn_code := -2; --fail
+
+  END ModifyAddressExtraInfo;
+
+  --------------------------------------------------------------------
+  -- 目的：更改配送地資訊
+  -- 參數：傳入：customerid     number
+  --             addressid      number
+  --             companyno      varchar2
+  --             receivername   varchar2
+  --             invoicetitle   varchar2
+  --             personalid     varchar2
+  --       回傳：rtn_code       number    0：成功    ，-1：資料不存在
+  --                                     -2: 其他失敗
+  --------------------------------------------------------------------
+  PROCEDURE is_existaddress(an_custid   IN NUMBER, --客代
+                            an_address1 IN VARCHAR2, --地址序號
+                            an_address2 IN VARCHAR2, --寄件人
+                            an_CreatedBy    IN  number,--建立人
+                            rtn_code    OUT NUMBER) IS
+    --rtn_code number := -1;
+    v_addressid     NUMBER;
+    v_FailureReason VARCHAR2(4000);
+  BEGIN
+    SELECT ADDRESSID
+      INTO v_addressid
+      FROM TCRM_CUSTOMERADDRESS
+     WHERE CUSTOMERID = an_custid
+       AND ADDRESS1 = an_address1
+       AND ADDRESS2 = an_address2;
+    rtn_code := v_addressid;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := 0;
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('is_existaddress',
+         an_custid,
+         an_address1 || ',' || an_address2,
+         v_FailureReason,
+         an_CreatedBy,
+         SYSDATE);
+      --commit
+      rtn_code := -1;
+
+  END is_existaddress;
+
+  PROCEDURE is_existaddress2(an_custid IN NUMBER, --客代
+                             rtn_code  OUT NUMBER) IS
+    --rtn_code number := -1;
+    v_addressid     NUMBER;
+    v_FailureReason VARCHAR2(4000);
+  BEGIN
+    SELECT addressid
+      INTO v_addressid
+      FROM tcrm_customeraddress
+     WHERE addressid = 1;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := 0;
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      --commit
+      rtn_code := -1;
+
+  END is_existaddress2;
+
+  --------------------------------------------------------------------
+  -- 目的：當Best1網站無法成功新增客戶時,註銷己經新增到ET1的客戶
+  -- 參數：傳入：customerid     number
+  --       回傳：rtn_code       number    0：註銷成功    -1：資料不存在
+  --                                     -2: 其他失敗
+  --------------------------------------------------------------------
+
+  PROCEDURE rollbacknewcustomer(an_custid IN NUMBER, --客代
+                                rtn_code  OUT NUMBER) IS
+    v_customertype  NUMBER;
+    v_FailureReason VARCHAR2(4000);
+  BEGIN
+    UPDATE TCRM_CUSTOMER c
+       SET c.CUSTOMERTYPE = 1110 -- 將客戶註銷為無效會員
+     WHERE c.CUSTOMERID = an_custid;
+
+    rtn_code := 0;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      rtn_code := -1;
+    WHEN OTHERS THEN
+      v_FailureReason := SQLERRM;
+      INSERT INTO tmig_errorreport_crm
+        (LDTABLENAME,
+         ET1TABLENAME,
+         FAILEDRECORDNO,
+         FAILUREREASON,
+         CREATEDBY,
+         CREATEDTIMESTAMP)
+      VALUES
+        ('rollbacknewcustomer',
+         'TCRM_CUSTOMER.CUSTOMERTYPE',
+         an_custid,
+         v_FailureReason,
+         30184,
+         SYSDATE);
+      --commit
+      rtn_code := -2;
+  END rollbacknewcustomer;
+  --------------------------------------------------------------------
+  -- 目的：產生 随机密码  TQ 2007.7.14
+  -- 參數：傳入：customerid
+  --       回傳：rtn_code number  成功：1
+  --                              失敗：-1
+  --------------------------------------------------------------------
+  PROCEDURE Set_CustPasswd(ai_CustID number, rtn_code out NUMBER) IS
+
+    li_Count  integer;
+    li_Passwd number(8);
+  BEGIN
+    select count(*)
+      into li_Count
+      from TCRM_CUSTOMERPASSWORD d
+     where d.customerid = ai_CustID;
+    select trunc(dbms_random.value(10000000, 99999999))
+      into li_Passwd
+      from dual;
+    if li_Count = 0 then
+      --如果没有记录，则插入一条8位随机数字
+      insert into TCRM_CUSTOMERPASSWORD
+      values
+        (ai_CustID, to_char(li_Passwd), null);
+    else
+      --如果有记录，则用一组新的8位随机数字update
+      update TCRM_CUSTOMERPASSWORD d
+         set d.password = to_char(li_Passwd)
+       where d.customerid = ai_CustID;
+    end if;
+    commit;
+    rtn_code := 1;
+    --RETURN rtn_code;
+  EXCEPTION
+    WHEN OTHERS THEN
+      /*raise_application_error(-20001,
+      'An error was encountered - ' || SQLCODE ||
+      ' -ERROR- ' || SQLERRM);*/
+      rtn_code := -1;
+      --RETURN rtn_code;
+  END Set_CustPasswd;
+
+  --------------------------------------------------------------------
+  -- 目的：判断密码是否匹配  TQ 2007.8.1
+  -- 參數：傳入：customerid,password
+  --       回傳：rtn_code number  匹配：1
+  --                              不匹配：0
+  --                              不存在:2
+  --                              异常:-1
+  --------------------------------------------------------------------
+  FUNCTION Chk_CustPasswd(ai_CustID number, ai_Passwd varchar2) RETURN NUMBER IS
+    rtn_code  NUMBER := 0;
+    li_Count  integer;
+    li_Passwd varchar2(10);
+  BEGIN
+    select count(*)
+      into li_Count
+      from TCRM_CUSTOMERPASSWORD d
+     where d.customerid = ai_CustID;
+    if li_Count = 0 then
+      --如果没有记录
+      --Set_CustPasswd(ai_CustID);
+      rtn_code := 2;
+    else
+      select d.password
+        into li_Passwd
+        from tcrm_customerpassword d
+       where d.customerid = ai_CustID;
+      if ai_Passwd = li_Passwd then
+        --匹配
+        rtn_code := 1;
+      else
+        --不匹配
+        rtn_code := 0;
+      end if;
+    end if;
+    --commit;
+    --rtn_code := 1;
+    RETURN rtn_code;
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_code := -1;
+      RETURN rtn_code;
+  END Chk_CustPasswd;
+
+  --------------------------------------------------------------------
+  -- 目的：获取订单需付金额   TQ 2007.8.22
+  -- 參數：傳入：ai_Orderid,ai_ItemID
+  --       回傳：result number(10,2)
+  --------------------------------------------------------------------
+  FUNCTION GET_OrderItemAmount(ai_OrderID number, ai_ItemID number)
+    RETURN number is
+
+    result number(10, 2);
+
+    --判断是否已经付款　1　付　0　未付　added by TQ 2007.8.1
+    function wf_HadPay(ai_Orderid number, ai_ItemID number) return number is
+    begin
+      for ps in (select paymentstatus
+                   from toaf_orderpayment t
+                  where t.orderid = ai_Orderid
+                    and t.itemid = ai_ItemID) loop
+        if ps.paymentstatus = 3205 then
+          return 1;
+        end if;
+      end loop;
+      return 0;
+    end wf_HadPay;
+
+  BEGIN
+
+    if wf_HadPay(ai_OrderID, ai_ItemID) = 0 then
+      --取消的订单返回0
+      /*1005  配送终止
+      1006  取消启动
+      1007  订单取消
+      1008  出货取消*/
+      select decode(t.orderstatus,
+                    1005,
+                    0,
+                    1006,
+                    0,
+                    1007,
+                    0,
+                    1008,
+                    0,
+                    t.productamount)
+        into result
+        from toaf_orderedproduct t
+       where t.orderid = ai_OrderID
+         and t.itemid = ai_ItemID;
+      return result;
+    else
+      --已付
+      return 0;
+    end if;
+  exception
+    --不存在记录等异常返回0
+    when others then
+      return 0;
+  END GET_OrderItemAmount;
+  --------------------------------------------------------------------
+  -- 名稱：SP_Get_CampainInfo
+  -- 目的：取得活动信息
+  -- 參數：campainno
+  -- 作者：tuqing
+  --------------------------------------------------------------------
+  procedure sp_get_campaininfo(ai_campainno   number,
+                               ri_CampainName out varchar2,
+                               ri_Status      out number,
+                               ri_CreatedBy   out number,
+                               ri_UserName    out varchar2,
+                               ri_DepartName  out varchar2) is
+    li_Count    integer;
+    li_DepartID integer;
+  begin
+    select count(*)
+      into li_Count
+      from tcrm_campaignplan t
+     where t.campaignno = ai_campainno;
+    if li_Count = 1 then
+      select t.campaignname, t.campaignstatus, t.createdby
+        into ri_CampainName, ri_Status, ri_CreatedBy
+        from tcrm_campaignplan t
+       where t.campaignno = ai_campainno;
+      select r.username, r.departmentid
+        into ri_UserName, li_DepartID
+        from et1_china.tcmn_user r
+       where r.userid = ri_CreatedBy;
+      select s.nodename
+        into ri_DepartName
+        from tcmn_organizationdetails s
+       where s.nodeid = li_DepartID;
+    end if;
+  end sp_get_campaininfo;
+  ------------------------
+
+  --------------------------------------------------------------------
+  -- 名稱：SP_Ins_TBEXTCUST
+  -- 目的：将客户信息插入临时表
+  -- 參數：
+  -- 作者：wenhua 2013.11.07
+  ------------------------------------------------------
+  procedure sp_ins_tbextcust(ai_CustomerID   number,
+                             ai_Sourceinformation  number,
+                             ai_AddressID    number,
+                             ai_customername varchar2,
+                             ai_Createdby   number,
+                             ai_Customertype number default 1103,
+                             ai_Gender       varchar2,
+                             ai_personid     varchar2,
+                             ai_Email1       varchar2,
+                             ai_Email2       varchar2,
+                             ai_Introducerid number,
+                             ai_CredentialType number,
+                             ai_zipcode      number,
+                             ai_address1     varchar2,
+                             ai_address2     varchar2,
+                             ai_mobile       varchar2,
+                             ai_HomeNum_Area varchar2,
+                             ai_HomeNum_Dtl  varchar2,
+                             ri_RtnCode      out number) is
+  begin
+
+ insert into tb_ext_customer
+    values
+      (ai_CustomerID,
+       100,
+       ai_Sourceinformation,
+       ai_customername,
+       ai_Createdby,
+       sysdate,
+       ai_Createdby,
+       sysdate,
+       ai_Customertype,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       trunc(sysdate),
+       null,
+       ai_Gender,
+       ai_personid,
+       ai_Email1,
+       ai_Email2,
+       null,
+       ai_Introducerid,
+       null,
+       1,
+       null,
+       ai_CredentialType); 
+       
+
+insert into tb_ext_customeraddress
+    values
+      (ai_AddressID,
+       ai_CustomerID,
+       9004,
+       ai_zipcode,
+       'N',
+       'N',
+       'N',
+       ai_address1,
+       ai_address2,
+       ai_Createdby,
+       sysdate,
+       ai_Createdby,
+       sysdate,
+       null,
+       ai_HomeNum_Area,
+       ai_HomeNum_Dtl,
+       ai_Mobile,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       ai_customername);
+
+    insert into tb_ext_customerfamily (customerid) values (ai_CustomerID);
+    insert into tb_ext_customeroccupation
+      (customerid)
+    values
+      (ai_CustomerID);
+    insert into tb_ext_customerpreference
+      (customerid)
+    values
+      (ai_CustomerID);
+
+
+    ri_RtnCode := 0;
+  exception
+    when others then
+      ri_RtnCode := -1;
+
+  end SP_Ins_TBEXTCUST;
+
+  --------------------------------------------------------------------
+  -- 名稱：SP_Ins_tbcustaddr
+  -- 目的：将客户地址信息插入临时表
+  -- 參數：
+  -- 作者：tuqing 2008.11.11
+  ------------------------------------------------------
+  procedure sp_ins_tbcustaddr(ai_CustomerID   number,
+                              ai_AddressID    number,
+                              ai_zipcode      number,
+                              ai_address1     varchar2,
+                              ai_address2     varchar2,
+                              ai_mobile       varchar2,
+                              ai_HomeNum_Area varchar2,
+                              ai_HomeNum_Dtl  varchar2,
+                              ai_Receivername varchar2,
+                              ai_CreatedBy IN number,
+                              ri_RtnCode      out number) is
+  begin
+
+    insert into tb_ext_customeraddress
+    values
+      (ai_AddressID,
+       ai_CustomerID,
+       9004,
+       ai_zipcode,
+       'N',
+       'N',
+       'N',
+       ai_address1,
+       ai_address2,
+       ai_CreatedBy,
+       sysdate,
+       ai_CreatedBy,
+       sysdate,
+       null,
+       ai_HomeNum_Area,
+       ai_HomeNum_Dtl,
+       ai_Mobile,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       ai_Receivername);
+
+    ri_RtnCode := 0;
+  exception
+    when others then
+      ri_RtnCode := -1;
+
+  end sp_ins_tbcustaddr;
+
+  --------------------------------------------------------------------
+  -- 名稱：SP_upd_tbcustaddr
+  -- 目的：将客户地址信息更新临时表
+  -- 參數：
+  -- 作者：tuqing 2008.11.11
+  ------------------------------------------------------
+  procedure sp_upd_tbcustaddr(ai_AddressID    number,
+                              ai_CustomerID   number,
+                              ai_zipcode      number,
+                              ai_address1     varchar2,
+                              ai_address2     varchar2,
+                              ai_mobile       varchar2,
+                              ai_HomeNum_Area varchar2,
+                              ai_HomeNum_Dtl  varchar2,
+                              ai_CreatedBy IN number,
+                              ri_RtnCode      out number) is
+  begin
+    update tb_ext_customeraddress s
+       set s.zipcode               = ai_zipcode,
+           s.address1              = ai_address1,
+           s.address2              = ai_address2,
+           s.mobilenumber          = ai_mobile,
+           s.hometelephoneareacode = ai_HomeNum_Area,
+           s.hometelephonenumber   = ai_HomeNum_Dtl,
+           s.lastmodifiedby=ai_CreatedBy,
+           s.lastmodifiedtimestamp=sysdate
+     where s.addressid = ai_AddressID
+       and s.customerid = ai_CustomerID;
+
+    ri_RtnCode := 0;
+  exception
+    when others then
+      ri_RtnCode := -1;
+
+  end sp_upd_tbcustaddr;
+
+  --------------------------------------------------------------------
+  -- 名稱：sf_getCustidFromPsnid
+  -- 參數：ai_PersonID varchar2 返回CustID
+  -- 作者：tuqing 2008.11.10
+  ------------------------------------------------------
+  FUNCTION sf_getCustidFromPsnid(ai_PersonID varchar2) RETURN NUMBER IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    select count(*)
+      into rtn_code
+      from tcrm_customer r
+     where r.taiwanid = ai_PersonID;
+    if rtn_code > 0 then
+      select r.customerid
+        into rtn_code
+        from tcrm_customer r
+       where r.taiwanid = ai_PersonID
+         and rownum < 2;
+    else
+      rtn_code := 0;
+    end if;
+    return rtn_code;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_code := -1;
+      RETURN rtn_code;
+  END sf_getCustidFromPsnid;
+  
+  
+    --------------------------------------------------------------------
+  -- 名稱：sf_getCustidFromPsnidAndIdType
+    -- 參數：ai_PersonID varchar2 CredentialType number 返回CustID
+  -- 作者：huwenhua 2013-11-07
+  ------------------------------------------------------
+  FUNCTION sf_getCustidFromPsnidAndIdType(ai_PersonID varchar2,ai_CredentialType number) RETURN NUMBER IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    select count(*)
+      into rtn_code
+      from tcrm_customer r
+     where r.taiwanid = ai_PersonID   and r.CREDENTIALTYPE = ai_CredentialType ;
+    if rtn_code > 0 then
+      select r.customerid
+        into rtn_code
+        from tcrm_customer r
+       where r.taiwanid = ai_PersonID   and r.CREDENTIALTYPE = ai_CredentialType
+         and rownum < 2;
+    else
+      rtn_code := 0;
+    end if;
+    return rtn_code;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_code := -1;
+      RETURN rtn_code;
+  END sf_getCustidFromPsnidAndIdType;
+  
+  --------------------------------------------------------------------
+  -- 名稱：sf_getPsnidFromCustid
+  -- 參數：ai_CustID varchar2 返回PsnID
+  -- 作者：tuqing 2008.11.10
+  ------------------------------------------------------
+  FUNCTION sf_getPsnIDFromCustid(ai_CustID number) RETURN varchar2 IS
+    rtn_code NUMBER := 0;
+    rtn_var  varchar2(50);
+  BEGIN
+    select count(r.taiwanid)
+      into rtn_code
+      from tcrm_customer r
+     where r.customerid = ai_CustID;
+    if rtn_code > 0 then
+      select r.taiwanid
+        into rtn_var
+        from tcrm_customer r
+       where r.customerid = ai_CustID
+         and rownum < 2;
+    else
+      rtn_var := '';
+    end if;
+    return rtn_var;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      rtn_var := '';
+      RETURN rtn_var;
+  END sf_getPsnIDFromCustid;
+  --------------------------------------------------------------------
+  -- 名稱：sp_getCustInfoFromPsnid
+  -- 目的：返回客户具体信息
+  ------------------------------------------------------
+  PROCEDURE sp_getCustInfoFromPsnid(ai_PersonID varchar2,
+                                    ri_CustInfo out ColType) IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    select count(*)
+      into rtn_code
+      from tcrm_customer r, tcrm_customeraddress ca
+     where r.taiwanid = ai_PersonID
+       and r.customerid = ca.customerid;
+    --if rtn_code > 0 then
+    open ri_CustInfo for
+      select r.customerid,
+             ca.addressid,
+             r.customername,
+             r.taiwanid as personid,
+             r.gender,
+             ca.zipcode,
+             ca.address1,
+             ca.address2,
+             ca.mobilenumber,
+             ca.hometelephoneareacode,
+             ca.hometelephonenumber
+        from tcrm_customer r, tcrm_customeraddress ca
+       where r.taiwanid = ai_PersonID
+         and r.customerid = ca.customerid;
+
+    --end if;
+
+  END sp_getCustInfoFromPsnid;
+  
+  
+  
+  
+  
+  
+    --------------------------------------------------------------------
+  -- 名稱：sp_getCustInfoFromPsnidIdType
+  -- 目的：返回客户具体信息
+  ------------------------------------------------------
+  PROCEDURE sp_getCustInfoFromPsnidIdType(ai_PersonID varchar2,ai_CredentialType number,
+                                    ri_CustInfo out ColType) IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    select count(*)
+      into rtn_code
+      from tcrm_customer r, tcrm_customeraddress ca
+     where r.taiwanid = ai_PersonID
+     and r.CREDENTIALTYPE = ai_CredentialType
+       and r.customerid = ca.customerid;
+    --if rtn_code > 0 then
+    open ri_CustInfo for
+      select r.customerid,
+             ca.addressid,
+             r.customername,
+             r.taiwanid as personid,
+             r.gender,
+             r.credentialtype,
+             ca.zipcode,
+             ca.address1,
+             ca.address2,
+             ca.mobilenumber,
+             ca.hometelephoneareacode,
+             ca.hometelephonenumber
+        from tcrm_customer r, tcrm_customeraddress ca
+       where r.taiwanid = ai_PersonID
+       and r.CREDENTIALTYPE = ai_CredentialType
+         and r.customerid = ca.customerid;
+
+    --end if;
+
+  END sp_getCustInfoFromPsnidIdType;
+  
+  
+  --------------------------------------------------------------------
+  -- 名稱：sp_getCustInfoFromCustid
+  -- 目的：返回客户具体信息
+  ------------------------------------------------------
+  PROCEDURE sp_getCustInfoFromCustid(ai_CustID  number,
+                                    ri_CustInfo out ColType) IS
+    rtn_code NUMBER := 0;
+  BEGIN
+    select count(*)
+      into rtn_code
+      from tcrm_customer r, tcrm_customeraddress ca
+     where r.customerid=ai_CustID
+       and r.customerid = ca.customerid;
+    --if rtn_code > 0 then
+    open ri_CustInfo for
+      select r.customerid,
+             ca.addressid,
+             r.customername,
+             r.taiwanid as personid,
+             r.gender,
+             r.credentialtype,
+             ca.zipcode,
+             ca.address1,
+             ca.address2,
+             ca.mobilenumber,
+             ca.hometelephoneareacode,
+             ca.hometelephonenumber
+        from tcrm_customer r, tcrm_customeraddress ca
+       where r.customerid=ai_CustID
+         and r.customerid = ca.customerid;
+
+    --end if;
+
+  END sp_getCustInfoFromCustid;
+  
+
+  --------------------------------------------------------------------
+  -- 名稱：sp_getCustAccounts
+  -- 目的：取出客户4种账户信息
+  -- 參數：ai_CustID 返回结果集
+  -- 作者：tuqing 2008.11.10
+  /*4184  红利金
+  4185  现金
+  4186  礼卷
+  4187  会员卡
+  4188 积分*/
+  ------------------------------------------------------
+  procedure sp_getCustAccounts(ai_CustID number, ri_Msgs out ColType) is
+  begin
+    --
+    open ri_Msgs for
+      select t.customerid, t.accounttypeid, t.effectivebalance
+        from et1_china.tcrm_customeraccountbalance t
+       where t.customerid = ai_CustID;
+    --and t.accounttypeid = 4188;
+  end sp_getCustAccounts;
+
+
+
+  --------------------------------------------------------------------
+  -- 名稱：sp_getCustAccounts
+  -- 目的：取出客户4种账户信息
+  -- 參數：ai_CustID 返回结果集
+  -- 作者：作者：huwenhua 2013.12.02
+  /*
+      t.transactionid  交易号码,
+       t.lotterybonusno  积分编号,
+       t.transactiontypeid  交易类别 domainid=4552,
+       t.transactiondate  交易日期,
+       t.transactionamount 交易金额,
+       t.startdate 效期起始日,
+       t.enddate 效期结束日,
+       t.referencetypeid 关联类别 domainid=4553, 
+       t.EXCEPTIONDESC   备注
+       t.referencevalue, 关联号码
+       t.referenceitem 关联项次
+  */
+  ------------------------------------------------------
+  procedure sp_getCustLOTTERYBONUS(ai_CustID number, ri_Msgs out ColType) is
+  begin
+    --
+    open ri_Msgs for
+      select t.transactionid,
+       t.lotterybonusno,
+       t.transactiontypeid,
+       t.transactiondate,
+       t.transactionamount,
+       t.startdate,
+       t.enddate,
+       t.referencetypeid,
+       t.EXCEPTIONDESC,
+       t.referencevalue,
+       t.referenceitem
+        from et1_china.TCRM_LOTTERYBONUS t
+       where t.customerid = ai_CustID and t.companyid=2;
+    --and t.accounttypeid = 4188;
+    
+ 
+  end sp_getCustLOTTERYBONUS;
+
+
+
+  
+   --------------------------------------------------------------------
+  -- 01)
+  -- 目的：依照多重碼取公司別
+  -- 參數：傳入：v_multicodeid
+  --       回傳：v_companyid
+  --             v_rtncode         0:表示成功
+  --                              -1:表示失敗
+  --                              -2:表沒資料
+  --------------------------------------------------------------------
+
+  PROCEDURE COMPANYID(v_multicodeid IN NUMBER, --多重代碼
+                      v_companyid   OUT NUMBER,
+                      v_rtncode     OUT NUMBER) --回應碼(0:ok, -1:fail, -2: no data)
+  
+   IS
+  
+    work_companyid    tchm_subchannel.companyid%TYPE;
+    work_subchannelid tchm_subchannel.subchannelid%TYPE;
+  
+  BEGIN
+  
+    select subchannelid
+      into work_subchannelid
+      from TCHM_PRODMULTICODE
+     where multicodeid = v_multicodeid;
+  
+    select companyid
+      into work_companyid
+      from tchm_subchannel a
+     where SUBCHANNELID = work_subchannelid
+       and sysdate between a.effectivestartdate and a.effectiveenddate;
+  
+    v_companyid := work_companyid;
+    v_rtncode   := 0; --denotes ok
+  
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      v_rtncode := -2; --denotes no data found
+    WHEN OTHERS THEN
+      v_rtncode := -1; --denotes fail
+  
+  END COMPANYID;
+  
+  
+    --------------------------------------------------------------------
+  -- 名稱：SF_GET_ORDERID
+  -- 目的：取得訂單號碼
+  -- 參數：無
+  -- 作者：紀欣佑
+  --------------------------------------------------------------------
+  function sf_get_orderid return number is
+    work_orderid toaf_order.orderid%type;
+  begin
+    select s_order.nextval into work_orderid from dual;
+    return work_orderid;
+  end sf_get_orderid;
+  
+  
+  --------------------------------------------------------------------
+  -- 名稱：SP_Ins_TBIEORDER
+  -- 目的：将订单信息插入临时表
+  -- 參數：
+  -- 作者：huwenhua 2013-11-07
+  ------------------------------------------------------
+  procedure sp_ins_tbieorder(   P_OrderID  in  TB_IE_ORD01.Orderid%type,
+                                P_ItemID   in  Tb_Ie_Ord02.Itemid%type,
+                                P_CUSTOMERID         in TB_IE_ORD02.CUSTOMERID%type,
+                                P_CUSTOMERNAME         in TB_IE_ORD02.Receivername%type,
+                                P_CALLATTENDEDBY     in TB_IE_ORD01.CREATEDBY%type,
+                                P_MULTICODEID        in TB_IE_ORD02.MULTICODEID%type,
+                                P_PRODUCTID          in TB_IE_ORD02.PRODUCTID%type,
+                                P_PRODUCTVERSION     in TB_IE_ORD02.PRODUCTVERSION%type,
+                                P_ISOFFSHOREDELIVERY in TB_IE_ORD02.ISOFFSHOREDELIVERY%type,
+                                P_COLOURCODE         in TB_IE_ORD02.COLORCODE%type,
+                                P_COLOURCLASS        in TB_IE_ORD02.COLORCLASS%type,
+                                P_STYLECODE          in TB_IE_ORD02.STYLECODE%type,
+                                P_STYLECLASS         in TB_IE_ORD02.STYLECLASS%type,
+                                P_SERVICEFEE         in TB_IE_ORD02.SERVICEFEE%type default 0, 
+                                P_BOUNSPOINTSGAINED  in TB_IE_ORD02.Bounspointsgained%type default 0,
+                                P_OFFSHOREDELIVERYCHARGES in tb_ie_ord02.offshoredeliverycharges%type default 0,
+                                P_DISCOUNT           in TB_IE_ORD02.discountamount%type default 0,
+                                P_PRODUCTNAME        in TB_IE_ORD02.PRODUCTNAME%type,
+                                P_RECEIVERNAME       in TB_IE_ORD02.RECEIVERNAME%type,
+                                P_ADDRESSID          in TB_IE_ORD02.DELIVERYADDRESSID%type,
+                                P_SELLINGPRICE       in TB_IE_ORD02.Productamount%type,
+                                P_TAXTYPE            in TB_IE_ORD02.TAXTYPE%type,
+                                P_PAYMENTMODEID      in TB_IE_ORD04.Paymentmodeid%type,
+                                P_INVOICETITLE       in TB_IE_ORD02.Invoicetitle%type,
+                                P_COMPANYNO           in TB_IE_ORD02.COMPANYNO%type,
+                                P_INVOICERECEIVERNAME in Tb_Ie_Ord02.Invoicereceivername%type,
+                                P_INSTRUCTIONTOSCM   in tb_ie_ord02.INSTRUCTIONTOSCM%type,
+                                P_ORDER_DESC         in tb_ie_ord02.order_desc%type,
+                                P_ISPROMOTIONALPRODUCT in tb_ie_ord02.ispromotionalproduct%type,
+                                P_STORECHAINID in tb_ie_ord02.STORECHAINID%type,
+                                P_STOREID in tb_ie_ord02.STOREID%type,
+                                P_SUBDELIVERYTYPE in tb_ie_ord02.SUBDELIVERYTYPE%type,
+                             ri_RtnCode           out number) is
+    li_Count   integer;
+    v_tax               number;
+    v_invoicetype       number := 2;
+    v_DonateInvoice     char(1) := 'N';
+    V_BOUNSPOINTSGAINED number := 0;
+    v_COMPANYID         number;
+    V_RTN_CODE1         number;
+    lv_productamount    number;
+    V_TRANSFERACCNO       VARCHAR2(50);
+    V_PAYEENAME           varchar2(50);
+
+  begin
+   
+
+ COMPANYID(P_MULTICODEID, v_COMPANYID, V_RTN_CODE1);
+    
+  if P_PAYMENTMODEID=1 then
+       V_TRANSFERACCNO       :='33001616382059059059';
+       V_PAYEENAME:=P_CUSTOMERNAME;
+    end if;
+    if V_RTN_CODE1 <> 0 then
+      v_COMPANYID := 0;
+    end if;
+    
+   if P_ADDRESSID  > 0 then
+    
+      select count(*)
+        into li_Count
+        from tb_ie_ord01 t
+       where t.orderid = P_OrderID;
+     
+      if li_Count = 0 then
+      Insert into TB_IE_ORD01
+      (ORDERID,
+       CUSTOMERID,
+       TYPE,
+       ORDERTYPE,
+       ORDERDATE,
+       CREATEDBY,
+       CREATEDTIMESTAMP,
+       ISSINGLEDELIVERY)
+    VALUES
+      (P_ORDERID,
+       P_CUSTOMERID,
+       'DIVWEB',
+       1,
+       sysdate,
+       P_CALLATTENDEDBY,
+       sysdate,
+       'Y');
+      end if;
+      
+       If P_TAXTYPE = '1002' Then
+      v_tax := P_SELLINGPRICE - round(P_SELLINGPRICE / 1.05);
+    else
+      v_tax := 0;
+    end if;
+  
+    lv_productamount := P_SELLINGPRICE;
+    
+      Insert into TB_IE_ORD02
+      (ORDERID,
+       ITEMID,
+       CUSTOMERID,
+       TYPE,
+       PRODUCTID,
+       COMPANYID,
+       MULTICODEID,
+       DELIVERYADDRESSID,
+       QUANTITY,
+       ISOFFSHOREDELIVERY,
+       ISKIT,
+       PRODUCTVERSION,
+       ISCOFPAYMENT,
+       PRICE,
+       TAX,
+       COLORCODE,
+       COLORCLASS,
+       STYLECODE,
+       STYLECLASS,
+       SERVICEFEE,
+       BOUNSPOINTSGAINED,
+       OFFSHOREDELIVERYCHARGES,
+       PRODUCTAMOUNT,
+       ADDRESSTYPE,
+       ISPROMOTIONALPRODUCT,
+       PRODUCTNAME,
+       COUPONSERIALNO,
+       COUPONGROUPNUMBER,
+       DISCOUNTAMOUNT,
+       SPECIALDELIVERYCODE,
+       ISGIFTPACKAGING,
+       PREFERREDDATE,
+       PREFERREDTIME,
+       CUSTOMERINSTRUCTION,
+       INSTRUCTIONTOWMS,
+       INSTRUCTIONTOSCM,
+       RECEIVERNAME,
+       INVOICEADDRESSID,
+       INVOICETYPE,
+       TAXTYPE,
+       INVOICETITLE,
+       COMPANYNO,
+       INVOICERECEIVERNAME,
+       TRAVELCARDUSED,
+       ORDER_NOTES,
+       ISINVOICEDONATED,
+       ORDER_DESC,
+       STORECHAINID,
+       STOREID,
+       SUBDELIVERYTYPE)
+    VALUES
+      (P_OrderID,
+       P_ItemID,
+       P_CUSTOMERID,
+       'DIVWEB',
+       P_PRODUCTID,
+       v_COMPANYID,
+       P_MULTICODEID,
+       P_ADDRESSID,
+       1,
+       P_ISOFFSHOREDELIVERY,
+       'N',
+       P_PRODUCTVERSION,
+       'N',
+       P_SELLINGPRICE,
+       v_TAX,
+       P_COLOURCODE,
+       P_COLOURCLASS,
+       P_STYLECODE,
+       P_STYLECLASS,
+       P_SERVICEFEE,
+       P_BOUNSPOINTSGAINED,
+       P_OFFSHOREDELIVERYCHARGES,
+       lv_productamount,
+       'D',
+       P_ISPROMOTIONALPRODUCT,
+       P_PRODUCTNAME,
+       null,
+       null,
+       P_DISCOUNT,
+       '1001',
+       'N',
+       null,
+       null,
+       null,
+       null,
+       null,
+       P_RECEIVERNAME,
+       P_ADDRESSID,
+       v_invoicetype,
+       P_TAXTYPE,
+       P_INVOICETITLE,
+       P_COMPANYNO,
+       P_INVOICERECEIVERNAME,
+       'N',
+       '000',
+       v_DonateInvoice,
+       P_ORDER_DESC,
+       P_STORECHAINID,
+       P_STOREID,
+       P_SUBDELIVERYTYPE
+       );
+      
+
+      /*insert into tb_ie_ord04*/
+      ri_RtnCode := 0;
+      -- if ai_AddressID <=0 then return error
+    else
+      ri_RtnCode := -1;
+    end if;
+  exception
+    when others then
+      ri_RtnCode := -1;
+  end sp_ins_tbieorder;
+
+
+
+
+
+  --------------------------------------------------------------------
+  -- 名稱：SP_Ins_tbiepayment
+  -- 目的：将支付方式插入临时表
+  -- 參數：
+  -- 作者：tuqing 2008.12.19
+  ------------------------------------------------------
+  function wf_getPaySeq(aw_Orderid number, aw_ItemId number) return number is
+    lw_Seq integer;
+  begin
+    select nvl(max(seq), 0) + 1
+      into lw_Seq
+      from tb_ie_ord04 ord4
+     where ord4.orderid = aw_Orderid
+       and ord4.itemid = aw_ItemId;
+    return lw_Seq;
+  end wf_getPaySeq;
+  --
+procedure sp_ins_tbiepayment(ai_Orderid       number,
+                               ai_IsAcntFirst   number,
+                               ai_IsHongliOK    number default 0,
+                               ai_PaymentModeID number,
+                               ai_Transferaccno number,
+                               ri_RtnCode       out number) is
+    li_TotalPayAccount number(10, 2);
+    li_HongliMoney     number(10, 2);
+    li_HuiyuanMoney    number(10, 2);
+    li_XianjinMoney    number(10, 2);
+    li_CustomerID      integer;
+    li_LeftMoney       number(10, 2);
+    li_ShouldPayMoney  number(10, 2);
+    li_Flag            integer;
+  begin
+    -----------------------------
+    /*
+    1 邮局划拨
+    2 ATM
+    3 信用卡
+    4 货到付款
+    5 现金
+    6 购物金
+    7 礼券
+    8 提货券
+    9 支票
+    10  其它
+    */
+    ------------------------------
+    if ai_IsAcntFirst = 0 then
+      --如果不用账户支付，那支付方式默认为邮局
+      for ord in (select tb.orderid,
+                         tb.itemid,
+                         tb.productamount,
+                         tb.customerid
+                    from tb_ie_ord02 tb
+                   where tb.orderid = ai_Orderid) loop
+        insert into tb_ie_ord04
+          (orderid,
+           itemid,
+           seq,
+           type,
+           customerid,
+           paymentmodeid,
+           paymentamount,
+           companyid,
+           transferaccno,
+           PAYFLAG)
+        values
+          (ord.orderid,
+           ord.itemid,
+           wf_getPaySeq(ord.orderid, ord.itemid),
+           'DIVWEB',
+           ord.customerid,
+           ai_PaymentModeID, --1 邮局 4 货到 网站订单会先由客服确认，再改为货到
+           ord.productamount,
+           2,
+           decode(ai_Transferaccno,
+                  99,
+                  '888888',
+                  98,
+                  '95595',
+                  97,
+                  '888887',
+                  96,
+                  '888886',
+                  95,
+                  '888885',
+                  94,
+                  '888884',
+                   93,
+                  '888883',
+                  91,
+                  '888881',
+                  '33001616382059059059'),
+           'Y');
+      end loop;
+    elsif ai_IsAcntFirst = 1 then
+      --如果先用账户支付
+      select ord1.customerid
+        into li_CustomerID
+        from tb_ie_ord01 ord1
+       where ord1.orderid = ai_Orderid;
+      select cab.effectivebalance
+        into li_HongliMoney
+        from tcrm_customeraccountbalance cab
+       where cab.customerid = li_CustomerID
+         and cab.accounttypeid = 4184;
+      select cab.effectivebalance
+        into li_XianjinMoney
+        from tcrm_customeraccountbalance cab
+       where cab.customerid = li_CustomerID
+         and cab.accounttypeid = 4185;
+      select cab.effectivebalance
+        into li_HuiyuanMoney
+        from tcrm_customeraccountbalance cab
+       where cab.customerid = li_CustomerID
+         and cab.accounttypeid = 4187;
+      select sum(ord2.productamount)
+        into li_TotalPayAccount
+        from tb_ie_ord02 ord2
+       where ord2.orderid = ai_Orderid;
+    
+      if li_HongliMoney >= li_TotalPayAccount and ai_IsHongliOK = 1 then
+        --全由红利金支付
+        select count(*)
+          into li_Flag
+          from tb_ie_ord04
+         where orderid = ai_Orderid;
+        if li_Flag = 0 then
+          for ord in (select tb.orderid,
+                             tb.itemid,
+                             tb.productamount,
+                             tb.customerid
+                        from tb_ie_ord02 tb
+                       where tb.orderid = ai_Orderid) loop
+          
+            insert into tb_ie_ord04
+              (orderid,
+               itemid,
+               seq,
+               type,
+               customerid,
+               paymentmodeid,
+               paymentamount,
+               companyid,
+               transferaccno,
+               payflag)
+            values
+              (ord.orderid,
+               ord.itemid,
+               wf_getPaySeq(ord.orderid, ord.itemid),
+               'DIVWEB',
+               ord.customerid,
+               6, --红利金
+               ord.productamount,
+               2,
+               decode(ai_Transferaccno,
+                      99,
+                      '888888',
+                      98,
+                      '95595',
+                      97,
+                      '888887',
+                      96,
+                      '888886',
+                      95,
+                      '888885',
+                      94,
+                      '888884',
+                      93,
+                  '888883',
+                      91,
+                      '888881',
+                      '33001616382059059059'),
+               'Y');
+          end loop;
+        end if;
+      else
+        --先会员卡支付
+        if li_HuiyuanMoney >= 0 then
+          li_LeftMoney := li_HuiyuanMoney;
+          for ord in (select tb.orderid,
+                             tb.itemid,
+                             tb.productamount,
+                             tb.customerid
+                        from tb_ie_ord02 tb
+                       where tb.orderid = ai_Orderid) loop
+          
+            select ord.productamount - nvl(sum(ord4.paymentamount), 0)
+              into li_ShouldPayMoney
+              from tb_ie_ord04 ord4
+             where ord4.orderid = ord.orderid
+               and ord4.itemid = ord.itemid;
+            if li_LeftMoney >= 0 and li_ShouldPayMoney >= 0 then
+              insert into tb_ie_ord04
+                (orderid,
+                 itemid,
+                 seq,
+                 type,
+                 customerid,
+                 paymentmodeid,
+                 paymentamount,
+                 companyid,
+                 transferaccno,
+                 payflag)
+              values
+                (ord.orderid,
+                 ord.itemid,
+                 wf_getPaySeq(ord.orderid, ord.itemid),
+                 'DIVWEB',
+                 ord.customerid,
+                 8, --会员卡
+                 decode(sign(li_LeftMoney - li_ShouldPayMoney),
+                        -1,
+                        li_LeftMoney,
+                        li_ShouldPayMoney),
+                 2,
+                 decode(ai_Transferaccno,
+                        99,
+                        '888888',
+                        98,
+                        '95595',
+                        97,
+                        '888887',
+                        96,
+                        '888886',
+                        95,
+                        '888885',
+                        94,
+                        '888884',
+                        93,
+                  '888883',
+                        91,
+                        '888881',
+                        '33001616382059059059'),
+                 'Y');
+              li_LeftMoney := li_LeftMoney - li_ShouldPayMoney;
+            end if;
+          end loop;
+        end if;
+        --再现金账户支付
+        if li_XianjinMoney > 0 then
+          li_LeftMoney := li_XianjinMoney;
+          for ord in (select tb.orderid,
+                             tb.itemid,
+                             tb.productamount,
+                             tb.customerid
+                        from tb_ie_ord02 tb
+                       where tb.orderid = ai_Orderid) loop
+          
+            select ord.productamount - nvl(sum(ord4.paymentamount), 0)
+              into li_ShouldPayMoney
+              from tb_ie_ord04 ord4
+             where ord4.orderid = ord.orderid
+               and ord4.itemid = ord.itemid;
+            if li_LeftMoney > 0 and li_ShouldPayMoney > 0 then
+              insert into tb_ie_ord04
+                (orderid,
+                 itemid,
+                 seq,
+                 type,
+                 customerid,
+                 paymentmodeid,
+                 paymentamount,
+                 companyid,
+                 transferaccno,
+                 payflag)
+              values
+                (ord.orderid,
+                 ord.itemid,
+                 wf_getPaySeq(ord.orderid, ord.itemid),
+                 'DIVWEB',
+                 ord.customerid,
+                 5, --现金账户
+                 decode(sign(li_LeftMoney - li_ShouldPayMoney),
+                        -1,
+                        li_LeftMoney,
+                        li_ShouldPayMoney),
+                 2,
+                 decode(ai_Transferaccno,
+                        99,
+                        '888888',
+                        98,
+                        '95595',
+                        97,
+                        '888887',
+                        96,
+                        '888886',
+                        95,
+                        '888885',
+                        94,
+                        '888884',
+                        93,
+                  '888883',
+                        91,
+                        '888881',
+                        '33001616382059059059'),
+                 'Y');
+              li_LeftMoney := li_LeftMoney - li_ShouldPayMoney;
+            end if;
+          end loop;
+        end if;
+        --剩余的最后邮局支付
+        for ord in (select tb.orderid,
+                           tb.itemid,
+                           tb.productamount,
+                           tb.customerid
+                      from tb_ie_ord02 tb
+                     where tb.orderid = ai_Orderid) loop
+        
+          select ord.productamount - nvl(sum(ord4.paymentamount), 0)
+            into li_ShouldPayMoney
+            from tb_ie_ord04 ord4
+           where ord4.orderid = ord.orderid
+             and ord4.itemid = ord.itemid;
+          if li_ShouldPayMoney > 0 then
+            insert into tb_ie_ord04
+              (orderid,
+               itemid,
+               seq,
+               type,
+               customerid,
+               paymentmodeid,
+               paymentamount,
+               companyid,
+               transferaccno,
+               payflag)
+            values
+              (ord.orderid,
+               ord.itemid,
+               wf_getPaySeq(ord.orderid, ord.itemid),
+               'DIVWEB',
+               ord.customerid,
+               ai_PaymentModeID, --邮局
+               li_ShouldPayMoney,
+               2,
+               decode(ai_Transferaccno,
+                      99,
+                      '888888',
+                      98,
+                      '95595',
+                      97,
+                      '888887',
+                      96,
+                      '888886',
+                      95,
+                      '888885',
+                      94,
+                      '888884',
+                      93,
+                      '888883',
+                      91,
+                      '888881',
+                      '33001616382059059059'),
+               'Y');
+          end if;
+        end loop;
+      
+      end if;
+    
+    end if;
+    commit;
+    ri_RtnCode := 0;
+  exception
+    when others then
+      rollback;
+      ri_RtnCode := -1;
+  end sp_ins_tbiepayment;
+  
+  
+    procedure insert_platfororder(P_ORDERID  in number,
+                            P_RTN_CODE out number,
+                            P_RTN_MSG  out varchar2) as
+
+  begin
+       
+    etmall.PKIE_TAKEORDER.SP_TAKEORDER(P_ORDERID, P_RTN_CODE, P_RTN_MSG);
+    commit;
+  end;
+  
+procedure sp_ins_postacknowledgement(P_ORDERID  in number,
+                            P_RTN_CODE out number,
+                            P_RTN_MSG  out varchar2) as
+
+  begin
+       
+    etmall.PKIE_TAKEORDER.sp_ins_postacknowledgement(P_ORDERID, P_RTN_CODE, P_RTN_MSG);
+    commit;
+  end;
+  
+    ----------------
+  --获取商品可接单量
+  ----------------
+  function SF_GetProdAvailQty(ai_ProductID number,
+                              ai_ColorCode number,
+                              ai_StyleCode number) return number is
+    li_Qty integer;
+  begin
+    select y.okqty
+      into li_Qty
+      from vscm_productokqty y
+     where y.productid = ai_ProductID
+       and y.ccode = ai_ColorCode
+       and y.scode = ai_StyleCode;
+    return li_Qty;
+  exception
+    when others then
+      return 0;
+  end SF_GetProdAvailQty;
+  
+  
+   ------------------------
+  --获取商品信息
+  ------------------------
+  procedure SP_GetProdInfo(ai_ProductID number, ri_Info out ColType) is
+  
+  begin
+    if ai_ProductID <> 0 then
+    
+      open ri_Info for
+        select pd.productid,
+               pd.productname1 || pd.productname2 as productname,
+               v.ccode as colorcode,
+               v.scode as stylecode,
+               v.cclass as colorclass,
+               v.sclass as styleclass,
+               v.clr as clr,
+               v.sty as sty,
+               pd.sellingprice as sellprice,
+               pd.marketprice as marketprice,
+               v.okqty as okqty,
+               wf_get_good_class(pd.lclasscode) as lclass,
+               wf_get_good_class(pd.mclasscode) as mclass,
+               wf_get_good_class(pd.sclasscode) as sclass,
+               u8.u8lclassname as u8lclass,
+               u8.sclassname as u8sclass,
+               wf_get_good_comment(pd.productid, 1001) as mainComment,
+               wf_get_good_comment(pd.productid, 1002) as noticeComment,
+               wf_get_good_comment(pd.productid, 1003) as optComment,
+               wf_get_good_comment(pd.productid, 1004) as cplComment,
+               wf_get_good_comment(pd.productid, 1005) as giftComment,
+               wf_get_good_comment(pd.productid, 1006) as boxComment,
+               pl.offshoredelivery as outprovince,
+               decode(pd.importingcost, 1, 'Y', 'N') as isjifen,
+               pd.importingprice as jifenprice,
+               pd.memberprice as rtnjifen
+          from tscm_product                   pd,
+               et1_china.tcmn_u8et1           u8,
+               et1_china.tchm_prodmulticode   pm,
+               vscm_productokqty              v,
+               et1_china.tscm_productlogistic pl
+         where pd.productid = v.productid
+           and pd.sclasscode = u8.sclasscode
+           and pd.productid = pm.productid
+           and pm.subchannelid = 5
+           and pd.productid = ai_ProductID
+           and pd.productid = pl.productid;
+    elsif ai_ProductID = 0 then
+      open ri_Info for
+        select pd.productid,
+               pd.productname1 || pd.productname2 as productname,
+               v.ccode as colorcode,
+               v.scode as stylecode,
+               v.cclass as colorclass,
+               v.sclass as styleclass,
+               v.clr as clr,
+               v.sty as sty,
+               pd.sellingprice as sellprice,
+               pd.marketprice as marketprice,
+               v.okqty as okqty,
+               wf_get_good_class(pd.lclasscode) as lclass,
+               wf_get_good_class(pd.mclasscode) as mclass,
+               wf_get_good_class(pd.sclasscode) as sclass,
+               u8.u8lclassname as u8lclass,
+               u8.sclassname as u8sclass,
+               wf_get_good_comment(pd.productid, 1001) as mainComment,
+               wf_get_good_comment(pd.productid, 1002) as noticeComment,
+               wf_get_good_comment(pd.productid, 1003) as optComment,
+               wf_get_good_comment(pd.productid, 1004) as cplComment,
+               wf_get_good_comment(pd.productid, 1005) as giftComment,
+               wf_get_good_comment(pd.productid, 1006) as boxComment,
+               pl.offshoredelivery as outprovince,
+               decode(pd.importingcost, 1, 'Y', 'N') as isjifen,
+               pd.importingprice as jifenprice,
+               pd.memberprice as rtnjifen
+          from tscm_product                   pd,
+               et1_china.tcmn_u8et1           u8,
+               et1_china.tchm_prodmulticode   pm,
+               vscm_productokqty              v,
+               et1_china.tscm_productlogistic pl
+         where pd.productid = v.productid
+           and pd.sclasscode = u8.sclasscode
+           and pd.productid = pm.productid
+           and pd.productid = pl.productid
+           and pm.subchannelid = 5;
+    end if;
+  end SP_GetProdInfo;
+  
+    function wf_get_good_class(al_classcode number) return varchar2 is
+    is_classname varchar2(200);
+  begin
+    select shortnametaiwaneese
+      into is_classname
+      from tcmn_productclasscodes
+     where domaincode = al_classcode
+       and rownum = 1;
+    return is_classname;
+  exception
+    when others then
+      return '';
+  end wf_get_good_class;
+  function wf_get_good_comment(ai_productid       in number,
+                               ai_generalinfocode in number) return varchar2 is
+    li_comments varchar2(2800) := '';
+  begin
+    for cmt in (select comments
+                  from tscm_productgeneral l
+                 where productid = ai_productid
+                   and generalinfocode = ai_generalinfocode
+                 order by l.commentsequence) loop
+      li_comments := li_comments || cmt.comments;
+    end loop;
+  
+    return li_comments;
+  exception
+    when others then
+      return '';
+  end wf_get_good_comment;
+  
+  
+  
+   PROCEDURE WEB_IMTERGALDETAILS(P_CUSTOMERID NUMBER,
+                                R_DETAILS    OUT SYS_REFCURSOR,
+                                R_STATUS     OUT NUMBER) IS
+    --------------------------------------------------------------------------------------
+    --目的：获取对应积分增减明细（包含加减项的具体走向）
+    --参数
+    --P_customerid：传入客代
+    --Created by xhy 20120906
+    --------------------------------------------------------------------------------------                                                
+    LN_COUNT NUMBER;
+  BEGIN
+    R_STATUS := 0;
+    IF P_CUSTOMERID IS NULL THEN
+      R_STATUS := 2;
+    ELSE
+      SELECT COUNT(1)
+        INTO LN_COUNT
+        FROM ET1_CHINA.TCRM_LOTTERYBONUS S
+       WHERE S.CUSTOMERID = P_CUSTOMERID;
+    
+      IF LN_COUNT > 0 THEN
+      
+        OPEN R_DETAILS FOR
+          SELECT S.TRANSACTIONAMOUNT, --积分值（大于0的值表示增加积分，小于0的值表示使用积分）
+                 S.STARTDATE, --有效起始时间
+                 S.ENDDATE, --有效截止时间
+                 S.EXCEPTIONDESC, --积分来源备注（只有增加积分有）
+                 S.REFERENCEVALUE, --积分去向订单号（只有扣减积分有）
+                 S.REFERENCEITEM --积分去向项次号（只有扣减积分有）
+            FROM ET1_CHINA.TCRM_LOTTERYBONUS S
+           WHERE S.CUSTOMERID = P_CUSTOMERID;
+        R_STATUS := 1;
+      ELSE
+        R_STATUS := 3;
+      END IF;
+    END IF;
+  
+  EXCEPTION
+    WHEN OTHERS THEN
+      R_STATUS := 0; --表示程序异常
+  
+  END;
+
+  PROCEDURE WEB_AVAILNTEGRAL(P_CUSTOMERID   NUMBER,
+                             R_AVAILNTEGRAL OUT NUMBER,
+                             R_STATUS       OUT NUMBER) IS
+    --------------------------------------------------------------
+    --目的：计算客代对应的有效积分
+    --参数：
+    --P_customerid  客代
+    --Created by xhy 20120906
+    --------------------------------------------------------------
+    V_AMOUNT NUMBER;
+  BEGIN
+    R_STATUS := 0;
+    IF P_CUSTOMERID IS NULL THEN
+      R_STATUS := 2; --表示传入参数客代号为空
+    ELSE
+      SELECT NVL(SUM(TRANSACTIONAMOUNT), 0)
+        INTO V_AMOUNT
+        FROM ET1_CHINA.TCRM_LOTTERYBONUS S
+       WHERE S.CUSTOMERID = P_CUSTOMERID
+         AND S.ENDDATE >= TRUNC(SYSDATE);
+      R_AVAILNTEGRAL := V_AMOUNT;
+      R_STATUS       := 1; --表示正常
+    END IF;
+  EXCEPTION
+    WHEN OTHERS THEN
+      R_STATUS := 0; --表示程序异常
+  END;
+  /**PROCEDURE WEB_JIFEN(P_CUSTOMERID NUMBER,
+                      P_ORDERID    NUMBER,
+                      P_ITEMID     NUMBER,
+                      P_USERID     NUMBER,
+                      P_ORDERPRICE NUMBER,
+                      R_PAYNEED    OUT NUMBER,
+                      R_STATUS     OUT NUMBER) IS
+  
+    ----------------------------------------------------------------------------------------------
+    --目的：网站积分扣减
+    --参数
+    --P_customerid   客代
+    --P_orderid      订单号
+    --P_itemid       项次号
+    --P_userid       操作人员工号
+    --P_orderprice 商品价格
+    --Create by xhy 20120904
+    ----------------------------------------------------------------------------------------------
+    V_AMOUNT NUMBER;
+    V_PRICE  NUMBER;
+  
+    CURSOR AVAILNTEGRAL IS
+      SELECT MAX(AAA.ROWN) OVER(PARTITION BY AAA.T2) MAXROWN,
+             AAA.ROWN,
+             AAA.LOTTERYBONUSNO,
+             AAA.TRANSACTIONAMOUNT AMOUNT,
+             AAA.STARTDATE,
+             AAA.ENDDATE
+        FROM (SELECT ROWNUM ROWN, AA.*
+                FROM (SELECT LOTTERYBONUSNO,
+                             SUM(T.TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,
+                             T.STARTDATE,
+                             T.ENDDATE,
+                             1 T2
+                        FROM ET1_CHINA.TCRM_LOTTERYBONUS T
+                       WHERE T.CUSTOMERID = P_CUSTOMERID
+                         AND T.ENDDATE >= TRUNC(SYSDATE)
+                       GROUP BY T.LOTTERYBONUSNO, T.STARTDATE, T.ENDDATE
+                      HAVING SUM(T.TRANSACTIONAMOUNT) > 0) AA
+               ORDER BY AA.ENDDATE) AAA;
+  BEGIN
+    R_STATUS := 0;
+  
+    IF NVL(P_ORDERPRICE, 0) > 0 THEN
+      V_PRICE := P_ORDERPRICE * 100; --商品对应所需的积分
+      -------------------------------------------------------------------------------------------------
+      --有效积分总数
+      -------------------------------------------------------------------------------------------------
+      SELECT SUM(TRANSACTIONAMOUNT)
+        INTO V_AMOUNT
+        FROM ET1_CHINA.TCRM_LOTTERYBONUS S
+       WHERE S.CUSTOMERID = P_CUSTOMERID
+         AND S.ENDDATE >= TRUNC(SYSDATE);
+      -------------------------------------------------------------------------------------------------
+      --先判断积分有效值是否大于100，有效值小于100不可抵用，有效值大于100方可抵用
+      -------------------------------------------------------------------------------------------------
+      IF V_AMOUNT < 100 THEN
+        DBMS_OUTPUT.PUT_LINE('积分有效值少于100，不能使用');
+        R_PAYNEED := P_ORDERPRICE;
+        R_STATUS  := 2; --积分有效值少于100，不能使用    
+      ELSIF V_AMOUNT >= 100 THEN
+      
+        FOR C IN AVAILNTEGRAL LOOP
+          EXIT WHEN V_PRICE = 0;
+          -------------------------------------------------------------------------------------------------
+          --有效积分总数>=商品所需积分，则逐笔抵用积分流水，直至 抵扣积分=商品积分，并提示客户无需额外付款
+          --有效积分总数<商品所需积分,则逐笔抵用积分流水,最后一笔只扣除100的整数倍部分,并提示客户支付余额
+          -------------------------------------------------------------------------------------------------
+          IF V_AMOUNT >= V_PRICE THEN
+            IF V_PRICE >= C.AMOUNT THEN
+              INSERT INTO ET1_CHINA.TCRM_LOTTERYBONUS
+                (TRANSACTIONID,
+                 CUSTOMERID,
+                 LOTTERYBONUSNO,
+                 TRANSACTIONTYPEID,
+                 TRANSACTIONDATE,
+                 TRANSACTIONAMOUNT,
+                 STARTDATE,
+                 ENDDATE,
+                 REFERENCETYPEID,
+                 EXCEPTIONDESC,
+                 CREATEDBY,
+                 CREATEDTIMESTAMP,
+                 LASTMODIFIEDBY,
+                 LASTMODIFIEDTIMESTAMP,
+                 REFERENCEVALUE,
+                 REFERENCEITEM,
+                 COMPANYID,
+                 ORIGINALLOTTERYBONUSNO)
+              VALUES
+                (ET1_CHINA.S_LOTTERYBONUS.NEXTVAL,
+                 P_CUSTOMERID,
+                 C.LOTTERYBONUSNO,
+                 1030,
+                 SYSDATE,
+                 -C.AMOUNT, --扣减该条记录的所有积分
+                 C.STARTDATE,
+                 C.ENDDATE,
+                 1010,
+                 NULL,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_ORDERID, --订单号
+                 P_ITEMID, --项次号
+                 2,
+                 NULL);
+              V_PRICE  := V_PRICE - C.AMOUNT;
+              V_AMOUNT := V_AMOUNT - C.AMOUNT;
+            ELSE
+              INSERT INTO ET1_CHINA.TCRM_LOTTERYBONUS
+                (TRANSACTIONID,
+                 CUSTOMERID,
+                 LOTTERYBONUSNO,
+                 TRANSACTIONTYPEID,
+                 TRANSACTIONDATE,
+                 TRANSACTIONAMOUNT,
+                 STARTDATE,
+                 ENDDATE,
+                 REFERENCETYPEID,
+                 EXCEPTIONDESC,
+                 CREATEDBY,
+                 CREATEDTIMESTAMP,
+                 LASTMODIFIEDBY,
+                 LASTMODIFIEDTIMESTAMP,
+                 REFERENCEVALUE,
+                 REFERENCEITEM,
+                 COMPANYID,
+                 ORIGINALLOTTERYBONUSNO)
+              VALUES
+                (ET1_CHINA.S_LOTTERYBONUS.NEXTVAL,
+                 P_CUSTOMERID,
+                 C.LOTTERYBONUSNO,
+                 1030,
+                 SYSDATE,
+                 -V_PRICE, --扣减 商品价格*100-之前已经扣减的积分
+                 C.STARTDATE,
+                 C.ENDDATE,
+                 1010,
+                 NULL,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_ORDERID, --订单号
+                 P_ITEMID, --项次号
+                 2,
+                 NULL);
+              V_PRICE := 0;
+            END IF;
+            R_PAYNEED := 0;
+            --exit when V_price=0;
+          
+          ELSIF V_AMOUNT < V_PRICE THEN
+            IF C.ROWN < C.MAXROWN THEN
+              INSERT INTO ET1_CHINA.TCRM_LOTTERYBONUS
+              
+                (TRANSACTIONID,
+                 CUSTOMERID,
+                 LOTTERYBONUSNO,
+                 TRANSACTIONTYPEID,
+                 TRANSACTIONDATE,
+                 TRANSACTIONAMOUNT,
+                 STARTDATE,
+                 ENDDATE,
+                 REFERENCETYPEID,
+                 EXCEPTIONDESC,
+                 CREATEDBY,
+                 CREATEDTIMESTAMP,
+                 LASTMODIFIEDBY,
+                 LASTMODIFIEDTIMESTAMP,
+                 REFERENCEVALUE,
+                 REFERENCEITEM,
+                 COMPANYID,
+                 ORIGINALLOTTERYBONUSNO)
+              VALUES
+                (ET1_CHINA.S_LOTTERYBONUS.NEXTVAL,
+                 P_CUSTOMERID,
+                 C.LOTTERYBONUSNO,
+                 1030,
+                 SYSDATE,
+                 -C.AMOUNT, --扣减该条记录对应的积分
+                 C.STARTDATE,
+                 C.ENDDATE,
+                 1010,
+                 NULL,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_ORDERID, --订单号
+                 P_ITEMID, --项次号
+                 2,
+                 NULL);
+              V_PRICE  := V_PRICE - C.AMOUNT;
+              V_AMOUNT := V_AMOUNT - C.AMOUNT;
+            ELSIF C.ROWN = C.MAXROWN THEN
+              INSERT INTO ET1_CHINA.TCRM_LOTTERYBONUS
+                (TRANSACTIONID,
+                 CUSTOMERID,
+                 LOTTERYBONUSNO,
+                 TRANSACTIONTYPEID,
+                 TRANSACTIONDATE,
+                 TRANSACTIONAMOUNT,
+                 STARTDATE,
+                 ENDDATE,
+                 REFERENCETYPEID,
+                 EXCEPTIONDESC,
+                 CREATEDBY,
+                 CREATEDTIMESTAMP,
+                 LASTMODIFIEDBY,
+                 LASTMODIFIEDTIMESTAMP,
+                 REFERENCEVALUE,
+                 REFERENCEITEM,
+                 COMPANYID,
+                 ORIGINALLOTTERYBONUSNO)
+              VALUES
+                (ET1_CHINA.S_LOTTERYBONUS.NEXTVAL,
+                 P_CUSTOMERID,
+                 C.LOTTERYBONUSNO,
+                 1030,
+                 SYSDATE,
+                 -TRUNC(C.AMOUNT / 100, 0) * 100, --扣减 该条记录积分中100的整数倍部分
+                 C.STARTDATE,
+                 C.ENDDATE,
+                 1010,
+                 NULL,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_USERID, --订单建立者
+                 SYSDATE,
+                 P_ORDERID, --订单号
+                 P_ITEMID, --项次号
+                 2,
+                 NULL);
+              V_PRICE   := V_PRICE - TRUNC(C.AMOUNT / 100, 0) * 100;
+              R_PAYNEED := V_PRICE / 100;
+            END IF;
+          
+          END IF;
+        
+        END LOOP;
+        R_STATUS := 1;
+      ELSIF V_AMOUNT IS NULL THEN
+        R_STATUS := 3; --no data found
+      END IF;
+    ELSE
+      R_STATUS := 4; --price is null or 0
+    END IF;
+  EXCEPTION
+    WHEN OTHERS THEN
+      R_STATUS := 0;
+  END;**/
+   PROCEDURE Web_LotteryBonusPay(P_customerid   number,
+                      P_orderid      number,
+                      P_itemid       number,
+                      P_userid       number,
+                      P_productprice number,
+                      r_payneed      out number,
+                      r_status       out number) is
+  
+    ----------------------------------------------------------------------------------------------
+    --目的：网站积分扣减
+    --参数
+    --P_customerid   客代
+    --P_orderid      订单号
+    --P_itemid       项次号
+    --P_userid       操作人员工号
+    --P_productprice 商品价格
+    --Create by xhy 20120904
+    ----------------------------------------------------------------------------------------------
+    V_amount number;
+    V_price  number;
+    v_transactionamount number;
+  
+    cursor Availntegral is
+      select max(aaa.rown) over(partition by aaa.t2) maxrown,
+             aaa.rown,
+             aaa.lotterybonusno,
+             aaa.transactionamount amount,
+             aaa.startdate,
+             aaa.enddate
+        from (select rownum rown, aa.*
+                from (select lotterybonusno,
+                             sum(t.transactionamount) transactionamount,
+                             t.startdate,
+                             t.enddate,
+                             1 t2
+                        from et1_china.tcrm_lotterybonus t
+                       where t.customerid = P_customerid
+                         and t.enddate >= trunc(sysdate)
+                       group by t.lotterybonusno, t.startdate, t.enddate
+                      having sum(t.transactionamount) > 0) aa
+               order by aa.enddate) aaa;
+  begin
+    r_status := 0;
+  
+    if nvl(p_productprice, 0) > 0 then
+      V_price := p_productprice * 100; --商品对应所需的积分
+      -------------------------------------------------------------------------------------------------
+      --有效积分总数
+      -------------------------------------------------------------------------------------------------
+      select sum(transactionamount)
+        into V_amount
+        from et1_china.tcrm_lotterybonus s
+       where s.customerid = P_customerid
+         and s.enddate >= trunc(sysdate);
+      -------------------------------------------------------------------------------------------------
+      --先判断积分有效值是否大于100，有效值小于100不可抵用，有效值大于100方可抵用
+      -------------------------------------------------------------------------------------------------
+      if V_amount < 100 then
+        DBMS_OUTPUT.PUT_LINE('积分有效值少于100，不能使用');
+        r_payneed := P_productprice;
+        r_status  := 2; --积分有效值少于100，不能使用    
+      elsif V_amount >= 100 then
+      
+        for c in Availntegral loop
+          exit when V_price = 0;
+          -------------------------------------------------------------------------------------------------
+          --有效积分总数>=商品所需积分，则逐笔抵用积分流水，直至 抵扣积分=商品积分，并提示客户无需额外付款
+          --有效积分总数<商品所需积分,则逐笔抵用积分流水,最后一笔只扣除100的整数倍部分,并提示客户支付余额
+          -------------------------------------------------------------------------------------------------
+          if V_amount >= V_price then
+            if V_price >= c.amount then
+              v_transactionamount :=  -c.amount;             
+              V_price  := V_price - c.amount;
+              V_amount := V_amount - c.amount;
+            else
+              v_transactionamount := -V_price;              
+              V_price := 0;
+            end if;
+            r_payneed := 0;
+            --exit when V_price=0;
+          
+          elsif V_amount < V_price then
+            if c.rown < c.maxrown then
+              v_transactionamount := -c.amount;
+              V_price  := V_price - c.amount;
+              V_amount := V_amount - c.amount;
+            elsif c.rown = c.maxrown then
+              v_transactionamount := -trunc(c.amount / 100, 0) * 100;             
+              V_price   := V_price - trunc(c.amount / 100, 0) * 100;
+              r_payneed := V_price / 100;
+            end if;          
+          end if;
+          
+         insert into et1_china.tcrm_lotterybonus  	
+                  (transactionid,                         
+                   customerid,                            
+                   lotterybonusno,                        
+                   transactiontypeid,                     
+                   transactiondate,                       
+                   transactionamount,                     
+                   startdate,                             
+                   enddate,                               
+                   referencetypeid,                       
+                   exceptiondesc,                         
+                   createdby,                             
+                   createdtimestamp,                      
+                   lastmodifiedby,                        
+                   lastmodifiedtimestamp,                 
+                   referencevalue,                        
+                   referenceitem,                         
+                   companyid,                             
+                   originallotterybonusno)                
+                values                                    
+                  (et1_china.S_LOTTERYBONUS.nextval,      
+                   P_customerid,                          
+                   c.lotterybonusno,                      
+                   1030,                                  
+                   sysdate,                               
+                   v_transactionamount, --扣减该条记录的所有积分    
+                   c.startdate,                           
+                   c.enddate,                             
+                   1010,                                  
+                   null,                                  
+                   P_userid, --订单建立者                 
+                   sysdate,                               
+                   P_userid, --订单建立者                 
+                   sysdate,                               
+                   P_orderid, --订单号                    
+                   P_itemid, --项次号                     
+                   2,                                     
+                   null);                  
+            end loop;
+        r_status := 1;
+      elsif v_amount is null then
+        r_status := 3; --no data found
+      end if;
+    else
+      r_status := 4; --price is null or 0
+    end if;
+  exception
+    when others then
+      r_status := 0;
+  end;
+  PROCEDURE WEB_AVAIAMOUNT(P_CUSTOMERID   NUMBER,
+                           R_AVAIAMOUNT   OUT NUMBER,
+                           R_AVAIQUANTITY OUT NUMBER,
+                           R_STATUS       OUT NUMBER) IS
+    --------------------------------------------------------------
+    --目的：计算客代对应的消费总金额及次数（开台至今排除销退）
+    --参数：
+    --P_customerid  客代
+    --Created by xhy 20130106
+    --------------------------------------------------------------                                      
+    V_AMOUNT   NUMBER;
+    V_QUANTITY NUMBER;
+  BEGIN
+    R_STATUS := 0;
+    IF P_CUSTOMERID IS NULL THEN
+      R_STATUS := 2; --表示传入参数客代号为空
+    ELSE
+      SELECT SUM(T.PRODUCTAMOUNT), SUM(T.QUANTITY)
+        INTO V_AMOUNT, V_QUANTITY
+      
+        FROM TOAF_ORDEREDPRODUCT T,
+             TOAF_ORDER O,
+             (SELECT R.ORDERID, R.ITEMID
+                FROM TOAF_RETURNPRODUCTS R
+               WHERE R.RETURNSTATUS < 1006
+                 AND R.RETURNTYPE = 1001
+                 and r.returndate>=SYSDATE-365
+                 AND R.RETURNDATE <= SYSDATE) P
+       WHERE T.ORDERID = P.ORDERID(+)
+         AND T.ITEMID = P.ITEMID(+)
+         AND T.ORDERID = O.ORDERID
+         AND O.ORDERTYPE = 1
+         AND P.ORDERID IS NULL
+         AND T.PRODUCTAMOUNT >= 1
+         AND T.CUSTOMERID = P_CUSTOMERID
+         AND T.ORDERSTATUS IN (1003, 1004)
+         and t.createdtimestamp>=SYSDATE-365
+         AND T.CREATEDTIMESTAMP <= SYSDATE
+         and o.createdtimestamp>=SYSDATE-365
+         AND O.CREATEDTIMESTAMP <= SYSDATE
+       GROUP BY T.CUSTOMERID;
+      R_AVAIAMOUNT   := V_AMOUNT;
+      R_AVAIQUANTITY := V_QUANTITY;
+      R_STATUS       := 1; --表示正常
+    END IF;
+  EXCEPTION
+    WHEN OTHERS THEN
+      R_STATUS := 0; --表示程序异常 
+  
+  END;
+  
+ procedure SP_GetPGMInfo(ai_BDate date,
+                          ai_Days  number,
+                          ai_SubID number,
+                          ri_Info  out ColType) is
+  begin
+    open ri_Info for
+      SELECT DISTINCT b.subchannelid,
+                      b.SubChannelName,
+                      npd.programname,
+                      /*DECODE(p.PGMStatus,
+                                                                                                                                                                                                                                                                                                                                                                 '1',
+                                                                                                                                                                                                                                                                                                                                                                 '计划中',
+                                                                                                                                                                                                                                                                                                                                                                 '1000',
+                                                                                                                                                                                                                                                                                                                                                                 '播出中',
+                                                                                                                                                                                                                                                                                                                                                                 '2000',
+                                                                                                                                                                                                                                                                                                                                                                 '已播过',
+                                                                                                                                                                                                                                                                                                                                                                 '未知的') AS PGMStatus,*/
+                      TO_CHAR(p.StartTime, 'yyyy-mm-dd hh24:mi') AS StartTime,
+                      TO_CHAR(p.StartTime + (p.length / 1440),
+                              'yyyy-mm-dd hh24:mi') AS EndTime,
+                      p.length AS Duration,
+                      c.broadcastsequence as seq,
+                      pd.ProductID AS ProductID,
+                      c.MultiCodeID AS MultiCodeID,
+                      pd.productnameconcat as productname,
+                      pd.SellingPrice
+        FROM et1_china.TCHM_NFMProgramPlanning       p,
+             et1_china.TCHM_NFMProductTOBECampaigned c,
+             --       TSCM_PurchaseRequestDetail    pr,
+             et1_china.TCHM_SubChannel           b,
+             et1_china.tscm_product              pd,
+             et1_china.tchm_nfmprogramdefinition npd
+       WHERE p.NFMPGMScheduleID = c.NFMPGMScheduleID(+)
+         AND p.NFMSubChannelID = b.SubChannelID
+         AND c.productid = pd.productid
+         AND p.programid = npd.programid
+         AND p.StartTime Between ai_BDate and ai_BDate + ai_Days
+         AND b.subchannelid = ai_SubID
+         AND c.status <> 2009
+       ORDER BY StartTime, seq;
+  
+  end SP_GetPGMInfo;  
+  
+END PLATFORM_SDK;

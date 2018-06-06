@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafBonuspointbatchMapper">
+
+
+	<!-- 插入用户： 1.由数据库生成id并赋值到对象 2.输入用对象, -->
+	<insert id="insertBonuspointbatch" parameterType="ToafBonuspointbatch" useGeneratedKeys="false" keyProperty="RUNBATCHID">
+
+		<selectKey keyProperty="RUNBATCHID" resultType="java.lang.Long"
+			order="BEFORE">
+			select S_BATCHREQUEST.NEXTVAL from dual
+		</selectKey> 
+<![CDATA[
+ insert into ET1_CHINA.TOAF_BONUSPOINTBATCH (TRANSACTIONTYPE, ACCOUNT_REFERENCE_TYPE, 
+      TRANSACTION_DETAILS, BATCHCOMMENT, IMPORTRESULT, 
+      CREATEDBY, LASTMODIFIEDBY, CREATEDTIMESTAMP, 
+      LASTMODIFIEDTIMESTAMP, RUNBATCHID)
+    values (#{transactiontype,jdbcType=DECIMAL}, #{accountReferenceType,jdbcType=DECIMAL}, 
+      #{transactionDetails,jdbcType=DECIMAL}, #{batchcomment,jdbcType=VARCHAR}, #{importresult,jdbcType=DECIMAL}, 
+      #{createdby,jdbcType=DECIMAL}, #{lastmodifiedby,jdbcType=DECIMAL}, #{createdtimestamp,jdbcType=TIMESTAMP}, 
+      #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, #{runbatchid,jdbcType=DECIMAL})
+  ]]>
+	</insert>
+
+	<!-- 插入用户： 1.由数据库生成id并赋值到对象 2.输入用对象, -->
+<insert id="insertBonuspointbatchdetail" parameterType="ToafBonuspointbatchdetail"	useGeneratedKeys="false" keyProperty="SEQUENCEID">
+<selectKey keyProperty="SEQUENCEID" resultType="java.lang.Long"	order="BEFORE">
+			select S_TOAF_BONUSPOINTBATCH_DETAIL.NEXTVAL from dual
+</selectKey> 
+<![CDATA[
+INSERT INTO TOAF_BONUSPOINTBATCH_DETAIL (SEQUENCEID, RUNBATCHID, CUSTOMERID, ORDERID, ITEMID, BOUNSPOINTAMOUNT, 
+RELATIONID, COMPANYID, CHECKRESULT, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, STARTDATE, ENDDATE) 
+VALUES (
+#{SEQUENCEID:DECIMAL}, #{RUNBATCHID:DECIMAL},#{CUSTOMERID:DECIMAL}, #{ORDERID:DECIMAL}, #{ITEMID:DECIMAL},
+#{BOUNSPOINTAMOUNT:DECIMAL}, #{RELATIONID:DECIMAL}, #{COMPANYID:DECIMAL}, #{CHECKRESULT:DECIMAL},#CREATEDBY:DECIMAL},#CREATEDTIMESTAMP:DATE},
+#{LASTMODIFIEDBY:VARCHAR},#{LASTMODIFIEDTIMESTAMP:DATE},  #{STARTDATE:DATE}, #{ENDDATE:DATE})
+
+     ]]>
+	</insert>
+
+</mapper> 

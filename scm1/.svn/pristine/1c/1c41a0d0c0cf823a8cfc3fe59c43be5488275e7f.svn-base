@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.ScmComplaintDetailDao">
+    
+	<sql id="scmComplaintDetailColumns">
+		a.id AS "id",
+		a.cpid AS "cpid",
+		a.cphandleddesc AS "cphandleddesc",
+		a.cphandledseq AS "cphandledseq",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="scmComplaintDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmComplaintDetail">
+		SELECT 
+			<include refid="scmComplaintDetailColumns"/>
+		FROM scm_complaint_detail a
+		<include refid="scmComplaintDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmComplaintDetail">
+		SELECT 
+			<include refid="scmComplaintDetailColumns"/>
+		FROM scm_complaint_detail a
+		<include refid="scmComplaintDetailJoins"/>
+		<where>
+			
+			<if test="cpid != null and cpid != ''">
+				AND a.cpid = #{cpid}
+			</if>
+			<if test="cphandleddesc != null and cphandleddesc != ''">
+				AND a.cphandleddesc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{cphandleddesc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{cphandleddesc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{cphandleddesc},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.cphandledseq DESC,${page.orderBy} ASC
+			</when>
+			<otherwise>
+				ORDER BY a.cphandledseq DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmComplaintDetail">
+		SELECT 
+			<include refid="scmComplaintDetailColumns"/>
+		FROM scm_complaint_detail a
+		<include refid="scmComplaintDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.cphandledseq DESC,${page.orderBy} ASC
+			</when>
+			<otherwise>
+				ORDER BY a.cphandledseq DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_complaint_detail(
+			id,
+			cpid,
+			cphandleddesc,
+			cphandledseq,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{cpid},
+			#{cphandleddesc},
+			#{cphandledseq},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_complaint_detail SET 	
+			cpid = #{cpid},
+			cphandleddesc = #{cphandleddesc},
+			cphandledseq = #{cphandledseq},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_complaint_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

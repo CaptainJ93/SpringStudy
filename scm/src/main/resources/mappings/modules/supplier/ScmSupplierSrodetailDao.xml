@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.supplier.dao.ScmSupplierSrodetailDao">
+    
+	<sql id="scmSupplierSrodetailColumns">
+		a.id AS "id",
+		a.returnid AS "returnid",
+		a.orderid AS "orderid",
+		a.itemid AS "itemid",
+		a.shiporderid AS "shiporderid",
+		a.shiporderseq AS "shiporderseq",
+		a.productid AS "productid",
+		a.productversion AS "productversion",
+		a.productname AS "productname",
+		a.colorclasscode AS "colorclasscode",
+		a.colorcode AS "colorcode",
+		a.colorvalue AS "colorvalue",
+		a.styleclasscode AS "styleclasscode",
+		a.stylecode AS "stylecode",
+		a.stylevalue AS "stylevalue",
+		a.productnumber AS "productnumber",
+		a.productdetail AS "productdetail",
+		a.productboxingdetail AS "productboxingdetail",
+		a.returnorderid AS "returnorderid",
+		a.returnorderseq AS "returnorderseq",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.supplierid AS "supplierid"
+	</sql>
+	
+	<sql id="scmSupplierSrodetailJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmSupplierSrodetail">
+		SELECT 
+			<include refid="scmSupplierSrodetailColumns"/>
+		FROM scm_supplier_srodetail a
+		<include refid="scmSupplierSrodetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmSupplierSrodetail">
+		SELECT 
+			<include refid="scmSupplierSrodetailColumns"/>
+		FROM scm_supplier_srodetail a
+		<include refid="scmSupplierSrodetailJoins"/>
+		<where>
+			1=1
+		</where>
+			<if test="returnid != null and returnid != ''">
+				AND a.returnid = #{returnid}
+			</if>
+			<if test="orderid != null and orderid != ''">
+				AND a.orderid = #{orderid}
+			</if>
+			<if test="shiporderid != null and shiporderid != ''">
+				AND a.shiporderid = #{shiporderid}
+			</if>
+			<if test="productid != null and productid != ''">
+				AND a.productid = #{productid}
+			</if>
+			<if test="productname != null and productname != ''">
+				AND a.productname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{productname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{productname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{productname},'%')</if>
+			</if>
+			<if test="returnorderid != null and returnorderid != ''">
+				AND a.returnorderid = #{returnorderid}
+			</if>
+			<if test="recordcreatedby != null and recordcreatedby != ''">
+				AND a.recordcreatedby = #{recordcreatedby}
+			</if>
+			<if test="supplierid != null and supplierid != ''">
+				AND a.supplierid = #{supplierid}
+			</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmSupplierSrodetail">
+		SELECT 
+			<include refid="scmSupplierSrodetailColumns"/>
+		FROM scm_supplier_srodetail a
+		<include refid="scmSupplierSrodetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_supplier_srodetail(
+			id,
+			returnid,
+			orderid,
+			itemid,
+			shiporderid,
+			shiporderseq,
+			productid,
+			productversion,
+			productname,
+			colorclasscode,
+			colorcode,
+			colorvalue,
+			styleclasscode,
+			stylecode,
+			stylevalue,
+			productnumber,
+			productdetail,
+			productboxingdetail,
+			returnorderid,
+			returnorderseq,
+			supplierid,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{returnid},
+			#{orderid},
+			#{itemid},
+			#{shiporderid},
+			#{shiporderseq},
+			#{productid},
+			#{productversion},
+			#{productname},
+			#{colorclasscode},
+			#{colorcode},
+			#{colorvalue},
+			#{styleclasscode},
+			#{stylecode},
+			#{stylevalue},
+			#{productnumber},
+			#{productdetail},
+			#{productboxingdetail},
+			#{returnorderid},
+			#{returnorderseq},
+			#{supplierid},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_supplier_srodetail a 
+		<include refid="scmSupplierSrodetailJoins"/> SET 	
+			a.returnid = #{returnid},
+			a.orderid = #{orderid},
+			a.itemid = #{itemid},
+			a.shiporderid = #{shiporderid},
+			a.shiporderseq = #{shiporderseq},
+			a.productid = #{productid},
+			a.productversion = #{productversion},
+			a.productname = #{productname},
+			a.colorclasscode = #{colorclasscode},
+			a.colorcode = #{colorcode},
+			a.colorvalue = #{colorvalue},
+			a.styleclasscode = #{styleclasscode},
+			a.stylecode = #{stylecode},
+			a.stylevalue = #{stylevalue},
+			a.productnumber = #{productnumber},
+			a.productdetail = #{productdetail},
+			a.productboxingdetail = #{productboxingdetail},
+			a.returnorderid = #{returnorderid},
+			a.returnorderseq = #{returnorderseq},
+			a.recordcreatedtime = #{recordcreatedtime},
+			a.recordcreatedby = #{recordcreatedby}
+		WHERE a.id = #{id} 
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_supplier_srodetail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

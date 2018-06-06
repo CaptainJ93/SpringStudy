@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiProductinventoryMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiProductinventory" >
+    <result column="WAREHOUSEID" property="warehouseid" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="LOCATIONID" property="locationid" jdbcType="DECIMAL" />
+    <result column="LOCATIONTYPE" property="locationtype" jdbcType="VARCHAR" />
+    <result column="TOTALPRODUCTQUANTITY" property="totalproductquantity" jdbcType="DECIMAL" />
+    <result column="STOCKUPDATEDATE" property="stockupdatedate" jdbcType="TIMESTAMP" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="RECORDSTATUS" property="recordstatus" jdbcType="DECIMAL" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+  
+    WAREHOUSEID, PRODUCTID, PRODUCTVERSION, COLOURCLASS, COLOURCODE, STYLECLASS, STYLECODE, 
+    LOCATIONID, LOCATIONTYPE, TOTALPRODUCTQUANTITY, STOCKUPDATEDATE, RECORDCREATEDTIME, 
+    RECORDSTATUS, CREATEDBY
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiProductinventoryExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_PRODUCTINVENTORY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.vwms.TvwsApiProductinventoryExample" >
+  
+    delete from ET1_CHINA.TVWS_API_PRODUCTINVENTORY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.best1.api.entity.vwms.TvwsApiProductinventory" >
+  
+    insert into ET1_CHINA.TVWS_API_PRODUCTINVENTORY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="warehouseid != null" >
+        WAREHOUSEID,
+      </if>
+      <if test="productid != null" >
+        PRODUCTID,
+      </if>
+      <if test="productversion != null" >
+        PRODUCTVERSION,
+      </if>
+      <if test="colourclass != null" >
+        COLOURCLASS,
+      </if>
+      <if test="colourcode != null" >
+        COLOURCODE,
+      </if>
+      <if test="styleclass != null" >
+        STYLECLASS,
+      </if>
+      <if test="stylecode != null" >
+        STYLECODE,
+      </if>
+      <if test="locationid != null" >
+        LOCATIONID,
+      </if>
+      <if test="locationtype != null" >
+        LOCATIONTYPE,
+      </if>
+      <if test="totalproductquantity != null" >
+        TOTALPRODUCTQUANTITY,
+      </if>
+      <if test="stockupdatedate != null" >
+        STOCKUPDATEDATE,
+      </if>
+      <if test="recordcreatedtime != null" >
+        RECORDCREATEDTIME,
+      </if>
+      <if test="recordstatus != null" >
+        RECORDSTATUS,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="warehouseid != null" >
+        #{warehouseid,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=DECIMAL},
+      </if>
+      <if test="productversion != null" >
+        #{productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="colourclass != null" >
+        #{colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="colourcode != null" >
+        #{colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="styleclass != null" >
+        #{styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="stylecode != null" >
+        #{stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="locationid != null" >
+        #{locationid,jdbcType=DECIMAL},
+      </if>
+      <if test="locationtype != null" >
+        #{locationtype,jdbcType=VARCHAR},
+      </if>
+      <if test="totalproductquantity != null" >
+        #{totalproductquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="stockupdatedate != null" >
+        #{stockupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordcreatedtime != null" >
+        #{recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordstatus != null" >
+        #{recordstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.vwms.TvwsApiProductinventoryExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TVWS_API_PRODUCTINVENTORY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+  
+    update ET1_CHINA.TVWS_API_PRODUCTINVENTORY
+    <set >
+      <if test="record.warehouseid != null" >
+        WAREHOUSEID = #{record.warehouseid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productid != null" >
+        PRODUCTID = #{record.productid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productversion != null" >
+        PRODUCTVERSION = #{record.productversion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.colourclass != null" >
+        COLOURCLASS = #{record.colourclass,jdbcType=DECIMAL},
+      </if>
+      <if test="record.colourcode != null" >
+        COLOURCODE = #{record.colourcode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.styleclass != null" >
+        STYLECLASS = #{record.styleclass,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stylecode != null" >
+        STYLECODE = #{record.stylecode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.locationid != null" >
+        LOCATIONID = #{record.locationid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.locationtype != null" >
+        LOCATIONTYPE = #{record.locationtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalproductquantity != null" >
+        TOTALPRODUCTQUANTITY = #{record.totalproductquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stockupdatedate != null" >
+        STOCKUPDATEDATE = #{record.stockupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recordcreatedtime != null" >
+        RECORDCREATEDTIME = #{record.recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recordstatus != null" >
+        RECORDSTATUS = #{record.recordstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="updateInventoryProcedure" parameterType="com.best1.api.entity.vwms.TvwsApiProductinventory" statementType="CALLABLE" >
+      call et1_china.proc_inventory_update(#{recordcreatedtime,jdbcType=TIMESTAMP,mode=IN})
+  </select>
+
+</mapper>

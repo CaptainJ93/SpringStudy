@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" lazyLoadingEnabled="true" enhancementEnabled="true" useStatementNamespaces="true"/>
+       <!-- 系统级功能 begin -->
+       <sqlMap resource="com/best1/sqlmap/TemplateSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/UserSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/TreeSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/ParamValueSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/LoggingSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/PrivilegeSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/RoleSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/MenuSQL.xml"/>
+       <sqlMap resource="com/best1/sqlmap/DepartmentSQL.xml"/>
+       <!-- 系统级功能 end -->
+       <!-- xxxx begin -->
+       
+       <!-- xxxx end -->
+       
+</sqlMapConfig>

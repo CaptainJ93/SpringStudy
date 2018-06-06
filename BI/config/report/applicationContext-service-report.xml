@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans default-lazy-init="false" default-autowire="byName">
+	<bean id="queryService" class="com.best1.report.service.impl.QueryServiceImpl">
+		<property name="queryDao">
+			<ref bean="queryDao" />
+		</property>										
+	</bean>	
+	
+	<bean id="exportAuditService" class="com.best1.report.service.impl.ExportAuditServiceImpl">
+		<property name="exportAuditDao">
+			<ref bean="exportAuditDao" />
+		</property>	
+		<property name="auditDefineDao">
+			<ref bean="auditDefineDao" />
+		</property>										
+	</bean>
+	
+	<bean id="productStatService" class="com.best1.report.service.impl.ProductStatServiceImpl">
+		<property name="productStatDao">
+			<ref bean="productStatDao" />
+		</property>		
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>									
+	</bean>	
+	
+	<bean id="channelStatService" class="com.best1.report.service.impl.ChannelStatServiceImpl">
+		<property name="channelStatDao">
+			<ref bean="channelStatDao" />
+		</property>	
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>									
+	</bean>	
+	
+	<bean id="assessStatService" class="com.best1.report.service.impl.AssessStatServiceImpl">
+		<property name="assessStatDao">
+			<ref bean="assessStatDao" />
+		</property>	
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>									
+	</bean>
+	
+	<bean id="detailStatService" class="com.best1.report.service.impl.DetailStatServiceImpl">
+		<property name="detailStatDao">
+			<ref bean="detailStatDao" />
+		</property>
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>		
+		<property name="queryService">
+			<ref bean="queryService"/>
+		</property>
+		<property name="exportAuditService">
+			<ref bean="exportAuditService"/>
+		</property>						
+	</bean>	
+	
+	<bean id="customerStatService" class="com.best1.report.service.impl.CustomerStatServiceImpl">
+		<property name="customerStatDao">
+			<ref bean="customerStatDao" />
+		</property>	
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>									
+	</bean>
+	
+	<bean id="campainStatService" class="com.best1.report.service.impl.CampainStatServiceImpl">
+		<property name="campainStatDao">
+			<ref bean="campainStatDao" />
+		</property>	
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>									
+	</bean>
+	
+	<bean id="summaryStatService" class="com.best1.report.service.impl.SummaryStatServiceImpl">
+		<property name="summaryStatDao">
+			<ref bean="summaryStatDao" />
+		</property>		
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>	
+	</bean>
+	
+	<bean id="financeService" class="com.best1.report.service.impl.FinanceServiceImpl">
+		<property name="financeDao">
+			<ref bean="financeDao" />
+		</property>		
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>	
+	</bean>
+	
+</beans>

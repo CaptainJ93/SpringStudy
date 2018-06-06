@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AssessStatSql">
+	<!-- MD销售统计数据-->
+	<resultMap class="java.util.HashMap" id="getMdOrderStat">
+		<result property="mdname" column="MDNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="ordercount" column="ORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="orderamout" column="ORDERAMOUT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validordercount" column="VALIDORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validorderamout" column="VALIDORDERAMOUT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="changecount" column="CHANGECOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="changeamount" column="CHANGEAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="returncount" column="RETURNCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="returnamount" column="RETURNAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="maoli" column="MAOLI" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+	</resultMap>
+	<select id="getMdOrderStats" resultMap="getMdOrderStat" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+		   a.mdname,
+	       a.ordercount,
+	       a.orderamout,
+	       a.validordercount,
+	       a.validorderamout,
+	       a.changecount,
+	       a.changeamount,
+	       a.returncount,
+	       a.returnamount,
+	       a.maoli
+        from tb_mdorderstat a
+        where a.batchid = #userid#
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countMdOrderStat" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_mdorderstat a where a.batchid = #userid#
+	</select>
+	
+	<!-- 执行存储过程 -->
+	<parameterMap id="mapMdOrderStat" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="username" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="userip" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="membershiplevelid" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="ageStart"  javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ageEnd"  javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="sex" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="registerStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="registerEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="address" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="customerTypeId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productClassId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="suppliername" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productids" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="subchannelId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="actualStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="actualEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="campaignname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="campaignid" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderTypeId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderStatusId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="excludereturnflag" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="createbyids" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="createbyname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="mdids" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="mdname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doMdOrderStat" parameterMap="mapMdOrderStat">
+         {call pkg_kpi.sp_mdorderstat(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}
+    </procedure>
+	
+	<!-- 呼叫人员销售统计数据 -->
+	<resultMap class="java.util.HashMap" id="getCreatebyStat">
+		<result property="createbyname" column="CREATEBYNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="allordercount" column="ALLORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="allorderamout" column="ALLORDERAMOUT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validordercount" column="VALIDORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="validorderamout" column="VALIDORDERAMOUT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="cancelorderamount" column="CANCELORDERAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="cancelordercount" column="CANCELORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="returnordercount" column="RETURNORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="returnorderamount" column="RETURNORDERAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="changeordercount" column="CHANGEORDERCOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+		<result property="changeorderamount" column="CHANGEORDERAMOUNT" javaType="java.lang.String" jdbcType="VARCHAR" nullValue="0"/>
+	</resultMap>
+	<select id="getCreatebyStats" resultMap="getCreatebyStat" parameterClass="java.util.HashMap">
+		<isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		select 
+		   a.CREATEBYNAME,
+	       a.ALLORDERCOUNT,
+	       a.ALLORDERAMOUT,
+	       a.validordercount,
+	       a.validorderamout,
+	       a.CANCELORDERAMOUNT,
+	       a.CANCELORDERCOUNT,
+	       a.RETURNORDERCOUNT,
+	       a.RETURNORDERAMOUNT,
+	       a.CHANGEORDERCOUNT,
+	       a.CHANGEORDERAMOUNT
+        from tb_createbystat a
+        where a.batchid = #userid#
+        <isNotEmpty prepend="" property="sidx">
+			order by $sidx$ $sord$
+		</isNotEmpty>
+        <isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countCreatebyStat" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_createbystat a where a.batchid = #userid#
+	</select>
+	
+	<!-- 执行存储过程 -->
+	<parameterMap id="mapCreatebyStat" class="java.util.HashMap">
+        <parameter property="userid" javaType="java.lang.Long" jdbcType="DECIMAL"  mode="IN"/>
+        <parameter property="username" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="userip" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="membershiplevelid" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="ageStart"  javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ageEnd"  javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="sex" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="registerStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="registerEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="address" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="customerTypeId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productClassId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="suppliername" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productids" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="productname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="subchannelId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="actualStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="actualEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="campaignname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="campaignid" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderTypeId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderStatusId" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="excludereturnflag" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderStartTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="orderEndTime" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="createbyids" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="createbyname" javaType="java.lang.String" jdbcType="VARCHAR"  mode="IN"/>
+        <parameter property="resultcode"  javaType="java.lang.Integer" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="errmesg"  javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    
+	<procedure id="doCreatebyStat" parameterMap="mapCreatebyStat">
+         {call pkg_kpi.sp_createbystat(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}
+    </procedure>
+	
+</sqlMap>

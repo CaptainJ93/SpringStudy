@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.returnpackage.dao.ReturnReturnintransitDetailDao">
+    
+	<sql id="returnReturnintransitDetailColumns">
+		a.id AS "id",
+		a.orderid AS "orderid",
+		a.returnid AS "returnid",
+		a.itemid AS "itemid",
+		a.shiporderid AS "shiporderid",
+		a.shiporderseq AS "shiporderseq",
+		a.productid AS "productid",
+		a.productversion AS "productversion",
+		a.productname AS "productname",
+		a.colorclass AS "colorclass",
+		a.colorcode AS "colorcode",
+		a.colorvalue AS "colorvalue",
+		a.styleclass AS "styleclass",
+		a.stylecode AS "stylecode",
+		a.stylevalue AS "stylevalue",
+		a.productnumber AS "productnumber",
+		a.productdetail AS "productdetail",
+		a.productboxingdetail AS "productboxingdetail",
+		a.returnorderid AS "returnorderid",
+		a.returnorderseq AS "returnorderseq",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="returnReturnintransitDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="ReturnReturnintransitDetail">
+		SELECT 
+			<include refid="returnReturnintransitDetailColumns"/>
+		FROM scm_return_returnintransit_detail a
+		<include refid="returnReturnintransitDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ReturnReturnintransitDetail">
+		SELECT 
+			<include refid="returnReturnintransitDetailColumns"/>
+		FROM scm_return_returnintransit_detail a
+		<include refid="returnReturnintransitDetailJoins"/>
+		<where>
+			1=1
+		</where>
+		
+		<if test="returnid != null and returnid != '' and returnid>0">
+			AND a.returnid=#{returnid}
+		</if>	
+		<if test="orderid != null and orderid != '' and orderid>0">
+			AND a.orderid=#{orderid}
+		</if>	
+		
+		<if test="itemid != null and itemid != '' and itemid>0">
+			AND a.itemid=#{itemid}
+		</if>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ReturnReturnintransitDetail">
+		SELECT 
+			<include refid="returnReturnintransitDetailColumns"/>
+		FROM scm_return_returnintransit_detail a
+		<include refid="returnReturnintransitDetailJoins"/>
+			<where>
+			1=1
+		</where>
+		
+		<if test="returnid != null and returnid != null and returnid != '' and returnid>0">
+			AND a.returnid=#{returnid}
+		</if>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_return_returnintransit_detail(
+			id,
+			orderid,
+			returnid,
+			itemid,
+			shiporderid,
+			shiporderseq,
+			productid,
+			productversion,
+			productname,
+			colorclass,
+			colorcode,
+			colorvalue,
+			styleclass,
+			stylecode,
+			stylevalue,
+			productnumber,
+			productdetail,
+			productboxingdetail,
+			returnorderid,
+			returnorderseq,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{orderid},
+			#{returnid},
+			#{itemid},
+			#{shiporderid},
+			#{shiporderseq},
+			#{productid},
+			#{productversion},
+			#{productname},
+			#{colorclass},
+			#{colorcode},
+			#{colorvalue},
+			#{styleclass},
+			#{stylecode},
+			#{stylevalue},
+			#{productnumber},
+			#{productdetail},
+			#{productboxingdetail},
+			#{returnorderid},
+			#{returnorderseq},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_return_returnintransit_detail SET 	
+			orderid = #{orderid},
+			returnid = #{returnid},
+			itemid = #{itemid},
+			shiporderid = #{shiporderid},
+			shiporderseq = #{shiporderseq},
+			productid = #{productid},
+			productversion = #{productversion},
+			productname = #{productname},
+			colorclass = #{colorclass},
+			colorcode = #{colorcode},
+			colorvalue = #{colorvalue},
+			styleclass = #{styleclass},
+			stylecode = #{stylecode},
+			stylevalue = #{stylevalue},
+			productnumber = #{productnumber},
+			productdetail = #{productdetail},
+			productboxingdetail = #{productboxingdetail},
+			returnorderid = #{returnorderid},
+			returnorderseq = #{returnorderseq},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_return_returnintransit_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,57 @@
+<chart caption="当日通路实时业绩" showvalues="1" plotgradientcolor=""
+	plotborderalpha="0" alternatevgridalpha="0" divlinealpha="0"
+	canvasborderalpha="0" bgcolor="#FFFFFF" basefontcolor="#194920"
+	palettecolors="#3A803D" showyaxisvalues="0" baseFont="黑体" showborder="0"
+	formatNumberScale="0" formatNumber="0" basefontsize="12">
+	<categories>
+		<category label="外呼通路" />
+		<category label="好易购二台" />
+		<category label="好易购一台" />
+		<category label="浙江少儿频道" />
+		<category label="好易购三台" />
+		<category label="IPTV电视" />
+		<category label="华数精品台" />
+		<category label="小小册" />
+		<category label="精品台" />
+		<category label="购物网站" />
+		<category label="好易购型录" />
+		<category label="好易购24通路" />
+		<category label="先行提货" />
+		<category label="天猫旗舰店" />
+		<category label="行企通路" />
+	</categories>
+	<dataset seriesname="销售额" color="#AFD8F8">
+		<set value="400879" />
+		<set value="400784"/>
+		<set value="144341"/>
+		<set value="43699"/>
+		<set value="33004"/>
+		<set value="28951"/>
+		<set value="24599"/>
+		<set value="17974"/>
+		<set value="16001"/>
+		<set value="15842"/>
+		<set value="10607"/>
+		<set value="2067"/>
+		<set value="1872"/>
+		<set value="298"/>
+		<set value="0"/>
+	</dataset>
+	<dataset seriesname="毛利" color="#8BBA00">
+		<set value="133351" />
+		<set value="139182.2" />
+		<set value="41642.8" />
+		<set value="11752" />
+		<set value="10961" />
+		<set value="9470.2" />
+		<set value="6402.2" />
+		<set value="5423.4" />
+		<set value="5523.4" />
+		<set value="4332.81" />
+		<set value="3401.4" />
+		<set value="830" />
+		<set value="752" />
+		<set value="161" />
+		<set value="-368" />
+	</dataset>
+</chart>

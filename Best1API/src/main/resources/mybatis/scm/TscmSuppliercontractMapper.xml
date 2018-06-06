@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.scm.TscmSuppliercontractMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.scm.supplier.TscmSuppliercontract" >
+  
+    <id column="CONTRACTNO" property="contractno" jdbcType="DECIMAL" />
+    <result column="SUPPLIERID" property="supplierid" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="CONTRACTDATE" property="contractdate" jdbcType="TIMESTAMP" />
+    <result column="PAYMENTTERMS" property="paymentterms" jdbcType="DECIMAL" />
+    <result column="CONTRACTNAME" property="contractname" jdbcType="VARCHAR" />
+    <result column="SUPPLIERCONTRACTSIGNERNAME" property="suppliercontractsignername" jdbcType="VARCHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="NORMALDELIVERY" property="normaldelivery" jdbcType="CHAR" />
+    <result column="DIRECTDELIVERY" property="directdelivery" jdbcType="CHAR" />
+    <result column="SPECIALDELIVERY" property="specialdelivery" jdbcType="CHAR" />
+    <result column="OFFSHOREDELIVERY" property="offshoredelivery" jdbcType="CHAR" />
+    <result column="PAYMENTDELIVERYTERMS" property="paymentdeliveryterms" jdbcType="CHAR" />
+    <result column="REGISTRATIONCERTIFICATE" property="registrationcertificate" jdbcType="CHAR" />
+    <result column="SUPPLIERSURVEYFORM" property="suppliersurveyform" jdbcType="CHAR" />
+    <result column="SUPPLIERPROFILE" property="supplierprofile" jdbcType="CHAR" />
+    <result column="TAIWANID" property="taiwanid" jdbcType="CHAR" />
+    <result column="FORM401" property="form401" jdbcType="CHAR" />
+    <result column="SUPPLIERINFOINSPM" property="supplierinfoinspm" jdbcType="CHAR" />
+    <result column="OTHERTERMS" property="otherterms" jdbcType="VARCHAR" />
+    <result column="MARKETINGFEE" property="marketingfee" jdbcType="CHAR" />
+    <result column="WARRANTYFLAG" property="warrantyflag" jdbcType="DECIMAL" />
+    <result column="WARRANTYHANDINDATE" property="warrantyhandindate" jdbcType="TIMESTAMP" />
+    <result column="WARRANTYCANCELDATE" property="warrantycanceldate" jdbcType="TIMESTAMP" />
+    <result column="WARRANTYTITLE" property="warrantytitle" jdbcType="DECIMAL" />
+    <result column="WARRANTYNO" property="warrantyno" jdbcType="OTHER" />
+    <result column="CERTIFICATEFLAG" property="certificateflag" jdbcType="CHAR" />
+    <result column="CERTIFICATEFEEDATE" property="certificatefeedate" jdbcType="TIMESTAMP" />
+    <result column="CERTIFICATEVALIDDATEFROM" property="certificatevaliddatefrom" jdbcType="TIMESTAMP" />
+    <result column="CERTIFICATEVALIDDATETO" property="certificatevaliddateto" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+  
+    CONTRACTNO, SUPPLIERID, STATUS, CONTRACTDATE, PAYMENTTERMS, CONTRACTNAME, SUPPLIERCONTRACTSIGNERNAME, 
+    CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, NORMALDELIVERY, 
+    DIRECTDELIVERY, SPECIALDELIVERY, OFFSHOREDELIVERY, PAYMENTDELIVERYTERMS, REGISTRATIONCERTIFICATE, 
+    SUPPLIERSURVEYFORM, SUPPLIERPROFILE, TAIWANID, FORM401, SUPPLIERINFOINSPM, OTHERTERMS, 
+    MARKETINGFEE, WARRANTYFLAG, WARRANTYHANDINDATE, WARRANTYCANCELDATE, WARRANTYTITLE, 
+    WARRANTYNO, CERTIFICATEFLAG, CERTIFICATEFEEDATE, CERTIFICATEVALIDDATEFROM, CERTIFICATEVALIDDATETO
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="TscmSuppliercontractExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+   
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    where CONTRACTNO = #{contractno,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+   
+    delete from ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    where CONTRACTNO = #{contractno,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="TscmSuppliercontractExample" >
+  
+    delete from ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TscmSuppliercontract" >
+   
+    insert into ET1_CHINA.TSCM_SUPPLIERCONTRACT (CONTRACTNO, SUPPLIERID, STATUS, 
+      CONTRACTDATE, PAYMENTTERMS, CONTRACTNAME, 
+      SUPPLIERCONTRACTSIGNERNAME, CREATEDBY, 
+      CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, 
+      NORMALDELIVERY, DIRECTDELIVERY, SPECIALDELIVERY, 
+      OFFSHOREDELIVERY, PAYMENTDELIVERYTERMS, REGISTRATIONCERTIFICATE, 
+      SUPPLIERSURVEYFORM, SUPPLIERPROFILE, TAIWANID, 
+      FORM401, SUPPLIERINFOINSPM, OTHERTERMS, 
+      MARKETINGFEE, WARRANTYFLAG, WARRANTYHANDINDATE, 
+      WARRANTYCANCELDATE, WARRANTYTITLE, WARRANTYNO, 
+      CERTIFICATEFLAG, CERTIFICATEFEEDATE, CERTIFICATEVALIDDATEFROM, 
+      CERTIFICATEVALIDDATETO)
+    values (#{contractno,jdbcType=DECIMAL}, #{supplierid,jdbcType=DECIMAL}, #{status,jdbcType=DECIMAL}, 
+      #{contractdate,jdbcType=TIMESTAMP}, #{paymentterms,jdbcType=DECIMAL}, #{contractname,jdbcType=VARCHAR}, 
+      #{suppliercontractsignername,jdbcType=VARCHAR}, #{createdby,jdbcType=DECIMAL}, 
+      #{createdtimestamp,jdbcType=TIMESTAMP}, #{lastmodifiedby,jdbcType=DECIMAL}, #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, 
+      #{normaldelivery,jdbcType=CHAR}, #{directdelivery,jdbcType=CHAR}, #{specialdelivery,jdbcType=CHAR}, 
+      #{offshoredelivery,jdbcType=CHAR}, #{paymentdeliveryterms,jdbcType=CHAR}, #{registrationcertificate,jdbcType=CHAR}, 
+      #{suppliersurveyform,jdbcType=CHAR}, #{supplierprofile,jdbcType=CHAR}, #{taiwanid,jdbcType=CHAR}, 
+      #{form401,jdbcType=CHAR}, #{supplierinfoinspm,jdbcType=CHAR}, #{otherterms,jdbcType=VARCHAR}, 
+      #{marketingfee,jdbcType=CHAR}, #{warrantyflag,jdbcType=DECIMAL}, #{warrantyhandindate,jdbcType=TIMESTAMP}, 
+      #{warrantycanceldate,jdbcType=TIMESTAMP}, #{warrantytitle,jdbcType=DECIMAL}, #{warrantyno,jdbcType=OTHER}, 
+      #{certificateflag,jdbcType=CHAR}, #{certificatefeedate,jdbcType=TIMESTAMP}, #{certificatevaliddatefrom,jdbcType=TIMESTAMP}, 
+      #{certificatevaliddateto,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="TscmSuppliercontract" >
+   
+    insert into ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contractno != null" >
+        CONTRACTNO,
+      </if>
+      <if test="supplierid != null" >
+        SUPPLIERID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="contractdate != null" >
+        CONTRACTDATE,
+      </if>
+      <if test="paymentterms != null" >
+        PAYMENTTERMS,
+      </if>
+      <if test="contractname != null" >
+        CONTRACTNAME,
+      </if>
+      <if test="suppliercontractsignername != null" >
+        SUPPLIERCONTRACTSIGNERNAME,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="normaldelivery != null" >
+        NORMALDELIVERY,
+      </if>
+      <if test="directdelivery != null" >
+        DIRECTDELIVERY,
+      </if>
+      <if test="specialdelivery != null" >
+        SPECIALDELIVERY,
+      </if>
+      <if test="offshoredelivery != null" >
+        OFFSHOREDELIVERY,
+      </if>
+      <if test="paymentdeliveryterms != null" >
+        PAYMENTDELIVERYTERMS,
+      </if>
+      <if test="registrationcertificate != null" >
+        REGISTRATIONCERTIFICATE,
+      </if>
+      <if test="suppliersurveyform != null" >
+        SUPPLIERSURVEYFORM,
+      </if>
+      <if test="supplierprofile != null" >
+        SUPPLIERPROFILE,
+      </if>
+      <if test="taiwanid != null" >
+        TAIWANID,
+      </if>
+      <if test="form401 != null" >
+        FORM401,
+      </if>
+      <if test="supplierinfoinspm != null" >
+        SUPPLIERINFOINSPM,
+      </if>
+      <if test="otherterms != null" >
+        OTHERTERMS,
+      </if>
+      <if test="marketingfee != null" >
+        MARKETINGFEE,
+      </if>
+      <if test="warrantyflag != null" >
+        WARRANTYFLAG,
+      </if>
+      <if test="warrantyhandindate != null" >
+        WARRANTYHANDINDATE,
+      </if>
+      <if test="warrantycanceldate != null" >
+        WARRANTYCANCELDATE,
+      </if>
+      <if test="warrantytitle != null" >
+        WARRANTYTITLE,
+      </if>
+      <if test="warrantyno != null" >
+        WARRANTYNO,
+      </if>
+      <if test="certificateflag != null" >
+        CERTIFICATEFLAG,
+      </if>
+      <if test="certificatefeedate != null" >
+        CERTIFICATEFEEDATE,
+      </if>
+      <if test="certificatevaliddatefrom != null" >
+        CERTIFICATEVALIDDATEFROM,
+      </if>
+      <if test="certificatevaliddateto != null" >
+        CERTIFICATEVALIDDATETO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contractno != null" >
+        #{contractno,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="contractdate != null" >
+        #{contractdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentterms != null" >
+        #{paymentterms,jdbcType=DECIMAL},
+      </if>
+      <if test="contractname != null" >
+        #{contractname,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliercontractsignername != null" >
+        #{suppliercontractsignername,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="normaldelivery != null" >
+        #{normaldelivery,jdbcType=CHAR},
+      </if>
+      <if test="directdelivery != null" >
+        #{directdelivery,jdbcType=CHAR},
+      </if>
+      <if test="specialdelivery != null" >
+        #{specialdelivery,jdbcType=CHAR},
+      </if>
+      <if test="offshoredelivery != null" >
+        #{offshoredelivery,jdbcType=CHAR},
+      </if>
+      <if test="paymentdeliveryterms != null" >
+        #{paymentdeliveryterms,jdbcType=CHAR},
+      </if>
+      <if test="registrationcertificate != null" >
+        #{registrationcertificate,jdbcType=CHAR},
+      </if>
+      <if test="suppliersurveyform != null" >
+        #{suppliersurveyform,jdbcType=CHAR},
+      </if>
+      <if test="supplierprofile != null" >
+        #{supplierprofile,jdbcType=CHAR},
+      </if>
+      <if test="taiwanid != null" >
+        #{taiwanid,jdbcType=CHAR},
+      </if>
+      <if test="form401 != null" >
+        #{form401,jdbcType=CHAR},
+      </if>
+      <if test="supplierinfoinspm != null" >
+        #{supplierinfoinspm,jdbcType=CHAR},
+      </if>
+      <if test="otherterms != null" >
+        #{otherterms,jdbcType=VARCHAR},
+      </if>
+      <if test="marketingfee != null" >
+        #{marketingfee,jdbcType=CHAR},
+      </if>
+      <if test="warrantyflag != null" >
+        #{warrantyflag,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyhandindate != null" >
+        #{warrantyhandindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warrantycanceldate != null" >
+        #{warrantycanceldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warrantytitle != null" >
+        #{warrantytitle,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyno != null" >
+        #{warrantyno,jdbcType=OTHER},
+      </if>
+      <if test="certificateflag != null" >
+        #{certificateflag,jdbcType=CHAR},
+      </if>
+      <if test="certificatefeedate != null" >
+        #{certificatefeedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certificatevaliddatefrom != null" >
+        #{certificatevaliddatefrom,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certificatevaliddateto != null" >
+        #{certificatevaliddateto,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TscmSuppliercontractExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+   
+    update ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    <set >
+      <if test="record.contractno != null" >
+        CONTRACTNO = #{record.contractno,jdbcType=DECIMAL},
+      </if>
+      <if test="record.supplierid != null" >
+        SUPPLIERID = #{record.supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contractdate != null" >
+        CONTRACTDATE = #{record.contractdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paymentterms != null" >
+        PAYMENTTERMS = #{record.paymentterms,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contractname != null" >
+        CONTRACTNAME = #{record.contractname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliercontractsignername != null" >
+        SUPPLIERCONTRACTSIGNERNAME = #{record.suppliercontractsignername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.normaldelivery != null" >
+        NORMALDELIVERY = #{record.normaldelivery,jdbcType=CHAR},
+      </if>
+      <if test="record.directdelivery != null" >
+        DIRECTDELIVERY = #{record.directdelivery,jdbcType=CHAR},
+      </if>
+      <if test="record.specialdelivery != null" >
+        SPECIALDELIVERY = #{record.specialdelivery,jdbcType=CHAR},
+      </if>
+      <if test="record.offshoredelivery != null" >
+        OFFSHOREDELIVERY = #{record.offshoredelivery,jdbcType=CHAR},
+      </if>
+      <if test="record.paymentdeliveryterms != null" >
+        PAYMENTDELIVERYTERMS = #{record.paymentdeliveryterms,jdbcType=CHAR},
+      </if>
+      <if test="record.registrationcertificate != null" >
+        REGISTRATIONCERTIFICATE = #{record.registrationcertificate,jdbcType=CHAR},
+      </if>
+      <if test="record.suppliersurveyform != null" >
+        SUPPLIERSURVEYFORM = #{record.suppliersurveyform,jdbcType=CHAR},
+      </if>
+      <if test="record.supplierprofile != null" >
+        SUPPLIERPROFILE = #{record.supplierprofile,jdbcType=CHAR},
+      </if>
+      <if test="record.taiwanid != null" >
+        TAIWANID = #{record.taiwanid,jdbcType=CHAR},
+      </if>
+      <if test="record.form401 != null" >
+        FORM401 = #{record.form401,jdbcType=CHAR},
+      </if>
+      <if test="record.supplierinfoinspm != null" >
+        SUPPLIERINFOINSPM = #{record.supplierinfoinspm,jdbcType=CHAR},
+      </if>
+      <if test="record.otherterms != null" >
+        OTHERTERMS = #{record.otherterms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marketingfee != null" >
+        MARKETINGFEE = #{record.marketingfee,jdbcType=CHAR},
+      </if>
+      <if test="record.warrantyflag != null" >
+        WARRANTYFLAG = #{record.warrantyflag,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warrantyhandindate != null" >
+        WARRANTYHANDINDATE = #{record.warrantyhandindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.warrantycanceldate != null" >
+        WARRANTYCANCELDATE = #{record.warrantycanceldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.warrantytitle != null" >
+        WARRANTYTITLE = #{record.warrantytitle,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warrantyno != null" >
+        WARRANTYNO = #{record.warrantyno,jdbcType=OTHER},
+      </if>
+      <if test="record.certificateflag != null" >
+        CERTIFICATEFLAG = #{record.certificateflag,jdbcType=CHAR},
+      </if>
+      <if test="record.certificatefeedate != null" >
+        CERTIFICATEFEEDATE = #{record.certificatefeedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.certificatevaliddatefrom != null" >
+        CERTIFICATEVALIDDATEFROM = #{record.certificatevaliddatefrom,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.certificatevaliddateto != null" >
+        CERTIFICATEVALIDDATETO = #{record.certificatevaliddateto,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    
+    update ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    set CONTRACTNO = #{record.contractno,jdbcType=DECIMAL},
+      SUPPLIERID = #{record.supplierid,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      CONTRACTDATE = #{record.contractdate,jdbcType=TIMESTAMP},
+      PAYMENTTERMS = #{record.paymentterms,jdbcType=DECIMAL},
+      CONTRACTNAME = #{record.contractname,jdbcType=VARCHAR},
+      SUPPLIERCONTRACTSIGNERNAME = #{record.suppliercontractsignername,jdbcType=VARCHAR},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      NORMALDELIVERY = #{record.normaldelivery,jdbcType=CHAR},
+      DIRECTDELIVERY = #{record.directdelivery,jdbcType=CHAR},
+      SPECIALDELIVERY = #{record.specialdelivery,jdbcType=CHAR},
+      OFFSHOREDELIVERY = #{record.offshoredelivery,jdbcType=CHAR},
+      PAYMENTDELIVERYTERMS = #{record.paymentdeliveryterms,jdbcType=CHAR},
+      REGISTRATIONCERTIFICATE = #{record.registrationcertificate,jdbcType=CHAR},
+      SUPPLIERSURVEYFORM = #{record.suppliersurveyform,jdbcType=CHAR},
+      SUPPLIERPROFILE = #{record.supplierprofile,jdbcType=CHAR},
+      TAIWANID = #{record.taiwanid,jdbcType=CHAR},
+      FORM401 = #{record.form401,jdbcType=CHAR},
+      SUPPLIERINFOINSPM = #{record.supplierinfoinspm,jdbcType=CHAR},
+      OTHERTERMS = #{record.otherterms,jdbcType=VARCHAR},
+      MARKETINGFEE = #{record.marketingfee,jdbcType=CHAR},
+      WARRANTYFLAG = #{record.warrantyflag,jdbcType=DECIMAL},
+      WARRANTYHANDINDATE = #{record.warrantyhandindate,jdbcType=TIMESTAMP},
+      WARRANTYCANCELDATE = #{record.warrantycanceldate,jdbcType=TIMESTAMP},
+      WARRANTYTITLE = #{record.warrantytitle,jdbcType=DECIMAL},
+      WARRANTYNO = #{record.warrantyno,jdbcType=OTHER},
+      CERTIFICATEFLAG = #{record.certificateflag,jdbcType=CHAR},
+      CERTIFICATEFEEDATE = #{record.certificatefeedate,jdbcType=TIMESTAMP},
+      CERTIFICATEVALIDDATEFROM = #{record.certificatevaliddatefrom,jdbcType=TIMESTAMP},
+      CERTIFICATEVALIDDATETO = #{record.certificatevaliddateto,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TscmSuppliercontract" >
+    
+    update ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    <set >
+      <if test="supplierid != null" >
+        SUPPLIERID = #{supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="contractdate != null" >
+        CONTRACTDATE = #{contractdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentterms != null" >
+        PAYMENTTERMS = #{paymentterms,jdbcType=DECIMAL},
+      </if>
+      <if test="contractname != null" >
+        CONTRACTNAME = #{contractname,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliercontractsignername != null" >
+        SUPPLIERCONTRACTSIGNERNAME = #{suppliercontractsignername,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="normaldelivery != null" >
+        NORMALDELIVERY = #{normaldelivery,jdbcType=CHAR},
+      </if>
+      <if test="directdelivery != null" >
+        DIRECTDELIVERY = #{directdelivery,jdbcType=CHAR},
+      </if>
+      <if test="specialdelivery != null" >
+        SPECIALDELIVERY = #{specialdelivery,jdbcType=CHAR},
+      </if>
+      <if test="offshoredelivery != null" >
+        OFFSHOREDELIVERY = #{offshoredelivery,jdbcType=CHAR},
+      </if>
+      <if test="paymentdeliveryterms != null" >
+        PAYMENTDELIVERYTERMS = #{paymentdeliveryterms,jdbcType=CHAR},
+      </if>
+      <if test="registrationcertificate != null" >
+        REGISTRATIONCERTIFICATE = #{registrationcertificate,jdbcType=CHAR},
+      </if>
+      <if test="suppliersurveyform != null" >
+        SUPPLIERSURVEYFORM = #{suppliersurveyform,jdbcType=CHAR},
+      </if>
+      <if test="supplierprofile != null" >
+        SUPPLIERPROFILE = #{supplierprofile,jdbcType=CHAR},
+      </if>
+      <if test="taiwanid != null" >
+        TAIWANID = #{taiwanid,jdbcType=CHAR},
+      </if>
+      <if test="form401 != null" >
+        FORM401 = #{form401,jdbcType=CHAR},
+      </if>
+      <if test="supplierinfoinspm != null" >
+        SUPPLIERINFOINSPM = #{supplierinfoinspm,jdbcType=CHAR},
+      </if>
+      <if test="otherterms != null" >
+        OTHERTERMS = #{otherterms,jdbcType=VARCHAR},
+      </if>
+      <if test="marketingfee != null" >
+        MARKETINGFEE = #{marketingfee,jdbcType=CHAR},
+      </if>
+      <if test="warrantyflag != null" >
+        WARRANTYFLAG = #{warrantyflag,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyhandindate != null" >
+        WARRANTYHANDINDATE = #{warrantyhandindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warrantycanceldate != null" >
+        WARRANTYCANCELDATE = #{warrantycanceldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warrantytitle != null" >
+        WARRANTYTITLE = #{warrantytitle,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyno != null" >
+        WARRANTYNO = #{warrantyno,jdbcType=OTHER},
+      </if>
+      <if test="certificateflag != null" >
+        CERTIFICATEFLAG = #{certificateflag,jdbcType=CHAR},
+      </if>
+      <if test="certificatefeedate != null" >
+        CERTIFICATEFEEDATE = #{certificatefeedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certificatevaliddatefrom != null" >
+        CERTIFICATEVALIDDATEFROM = #{certificatevaliddatefrom,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certificatevaliddateto != null" >
+        CERTIFICATEVALIDDATETO = #{certificatevaliddateto,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CONTRACTNO = #{contractno,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TscmSuppliercontract" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERCONTRACT
+    set SUPPLIERID = #{supplierid,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=DECIMAL},
+      CONTRACTDATE = #{contractdate,jdbcType=TIMESTAMP},
+      PAYMENTTERMS = #{paymentterms,jdbcType=DECIMAL},
+      CONTRACTNAME = #{contractname,jdbcType=VARCHAR},
+      SUPPLIERCONTRACTSIGNERNAME = #{suppliercontractsignername,jdbcType=VARCHAR},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      NORMALDELIVERY = #{normaldelivery,jdbcType=CHAR},
+      DIRECTDELIVERY = #{directdelivery,jdbcType=CHAR},
+      SPECIALDELIVERY = #{specialdelivery,jdbcType=CHAR},
+      OFFSHOREDELIVERY = #{offshoredelivery,jdbcType=CHAR},
+      PAYMENTDELIVERYTERMS = #{paymentdeliveryterms,jdbcType=CHAR},
+      REGISTRATIONCERTIFICATE = #{registrationcertificate,jdbcType=CHAR},
+      SUPPLIERSURVEYFORM = #{suppliersurveyform,jdbcType=CHAR},
+      SUPPLIERPROFILE = #{supplierprofile,jdbcType=CHAR},
+      TAIWANID = #{taiwanid,jdbcType=CHAR},
+      FORM401 = #{form401,jdbcType=CHAR},
+      SUPPLIERINFOINSPM = #{supplierinfoinspm,jdbcType=CHAR},
+      OTHERTERMS = #{otherterms,jdbcType=VARCHAR},
+      MARKETINGFEE = #{marketingfee,jdbcType=CHAR},
+      WARRANTYFLAG = #{warrantyflag,jdbcType=DECIMAL},
+      WARRANTYHANDINDATE = #{warrantyhandindate,jdbcType=TIMESTAMP},
+      WARRANTYCANCELDATE = #{warrantycanceldate,jdbcType=TIMESTAMP},
+      WARRANTYTITLE = #{warrantytitle,jdbcType=DECIMAL},
+      WARRANTYNO = #{warrantyno,jdbcType=OTHER},
+      CERTIFICATEFLAG = #{certificateflag,jdbcType=CHAR},
+      CERTIFICATEFEEDATE = #{certificatefeedate,jdbcType=TIMESTAMP},
+      CERTIFICATEVALIDDATEFROM = #{certificatevaliddatefrom,jdbcType=TIMESTAMP},
+      CERTIFICATEVALIDDATETO = #{certificatevaliddateto,jdbcType=TIMESTAMP}
+    where CONTRACTNO = #{contractno,jdbcType=DECIMAL}
+  </update>
+</mapper>

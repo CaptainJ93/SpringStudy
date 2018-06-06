@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.chm.TchmNfmtapecreationMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.chm.TchmNfmtapecreation" >
+
+    <id column="TAPEID" property="tapeid" jdbcType="DECIMAL" />
+    <id column="TAPECREATIONDATE" property="tapecreationdate" jdbcType="TIMESTAMP" />
+    <id column="TAPECREATIONTIME" property="tapecreationtime" jdbcType="TIMESTAMP" />
+    <result column="NFMPGMSCHEDULEID" property="nfmpgmscheduleid" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="MANUALEDITREMARKS" property="manualeditremarks" jdbcType="VARCHAR" />
+    <result column="CHILDTAPEID" property="childtapeid" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+
+    TAPEID, TAPECREATIONDATE, TAPECREATIONTIME, NFMPGMSCHEDULEID, STATUS, CREATEDBY, 
+    CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, MANUALEDITREMARKS, CHILDTAPEID, 
+    PRODUCTID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.chm.TchmNfmtapecreationExample" >
+
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCHM_NFMTAPECREATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.best1.api.entity.chm.TchmNfmtapecreationKey" >
+
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCHM_NFMTAPECREATION
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+      and TAPECREATIONDATE = #{tapecreationdate,jdbcType=TIMESTAMP}
+      and TAPECREATIONTIME = #{tapecreationtime,jdbcType=TIMESTAMP}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.best1.api.entity.chm.TchmNfmtapecreationKey" >
+
+    delete from ET1_CHINA.TCHM_NFMTAPECREATION
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+      and TAPECREATIONDATE = #{tapecreationdate,jdbcType=TIMESTAMP}
+      and TAPECREATIONTIME = #{tapecreationtime,jdbcType=TIMESTAMP}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.chm.TchmNfmtapecreationExample" >
+
+    delete from ET1_CHINA.TCHM_NFMTAPECREATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.best1.api.entity.chm.TchmNfmtapecreation" >
+  
+    insert into ET1_CHINA.TCHM_NFMTAPECREATION (TAPEID, TAPECREATIONDATE, TAPECREATIONTIME, 
+      NFMPGMSCHEDULEID, STATUS, CREATEDBY, 
+      CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, 
+      MANUALEDITREMARKS, CHILDTAPEID, PRODUCTID
+      )
+    values (#{tapeid,jdbcType=DECIMAL}, #{tapecreationdate,jdbcType=TIMESTAMP}, #{tapecreationtime,jdbcType=TIMESTAMP}, 
+      #{nfmpgmscheduleid,jdbcType=DECIMAL}, #{status,jdbcType=DECIMAL}, #{createdby,jdbcType=DECIMAL}, 
+      #{createdtimestamp,jdbcType=TIMESTAMP}, #{lastmodifiedby,jdbcType=DECIMAL}, #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}, 
+      #{manualeditremarks,jdbcType=VARCHAR}, #{childtapeid,jdbcType=DECIMAL}, #{productid,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.best1.api.entity.chm.TchmNfmtapecreation" >
+
+    insert into ET1_CHINA.TCHM_NFMTAPECREATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tapeid != null" >
+        TAPEID,
+      </if>
+      <if test="tapecreationdate != null" >
+        TAPECREATIONDATE,
+      </if>
+      <if test="tapecreationtime != null" >
+        TAPECREATIONTIME,
+      </if>
+      <if test="nfmpgmscheduleid != null" >
+        NFMPGMSCHEDULEID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="manualeditremarks != null" >
+        MANUALEDITREMARKS,
+      </if>
+      <if test="childtapeid != null" >
+        CHILDTAPEID,
+      </if>
+      <if test="productid != null" >
+        PRODUCTID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tapeid != null" >
+        #{tapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="tapecreationdate != null" >
+        #{tapecreationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tapecreationtime != null" >
+        #{tapecreationtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nfmpgmscheduleid != null" >
+        #{nfmpgmscheduleid,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manualeditremarks != null" >
+        #{manualeditremarks,jdbcType=VARCHAR},
+      </if>
+      <if test="childtapeid != null" >
+        #{childtapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.chm.TchmNfmtapecreationExample" resultType="java.lang.Integer" >
+
+    select count(*) from ET1_CHINA.TCHM_NFMTAPECREATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+  
+    update ET1_CHINA.TCHM_NFMTAPECREATION
+    <set >
+      <if test="record.tapeid != null" >
+        TAPEID = #{record.tapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tapecreationdate != null" >
+        TAPECREATIONDATE = #{record.tapecreationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tapecreationtime != null" >
+        TAPECREATIONTIME = #{record.tapecreationtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nfmpgmscheduleid != null" >
+        NFMPGMSCHEDULEID = #{record.nfmpgmscheduleid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.manualeditremarks != null" >
+        MANUALEDITREMARKS = #{record.manualeditremarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.childtapeid != null" >
+        CHILDTAPEID = #{record.childtapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productid != null" >
+        PRODUCTID = #{record.productid,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+
+    update ET1_CHINA.TCHM_NFMTAPECREATION
+    set TAPEID = #{record.tapeid,jdbcType=DECIMAL},
+      TAPECREATIONDATE = #{record.tapecreationdate,jdbcType=TIMESTAMP},
+      TAPECREATIONTIME = #{record.tapecreationtime,jdbcType=TIMESTAMP},
+      NFMPGMSCHEDULEID = #{record.nfmpgmscheduleid,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      MANUALEDITREMARKS = #{record.manualeditremarks,jdbcType=VARCHAR},
+      CHILDTAPEID = #{record.childtapeid,jdbcType=DECIMAL},
+      PRODUCTID = #{record.productid,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.chm.TchmNfmtapecreation" >
+
+    update ET1_CHINA.TCHM_NFMTAPECREATION
+    <set >
+      <if test="nfmpgmscheduleid != null" >
+        NFMPGMSCHEDULEID = #{nfmpgmscheduleid,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manualeditremarks != null" >
+        MANUALEDITREMARKS = #{manualeditremarks,jdbcType=VARCHAR},
+      </if>
+      <if test="childtapeid != null" >
+        CHILDTAPEID = #{childtapeid,jdbcType=DECIMAL},
+      </if>
+      <if test="productid != null" >
+        PRODUCTID = #{productid,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+      and TAPECREATIONDATE = #{tapecreationdate,jdbcType=TIMESTAMP}
+      and TAPECREATIONTIME = #{tapecreationtime,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.best1.api.entity.chm.TchmNfmtapecreation" >
+   
+    update ET1_CHINA.TCHM_NFMTAPECREATION
+    set NFMPGMSCHEDULEID = #{nfmpgmscheduleid,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=DECIMAL},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      MANUALEDITREMARKS = #{manualeditremarks,jdbcType=VARCHAR},
+      CHILDTAPEID = #{childtapeid,jdbcType=DECIMAL},
+      PRODUCTID = #{productid,jdbcType=DECIMAL}
+    where TAPEID = #{tapeid,jdbcType=DECIMAL}
+      and TAPECREATIONDATE = #{tapecreationdate,jdbcType=TIMESTAMP}
+      and TAPECREATIONTIME = #{tapecreationtime,jdbcType=TIMESTAMP}
+  </update>
+</mapper>

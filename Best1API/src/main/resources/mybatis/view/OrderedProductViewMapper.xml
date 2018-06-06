@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.OrderedProductViewMapper">
+<resultMap id="BaseResultMap"	type="com.best1.api.entity.view.OrderedProductView">	
+		<id column="ORDERID" property="orderID" jdbcType="DECIMAL" />
+		<id column="ITEMID" property="itemID" jdbcType="DECIMAL" />
+		<result column="customerid" property="customerid" jdbcType="DECIMAL" />
+        <result column="customername" property="customername"	jdbcType="CHAR" />		
+		<result column="zipcode" property="zipcode"	jdbcType="CHAR" />		
+        <result column="address1" property="address1"	jdbcType="CHAR" />		
+        <result column="address2" property="address2"	jdbcType="CHAR" />		
+	    <result column="subchannelid" property="subchannelid" jdbcType="DECIMAL" />
+        <result column="subchannelname" property="subchannelname"	jdbcType="CHAR" />		
+	    <result column="actualshippeddate" property="actualShippedDate"	jdbcType="CHAR" />
+		<result column="productid" property="productID" jdbcType="DECIMAL" />
+		<result column="productversion" property="productVersion"	jdbcType="DECIMAL" />
+		<result column="multicodeid" property="multicodeID" jdbcType="DECIMAL" />
+		<result column="productname" property="productName" jdbcType="CHAR" />
+		<result column="colourclass" property="colourClass" jdbcType="DECIMAL" />
+		<result column="colourcode" property="colourCode" jdbcType="DECIMAL" />
+		<result column="styleclass" property="styleClass" jdbcType="DECIMAL" />
+		<result column="stylecode" property="styleCode" jdbcType="DECIMAL" />
+		<result column="productamount" property="productAmount" jdbcType="DECIMAL" />
+		<result column="quantity" property="quantity" jdbcType="DECIMAL" />
+		<result column="discountamount" property="discountamount" jdbcType="DECIMAL" />
+		<result column="companyid" property="companyid" jdbcType="DECIMAL" />
+		<result column="amount" property="amount" jdbcType="DECIMAL" />
+		<result column="prefix" property="prefix" jdbcType="CHAR" />
+		<result column="invoiceno" property="invoiceNO" jdbcType="DECIMAL" />
+		<result column="iscod" property="isCod" jdbcType="CHAR" />
+		<result column="codamount" property="codAmount" jdbcType="DECIMAL" />
+		<result column="selectedcarrier" property="selectedCarrier"	jdbcType="DECIMAL" />
+		<result column="deliverytype" property="deliveryType" jdbcType="DECIMAL" />
+		<result column="subdeliverytype" property="subDeliveryType"	jdbcType="DECIMAL" />
+		<result column="supplierid" property="supplierID" jdbcType="DECIMAL" />
+		<result column="warehouseid" property="warehouseid" jdbcType="DECIMAL" />	
+		<result column="shiporderid" property="shiporderid" jdbcType="DECIMAL" />
+		<result column="sequenceno" property="sequenceno" jdbcType="DECIMAL" />	
+		<result column="transactionamount" property="transactionamount" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="fetchOrderedProducts" parameterType="com.best1.api.entity.view.OrderedProductView" resultMap="BaseResultMap">
+	select 
+	customer.customerid,
+       customer.customername,
+       ad.zipcode,
+       ad.address1,
+       ad.address2,
+       sub.subchannelid,
+       sub.subchannelname,
+       to_char(cso.actualshippeddate, 'yyyymmdd') as actualShippedDate,
+       od.orderid,
+       od.itemid,
+       od.productid,
+       od.productversion,
+       od.multicodeid,
+       od.productname,
+       od.colourclass,
+       od.colourcode,
+       od.styleclass,
+       od.stylecode,
+       od.productamount,
+       od.quantity,
+       od.discountamount,
+       od.companyid,
+       oii.amount,
+       oii.prefix,
+       oii.invoiceno,
+       cso.iscod,
+       cso.codamount,
+       cso.selectedcarrier,
+       cso.deliverytype,
+       cso.subdeliverytype,
+       cso.supplierid,
+       cso.warehouseid,
+       cso.shiporderid,
+       cso.sequenceno,
+       (SELECT nvl(sum(-lb.transactionamount / 100), 0)
+          FROM et1_china.tcrm_lotterybonus lb
+         WHERE lb.referencevalue = od.orderid
+           AND lb.referenceitem = od.itemid
+           and lb.transactiontypeid = 1030) as transactionamount
+  from tcrm_customer          customer,
+       tcrm_customeraddress   ad,
+       toaf_orderedproduct    od,
+       toaf_order ord,
+       toaf_orderinvoiceinfo  oii,
+       TSCM_CUSTOMERSHIPORDER cso,
+       et1_china.tchm_prodmulticode  pm,
+       et1_china.tchm_subchannel     sub
+ where customer.customerid = od.customerid
+   and customer.customerid = ad.customerid
+   and ord.orderid=od.orderid
+   and od.deliveryaddressid = ad.addressid
+   and od.multicodeid = pm.multicodeid
+   and pm.subchannelid = sub.subchannelid
+   and od.orderid = cso.orderid
+   and od.itemid = cso.itemid
+     and ord.ordertype in(1,2,3,13,14)
+   and od.orderstatus in (1003, 1004, 1005)
+   and od.orderid = oii.orderid(+)
+   and od.itemid = oii.itemid(+)
+		<if test="orderID != null">
+			and od.orderid = #{orderID}
+		</if>
+		<if test="itemID != null">
+			and od.itemid = #{itemID}
+		</if>
+		
+		<if test="actualShippedDateFrom != null">
+			AND cso.actualshippeddate &gt;= to_date(#{actualShippedDateFrom}, 'yyyymmdd')
+		</if>
+		<if test="actualShippedDateTo != null">
+			AND cso.actualshippeddate &lt; to_date(#{actualShippedDateTo}, 'yyyymmdd')
+		</if>
+		
+		
+	
+	</select>
+
+</mapper> 

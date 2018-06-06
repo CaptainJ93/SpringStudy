@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafOrderpaymentMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.oaf.order.ToafOrderpayment" >
+ 
+    <id column="PAYMENTID" property="paymentid" jdbcType="DECIMAL" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="ORDERID" property="orderid" jdbcType="DECIMAL" />
+    <result column="ITEMID" property="itemid" jdbcType="DECIMAL" />
+    <result column="PAYMENTMODEID" property="paymentmodeid" jdbcType="DECIMAL" />
+    <result column="PAYMENTSTATUS" property="paymentstatus" jdbcType="DECIMAL" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+    <result column="PAYMENTAMOUNT" property="paymentamount" jdbcType="DECIMAL" />
+    <result column="RECIEVEDAMOUNT" property="recievedamount" jdbcType="DECIMAL" />
+    <result column="BALANCEAMOUNT" property="balanceamount" jdbcType="DECIMAL" />
+    <result column="BONUSPOINTSUSED" property="bonuspointsused" jdbcType="DECIMAL" />
+    <result column="NOOFINSTALLMENT" property="noofinstallment" jdbcType="DECIMAL" />
+    <result column="PAYMENTCHANGEREASONCODE" property="paymentchangereasoncode" jdbcType="DECIMAL" />
+    <result column="PAYMENTDUEDATE" property="paymentduedate" jdbcType="TIMESTAMP" />
+    <result column="ACTUALPAYMENTDATE" property="actualpaymentdate" jdbcType="TIMESTAMP" />
+    <result column="PAYMENTMODEDESCRIPTION" property="paymentmodedescription" jdbcType="VARCHAR" />
+    <result column="DELAYEDINSTALLMENT" property="delayedinstallment" jdbcType="DECIMAL" />
+    <result column="ISATTENDBONUSDEDUCT" property="isattendbonusdeduct" jdbcType="CHAR" />
+    <result column="CODPAYMENTMODE" property="codpaymentmode" jdbcType="CHAR" />
+    <result column="ISINSTALLMENTFORMAT" property="isinstallmentformat" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  
+   <sql id="Update_By_Example_Where_Clause" >
+
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  
+  <sql id="Base_Column_List" >
+  
+    PAYMENTID, CUSTOMERID, ORDERID, ITEMID, PAYMENTMODEID, PAYMENTSTATUS, CREATEDBY, 
+    CREATEDTIMESTAMP, LASTMODIFIEDBY, LASTMODIFIEDTIMESTAMP, PAYMENTAMOUNT, RECIEVEDAMOUNT, 
+    BALANCEAMOUNT, BONUSPOINTSUSED, NOOFINSTALLMENT, PAYMENTCHANGEREASONCODE, PAYMENTDUEDATE, 
+    ACTUALPAYMENTDATE, PAYMENTMODEDESCRIPTION, DELAYEDINSTALLMENT, ISATTENDBONUSDEDUCT, 
+    CODPAYMENTMODE, ISINSTALLMENTFORMAT
+  </sql>
+  
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.oaf.order.ToafOrderpaymentExample" >
+   
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_ORDERPAYMENT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+ 
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_ORDERPAYMENT
+    where PAYMENTID = #{paymentid,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="sumByExample" parameterType="com.best1.api.entity.oaf.order.ToafOrderpayment" resultType="java.lang.Double" >
+  
+    select  sum(paymentamount) from ET1_CHINA.TOAF_ORDERPAYMENT post
+    <where>
+			1=1
+	</where>
+		<if test="customerid != null">
+			AND post.customerid= #{customerid} 
+		</if>
+    	<if test="orderid != null">
+			AND post.orderid= #{orderid} 
+		</if>
+		<if test="itemid != null">
+			AND post.itemid= #{itemid} 
+		
+		</if>
+		<if test="paymentstatus != null">
+			AND post.paymentstatus= #{paymentstatus} 
+	    </if>
+		<if test="paymentmodeid != null">
+			AND post.paymentmodeid= #{paymentmodeid} 
+		 </if>
+
+		
+  </select>
+  
+  
+    <select id="countByOrderPayment" parameterType="com.best1.api.entity.oaf.order.ToafOrderpayment" resultType="java.lang.Integer" >
+  
+    select count(*) from ET1_CHINA.TOAF_ORDERPAYMENT post
+    <where>
+			1=1
+		</where>
+				<if test="customerid != null">
+			AND post.customerid= #{customerid} 
+		</if>
+    	<if test="orderid != null">
+			AND post.orderid= #{orderid} 
+		</if>
+		<if test="itemid != null">
+			AND post.itemid= #{itemid} 
+		
+		</if>
+		<if test="paymentstatus != null">
+			AND post.paymentstatus= #{paymentstatus} 
+	    </if>
+		<if test="paymentmodeid != null">
+			AND post.paymentmodeid= #{paymentmodeid} 
+		 </if>
+	
+  </select>
+ 
+ 
+  <insert id="insertSelective" parameterType="com.best1.api.entity.oaf.order.ToafOrderpayment" >
+
+ <selectKey keyProperty="paymentid" resultType="long" order="BEFORE">
+    select s_orderpayment.nextval  FROM DUAL
+  </selectKey>
+  
+    insert into ET1_CHINA.TOAF_ORDERPAYMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="paymentid != null" >
+        PAYMENTID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="itemid != null" >
+        ITEMID,
+      </if>
+      <if test="paymentmodeid != null" >
+        PAYMENTMODEID,
+      </if>
+      <if test="paymentstatus != null" >
+        PAYMENTSTATUS,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+      <if test="paymentamount != null" >
+        PAYMENTAMOUNT,
+      </if>
+      <if test="recievedamount != null" >
+        RECIEVEDAMOUNT,
+      </if>
+      <if test="balanceamount != null" >
+        BALANCEAMOUNT,
+      </if>
+      <if test="bonuspointsused != null" >
+        BONUSPOINTSUSED,
+      </if>
+      <if test="noofinstallment != null" >
+        NOOFINSTALLMENT,
+      </if>
+      <if test="paymentchangereasoncode != null" >
+        PAYMENTCHANGEREASONCODE,
+      </if>
+      <if test="paymentduedate != null" >
+        PAYMENTDUEDATE,
+      </if>
+      <if test="actualpaymentdate != null" >
+        ACTUALPAYMENTDATE,
+      </if>
+      <if test="paymentmodedescription != null" >
+        PAYMENTMODEDESCRIPTION,
+      </if>
+      <if test="delayedinstallment != null" >
+        DELAYEDINSTALLMENT,
+      </if>
+      <if test="isattendbonusdeduct != null" >
+        ISATTENDBONUSDEDUCT,
+      </if>
+      <if test="codpaymentmode != null" >
+        CODPAYMENTMODE,
+      </if>
+      <if test="isinstallmentformat != null" >
+        ISINSTALLMENTFORMAT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="paymentid != null" >
+        #{paymentid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="itemid != null" >
+        #{itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentmodeid != null" >
+        #{paymentmodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentstatus != null" >
+        #{paymentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentamount != null" >
+        #{paymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="recievedamount != null" >
+        #{recievedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceamount != null" >
+        #{balanceamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bonuspointsused != null" >
+        #{bonuspointsused,jdbcType=DECIMAL},
+      </if>
+      <if test="noofinstallment != null" >
+        #{noofinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentchangereasoncode != null" >
+        #{paymentchangereasoncode,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentduedate != null" >
+        #{paymentduedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualpaymentdate != null" >
+        #{actualpaymentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentmodedescription != null" >
+        #{paymentmodedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="delayedinstallment != null" >
+        #{delayedinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="isattendbonusdeduct != null" >
+        #{isattendbonusdeduct,jdbcType=CHAR},
+      </if>
+      <if test="codpaymentmode != null" >
+        #{codpaymentmode,jdbcType=CHAR},
+      </if>
+      <if test="isinstallmentformat != null" >
+        #{isinstallmentformat,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.oaf.order.ToafOrderpaymentExample" resultType="java.lang.Integer" >
+ 
+    select count(*) from ET1_CHINA.TOAF_ORDERPAYMENT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByExampleSelective" parameterType="map" >
+
+    update ET1_CHINA.TOAF_ORDERPAYMENT
+    <set >
+      <if test="record.paymentid != null" >
+        PAYMENTID = #{record.paymentid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null" >
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderid != null" >
+        ORDERID = #{record.orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.itemid != null" >
+        ITEMID = #{record.itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentmodeid != null" >
+        PAYMENTMODEID = #{record.paymentmodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentstatus != null" >
+        PAYMENTSTATUS = #{record.paymentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paymentamount != null" >
+        PAYMENTAMOUNT = #{record.paymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.recievedamount != null" >
+        RECIEVEDAMOUNT = #{record.recievedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.balanceamount != null" >
+        BALANCEAMOUNT = #{record.balanceamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bonuspointsused != null" >
+        BONUSPOINTSUSED = #{record.bonuspointsused,jdbcType=DECIMAL},
+      </if>
+      <if test="record.noofinstallment != null" >
+        NOOFINSTALLMENT = #{record.noofinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentchangereasoncode != null" >
+        PAYMENTCHANGEREASONCODE = #{record.paymentchangereasoncode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentduedate != null" >
+        PAYMENTDUEDATE = #{record.paymentduedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.actualpaymentdate != null" >
+        ACTUALPAYMENTDATE = #{record.actualpaymentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paymentmodedescription != null" >
+        PAYMENTMODEDESCRIPTION = #{record.paymentmodedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delayedinstallment != null" >
+        DELAYEDINSTALLMENT = #{record.delayedinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isattendbonusdeduct != null" >
+        ISATTENDBONUSDEDUCT = #{record.isattendbonusdeduct,jdbcType=CHAR},
+      </if>
+      <if test="record.codpaymentmode != null" >
+        CODPAYMENTMODE = #{record.codpaymentmode,jdbcType=CHAR},
+      </if>
+      <if test="record.isinstallmentformat != null" >
+        ISINSTALLMENTFORMAT = #{record.isinstallmentformat,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.oaf.order.ToafOrderpayment" >
+ 
+    update ET1_CHINA.TOAF_ORDERPAYMENT
+    <set >
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="itemid != null" >
+        ITEMID = #{itemid,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentmodeid != null" >
+        PAYMENTMODEID = #{paymentmodeid,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentstatus != null" >
+        PAYMENTSTATUS = #{paymentstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentamount != null" >
+        PAYMENTAMOUNT = #{paymentamount,jdbcType=DECIMAL},
+      </if>
+      <if test="recievedamount != null" >
+        RECIEVEDAMOUNT = #{recievedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceamount != null" >
+        BALANCEAMOUNT = #{balanceamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bonuspointsused != null" >
+        BONUSPOINTSUSED = #{bonuspointsused,jdbcType=DECIMAL},
+      </if>
+      <if test="noofinstallment != null" >
+        NOOFINSTALLMENT = #{noofinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentchangereasoncode != null" >
+        PAYMENTCHANGEREASONCODE = #{paymentchangereasoncode,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentduedate != null" >
+        PAYMENTDUEDATE = #{paymentduedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualpaymentdate != null" >
+        ACTUALPAYMENTDATE = #{actualpaymentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentmodedescription != null" >
+        PAYMENTMODEDESCRIPTION = #{paymentmodedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="delayedinstallment != null" >
+        DELAYEDINSTALLMENT = #{delayedinstallment,jdbcType=DECIMAL},
+      </if>
+      <if test="isattendbonusdeduct != null" >
+        ISATTENDBONUSDEDUCT = #{isattendbonusdeduct,jdbcType=CHAR},
+      </if>
+      <if test="codpaymentmode != null" >
+        CODPAYMENTMODE = #{codpaymentmode,jdbcType=CHAR},
+      </if>
+      <if test="isinstallmentformat != null" >
+        ISINSTALLMENTFORMAT = #{isinstallmentformat,jdbcType=CHAR},
+      </if>
+    </set>
+    where PAYMENTID = #{paymentid,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

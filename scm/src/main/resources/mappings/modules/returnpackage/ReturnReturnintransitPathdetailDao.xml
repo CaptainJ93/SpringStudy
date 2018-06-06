@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.returnpackage.dao.ReturnReturnintransitPathdetailDao">
+    
+	<sql id="returnReturnintransitPathdetailColumns">
+		a.id AS "id",
+		a.pathid AS "pathid",
+		a.returnid AS "returnid",
+		a.pathdesc AS "pathdesc",
+		a.pathdatetime AS "pathdatetime",
+		a.returncode AS "returncode",
+		a.receiptsuccesstime AS "receiptsuccesstime",
+		a.receiptperson AS "receiptperson",
+		a.receiptpersoncontact AS "receiptpersoncontact",
+		a.longitude AS "longitude",
+		a.dimensionvalue AS "dimensionvalue",
+		a.returnorderid AS "returnorderid",
+		a.returnorderseq AS "returnorderseq",
+		a.receiptdeliveryorderid AS "receiptdeliveryorderid",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="returnReturnintransitPathdetailJoins">
+	</sql>
+    
+	<select id="get" resultType="ReturnReturnintransitPathdetail">
+		SELECT 
+			<include refid="returnReturnintransitPathdetailColumns"/>
+		FROM scm_return_returnintransit_pathdetail a
+		<include refid="returnReturnintransitPathdetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ReturnReturnintransitPathdetail">
+		SELECT 
+			<include refid="returnReturnintransitPathdetailColumns"/>
+		FROM scm_return_returnintransit_pathdetail a
+		<include refid="returnReturnintransitPathdetailJoins"/>
+			<where>
+			1=1
+		</where>
+		
+		<if test="returnid != null and returnid != null and returnid != '' and returnid>0">
+			AND a.returnid=#{returnid}
+		</if>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ReturnReturnintransitPathdetail">
+		SELECT 
+			<include refid="returnReturnintransitPathdetailColumns"/>
+		FROM scm_return_returnintransit_pathdetail a
+		<include refid="returnReturnintransitPathdetailJoins"/>
+			<where>
+			1=1
+		</where>
+		
+		<if test="returnid != null and returnid != null and returnid != ''  and returnid>0">
+			AND a.returnid=#{returnid}
+		</if>			
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_return_returnintransit_pathdetail(
+			id,
+			pathid,
+			returnid,
+			pathdesc,
+			pathdatetime,
+			returncode,
+			receiptsuccesstime,
+			receiptperson,
+			receiptpersoncontact,
+			longitude,
+			dimensionvalue,
+			returnorderid,
+			returnorderseq,
+			receiptdeliveryorderid,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{pathid},
+			#{returnid},
+			#{pathdesc},
+			#{pathdatetime},
+			#{returncode},
+			#{receiptsuccesstime},
+			#{receiptperson},
+			#{receiptpersoncontact},
+			#{longitude},
+			#{dimensionvalue},
+			#{returnorderid},
+			#{returnorderseq},
+			#{receiptdeliveryorderid},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_return_returnintransit_pathdetail SET 	
+			pathid = #{pathid},
+			returnid = #{returnid},
+			pathdesc = #{pathdesc},
+			pathdatetime = #{pathdatetime},
+			returncode = #{returncode},
+			receiptsuccesstime = #{receiptsuccesstime},
+			receiptperson = #{receiptperson},
+			receiptpersoncontact = #{receiptpersoncontact},
+			longitude = #{longitude},
+			dimensionvalue = #{dimensionvalue},
+			returnorderid = #{returnorderid},
+			returnorderseq = #{returnorderseq},
+			receiptdeliveryorderid = #{receiptdeliveryorderid},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_return_returnintransit_pathdetail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.api.mapper.crm.TcrmCustomerpasswordMapper">
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.crm.TcrmCustomerpassword">
+ 
+    <id column="CUSTOMERID" jdbcType="DECIMAL" property="customerid" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="RECEPTIONID" jdbcType="DECIMAL" property="receptionid" />
+    <result column="USERLOGINID" jdbcType="VARCHAR" property="userloginid" />
+    <result column="VIPTYPE" jdbcType="DECIMAL" property="viptype" />
+    <result column="CREATEDBY" jdbcType="DECIMAL" property="createdby" />
+    <result column="CREATEDTIMESTAMP" jdbcType="DATE" property="createdtimestamp" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+  
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+  
+    CUSTOMERID, PASSWORD, RECEPTIONID, USERLOGINID,VIPTYPE
+  </sql>
+  
+  
+  <select id="selectByExample" parameterType="com.best1.api.entity.crm.TcrmCustomerpasswordExample" resultMap="BaseResultMap">
+ 
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERPASSWORD
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+    <select id="selectByPrimaryKey" parameterType="com.best1.api.entity.crm.TcrmCustomerpasswordKey" resultMap="BaseResultMap">
+  
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCRM_CUSTOMERPASSWORD
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+     and VIPTYPE = #{viptype,jdbcType=DECIMAL}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.best1.api.entity.crm.TcrmCustomerpasswordKey">
+  
+    delete from ET1_CHINA.TCRM_CUSTOMERPASSWORD
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+    and VIPTYPE = #{viptype,jdbcType=DECIMAL}
+  </delete>
+ 
+ 
+  <insert id="insertSelective" parameterType="com.best1.api.entity.crm.TcrmCustomerpassword">
+ 
+    insert into ET1_CHINA.TCRM_CUSTOMERPASSWORD
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerid != null">
+        CUSTOMERID,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="receptionid != null">
+        RECEPTIONID,
+      </if>
+      <if test="userloginid != null">
+        USERLOGINID,
+      </if>
+       <if test="viptype != null">
+        VIPTYPE,
+      </if>
+       <if test="lastcall != null">
+        LASTCALL,
+      </if>
+        <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerid != null">
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="receptionid != null">
+        #{receptionid,jdbcType=DECIMAL},
+      </if>
+      <if test="userloginid != null">
+        #{userloginid,jdbcType=VARCHAR},
+      </if>
+       <if test="viptype != null">
+        #{viptype,jdbcType=DECIMAL},
+      </if>
+        <if test="lastcall != null">
+       #{lastcall,jdbcType=TIMESTAMP},
+       </if>
+       <if test="createdby != null">
+       #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+       #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+       <if test="lastmodifiedby != null">
+       #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+   
+  </insert>
+ 
+
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.crm.TcrmCustomerpassword">
+    
+    update ET1_CHINA.TCRM_CUSTOMERPASSWORD
+    <set>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="receptionid != null">
+        RECEPTIONID = #{receptionid,jdbcType=DECIMAL},
+      </if>
+      <if test="userloginid != null">
+        USERLOGINID = #{userloginid,jdbcType=VARCHAR},
+      </if>
+       <if test="viptype != null">
+        VIPTYPE = #{viptype,jdbcType=DECIMAL},
+      </if>
+       
+        LASTCALL = #{lastcall,jdbcType=TIMESTAMP},
+   
+       <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+       <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CUSTOMERID = #{customerid,jdbcType=DECIMAL}
+    and VIPTYPE = #{viptype,jdbcType=DECIMAL}
+  </update>
+ 
+</mapper>

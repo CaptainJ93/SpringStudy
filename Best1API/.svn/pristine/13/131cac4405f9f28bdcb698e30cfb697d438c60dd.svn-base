@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiSrowholeMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiSrowhole" >
+    <result column="WAREHOUSEID" property="warehouseid" jdbcType="DECIMAL" />
+    <result column="RETURNORDERID" property="returnorderid" jdbcType="DECIMAL" />
+    <result column="SHIPORDERID" property="shiporderid" jdbcType="DECIMAL" />
+    <result column="SHIPORDERSEQUENCE" property="shipordersequence" jdbcType="DECIMAL" />
+    <result column="RETURNID" property="returnid" jdbcType="DECIMAL" />
+    <result column="SEQUENCENO" property="sequenceno" jdbcType="DECIMAL" />
+    <result column="RETURNTYPE" property="returntype" jdbcType="DECIMAL" />
+    <result column="NONEEDTOTAKEBACKFLAG" property="noneedtotakebackflag" jdbcType="CHAR" />
+    <result column="PLANNEDPICKUPDATE" property="plannedpickupdate" jdbcType="TIMESTAMP" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="RETURNGOODSLEVEL" property="returngoodslevel" jdbcType="DECIMAL" />
+    <result column="CUSTOMERNAME" property="customername" jdbcType="VARCHAR" />
+    <result column="COUNTRY" property="country" jdbcType="DECIMAL" />
+    <result column="ZIPCODE" property="zipcode" jdbcType="DECIMAL" />
+    <result column="ADDRESS1" property="address1" jdbcType="VARCHAR" />
+    <result column="ADDRESS2" property="address2" jdbcType="VARCHAR" />
+    <result column="PICKUPADDRESS" property="pickupaddress" jdbcType="VARCHAR" />
+    <result column="HOMETELEPHONENUMBER" property="hometelephonenumber" jdbcType="VARCHAR" />
+    <result column="HOMETELEPHONEAREACODE" property="hometelephoneareacode" jdbcType="VARCHAR" />
+    <result column="HOMETELEPHONECOUNTRYCODE" property="hometelephonecountrycode" jdbcType="VARCHAR" />
+    <result column="MOBILENUMBER" property="mobilenumber" jdbcType="VARCHAR" />
+    <result column="RETURNORDERCREATEDATE" property="returnordercreatedate" jdbcType="TIMESTAMP" />
+    <result column="CARRIERIDPRIMARY" property="carrieridprimary" jdbcType="DECIMAL" />
+    <result column="RETURNORDERSEQUENCE" property="returnordersequence" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="COLOURCODE" property="colourcode" jdbcType="DECIMAL" />
+    <result column="COLOURCLASS" property="colourclass" jdbcType="DECIMAL" />
+    <result column="COLOURDESCRIPTION" property="colourdescription" jdbcType="VARCHAR" />
+    <result column="STYLECODE" property="stylecode" jdbcType="DECIMAL" />
+    <result column="STYLECLASS" property="styleclass" jdbcType="DECIMAL" />
+    <result column="STYLEDESCRIPTION" property="styledescription" jdbcType="VARCHAR" />
+    <result column="REQUESTQUANTITY" property="requestquantity" jdbcType="DECIMAL" />
+    <result column="RETURNREASON1" property="returnreason1" jdbcType="DECIMAL" />
+    <result column="RETURNREASON2" property="returnreason2" jdbcType="DECIMAL" />
+    <result column="NEWORDERID" property="neworderid" jdbcType="DECIMAL" />
+    <result column="NEWITEMID" property="newitemid" jdbcType="DECIMAL" />
+    <result column="RETURNDESC" property="returndesc" jdbcType="VARCHAR" />
+    <result column="SPLINSTR" property="splinstr" jdbcType="VARCHAR" />
+    <result column="CHECKINVOICEFLAG" property="checkinvoiceflag" jdbcType="VARCHAR" />
+    <result column="LOGID" property="logid" jdbcType="VARCHAR" />
+    <result column="CANCELORIGINALSHIPORDERFLAG" property="canceloriginalshiporderflag" jdbcType="VARCHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="BATCHID" property="batchid" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  
+  <sql id="Base_Column_List" >
+    WAREHOUSEID, RETURNORDERID, SHIPORDERID, SHIPORDERSEQUENCE, RETURNID, SEQUENCENO, 
+    RETURNTYPE, NONEEDTOTAKEBACKFLAG, PLANNEDPICKUPDATE, CUSTOMERID, RETURNGOODSLEVEL, 
+    CUSTOMERNAME, COUNTRY, ZIPCODE, ADDRESS1, ADDRESS2,PICKUPADDRESS, HOMETELEPHONENUMBER, HOMETELEPHONEAREACODE, 
+    HOMETELEPHONECOUNTRYCODE, MOBILENUMBER, RETURNORDERCREATEDATE, CARRIERIDPRIMARY, 
+    RETURNORDERSEQUENCE, PRODUCTID, PRODUCTVERSION, COLOURCODE, COLOURCLASS,COLOURDESCRIPTION, STYLECODE, 
+    STYLECLASS,STYLEDESCRIPTION, REQUESTQUANTITY, RETURNREASON1, RETURNREASON2, NEWORDERID, NEWITEMID, 
+    RETURNDESC,SPLINSTR,CHECKINVOICEFLAG,LOGID, CANCELORIGINALSHIPORDERFLAG,RECORDCREATEDTIME, BATCHID
+  </sql>
+  <select id="selectBySrowhole" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiSrowhole" >
+ 
+    select
+    
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_RETURNORDERWHOLE
+    where 1=1 
+          <if test="warehouseid != null">
+			AND warehouseid = #{warehouseid}
+		</if>
+		
+		 <if test="returnorderid != null">
+			AND returnorderid = #{returnorderid}
+		</if>
+		
+		<if test="batchid != null">
+			AND batchid = #{batchid}
+		</if>
+		
+  <if test="startdate != null">
+	AND recordcreatedtime &gt;= to_date('#{startdate}', 'yyyy-MM-dd hh24:mi:ss')
+</if>
+<if test="enddate != null">
+	AND recordcreatedtime &lt; to_date('#{enddate}', 'yyyy-MM-dd hh24:mi:ss')
+</if>
+  </select>
+  
+</mapper>

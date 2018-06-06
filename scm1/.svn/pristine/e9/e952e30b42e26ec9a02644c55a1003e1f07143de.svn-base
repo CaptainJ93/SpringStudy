@@ -1,0 +1,27 @@
+请求地址：http://localhost:8080/scm/a/express/deliveryorder
+请求方法：POST
+
+header:
+
+code:
+username:
+validatecode:
+userid:
+type:1002
+
+
+body:
+
+{
+    "pathid": "00002",
+    "pathdesc": "客户已签收....",
+    "pathdatetime": "2016-3-10 18:28:00",
+    "deliverycode": "1002",
+    "receiptorrejecttime": "",
+    "receiptperson": "",
+    "deliveryperson": "",
+    "deliverypersoncontact": "",
+    "longitude": "111",
+    "dimensionvalue": "222",
+    "trackingnumber": "zj--008"
+}

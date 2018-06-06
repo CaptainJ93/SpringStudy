@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans default-lazy-init="false">
+	<bean id="queryDao" class="com.best1.report.db.QueryDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="exportAuditDao" class="com.best1.report.db.ExportAuditDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="auditDefineDao" class="com.best1.report.db.AuditDefineDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="productStatDao" class="com.best1.report.db.ProductStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="channelStatDao" class="com.best1.report.db.ChannelStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="assessStatDao" class="com.best1.report.db.AssessStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="detailStatDao" class="com.best1.report.db.DetailStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="customerStatDao" class="com.best1.report.db.CustomerStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="campainStatDao" class="com.best1.report.db.CampainStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="summaryStatDao" class="com.best1.report.db.SummaryStatDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO"/>
+		</property>
+	</bean>
+	
+	<bean id="financeDao" class="com.best1.report.db.FinanceDao">
+		<property name="baseDAO">
+			<ref bean="ReportBaseDAO2"/>
+		</property>
+	</bean>
+</beans>

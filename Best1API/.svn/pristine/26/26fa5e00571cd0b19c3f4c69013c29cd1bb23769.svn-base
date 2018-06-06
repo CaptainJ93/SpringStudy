@@ -1,0 +1,95 @@
+# app settings
+scm.url=http://10.50.5.33:8080/scm/a/et1/deliverypath/deliveryjson/
+erp.url=http://192.168.43.151:7007/internet/ExternalRequest
+erp.oaf-lottery-bonus-order-cancel-return=Y
+#erp.ws=http://127.0.0.1:7001/erpapi/
+erp.ws=http://192.168.43.151:7007/erpapi/
+erp.return-product-ws-name=acceptReturnWS
+erp.customer-ship-order-ws-name=customerShipOrderWS
+erp.cancel-product-ws-name=cancelProductWS
+erp.return-order-for-supplier-ws-name=returnOrderForSupplierWS        
+erp.web-product-selection-ws-name=webProductSelectionWS
+erp.order-invoice-ws-name=orderInvoiceWS
+
+weixin.gettoken=https://qyapi.weixin.qq.com/cgi-bin/gettoken?
+weixin.send=https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=
+weixin.corpid=wx02405a18b644aee1
+#weixin.corpsecret=XBLaGRkabukxlX3u2sxZHB1qresX7FxPbMOMl3eZ7bDFaYzGuuQVHeAVxbznCuLm
+#weixin.corpsecret=3zPdMV3SvIVSqAaP04JGZ1Ec9rIzsiRALgYaWTEk99w
+weixin.corpsecret=CnEUOqlUJsNPVBg_9N7C_XVElEd45xXrWcoa2pelk1w
+#weixin.corpsecret=nORBgqxBUZiioPf6FM9gqlH4ZJDIZQJAdxSLaCwhplo
+weixin.party=4
+#weixin.party=20
+#weixin.agentid=wx02405a18b644aee1
+weixin.agentid=0
+#weixin.agentid=1000004
+weixin.safe=0
+
+weixin.grant_type=client_credential
+weixin.messagetoken=https://api.weixin.qq.com/cgi-bin/token?
+#weixin.appid=wx25a837753a996bb3
+weixin.appid=wxcb645c8556d8e490
+#weixin.secret=44b9137f1109e66396ae0eb8667fa2aa
+weixin.secret=8fb78d75510fe315fe9ebb98d0877179
+weixin.messag_template_send=https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=
+weixin.messag_tempalte_title=\u8BA2\u8D2D\u6210\u529F\uFF0C\u7B49\u5F85\u652F\u4ED8\u4E2D
+weixin.messag_tempalte_remark=\u8BF7\u53CA\u65F6\u652F\u4ED8\u8BA2\u5355\uFF0C\u903E\u671F\u5931\u6548
+#weixin.template_id=wQ9_Yrlc_KwQ26J7OlYr8FfYui5UPGlYnbBap-WLHLE
+weixin.template_id=t5RxkH5NPjWU2JZ9UQud0FaQWuPpBXCHrP3U2tyc7w8
+weixin.template_url=http://m.best1.com/order/ordershowtv?orderid=
+#http://ruiduo.happydoit.com/order/ordershowtv?orderid=
+
+invoice.kpfdzjdh=\u676D\u5DDE\u5E02\u8427\u5C71\u533A\u5F18\u6167\u8DEF399\u53F7\u6D59\u6C5F\u56FD\u9645\u5F71\u89C6\u4E2D\u5FC3 400885886
+invoice.xgzhxx_ghfsjh=18626882159
+invoice.xgzhxx_ghfdzyx=huwenhua@best1.com
+invoice.kpr=\u80E1\u6587\u534E
+invoice.kpfyhjzh=  \u4E2D\u56FD\u94F6\u884C\u676D\u5DDE\u7ECF\u6D4E\u6280\u672F\u5F00\u53D1\u533A\u652F\u884C 396158346336
+invoice.bz=\u597D\u6613\u8D2D \u597D\u751F\u6D3B   4008885886
+
+invoice.xsf_nsrsbh=913300007964553178
+invoice.xsf_mc=\u597D\u6613\u8D2D\u5BB6\u5EAD\u8D2D\u7269\u6709\u9650\u516C\u53F8
+invoice.xsf_dzdh=\u6D59\u6C5F\u7701\u676D\u5DDE\u5E02\u4E0B\u6C99\u9AD8\u6559\u56ED\u533A\u5B66\u6E90\u8857998\u53F7 400885886
+#invoice.xsf_yhzh=\u4E2D\u56FD\u94F6\u884C\u676D\u5DDE\u7ECF\u6D4E\u6280\u672F\u5F00\u53D1\u533A\u652F\u884C 396158346336
+invoice.xsf_yhzh=\u4E2D\u56FD\u94F6\u884C\u676D\u5DDE\u7ECF\u6D4E\u6280\u672F\u5F00\u53D1\u533A\u652F\u884C 396158346336
+invoice.skr=\u738B\u7EA2\u82B3
+invoice.kpr=\u5B59\u4E3D\u4E3D
+invoice.fhr=\u738B\u7EA2\u82B3
+invoice.dw=\u4EF6
+#invoice.appId=502361120b63e2bd10d526aa811687bfa59f2173b552fefbb4ffece161094413
+invoice.appId=26a1c9cc5ab5039f01ac4b6840379241c44ea19b968148f825dfdc7e32b28834
+invoice.requestCode=DZFPQZ
+#invoice.serverurl=https://202.104.113.26:8999/fpt_dsqz/services/DZFPJsonService
+#invoice.serverurl=https://www.fapiao.com:7105/dsqt_taxfu/services/DZFPService
+invoice.serverurl=https://www.fapiao.com:7105/dsqt_taxfu/services/DZFPJsonService
+invoice.operation=doJsonService
+#invoice.ssl_store=C:/cer/testclient.truststore
+invoice.ssl_store=C:/cer/fapiao.truststore
+invoice.ssl_pwd=123456
+invoice.filepath=C:/invoice_pdf
+invoice.taxrate=17
+
+sms.url=http://cf.51welink.com/submitdata/service.asmx
+sms.templet=\u5C0A\u656C\u7684\u7528\u6237\uFF1A\u60A8\u672C\u6B21\u64CD\u4F5C\u7684\u77ED\u4FE1\u9A8C\u8BC1\u7801\u4E3A\uFF1A{0}\uFF0C5\u5206\u949F\u5185\u6709\u6548\u3002\u3010\u597D\u6613\u8D2D\u3011
+sms.sname=dlhygjt0
+sms.spwd=BkQ6lg7s
+sms.scorpid=
+sms.sprdid=1012888
+
+sms.alipay=http://m.best1.com/order/telOrder?orderid=
+sms.weixinpay=http://m.best1.com/order/wxOrder?orderid=
+sms.paycodeurl=http://m.best1.com/t/
+sms.paymessage=\u4EB2\u7231\u7684\u4F1A\u5458\uFF0C\u611F\u8C22\u60A8\u8BA2\u8D2D\u3010{0}\u3011\u7B49\u5546\u54C1\uFF0C\u8BF7\u60A8\u57283\u5C0F\u65F6\u4E4B\u5185\u5B8C\u6210\u652F\u4ED8{1}\u5143\uFF0C\u652F\u4ED8\u94FE\u63A5{2}   \uFF0C\u5982\u6709\u7591\u95EE\u8BF7\u53CA\u65F6\u62E8\u625396051\u62164001188188
+sms.chinaunicom="130","131","132","145","155","156","171","175","176","185","186"
+sms.chinatelecom="133","153","173","177","180","181","189"
+sms.chinamobile="134" ,"135", "136", "137","138", "139","147","150","151","152", "157","158", "159","172","178","182","183","184","187","188"
+sms.keytimeout=10800
+
+ftp.url=ftp.best1.com
+#ftp.user=wms_qa
+#ftp.password=123456
+ftp.user=wms_dm
+ftp.password=wms_dm123
+ftp.code=UTF-8
+
+weather.url=http://restapi.amap.com/v3/weather/weatherInfo?
+weather.key=3b1dc0972a0df12cd1d5b01319f0e373

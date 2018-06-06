@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.ReturnToVenderViewMapper">
+
+	<resultMap id="BaseResultMap" type="com.best1.api.entity.view.ReturnToVenderView">
+
+		<id column="rtvorderid" property="rtvOrderID" jdbcType="DECIMAL" />
+		<result column="supplierid" property="supplierID" jdbcType="DECIMAL" />
+		<result column="returnorderconfirmdate" property="returnOrderConfirmDate"
+			jdbcType="CHAR" />
+		<result column="productid" property="productID" jdbcType="DECIMAL" />
+		<result column="productversion" property="productVersion"
+			jdbcType="DECIMAL" />
+		<result column="colourclass" property="colourClass" jdbcType="DECIMAL" />
+		<result column="colourcode" property="colourCode" jdbcType="DECIMAL" />
+		<result column="styleclass" property="styleClass" jdbcType="DECIMAL" />
+		<result column="stylecode" property="styleCode" jdbcType="DECIMAL" />
+		<result column="normalquantity" property="normalQuantity"
+			jdbcType="DECIMAL" />
+		<result column="damagedquantity" property="damagedQuantity"
+			jdbcType="DECIMAL" />
+		<result column="actualNormalQuantity" property="actualNormalQuantity"
+			jdbcType="DECIMAL" />
+		<result column="actualDamagedQuantity" property="actualDamagedQuantity"
+			jdbcType="DECIMAL" />
+				<result column="warehouseid" property="warehouseid" jdbcType="DECIMAL" />
+		
+	</resultMap>
+
+	<select id="fetchReturnToVenders" parameterType="com.best1.api.entity.view.ReturnToVenderView"
+		resultMap="BaseResultMap">
+		select suprtv.rtvorderid,
+		rtvorder.supplierid,
+		rtvorder.warehouseid,
+		to_char(suprtv.returnorderconfirmdate, 'yyyymmdd') as
+		returnorderconfirmdate,
+		suprtv.productid,
+		suprtv.productversion,
+		suprtv.colourclass,
+		suprtv.colourcode,
+		suprtv.styleclass,
+		suprtv.stylecode,
+		suprtv.normalquantity,
+		suprtv.damagedquantity,
+		(suprtv.normalquantity - suprtv.pendingnormalquantity) as
+		actualNormalQuantity,
+		(suprtv.damagedquantity -
+		suprtv.pendingdamagedquantity) as actualDamagedQuantity
+		from
+		TSCM_RTVORDER rtvorder, tscm_rtvorderdetails suprtv
+		where
+		rtvorder.rtvorderid = suprtv.rtvorderid
+		<if test="rtvOrderID != null">
+			AND suprtv.rtvorderid = #{rtvOrderID}
+		</if>
+		<if test="returnOrderConfirmDateFrom != null">
+			AND suprtv.returnorderconfirmdate &gt;=
+			to_date(#{returnOrderConfirmDateFrom}, 'yyyymmdd')
+		</if>
+		<if test="returnOrderConfirmDateTo != null">
+			AND suprtv.returnorderconfirmdate &lt;
+			to_date(#{returnOrderConfirmDateTo}, 'yyyymmdd')
+		</if>
+		and
+		suprtv.rtvstatus in (1003, 1004)
+
+	</select>
+
+</mapper> 

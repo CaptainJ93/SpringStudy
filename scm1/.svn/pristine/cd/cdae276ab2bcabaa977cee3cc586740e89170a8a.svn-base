@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryQualityReportCityProportionDao">
+    
+	
+	<select id="findList" resultType="DeliveryQualityReportCityProportion">
+	
+	select DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") as everyday ,
+         a.selectedcarrier AS "selectedcarrier",
+				 carrier.carriername AS "carrier.carriername",
+				 sarea2.`name` as "cityname",
+				 COUNT(*) as "packagesum",
+				 t1.num1  as "packagetotalnum",
+				 CASE WHEN t2.num2>0 then t2.num2 ELSE 0 END as "signIn24HNum",
+				 CASE WHEN t3.num3>0 then t3.num3 ELSE 0 END as "signInTimeNum",
+				 CASE WHEN t4.num4>0 then t4.num4 ELSE 0 END as "signNum"
+				 
+		FROM scm_delivery_orderintransit a
+		LEFT JOIN scm_carrier carrier
+			on carrier.carrierid = a.selectedcarrier
+		LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea
+			on a.receivingzipcode = sarea.`code`
+		LEFT JOIN sys_area sarea2
+			on sarea.parent_id = sarea2.id
+		left JOIN 
+		 ( select DATE_FORMAT(a11.actualshipdate, "%Y-%m-%d") as day1,count(*) as num1 from scm_delivery_orderintransit  a11  where 
+			 1=1 
+			 <if test="createDateStart != null">
+				AND a11.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a11.actualshipdate &lt;= #{createDateEnd}
+			</if>
+	         GROUP BY DATE_FORMAT(a11.actualshipdate, "%Y-%m-%d") 
+	      )t1
+   on DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") = t1.day1
+   
+   
+   		LEFT JOIN ( 
+				select DATE_FORMAT(a12.actualshipdate, "%Y-%m-%d") as day2,a12.selectedcarrier as selectedcarrier12, sarea212.`name` as "areaparentname12" ,  count(*)  as num2 from scm_delivery_orderintransit  a12
+						LEFT JOIN scm_carrier carrier12
+			      on carrier12.carrierid = a12.selectedcarrier
+						LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea12
+							on a12.receivingzipcode = sarea12.`code`
+						LEFT JOIN sys_area sarea212
+							on sarea12.parent_id = sarea212.id
+					where  1=1
+					 <if test="createDateStart != null">
+						AND a12.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a12.actualshipdate &lt;= #{createDateEnd}
+					</if>
+					 and   a12.trackingstatus =1002
+					 and   a12.receiptorrejecttime is not NULL
+					 and  (TO_SECONDS(a12.receiptorrejecttime)-TO_SECONDS(a12.actualshipdate))/(60*60) &lt; 24
+					 and (sarea212.type = 3  or sarea212.type is NULL)	 
+				GROUP BY DATE_FORMAT(a12.actualshipdate, "%Y-%m-%d") ,a12.selectedcarrier,sarea212.`name` )t2
+					on CONCAT_WS('-',DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"),a.selectedcarrier,sarea2.`name` ) = CONCAT_WS('-',t2.day2,t2.selectedcarrier12,t2.areaparentname12)
+   
+   
+   
+   
+       left join (
+       			select DATE_FORMAT(a13.actualshipdate, "%Y-%m-%d") as day3,a13.selectedcarrier as selectedcarrier13, a13.receivingzipcode,sarea213.`name` as "areaparentname13" ,count(*) as num3
+          from scm_delivery_orderintransit  a13
+						LEFT JOIN scm_carrier carrier13
+			      on carrier13.carrierid = a13.selectedcarrier
+						LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea13
+							on a13.receivingzipcode = sarea13.`code`
+						LEFT JOIN sys_area sarea213
+							on sarea13.parent_id = sarea213.id
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID   from scm_carrierzipcode)  zz
+						on a13.receivingzipcode  = zz.zipcode
+						and a13.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 	 <if test="createDateStart != null">
+						AND a13.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a13.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					 and   a13.trackingstatus =1002
+					 and   a13.receiptorrejecttime is not NULL
+					 and IFNULL(zz.limitations,0) &gt; (TO_SECONDS(a13.receiptorrejecttime)-TO_SECONDS(a13.actualshipdate))/(60*60) 
+					 and (sarea213.type = 3  or sarea213.type is NULL)
+		GROUP BY DATE_FORMAT(a13.actualshipdate, "%Y-%m-%d") ,a13.selectedcarrier,sarea213.`name` 	
+       )t3
+   			on CONCAT_WS('-',DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"),a.selectedcarrier,sarea2.`name` ) = CONCAT_WS('-',t3.day3,t3.selectedcarrier13,t3.areaparentname13)
+   			
+   	
+   	 
+   	  left join (
+       			select DATE_FORMAT(a14.actualshipdate, "%Y-%m-%d") as day4,a14.selectedcarrier as selectedcarrier14, a14.receivingzipcode,sarea214.`name` as "areaparentname14" ,count(*) as num4
+          from scm_delivery_orderintransit  a14
+						LEFT JOIN scm_carrier carrier14
+			      on carrier14.carrierid = a14.selectedcarrier
+						LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea14
+							on a14.receivingzipcode = sarea14.`code`
+						LEFT JOIN sys_area sarea214
+							on sarea14.parent_id = sarea214.id
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID   from scm_carrierzipcode)  zz
+						on a14.receivingzipcode  = zz.zipcode
+						and a14.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 	 <if test="createDateStart != null">
+						AND a14.actualshipdate &gt;= #{createDateStart}
+					</if>
+					<if test="createDateEnd != null">
+						AND a14.actualshipdate &lt;= #{createDateEnd}
+					</if>	
+					 and   a14.trackingstatus =1002
+					 and   a14.receiptorrejecttime is not NULL
+					 and (sarea214.type = 3  or sarea214.type is NULL)
+		GROUP BY DATE_FORMAT(a14.actualshipdate, "%Y-%m-%d") ,a14.selectedcarrier,sarea214.`name` 	
+       )t4
+   			on CONCAT_WS('-',DATE_FORMAT(a.actualshipdate, "%Y-%m-%d"),a.selectedcarrier,sarea2.`name` ) = CONCAT_WS('-',t4.day4,t4.selectedcarrier14,t4.areaparentname14)
+   	 
+   
+	 WHERE
+	 1=1 
+	        <if test="createDateStart != null">
+				AND a.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a.actualshipdate &lt;= #{createDateEnd}
+			</if>
+			 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+	
+	
+	 and (sarea2.type = 3  or sarea2.type is NULL)
+	 GROUP BY 
+            DATE_FORMAT(a.actualshipdate, "%Y-%m-%d") ,
+             a.selectedcarrier,
+						carrier.carriername,
+						sarea2.`name`
+					
+	</select>
+	
+	
+	
+	<select id="findAllList" resultType="DeliveryQualityReportCityProportion">
+	    select 
+         a.selectedcarrier AS "selectedcarrier",
+				 carrier.carriername AS "carrier.carriername",
+				 sarea2.`name` as "cityname",
+				 COUNT(*) as "packagesum",
+				 t1.num1  as "packagetotalnum",
+				 CASE WHEN t2.num2>0 then t2.num2 ELSE 0 END as "signIn24HNum",
+				 CASE WHEN t3.num3>0 then t3.num3 ELSE 0 END as "signInTimeNum",
+				 CASE WHEN t4.num4>0 then t4.num4 ELSE 0 END as "signNum"
+		FROM scm_delivery_orderintransit a
+		LEFT JOIN scm_carrier carrier
+			on carrier.carrierid = a.selectedcarrier
+		LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea
+			on a.receivingzipcode = sarea.`code`
+		LEFT JOIN sys_area sarea2
+			on sarea.parent_id = sarea2.id
+		left JOIN 
+		 ( select count(*) as num1 from scm_delivery_orderintransit  a11  where 
+			 1=1 
+			<if test="createDateStart != null">
+				AND a11.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a11.actualshipdate &lt;= #{createDateEnd}
+			</if>
+
+			 )t1
+   		on 1=1
+   		LEFT JOIN ( 
+				select a12.selectedcarrier as selectedcarrier12, sarea212.`name` as "areaparentname12" ,  count(*)  as num2 from scm_delivery_orderintransit  a12
+						LEFT JOIN scm_carrier carrier12
+			      on carrier12.carrierid = a12.selectedcarrier
+						LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea12
+							on a12.receivingzipcode = sarea12.`code`
+						LEFT JOIN sys_area sarea212
+							on sarea12.parent_id = sarea212.id
+					where  1=1
+			<if test="createDateStart != null">
+				AND a12.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a12.actualshipdate &lt;= #{createDateEnd}
+			</if>
+					
+					 and   a12.trackingstatus =1002
+					 and   a12.receiptorrejecttime is not NULL
+					 and  (TO_SECONDS(a12.receiptorrejecttime)-TO_SECONDS(a12.actualshipdate))/(60*60) &lt; 24
+					 and (sarea212.type = 3  or sarea212.type is NULL)	 
+				GROUP BY a12.selectedcarrier,sarea212.`name` )t2
+					on CONCAT_WS('-',a.selectedcarrier,sarea2.`name` ) = CONCAT_WS('-',t2.selectedcarrier12,t2.areaparentname12)
+   
+   
+   
+   
+       left join (
+       			select a13.selectedcarrier as selectedcarrier13, a13.receivingzipcode,sarea213.`name` as "areaparentname13" ,count(*) as num3
+          from scm_delivery_orderintransit  a13
+						LEFT JOIN scm_carrier carrier13
+			      on carrier13.carrierid = a13.selectedcarrier
+						LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea13
+							on a13.receivingzipcode = sarea13.`code`
+						LEFT JOIN sys_area sarea213
+							on sarea13.parent_id = sarea213.id
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID   from scm_carrierzipcode)  zz
+						on a13.receivingzipcode  = zz.zipcode
+						and a13.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 <if test="createDateStart != null">
+				AND a13.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a13.actualshipdate &lt;= #{createDateEnd}
+			</if>
+					 and   a13.trackingstatus =1002
+					 and   a13.receiptorrejecttime is not NULL
+					 and IFNULL(zz.limitations,0) &gt; (TO_SECONDS(a13.receiptorrejecttime)-TO_SECONDS(a13.actualshipdate))/(60*60) 
+					 and (sarea213.type = 3  or sarea213.type is NULL)
+		GROUP BY a13.selectedcarrier,sarea213.`name` 	
+       )t3
+   			on CONCAT_WS('-',a.selectedcarrier,sarea2.`name` ) = CONCAT_WS('-',t3.selectedcarrier13,t3.areaparentname13)
+   			
+   			
+   	left join (
+       			select a14.selectedcarrier as selectedcarrier14, a14.receivingzipcode,sarea214.`name` as "areaparentname14" ,count(*) as num4
+          from scm_delivery_orderintransit  a14
+						LEFT JOIN scm_carrier carrier14
+			      on carrier14.carrierid = a14.selectedcarrier
+						LEFT JOIN (select DISTINCT `CODE`,parent_id from  sys_area) sarea14
+							on a14.receivingzipcode = sarea14.`code`
+						LEFT JOIN sys_area sarea214
+							on sarea14.parent_id = sarea214.id
+						LEFT JOIN  (select zipcode,limitations ,CARRIERID   from scm_carrierzipcode)  zz
+						on a14.receivingzipcode  = zz.zipcode
+						and a14.selectedcarrier  = zz.CARRIERID
+					where  1=1
+				 <if test="createDateStart != null">
+				AND a14.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a14.actualshipdate &lt;= #{createDateEnd}
+			</if>
+					 and   a14.trackingstatus =1002
+					 and   a14.receiptorrejecttime is not NULL
+					 and (sarea214.type = 3  or sarea214.type is NULL)
+		GROUP BY a14.selectedcarrier,sarea214.`name` 	
+       )t4
+   			on CONCAT_WS('-',a.selectedcarrier,sarea2.`name` ) = CONCAT_WS('-',t4.selectedcarrier14,t4.areaparentname14)
+   
+	 WHERE
+	     1=1 
+	        <if test="createDateStart != null">
+				AND a.actualshipdate &gt;= #{createDateStart}
+			</if>
+			<if test="createDateEnd != null">
+				AND a.actualshipdate &lt;= #{createDateEnd}
+			</if>
+			 <if test="selectedcarrier != null  and selectedcarrier != '' ">
+				AND a.selectedcarrier = #{selectedcarrier}
+			</if>
+	
+	 and (sarea2.type = 3  or sarea2.type is NULL)
+	 GROUP BY 
+          
+             a.selectedcarrier,
+						carrier.carriername,
+						sarea2.`name`
+	</select>
+	
+	
+	
+</mapper>

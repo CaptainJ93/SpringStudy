@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.DeliveryOrderintransitPathdetailDao">
+    
+	<sql id="deliveryOrderintransitPathdetailColumns">
+		a.id AS "id",
+		a.pathid AS "pathid",
+		a.pathdesc AS "pathdesc",
+		a.pathdatetime AS "pathdatetime",
+		a.deliverycode AS "deliverycode",
+		a.receiptorrejecttime AS "receiptorrejecttime",
+		a.receiptperson AS "receiptperson",
+		a.deliveryperson AS "deliveryperson",
+		a.deliverypersoncontact AS "deliverypersoncontact",
+		a.longitude AS "longitude",
+		a.dimensionvalue AS "dimensionvalue",
+		a.trackingnumber AS "trackingnumber",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime"
+	</sql>
+	
+	<sql id="deliveryOrderintransitPathdetailJoins">
+	</sql>
+    
+	<select id="get" resultType="DeliveryOrderintransitPathdetail">
+		SELECT 
+			<include refid="deliveryOrderintransitPathdetailColumns"/>
+		FROM scm_delivery_orderintransit_pathdetail a
+		<include refid="deliveryOrderintransitPathdetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DeliveryOrderintransitPathdetail">
+		SELECT 
+			<include refid="deliveryOrderintransitPathdetailColumns"/>
+		FROM scm_delivery_orderintransit_pathdetail a
+		<include refid="deliveryOrderintransitPathdetailJoins"/>
+		<where>
+			1=1
+		</where>
+		
+		<if test="trackingnumber != null and trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber=#{trackingnumber}
+		</if>
+		
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DeliveryOrderintransitPathdetail">
+		SELECT 
+			<include refid="deliveryOrderintransitPathdetailColumns"/>
+		FROM scm_delivery_orderintransit_pathdetail a
+		<include refid="deliveryOrderintransitPathdetailJoins"/>
+		<where>
+			1=1
+		</where>
+		
+		<if test="trackingnumber != null and trackingnumber != null and trackingnumber != ''">
+			AND a.trackingnumber=#{trackingnumber}
+		</if>
+				
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_delivery_orderintransit_pathdetail(
+			id,
+			pathid,
+			pathdesc,
+			pathdatetime,
+			deliverycode,
+			receiptorrejecttime,
+			receiptperson,
+			deliveryperson,
+			deliverypersoncontact,
+			longitude,
+			dimensionvalue,
+			trackingnumber,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime
+		) VALUES (
+			#{id},
+			#{pathid},
+			#{pathdesc},
+			#{pathdatetime},
+			#{deliverycode},
+			#{receiptorrejecttime},
+			#{receiptperson},
+			#{deliveryperson},
+			#{deliverypersoncontact},
+			#{longitude},
+			#{dimensionvalue},
+			#{trackingnumber},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_delivery_orderintransit_pathdetail SET 	
+			pathid = #{pathid},
+			pathdesc = #{pathdesc},
+			pathdatetime = #{pathdatetime},
+			deliverycode = #{deliverycode},
+			receiptorrejecttime = #{receiptorrejecttime},
+			receiptperson = #{receiptperson},
+			deliveryperson = #{deliveryperson},
+			deliverypersoncontact = #{deliverypersoncontact},
+			longitude = #{longitude},
+			dimensionvalue = #{dimensionvalue},
+			trackingnumber = #{trackingnumber},
+			recordcreatedtime = #{recordcreatedtime},
+			recordcreatedby = #{recordcreatedby},
+			lastupdatedby = #{lastupdatedby},
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_delivery_orderintransit_pathdetail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

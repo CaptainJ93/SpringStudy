@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans default-lazy-init="false">
+
+	<bean id="userAction" class="com.best1.action.UserAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+	</bean>
+
+	<bean id="templateAction" class="com.best1.action.TemplateAction" scope="prototype">
+		<property name="templateService">
+			<ref bean="templateService" />
+		</property>
+		<property name="queryService">
+			<ref bean="queryService"/>
+		</property>
+		<property name="exportAuditService">
+			<ref bean="exportAuditService"/>
+		</property>
+	</bean>
+	
+	<bean id="loginAction" class="com.best1.action.LoginAction" scope="prototype">
+		<property name="loginService">
+			<ref bean="loginService" />
+		</property>
+	</bean>
+	
+	<bean id="zTreeAction" class="com.best1.action.ZTreeAction" scope="prototype">
+		<property name="treeInfoService">
+			<ref bean="treeInfoService" />
+		</property>
+	</bean>
+	
+	<bean id="InitAction" class="com.best1.base.InitAction" init-method="init">
+		<property name="paramValueService">
+			<ref bean="paramValueService" />
+		</property>
+	</bean>
+	
+	<bean id="cacheAction" class="com.best1.base.common.CacheAction" scope="prototype">
+	</bean>
+	
+	<bean id="loggingAction" class="com.best1.action.LoggingAction" scope="prototype">
+		<property name="loggingService">
+			<ref bean="loggingService" />
+		</property>
+	</bean>
+	
+	<bean id="roleAction" class="com.best1.action.RoleAction" scope="prototype">
+		<property name="roleService">
+			<ref bean="roleService" />
+		</property>
+	</bean>
+	
+	<bean id="privilegeAction" class="com.best1.action.PrivilegeAction" scope="prototype">
+		<property name="privilegeService">
+			<ref bean="privilegeService" />
+		</property>
+	</bean>
+	
+	<bean id="menuAction" class="com.best1.action.MenuAction" scope="prototype">
+		<property name="menuService">
+			<ref bean="menuService" />
+		</property>
+	</bean>
+	
+	<bean id="departmentAction" class="com.best1.action.DepartmentAction" scope="prototype">
+		<property name="departmentService">
+			<ref bean="departmentService" />
+		</property>
+	</bean>
+	
+	<bean id="fileConfigAction" class="com.best1.action.FileConfigAction" scope="prototype">
+	</bean>
+	
+</beans>

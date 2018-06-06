@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CT2.0--Demo</title>
+<link rel="stylesheet" href="css/bridge.css" type="text/css" media="screen,projection"/>
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/icon.css">
+
+
+
+<script src="js/iepngfix_tilebg.js" type="text/javascript"></script> <!--For ie6.0 png Bug-->
+<script src="js/jquery.min.js" type="text/javascript"></script><!--jquery-->
+<script type="text/javascript" src="js/jquery.hldatabind.js"></script>
+<script src="js/jquery.easyui.min.js" type="text/javascript"></script>
+<script src="js/view.js"></script><!--为了预览效果，临时的JS-->
+<script src="js/iepngfix_tilebg.js"></script> <!--For ie6.0 png Bug-->
+
+
+<style>img, div, table, tr, th, h1, li, a { behavior: url(js/iepngfix.htc) }</style><!--For ie6.0 png Bug-->
+<style>
+html,body{ overflow:hidden;}
+</style>
+
+<script type="text/javascript">
+function changeMenu(){
+	$("#tt2").html('<li><div class="tree-node" node-id="" style="cursor: pointer;"><span class="tree-indent"></span><span class="tree-icon tree-file"></span><span class="tree-title"><a href="system/text!insertLoginLog.action" target="mainwindow">2222222</a></span></div></li>');
+}
+function goChangePwd()
+{
+	$("#passwordDialog").dialog("open");
+}		
+		$(function(){
+			$('#tt2').tree({
+				checkbox: false,
+				url: 'demo/tree_data.json',
+				onClick:function(node){
+					$(this).tree('toggle', node.target);
+					//alert('you dbclick '+node.text);
+				},
+				onContextMenu: function(e, node){
+					e.preventDefault();
+					$('#tt2').tree('select', node.target);
+					$('#mm').menu('show', {
+						left: e.pageX,
+						top: e.pageY
+					});
+				}
+			});
+			
+			
+			$("#passwordDialog").dialog( {
+				autoOpen : false,
+				resizable : true,
+				height : 200,
+				width : 300,
+				title : "密码修改",
+				modal : true
+			}).dialog("close");
+						
+			$("#changePassword").click(function() {		
+			if($("#confirmPwd").val()!=$("#newPwd").val()){
+			alert("两次密码输入不同，请重输！");
+			}
+			else{
+			 var systemUserId=100;	
+			 $.ajax({
+			 url:'/bsp/system/systemUser!changePassword.action',
+			 type:'post',
+			 dataType:'json',
+			 data:{"systemUserId":systemUserId,"oldPwd":$("#oldPwd").val(),"newPwd":$("#newPwd").val()},
+			 success:function(data){
+			 alert("操作成功！");
+			 $("#passwordDialog").dialog("close");
+			 }
+			 });
+			 }
+		});
+		
+		$("#closePasswordBtn").click(function() {		
+			$("#passwordDialog").dialog("close")
+		});
+			
+		});
+	</script>
+</head>
+
+<body>
+	<div class="head">
+	   <h1><a href="test()">中国电信(返回首页)</a></h1>
+	   <div class="systemOpreate">
+	      <a title="返回" onClick="window.history.back(-1)"><img src="images/back.png"></a>
+		  <a title="个人账户信息"><img src="images/information.png"></a>
+		  <a title="公告"><img src="images/notice.png"></a>
+		  <a title="帮助"><img src="images/help.png"></a>
+		  <a title="重新登录"><img src="images/login.png"></a>
+		  <a title="注销"><img src="images/restart.png"></a>
+		  <a title="退出"><img src="images/quit.png"></a>
+	   </div>
+	   
+	   <!---->
+	   <ul class="meau">
+	       <li class="silde sed"><a>客户管理</a></li>
+		   <li class="silde"><a>积分管理</a></li>
+		   <!-- 
+		   <li class="silde"><a>协议管理</a></li>
+		   <li class="silde"><a>页面构件</a></li>
+		   <li class="silde"><a>规范</a></li>
+		   <li class="silde"><a>外部接口测试</a></li>
+		   <li class="silde"><a>...</a></li>
+		   -->
+	   </ul>
+	   <div class="sildeCon">
+		   <ul class="block">
+			   <li><a href="#" onclick="changeMenu()">群组管理</a></li>
+			   <li><a href="#">客户资料管理</a></li>
+			   <li><a href="#">客户群管理</a></li>
+			   <li><a href="system/customService/customServiceList.jsp" target="mainwindow">客户服务管理</a></li>
+			   <li><a href="system/role/roleDeleteList.jsp" target="mainwindow">角色删除</a></li>
+		   </ul>
+		   <ul>
+		       <li><a href="system/busiLog/busiLogList.jsp" target="mainwindow">业务日志查询</a></li>
+		       <li><a href="system/menu/menuList.jsp" target="mainwindow">菜单管理</a></li>
+		       <li><a href="system/privilege/privilegeList.jsp" target="mainwindow">权限管理</a></li>
+		       <li><a href="system/role/roleList.jsp" target="mainwindow">角色管理</a></li>
+		       <li><a href="system/loginLog/loginLogList.jsp" target="mainwindow">系统用户登陆日志查询</a></li>
+		       <li><a href="system/menuAccessLog/menuAccessLogList.jsp" target="mainwindow">菜单操作日志查询</a></li>
+		       <li><a href="system/systemUser/systemUserList.jsp" target="mainwindow">系统用户管理</a></li>
+		       <li><a href="system/channelAth/channelAthList.jsp" target="mainwindow">渠道授权管理</a></li>
+			   <li><a href="html/resource/attributeConfig/attributeConfigList.jsp" target="mainwindow">积分余额</a></li>
+		   		<li><a href="system/pageItem/pageItemList.jsp" target="mainwindow">页面元素管理</a></li>
+		   		<li><a href="#" onclick="goChangePwd();">修改密码</a></li>
+		   		 
+		   </ul>
+		   <ul>
+			   <li><a href="#">协议模板</a></li>
+		   </ul>
+		   <ul>
+		   		<li><a href="demo/list.html" target="mainwindow">页面表格样式</a></li>
+				<li><a href="demo/datebox.html" target="mainwindow">日期输入框</a></li>
+				<li><a href="demo/msel.html"  target="mainwindow">级联样式</a></li>
+				<li><a href="demo/home.html" target="mainwindow">页面内部窗口</a></li>
+				<li><a href="demo/dialog.html" target="mainwindow">对话框</a></li>
+				<li><a href="demo/tree.html" target="mainwindow">树型控件</a></li>
+				<li><a href="demo/tabs.html" target="mainwindow">Tab页</a></li>
+				<li><a href="demo/colortip.html" target="mainwindow">ColorTip提示信息</a></li>
+				<li><a href="demo/vali.html" target="mainwindow">验证表单</a></li>
+				<li><a href="demo/examples.htm" target="mainwindow">数据绑定</a></li>
+		   </ul>
+		   <ul>
+		   		<li><a href="rule.htm" target="mainwindow">规范</a></li>
+		   </ul>
+		   <ul>
+		   		<li><a href="system/text!insertLoginLog.action" target="mainwindow">登陆日志插入测试</a></li>
+		   		<li><a href="system/text!insertMenuAccessLog.action" target="mainwindow">菜单日志插入测试</a></li>
+		   		<li><a href="system/text!insertBusiLog.action" target="mainwindow">业务日志插入测试</a></li>
+		   		<li><a href="system/text!ICustomServiceService.action" target="mainwindow">客户服务目录接口测试</a></li>		   				   		
+		   </ul>
+	   </div>
+	   <!---->
+	   
+	</div>
+	
+	<div class="left">
+		<ul id="tt2">
+			<li><a href="system/text!insertLoginLog.action" target="mainwindow">登陆日志插入测试1</a></li>
+			<li><a href="system/text!insertLoginLog.action" target="mainwindow">登陆日志插入测试1</a></li>
+		</ul>
+		<div id="mm" class="easyui-menu" style="width:120px;">
+			<div onclick="append()" iconCls="icon-add">Append</div>
+			<div onclick="remove()" iconCls="icon-remove">Remove</div>
+			<div class="menu-sep"></div>
+			<div onclick="expand()">Expand</div>
+			<div onclick="collapse()">Collapse</div>
+		</div>
+	</div>
+	
+	<div class="split">
+	    <img src="images/Lefthidden.gif" class="hidden">
+		<img src="images/Leftshow.gif" class="show">
+	</div>
+	
+	<div class="main">
+	<div class="foot">
+	    <ul>
+		    <li><span class="Fleft">.</span><a class="sed" href="SearchList.htm" target="mainwindow">技术支持:好易购技术部</a><span class="Fright">.</span></li>
+		</ul>
+	</div>
+		<iframe id="mainwindow" name="mainwindow" src="test1.jsp"  frameborder="no" class="iframe"></iframe>
+	</div>
+	
+	
+	
+		<div id="passwordDialog">
+		<form action="" id="passwordForm" method="post">
+		<div class="list searchList">
+				<ul class="listShow">
+				   <li><label>旧密码</label><input type="password" id="oldPwd" class="textMiddle"/></li>
+				   <li><label>新密码</label><input type="password" id="newPwd" class="textMiddle"/></li>
+				   <li><label>确认密码</label><input type="password" id="confirmPwd" class="textMiddle"/></li>  
+				</ul>
+				<ul class="listBtn">
+					<li><input type="button" id="changePassword" value="确认"/></li>
+					<li><input type="button" id="closePasswordBtn" value="关闭"/></li>
+				</ul>
+			</div>
+		</form>
+		</div>
+</body>
+
+</html>

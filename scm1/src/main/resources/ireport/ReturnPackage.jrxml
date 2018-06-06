@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReturnPackage" pageWidth="297" pageHeight="425" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="acba1bd9-b5cb-4ec9-afce-f1477ee9226a">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="23"/>
+	<parameter name="returnid" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["classpath:/ireport/"]]></defaultValueExpression>
+	</parameter>
+	<field name="customername" class="java.lang.String"/>
+	<field name="returnid" class="java.lang.Long"/>
+	<field name="telephonenumber" class="java.lang.String"/>
+	<field name="mobilenumber" class="java.lang.String"/>
+	<field name="receiveaddress" class="java.lang.String"/>
+	<field name="warehousename" class="java.lang.String"/>
+	<field name="warehousetel" class="java.lang.String"/>
+	<field name="warehouseadd" class="java.lang.String"/>
+	<field name="refundcodnumber" class="java.lang.Double"/>
+	<field name="isneedinvoice" class="java.lang.Integer"/>
+	<field name="receiptdeliveryorderid" class="java.lang.String"/>
+	<field name="isfacetofacerefund" class="java.lang.String"/>
+	<field name="returntype" class="java.lang.String"/>
+	<field name="returnPackageDetail" class="java.util.List"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="260" splitType="Stretch">
+			<componentElement>
+				<reportElement mode="Transparent" x="0" y="98" width="116" height="35" uuid="51f0ad99-2d9d-4a98-83ab-4ec24608c9af"/>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$F{returnid}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="13" width="53" height="14" uuid="d7bb49f1-bcd3-461d-a4ac-913f82fe7ceb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[寄件时间：]]></text>
+			</staticText>
+			<textField pattern="yyyy-MM-dd HH:mm:ss">
+				<reportElement x="53" y="13" width="128" height="14" uuid="68bdb07b-713b-4386-83d2-90985e59a950"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="27" width="257" height="1" uuid="b00350e0-2fe9-46f2-ad11-ecc0c6edacd8"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="28" width="44" height="14" uuid="ff827004-c441-484a-b934-bcd7cfa5903d"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[寄件人：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="44" y="30" width="135" height="14" uuid="1a990f8e-1d7a-488a-b8bd-afa65d96a4ed"/>
+				<textElement>
+					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{customername}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement mode="Transparent" x="181" y="0" width="116" height="35" uuid="3bf7a279-05ac-4d90-84d1-cb744bd7538c"/>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$F{receiptdeliveryorderid}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="42" width="36" height="14" uuid="363984f3-1933-46df-94f0-3e011b690aee"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[电话：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="56" width="36" height="14" uuid="dabda1cf-b9a6-40ad-8d55-d859981b3cae"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[地址：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="35" y="42" width="242" height="14" uuid="f1291234-bd8a-4fa2-afd8-1f7abf77b539"/>
+				<textElement>
+					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobilenumber}+"/"+$F{telephonenumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="35" y="56" width="242" height="14" uuid="277137e2-9e1a-4ce6-8ce0-928983369b4b"/>
+				<textElement>
+					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receiveaddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="59" height="14" uuid="6f4f1cd1-12da-4869-83c5-577b1a0349b3"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[发票回收：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="58" y="70" width="93" height="14" uuid="831d16e2-92c3-480a-b552-114587cb8274"/>
+				<textElement>
+					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{isneedinvoice}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="84" width="57" height="14" uuid="e5b861d6-b844-49b1-bedc-acbd9d3cd9f6"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[退款金额：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="57" y="84" width="180" height="14" uuid="2bde8a9e-aedc-4450-91c9-87797ac9cf40"/>
+				<textElement>
+					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{refundcodnumber}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="133" width="297" height="100" uuid="0c944796-95ba-4cc2-b4c2-98e7c5afbaf5"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{returnPackageDetail})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"ReturnPackage_Product_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

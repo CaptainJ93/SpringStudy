@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TemplateSql">
+    <typeAlias alias="UserInfo" type="com.best1.domain.UserInfo" />
+    <typeAlias alias="TmpUser" type="com.best1.domain.TmpUser" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select
+	      a.userid as userid,
+	      a.username as username,
+	      a.mobileno as sex,
+	      a.status as levl
+	    from tb_best1_user a
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userid">
+				<![CDATA[
+					a.userid = #userid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="username">
+				<![CDATA[
+					a.username like '%$username$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userids">
+			    a.userid in (
+			        <iterate property="userids" conjunction = ",">
+				        #userids[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询 -->
+	<resultMap class="java.util.HashMap" id="getUserInfo">
+		<result property="userid" column="USERID" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="username" column="USERNAME" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="sex" column="SEX" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="levl" column="LEVL" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+	</resultMap>
+	<select id="getUserInfos" resultMap="getUserInfo" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countUserInfo" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_user a
+		<include refid="Where_Clause" />
+	</select>
+	
+    <!-- 新增 -->
+	<insert id="insertUserInfo" parameterClass="UserInfo">
+	insert into tb_best1_user(
+	  USERID,
+	  USERNAME,
+	  LOCATION,
+	  DEFAULTROLE,
+	  STARTDATE,
+	  ENDDATE,
+	  PASSWORD,
+	  USERLOGINID)
+    values(
+      #userid#,
+      #username#,
+      1,
+      1,
+      sysdate,
+      sysdate,
+      1,
+      1)
+    </insert>
+    
+    <!-- 修改 -->
+	<update id="updateUserInfo" parameterClass="UserInfo">
+		update tb_best1_user
+		set	username = #username#
+		where userid = #userid#
+	</update>
+    
+    <!-- 删除 -->
+	<delete id="deleteUserInfo" parameterClass="java.util.HashMap" >
+		delete from tb_best1_user a 
+		<include refid="Where_Clause" />
+	</delete> 
+	
+	
+	<resultMap class="java.util.HashMap" id="getTmpUser">
+		<result property="province" column="PROVINCE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="city" column="CITY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="country" column="COUNTRY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="num" column="NUM" javaType="java.lang.Integer" jdbcType="int" nullValue="-1"/>
+	</resultMap>
+	<select id="getTmpUsersForCity" resultMap="getTmpUser" parameterClass="java.util.HashMap">
+		select PROVINCE,CITY,COUNTRY,PROVINCENO,CITYNO,num from (
+select
+        a.PROVINCE as PROVINCE,
+        a.CITY as CITY,
+        a.PROVINCENO as PROVINCENO,
+        a.CITYNO as CITYNO,
+        a.COUNTRY as COUNTRY,
+        count(userid) as num
+      from TMP_USER a where a.province = #province# and a.city = #city#
+      group by a.PROVINCE,a.CITY,a.COUNTRY,a.PROVINCENO,a.CITYNO
+union all
+select
+        a.PROVINCE as PROVINCE,
+        a.CITY as CITY,
+        a.PROVINCENO as PROVINCENO,
+        99999 as CITYNO,
+        '总计' as COUNTRY,
+        count(userid) as num
+      from TMP_USER a where a.province = #province# and a.city = #city#
+      group by a.PROVINCE,a.CITY,a.PROVINCENO,a.CITYNO
+      )
+      order by PROVINCE,PROVINCENO,CITY,CITYNO
+	</select>
+	
+	<select id="getTmpUsersForCityCount" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from (
+		
+		select PROVINCE,CITY,COUNTRY,PROVINCENO,CITYNO,num from (
+select
+        a.PROVINCE as PROVINCE,
+        a.CITY as CITY,
+        a.PROVINCENO as PROVINCENO,
+        a.CITYNO as CITYNO,
+        a.COUNTRY as COUNTRY,
+        count(userid) as num
+      from TMP_USER a where a.province = #province# and a.city = #city#
+      group by a.PROVINCE,a.CITY,a.COUNTRY,a.PROVINCENO,a.CITYNO
+union all
+select
+        a.PROVINCE as PROVINCE,
+        a.CITY as CITY,
+        a.PROVINCENO as PROVINCENO,
+        99999 as CITYNO,
+        '总计' as COUNTRY,
+        count(userid) as num
+      from TMP_USER a where a.province = #province# and a.city = #city#
+      group by a.PROVINCE,a.CITY,a.PROVINCENO,a.CITYNO
+      )
+      order by PROVINCE,PROVINCENO,CITY,CITYNO
+		
+		)
+	</select>
+	
+	
+	
+	
+	
+	<resultMap class="java.util.HashMap" id="getTmpUser2">
+		<result property="province" column="PROVINCE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="city" column="CITY" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="num" column="NUM" javaType="java.lang.Integer" jdbcType="int" nullValue="-1"/>
+	</resultMap>
+	<select id="getTmpUsersForProvince" resultMap="getTmpUser2" parameterClass="java.util.HashMap">
+					select * from (
+			select a.PROVINCE as PROVINCE,
+			       a.CITY as CITY,
+			       a.PROVINCENO as PROVINCENO,
+			       a.CITYNO as CITYNO,
+			       count(userid) as num
+			  from TMP_USER a
+			 where a.province in ('浙江省', '江苏省')
+			 group by a.PROVINCE, a.CITY, a.PROVINCENO, a.CITYNO
+			union all
+			select a.PROVINCE as PROVINCE,
+			       '总计' as CITY,
+			       a.PROVINCENO as PROVINCENO,
+			       99999 as CITYNO,
+			       count(userid) as num
+			  from TMP_USER a
+			 where a.province in ('浙江省', '江苏省')
+			 group by a.PROVINCE,a.PROVINCENO) b
+			 order by b.PROVINCENO,b.CITYNO
+
+	</select>
+	
+	<select id="getTmpUsersForProvinceCount" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from (
+			select
+        a.PROVINCE as PROVINCE,
+        a.CITY as CITY,
+        a.PROVINCENO as PROVINCENO,
+        a.CITYNO as CITYNO,
+        count(userid) as num
+      from TMP_USER a where a.province in ('浙江省','江苏省')
+      group by a.PROVINCE,a.CITY,a.PROVINCENO,a.CITYNO
+union all
+select
+        a.PROVINCE as PROVINCE,
+        '总计' as CITY,
+        88888 as PROVINCENO,
+        99999 as CITYNO,
+        count(userid) as num
+      from TMP_USER a where a.province in ('浙江省','江苏省')
+      group by a.PROVINCE,a.PROVINCENO
+		)
+	</select>
+	
+	
+	
+	
+	
+	<resultMap class="java.util.HashMap" id="getTmpUser3">
+		<result property="province" column="PROVINCE" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="num" column="NUM" javaType="java.lang.Integer" jdbcType="int" nullValue="-1"/>
+	</resultMap>
+	<select id="getTmpUsersForAll" resultMap="getTmpUser3" parameterClass="java.util.HashMap">
+		select
+        a.PROVINCE as PROVINCE,
+        count(userid) as num
+      from TMP_USER a
+      group by a.PROVINCE,a.PROVINCENO
+	</select>
+	
+	<select id="getTmpUsersForAllCount" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from (
+		select
+        a.PROVINCE as PROVINCE,
+        count(userid) as num
+      from TMP_USER a
+      group by a.PROVINCE,a.PROVINCENO )
+	</select>
+</sqlMap>

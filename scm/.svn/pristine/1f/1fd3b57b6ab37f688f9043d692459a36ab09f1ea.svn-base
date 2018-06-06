@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.vws.dao.ScmCarrierapirelationDao">
+    
+	<sql id="scmCarrierapirelationColumns">
+		a.relationid AS "relationid",
+		a.carrierid AS "carrierid",
+		a.carriername AS "carriername",
+		a.apicode AS "apicode",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="scmCarrierapirelationJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmCarrierapirelation">
+		SELECT 
+			<include refid="scmCarrierapirelationColumns"/>
+		FROM scm_carrierapirelation a
+		<include refid="scmCarrierapirelationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmCarrierapirelation">
+		SELECT 
+			<include refid="scmCarrierapirelationColumns"/>
+		FROM scm_carrierapirelation a
+		<include refid="scmCarrierapirelationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmCarrierapirelation">
+		SELECT 
+			<include refid="scmCarrierapirelationColumns"/>
+		FROM scm_carrierapirelation a
+		<include refid="scmCarrierapirelationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_carrierapirelation(
+			relationid,
+			carrierid,
+			carriername,
+			apicode,
+			update_date,
+			del_flag
+		) VALUES (
+			#{relationid},
+			#{carrierid},
+			#{carriername},
+			#{apicode},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_carrierapirelation SET 	
+			relationid = #{relationid},
+			carrierid = #{carrierid},
+			carriername = #{carriername},
+			apicode = #{apicode},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE scm_carrierapirelation SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

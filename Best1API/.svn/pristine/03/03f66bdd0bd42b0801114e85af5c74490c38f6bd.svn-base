@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.crm.TcrmCustomeraddressMapper">
+
+<resultMap type="com.best1.api.entity.crm.TcrmCustomeraddress" id="customerAddress">
+<result column="ADDRESSID" jdbcType="DECIMAL" property="addressid" />
+<result column="CUSTOMERID" jdbcType="DECIMAL" property="customerid" />
+<result column="COUNTRY" jdbcType="VARCHAR" property="country" />
+<result column="ZIPCODE" jdbcType="DECIMAL" property="zipcode" />
+<result column="ISCONTACTADDRESS" jdbcType="CHAR" property="iscontactaddress" />
+<result column="ISDEFAULT" jdbcType="CHAR" property="isdefault" />
+<result column="ISISLAND" jdbcType="CHAR" property="isisland" />
+<result column="ADDRESS1" jdbcType="VARCHAR" property="address1" />
+<result column="ADDRESS2" jdbcType="VARCHAR" property="address2" />
+
+<result column="CREATEDBY" jdbcType="DECIMAL" property="createdby" />
+<result column="CREATEDTIMESTAMP" jdbcType="DATE" property="createdtimestamp" />
+<result column="LASTMODIFIEDBY" jdbcType="DECIMAL" property="lastmodifiedby" />
+<result column="LASTMODIFIEDTIMESTAMP" jdbcType="DATE" property="lastmodifiedtimestamp" />
+<result column="HOMETELEPHONECONTRYCODE" jdbcType="VARCHAR" property="hometelephonecontrycode" />
+<result column="HOMETELEPHONEAREACODE" jdbcType="VARCHAR" property="hometelephoneareacode" />
+<result column="HOMETELEPHONENUMBER" jdbcType="VARCHAR" property="hometelephonenumber" />
+<result column="MOBILENUMBER" jdbcType="VARCHAR" property="mobilenumber" />
+
+<result column="OFFICEETELEPHONECOUNTRYCODE" jdbcType="VARCHAR" property="officeetelephonecountrycode" />
+<result column="OFFICETELEPHONEAREACODE" jdbcType="VARCHAR" property="officetelephoneareacode" />
+<result column="OFFICETELEPHONENUMBER" jdbcType="VARCHAR" property="officetelephonenumber" />
+<result column="OFFICETELEPHONEEXTENSION" jdbcType="VARCHAR" property="officetelephoneextension" />
+
+<result column="FAXCOUNTRYCODE" jdbcType="VARCHAR" property="faxcountrycode" />
+<result column="FAXAREACODE" jdbcType="VARCHAR" property="faxareacode" />
+<result column="FAXNUMBER" jdbcType="VARCHAR" property="faxnumber" />
+
+
+</resultMap>
+
+ <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <update id="updateByExampleSelective" parameterType="map">
+  
+    update ET1_CHINA.TCRM_CUSTOMERADDRESS
+    <set>
+      <if test="record.addressid != null">
+        ADDRESSID = #{record.addressid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null">
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.country != null">
+        COUNTRY = #{record.country,jdbcType=DECIMAL},
+      </if>
+      <if test="record.zipcode != null">
+        ZIPCODE = #{record.zipcode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.iscontactaddress != null">
+        ISCONTACTADDRESS = #{record.iscontactaddress,jdbcType=CHAR},
+      </if>
+      <if test="record.isdefault != null">
+        ISDEFAULT = #{record.isdefault,jdbcType=CHAR},
+      </if>
+      <if test="record.isisland != null">
+        ISISLAND = #{record.isisland,jdbcType=CHAR},
+      </if>
+      <if test="record.address1 != null">
+        ADDRESS1 = #{record.address1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address2 != null">
+        ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdby != null">
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null">
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null">
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.hometelephonecountrycode != null">
+        HOMETELEPHONECOUNTRYCODE = #{record.hometelephonecountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hometelephoneareacode != null">
+        HOMETELEPHONEAREACODE = #{record.hometelephoneareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hometelephonenumber != null">
+        HOMETELEPHONENUMBER = #{record.hometelephonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobilenumber != null">
+        MOBILENUMBER = #{record.mobilenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officeetelephonecountrycode != null">
+        OFFICEETELEPHONECOUNTRYCODE = #{record.officeetelephonecountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officetelephoneareacode != null">
+        OFFICETELEPHONEAREACODE = #{record.officetelephoneareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officetelephonenumber != null">
+        OFFICETELEPHONENUMBER = #{record.officetelephonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officetelephoneextension != null">
+        OFFICETELEPHONEEXTENSION = #{record.officetelephoneextension,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faxcountrycode != null">
+        FAXCOUNTRYCODE = #{record.faxcountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faxareacode != null">
+        FAXAREACODE = #{record.faxareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faxnumber != null">
+        FAXNUMBER = #{record.faxnumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+	<!--
+		获取用户: 输出直接映射到对象, login_name列要"as loginName"以方便映射 ,team_id as "team.id"创建team对象并赋值
+	-->
+	<select id="selectByPrimaryKey" parameterType="long" resultType="TcrmCustomeraddress">
+		select addressid, customerid, country,
+		zipcode,iscontactaddress,isdefault,isisland, address1,address2,createdby,createdtimestamp,lastmodifiedby,lastmodifiedtimestamp,
+ hometelephonecountrycode,hometelephoneareacode, hometelephonenumber,mobilenumber,officeetelephonecountrycode,officetelephoneareacode,
+ officetelephonenumber, officetelephoneextension,faxcountrycode,faxareacode,faxnumber
+		from TCRM_CUSTOMERADDRESS
+		where addressid=#{addressid}
+	</select>
+
+	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
+	<select id="selectByCustomer" parameterType="com.best1.api.entity.crm.TcrmCustomeraddress" resultType="com.best1.api.entity.crm.TcrmCustomeraddress">
+			select ad.addressid, ad.customerid, country,
+		zipcode,iscontactaddress,isdefault,isisland, address1,address2,ad.createdby,ad.createdtimestamp,ad.lastmodifiedby,ad.lastmodifiedtimestamp,
+ hometelephonecountrycode,hometelephoneareacode, hometelephonenumber,mobilenumber,officeetelephonecountrycode,officetelephoneareacode,
+ officetelephonenumber, officetelephoneextension,faxcountrycode,faxareacode,faxnumber,adinfo.RECEIVERNAME
+		from et1_china.tcrm_customerbaseaddress  ad ,TOAF_ADDRESSEXTRAINFO adinfo
+	where   ad.addressid=adinfo.addressid
+		<if test="addressid != null">
+			and ad.addressid=#{addressid}
+			</if>
+			<if test="customerid != null">
+				and ad.customerid=#{customerid}
+			</if>
+			<if test="zipcode != null">
+				and ad.zipcode=#{zipcode}
+			</if>
+			<if test="address1 != null  and address1 != ''">
+				and ad.address1=#{address1}
+			</if>
+			<if test="address2 != null and address2 != ''">
+				and ad.address2=#{address2}
+			</if>
+			<if test="mobilenumber != null and mobilenumber != ''">
+				and ad.mobilenumber=#{mobilenumber}
+			</if>
+			<if test="hometelephonecountrycode != null and hometelephonecountrycode != ''">
+				and ad.hometelephonecountrycode=#{hometelephonecountrycode}
+			</if>
+			<if test="hometelephoneareacode != null and hometelephoneareacode != ''">
+				and ad.hometelephoneareacode=#{hometelephoneareacode}
+			</if>
+			<if test="hometelephonenumber != null and hometelephonenumber != '' ">
+				and ad.hometelephonenumber=#{hometelephonenumber}
+			</if>
+			<if test="receivername != null and receivername != ''">
+				and adinfo.receivername=#{receivername}
+			</if>
+
+	</select>
+
+
+	<insert id="insert" parameterType="TcrmCustomeraddress" useGeneratedKeys="false" keyProperty="ADDRESSID">
+		 insert into    TCRM_CUSTOMERADDRESS (addressid, customerid, country,
+		zipcode,iscontactaddress,isdefault,isisland, address1,address2,createdby,createdtimestamp,lastmodifiedby,lastmodifiedtimestamp,
+ hometelephonecountrycode,hometelephoneareacode, hometelephonenumber,mobilenumber,officeetelephonecountrycode,officetelephoneareacode,
+ officetelephonenumber, officetelephoneextension,faxcountrycode,faxareacode,faxnumber)
+    values (#{addressid}, #{customerid}, #{country},#{zipcode},#{iscontactaddress:VARCHAR}
+      #{isdefault:VARCHAR}#, #{isisland:VARCHAR}#,#{address1:VARCHAR}#,#{address2:VARCHAR}#,#{createdby}, #{createdtimestamp:DATE}#,
+      #{lastmodifiedby}, #{lastmodifiedtimestamp:DATE}#, #{hometelephonecountrycode:VARCHAR},
+      #{hometelephoneareacode:VARCHAR}, #{hometelephonenumber:VARCHAR}, #{mobilenumber:VARCHAR},
+      #{officeetelephonecountrycode:VARCHAR}, #{officetelephoneareacode:VARCHAR},
+      #{officetelephonenumber:VARCHAR}, #{officetelephoneextension:VARCHAR}, #{faxcountrycode:VARCHAR},
+      #{faxareacode:VARCHAR}, #{faxnumbe:VARCHAR}}
+)
+	</insert>
+	
+	
+<select id="fetchAddressId"  resultType="Long"   >
+     select  Platform_API.get_custaddrseq() as result from dual
+  </select>
+  
+<select id="fetchAddressByCustomer"  statementType="CALLABLE" parameterType="java.util.Map">
+   { call Platform_API.get_customeraddress(
+     #{an_custid,mode=IN,jdbcType=DECIMAL},
+     #{an_zipcode,mode=IN,jdbcType=DECIMAL},
+     #{an_address2,mode=IN,jdbcType=VARCHAR},
+     #{ri_Msgs,jdbcType=CURSOR,mode=OUT,resultMap=customerAddress,javaType=java.sql.ResultSet})
+   }
+   
+  </select>
+
+
+
+ 
+ <select id="createTempCustomerAddress" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.sp_ins_tbcustaddr(
+     #{ai_CustomerID,mode=IN,jdbcType=DECIMAL},
+     #{ai_AddressID,mode=IN,jdbcType=DECIMAL},
+     #{ai_zipcode,mode=IN,jdbcType=DECIMAL},
+     #{ai_address1,mode=IN,jdbcType=VARCHAR},
+     #{ai_address2,mode=IN,jdbcType=VARCHAR},
+     #{ai_Mobile,mode=IN,jdbcType=VARCHAR},
+     #{ai_HomeNum_Area,mode=IN,jdbcType=VARCHAR},
+     #{ai_HomeNum_Dtl,mode=IN,jdbcType=VARCHAR},
+     #{ai_Receivername,mode=IN,jdbcType=VARCHAR},
+     #{ai_CreatedBy,mode=IN,jdbcType=DECIMAL},
+     #{ri_RtnCode,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+ <select id="updateTempCustomerAddress" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.sp_upd_tbcustaddr(
+     #{ai_AddressID,mode=IN,jdbcType=DECIMAL},
+     #{ai_CustomerID,mode=IN,jdbcType=DECIMAL},
+     #{ai_zipcode,mode=IN,jdbcType=DECIMAL},
+     #{ai_address1,mode=IN,jdbcType=VARCHAR},
+     #{ai_address2,mode=IN,jdbcType=VARCHAR},
+     #{ai_Mobile,mode=IN,jdbcType=VARCHAR},
+     #{ai_HomeNum_Area,mode=IN,jdbcType=VARCHAR},
+     #{ai_HomeNum_Dtl,mode=IN,jdbcType=VARCHAR},
+     #{ai_Receivername,mode=IN,jdbcType=VARCHAR},
+     #{ai_CreatedBy,mode=IN,jdbcType=DECIMAL},
+     #{ri_RtnCode,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+  
+  <select id="createCustomerAddress" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.InsertCustomerAddress(
+     #{an_addressid,mode=IN,jdbcType=DECIMAL},
+     #{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+  <select id="modifyCustomerAddress" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.ModifyCustomerAddress(
+     #{an_customerid,mode=IN,jdbcType=DECIMAL},
+     #{an_addressid,mode=IN,jdbcType=DECIMAL},
+     #{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+   <select id="modifyAddressExtraInfo" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.ModifyAddressExtraInfo(
+     #{V_CUST_ID,mode=IN,jdbcType=DECIMAL},
+     #{V_ADDRESSID,mode=IN,jdbcType=DECIMAL},
+     #{V_RECEIVERNAME,mode=IN,jdbcType=VARCHAR},
+     #{V_CreatedBy,mode=IN,jdbcType=DECIMAL},
+     #{rtn_code,mode=OUT,jdbcType=DECIMAL})}
+  </select>
+  
+  <select id="isExistAddress" statementType="CALLABLE" parameterType="java.util.Map">
+     {call Platform_API.is_existaddress(
+     #{an_custid,mode=IN,jdbcType=DECIMAL},
+     #{an_address1,mode=IN,jdbcType=VARCHAR},
+     #{an_address2,mode=IN,jdbcType=VARCHAR},
+     #{an_CreatedBy,mode=IN,jdbcType=DECIMAL},
+     #{ri_Msgs,jdbcType=CURSOR,mode=OUT,resultMap=customerAddress,javaType=java.sql.ResultSet})
+    }
+  </select>
+  
+  
+    <select id="countByExample" parameterType="com.best1.api.entity.crm.TcrmCustomeraddressExample" resultType="java.lang.Integer">
+   
+    select count(*) from ET1_CHINA.TCRM_CUSTOMERADDRESS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.crm.TcrmCustomeraddress">
+   
+    update ET1_CHINA.TCRM_CUSTOMERADDRESS
+    <set>
+      <if test="customerid != null">
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="country != null">
+        COUNTRY = #{country,jdbcType=DECIMAL},
+      </if>
+      <if test="zipcode != null">
+        ZIPCODE = #{zipcode,jdbcType=DECIMAL},
+      </if>
+      <if test="iscontactaddress != null">
+        ISCONTACTADDRESS = #{iscontactaddress,jdbcType=CHAR},
+      </if>
+      <if test="isdefault != null">
+        ISDEFAULT = #{isdefault,jdbcType=CHAR},
+      </if>
+      <if test="isisland != null">
+        ISISLAND = #{isisland,jdbcType=CHAR},
+      </if>
+      <if test="address1 != null">
+        ADDRESS1 = #{address1,jdbcType=VARCHAR},
+      </if>
+      <if test="address2 != null">
+        ADDRESS2 = #{address2,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null">
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null">
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null">
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null">
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hometelephonecountrycode != null">
+        HOMETELEPHONECOUNTRYCODE = #{hometelephonecountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hometelephoneareacode != null">
+        HOMETELEPHONEAREACODE = #{hometelephoneareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="hometelephonenumber != null">
+        HOMETELEPHONENUMBER = #{hometelephonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilenumber != null">
+        MOBILENUMBER = #{mobilenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="officeetelephonecountrycode != null">
+        OFFICEETELEPHONECOUNTRYCODE = #{officeetelephonecountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="officetelephoneareacode != null">
+        OFFICETELEPHONEAREACODE = #{officetelephoneareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="officetelephonenumber != null">
+        OFFICETELEPHONENUMBER = #{officetelephonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="officetelephoneextension != null">
+        OFFICETELEPHONEEXTENSION = #{officetelephoneextension,jdbcType=VARCHAR},
+      </if>
+      <if test="faxcountrycode != null">
+        FAXCOUNTRYCODE = #{faxcountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="faxareacode != null">
+        FAXAREACODE = #{faxareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="faxnumber != null">
+        FAXNUMBER = #{faxnumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ADDRESSID = #{addressid,jdbcType=DECIMAL}
+  </update>
+  
+</mapper> 

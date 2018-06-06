@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReturnPackage_Product_subreport" language="groovy" pageWidth="297" pageHeight="150" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e378d67e-d3bb-46da-bab0-196067783f78">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="productname" class="java.lang.String"/>
+	<field name="colorvalue" class="java.lang.String"/>
+	<field name="stylevalue" class="java.lang.String"/>
+	<field name="productboxingdetail" class="java.lang.String"/>
+	<field name="productdetail" class="java.lang.String"/>
+	<field name="productnumber" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="-1" width="100" height="20" uuid="7182883f-2c67-4430-a114-7a37df2d934c"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="103" y="0" width="100" height="20" uuid="962d1c30-cc3e-4081-9f6a-3dd91216c055"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{colorvalue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="201" y="0" width="100" height="20" uuid="194d607d-b48d-4196-a00b-be7b715781d3"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stylevalue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="28" width="278" height="65" uuid="8966199a-18fd-49fe-8b55-66356ac4f951"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productboxingdetail}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.api.mapper.cmn.TcmnUserMapper">
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.cmn.TcmnUser">
+
+    <id column="USERID" jdbcType="DECIMAL" property="userid" />
+    <result column="LOCATION" jdbcType="DECIMAL" property="location" />
+    <result column="DEFAULTROLE" jdbcType="DECIMAL" property="defaultrole" />
+    <result column="STARTDATE" jdbcType="TIMESTAMP" property="startdate" />
+    <result column="ENDDATE" jdbcType="TIMESTAMP" property="enddate" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="EMAILID" jdbcType="VARCHAR" property="emailid" />
+    <result column="USERLOGINID" jdbcType="VARCHAR" property="userloginid" />
+    <result column="STATUS" jdbcType="DECIMAL" property="status" />
+    <result column="LASTPASSWORDCHANGEDATE" jdbcType="TIMESTAMP" property="lastpasswordchangedate" />
+    <result column="DEPARTMENTID" jdbcType="DECIMAL" property="departmentid" />
+    <result column="DESIGNATIONID" jdbcType="DECIMAL" property="designationid" />
+    <result column="MOBILENO" jdbcType="VARCHAR" property="mobileno" />
+    <result column="COMMUNICATIONMETHOD" jdbcType="DECIMAL" property="communicationmethod" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+   
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    
+    USERID, LOCATION, DEFAULTROLE, STARTDATE, ENDDATE, USERNAME, PASSWORD, EMAILID, USERLOGINID, 
+    STATUS, LASTPASSWORDCHANGEDATE, DEPARTMENTID, DESIGNATIONID, MOBILENO, COMMUNICATIONMETHOD
+  </sql>
+  <select id="selectByExample" parameterType="TcmnUserExample" resultMap="BaseResultMap">
+   
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCMN_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+    <select id="selectByUserloginid" parameterType="java.lang.String" resultMap="BaseResultMap">
+   
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCMN_USER
+    where USERLOGINID = #{userloginid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+   
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TCMN_USER
+    where USERID = #{userid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  
+    delete from ET1_CHINA.TCMN_USER
+    where USERID = #{userid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="TcmnUserExample">
+ 
+    delete from ET1_CHINA.TCMN_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TcmnUser">
+   
+    insert into ET1_CHINA.TCMN_USER (USERID, LOCATION, DEFAULTROLE, 
+      STARTDATE, ENDDATE, USERNAME, 
+      PASSWORD, EMAILID, USERLOGINID, 
+      STATUS, LASTPASSWORDCHANGEDATE, DEPARTMENTID, 
+      DESIGNATIONID, MOBILENO, COMMUNICATIONMETHOD
+      )
+    values (#{userid,jdbcType=DECIMAL}, #{location,jdbcType=DECIMAL}, #{defaultrole,jdbcType=DECIMAL}, 
+      #{startdate,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{emailid,jdbcType=VARCHAR}, #{userloginid,jdbcType=VARCHAR}, 
+      #{status,jdbcType=DECIMAL}, #{lastpasswordchangedate,jdbcType=TIMESTAMP}, #{departmentid,jdbcType=DECIMAL}, 
+      #{designationid,jdbcType=DECIMAL}, #{mobileno,jdbcType=VARCHAR}, #{communicationmethod,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="TcmnUser">
+  
+    insert into ET1_CHINA.TCMN_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        USERID,
+      </if>
+      <if test="location != null">
+        LOCATION,
+      </if>
+      <if test="defaultrole != null">
+        DEFAULTROLE,
+      </if>
+      <if test="startdate != null">
+        STARTDATE,
+      </if>
+      <if test="enddate != null">
+        ENDDATE,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="emailid != null">
+        EMAILID,
+      </if>
+      <if test="userloginid != null">
+        USERLOGINID,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="lastpasswordchangedate != null">
+        LASTPASSWORDCHANGEDATE,
+      </if>
+      <if test="departmentid != null">
+        DEPARTMENTID,
+      </if>
+      <if test="designationid != null">
+        DESIGNATIONID,
+      </if>
+      <if test="mobileno != null">
+        MOBILENO,
+      </if>
+      <if test="communicationmethod != null">
+        COMMUNICATIONMETHOD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=DECIMAL},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=DECIMAL},
+      </if>
+      <if test="defaultrole != null">
+        #{defaultrole,jdbcType=DECIMAL},
+      </if>
+      <if test="startdate != null">
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="emailid != null">
+        #{emailid,jdbcType=VARCHAR},
+      </if>
+      <if test="userloginid != null">
+        #{userloginid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="lastpasswordchangedate != null">
+        #{lastpasswordchangedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentid != null">
+        #{departmentid,jdbcType=DECIMAL},
+      </if>
+      <if test="designationid != null">
+        #{designationid,jdbcType=DECIMAL},
+      </if>
+      <if test="mobileno != null">
+        #{mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="communicationmethod != null">
+        #{communicationmethod,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TcmnUserExample" resultType="java.lang.Integer">
+   
+    select count(*) from ET1_CHINA.TCMN_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+   
+    update ET1_CHINA.TCMN_USER
+    <set>
+      <if test="record.userid != null">
+        USERID = #{record.userid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.location != null">
+        LOCATION = #{record.location,jdbcType=DECIMAL},
+      </if>
+      <if test="record.defaultrole != null">
+        DEFAULTROLE = #{record.defaultrole,jdbcType=DECIMAL},
+      </if>
+      <if test="record.startdate != null">
+        STARTDATE = #{record.startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.enddate != null">
+        ENDDATE = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.username != null">
+        USERNAME = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emailid != null">
+        EMAILID = #{record.emailid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userloginid != null">
+        USERLOGINID = #{record.userloginid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastpasswordchangedate != null">
+        LASTPASSWORDCHANGEDATE = #{record.lastpasswordchangedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.departmentid != null">
+        DEPARTMENTID = #{record.departmentid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.designationid != null">
+        DESIGNATIONID = #{record.designationid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mobileno != null">
+        MOBILENO = #{record.mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.communicationmethod != null">
+        COMMUNICATIONMETHOD = #{record.communicationmethod,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    
+    update ET1_CHINA.TCMN_USER
+    set USERID = #{record.userid,jdbcType=DECIMAL},
+      LOCATION = #{record.location,jdbcType=DECIMAL},
+      DEFAULTROLE = #{record.defaultrole,jdbcType=DECIMAL},
+      STARTDATE = #{record.startdate,jdbcType=TIMESTAMP},
+      ENDDATE = #{record.enddate,jdbcType=TIMESTAMP},
+      USERNAME = #{record.username,jdbcType=VARCHAR},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      EMAILID = #{record.emailid,jdbcType=VARCHAR},
+      USERLOGINID = #{record.userloginid,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      LASTPASSWORDCHANGEDATE = #{record.lastpasswordchangedate,jdbcType=TIMESTAMP},
+      DEPARTMENTID = #{record.departmentid,jdbcType=DECIMAL},
+      DESIGNATIONID = #{record.designationid,jdbcType=DECIMAL},
+      MOBILENO = #{record.mobileno,jdbcType=VARCHAR},
+      COMMUNICATIONMETHOD = #{record.communicationmethod,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TcmnUser">
+   
+    update ET1_CHINA.TCMN_USER
+    <set>
+      <if test="location != null">
+        LOCATION = #{location,jdbcType=DECIMAL},
+      </if>
+      <if test="defaultrole != null">
+        DEFAULTROLE = #{defaultrole,jdbcType=DECIMAL},
+      </if>
+      <if test="startdate != null">
+        STARTDATE = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        ENDDATE = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="emailid != null">
+        EMAILID = #{emailid,jdbcType=VARCHAR},
+      </if>
+      <if test="userloginid != null">
+        USERLOGINID = #{userloginid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="lastpasswordchangedate != null">
+        LASTPASSWORDCHANGEDATE = #{lastpasswordchangedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentid != null">
+        DEPARTMENTID = #{departmentid,jdbcType=DECIMAL},
+      </if>
+      <if test="designationid != null">
+        DESIGNATIONID = #{designationid,jdbcType=DECIMAL},
+      </if>
+      <if test="mobileno != null">
+        MOBILENO = #{mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="communicationmethod != null">
+        COMMUNICATIONMETHOD = #{communicationmethod,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where USERID = #{userid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TcmnUser">
+  
+    update ET1_CHINA.TCMN_USER
+    set LOCATION = #{location,jdbcType=DECIMAL},
+      DEFAULTROLE = #{defaultrole,jdbcType=DECIMAL},
+      STARTDATE = #{startdate,jdbcType=TIMESTAMP},
+      ENDDATE = #{enddate,jdbcType=TIMESTAMP},
+      USERNAME = #{username,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      EMAILID = #{emailid,jdbcType=VARCHAR},
+      USERLOGINID = #{userloginid,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL},
+      LASTPASSWORDCHANGEDATE = #{lastpasswordchangedate,jdbcType=TIMESTAMP},
+      DEPARTMENTID = #{departmentid,jdbcType=DECIMAL},
+      DESIGNATIONID = #{designationid,jdbcType=DECIMAL},
+      MOBILENO = #{mobileno,jdbcType=VARCHAR},
+      COMMUNICATIONMETHOD = #{communicationmethod,jdbcType=DECIMAL}
+    where USERID = #{userid,jdbcType=DECIMAL}
+  </update>
+</mapper>

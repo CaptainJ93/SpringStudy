@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.delivery.dao.ScmDeliveryTimezoneratescoreDao">
+    
+	<sql id="scmDeliveryTimezoneratescoreColumns">
+		a.id AS "id",
+		a.hourzone AS "hourzone",
+		a.ratebegin AS "ratebegin",
+		a.rateend AS "rateend",
+		a.ratescore AS "ratescore"
+	</sql>
+	
+	<sql id="scmDeliveryTimezoneratescoreJoins">
+	</sql>
+    
+	<select id="get" resultType="ScmDeliveryTimezoneratescore">
+		SELECT 
+			<include refid="scmDeliveryTimezoneratescoreColumns"/>
+		FROM scm_delivery_timezoneratescore a
+		<include refid="scmDeliveryTimezoneratescoreJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ScmDeliveryTimezoneratescore">
+		SELECT 
+			<include refid="scmDeliveryTimezoneratescoreColumns"/>
+		FROM scm_delivery_timezoneratescore a
+		<include refid="scmDeliveryTimezoneratescoreJoins"/>
+		<where>
+			1=1
+			
+		<if test="hourzone != null  and hourzone != ''">
+			AND a.hourzone = #{hourzone}
+		</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ScmDeliveryTimezoneratescore">
+		SELECT 
+			<include refid="scmDeliveryTimezoneratescoreColumns"/>
+		FROM scm_delivery_timezoneratescore a
+		<include refid="scmDeliveryTimezoneratescoreJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_delivery_timezoneratescore(
+			id,
+			hourzone,
+			ratebegin,
+			rateend,
+			ratescore
+		) VALUES (
+			#{id},
+			#{hourzone},
+			#{ratebegin},
+			#{rateend},
+			#{ratescore}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_delivery_timezoneratescore SET 	
+			hourzone = #{hourzone},
+			ratebegin = #{ratebegin},
+			rateend = #{rateend},
+			ratescore = #{ratescore}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_delivery_timezoneratescore
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

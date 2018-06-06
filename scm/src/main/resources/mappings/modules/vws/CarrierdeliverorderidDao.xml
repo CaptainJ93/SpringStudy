@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.vws.dao.CarrierdeliverorderidDao">
+    
+	<sql id="carrierdeliverorderidColumns">
+	    a.id AS "id",
+	    a.carrierid AS "carrierid",
+		a.deliveryorderid AS "deliveryorderid",
+		a.status AS "status",
+		a.del_flag AS "delFlag",
+		subdelivery_type as "subDeliveryType",
+		supplierid as "supplierId"
+	</sql>
+	
+	<sql id="carrierdeliverorderidJoins">
+	</sql>
+    
+	<select id="findListGroupedCarrierByStatus" resultType="Carrierdeliverorderid">
+		SELECT 
+			<include refid="carrierdeliverorderidColumns"/>
+		,
+		c.carriername AS "carrier.carriername"
+		FROM scm_carrier c, scm_carrierdeliverorderid a
+		<include refid="carrierdeliverorderidJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		AND a.status= #{status}
+		AND a.CARRIERID = c.CARRIERID
+		GROUP BY a.CARRIERID
+		ORDER BY a.CARRIERID
+	</select>
+	
+	<select id="get" resultType="Carrierdeliverorderid">
+		SELECT 
+			<include refid="carrierdeliverorderidColumns"/>
+		FROM scm_carrierdeliverorderid a
+		<include refid="carrierdeliverorderidJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+	</select>
+	
+	<select id="findList" resultType="Carrierdeliverorderid">
+		SELECT 
+			<include refid="carrierdeliverorderidColumns"/>
+		FROM scm_carrierdeliverorderid a
+		<include refid="carrierdeliverorderidJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+	
+		
+		<if test="carrierid != null and carrierid != null and carrierid != '' and carrierid>0">
+			AND a.carrierid= #{carrierid} 
+		
+		</if>
+		<if test="status != null and status != null and status != '' and status>0">
+			AND a.status= #{status} 
+		
+		</if>
+		<if test="subDeliveryType != null and subDeliveryType != null and subDeliveryType != '' and subDeliveryType>0">
+			AND a.subdelivery_type= #{subDeliveryType} 
+		</if>
+		<if test="supplierId != null and supplierId != null and supplierId != '' and supplierId>0">
+			AND a.supplierid= #{supplierId} 
+		</if>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Carrierdeliverorderid">
+		SELECT 
+			<include refid="carrierdeliverorderidColumns"/>
+		FROM scm_carrierdeliverorderid a
+		<include refid="carrierdeliverorderidJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+			
+		<if test="carrierid != null and carrierid != null and carrierid != '' and carrierid>0">
+			AND a.carrierid= #{carrierid} 
+		
+		</if>
+		<if test="status != null and status != null and status != '' and status>0">
+			AND a.status= #{status} 
+		
+		</if>	
+		<if test="subDeliveryType != null and subDeliveryType != null and subDeliveryType != '' and subDeliveryType>0">
+			AND a.subdelivery_type= #{subDeliveryType} 
+		</if>
+		<if test="supplierId != null and supplierId != null and supplierId != '' and supplierId>0">
+			AND a.supplierid= #{supplierId} 
+		</if>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_carrierdeliverorderid(
+		id,
+			carrierid,
+			deliveryorderid,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			subdelivery_type,
+			supplierid
+		) VALUES (
+		#{id},
+			#{carrierid},
+			#{deliveryorderid},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{subDeliveryType},
+			#{supplierId},
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_carrierdeliverorderid SET 	
+			carrierid = #{carrierid},
+			deliveryorderid = #{deliveryorderid},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			subdelivery_type = #{subDeliveryType},
+			supplierid = #{supplierId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE scm_carrierdeliverorderid SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.OrderPaymentViewMapper">
+<resultMap id="BaseResultMap" type="com.best1.api.entity.view.OrderPaymentView">
+<id column="paymentid" property="paymentID" jdbcType="DECIMAL" />
+<result column="paymentmodeid" property="paymentModeID" jdbcType="DECIMAL" />
+<result column="paymentamount" property="paymentAmount" jdbcType="DECIMAL" />
+<result column="paymentstatus" property="paymentstatus" jdbcType="DECIMAL" />
+<result column="orderid" property="orderID" jdbcType="DECIMAL" />
+<result column="itemid" property="itemID" jdbcType="DECIMAL" />
+			
+</resultMap>
+
+<select id="fetchOrderPayments" parameterType="com.best1.api.entity.view.OrderPaymentView"	resultMap="BaseResultMap">
+		SELECT o.paymentid, o.paymentmodeid,o.paymentamount,o.paymentstatus,o.orderid,o,itemid
+		FROM TOAF_ORDERPAYMENT
+		o
+		where
+		o.paymentstatus != 3204
+		<if test="orderID != null">
+			and o.ORDERID = #{orderID}
+		</if>
+		<if test="itemID != null">
+			and o.ITEMID = #{itemID}
+		</if>
+
+</select>
+
+</mapper> 

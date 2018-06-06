@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.SupplierViewMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.best1.api.entity.view.SupplierView">
+
+		<id column="supplierid" property="supplierid" jdbcType="DECIMAL" />
+		<result column="suppliername" property="suppliername" jdbcType="CHAR" />
+		<result column="supplierregno" property="supplierregno" jdbcType="CHAR" />
+		<result column="contactpersoname" property="contactpersoname" jdbcType="CHAR" />
+		<result column="phonenumber" property="phonenumber" jdbcType="CHAR" />
+		<result column="mobilenumber" property="mobilenumber" jdbcType="CHAR" />
+		<result column="address" property="address" jdbcType="CHAR" />
+		
+		
+	</resultMap>
+
+	<select id="fetchSuppliers" parameterType="com.best1.api.entity.view.SupplierView"
+		resultMap="BaseResultMap">
+	select sup.supplierid, --供应商代码
+       sup.suppliername, --供应商名称
+       sup.supplierregno, --税号
+       supad.contactpersoname, --财务联系人
+       supad.officephoneareacode || supad.officephonenumber as phonenumber, --财务电话
+       supad.mobilenumber, --手机
+       supad.address1 || supad.address2 as address --地址
+  from tscm_suppliermaster sup, tscm_supplieraddress supad
+ where sup.supplierid = supad.supplierid
+   and supad.addresstype = 1003
+   and supad.isdefault = 'Y'
+		<if test="supplierid != null">
+			and sup.supplierid = #{supplierid}
+		</if>
+		<if test="supplierregno != null">
+			and sup.supplierregno = #{supplierregno}
+		</if>
+		
+		<if test="startdate != null">
+			AND sup.createdtimestamp &gt;= to_date(#{startdate}, 'yyyymmdd')
+		</if>
+		<if test="enddate != null">
+			AND sup.createdtimestamp &lt; to_date(#{enddate}, 'yyyymmdd')
+		</if>
+		
+		
+	
+	</select>
+
+</mapper> 

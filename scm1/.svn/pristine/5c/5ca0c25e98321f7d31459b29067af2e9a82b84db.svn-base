@@ -1,0 +1,76 @@
+
+请求地址：http://localhost:8080/scm/a/vws/deliveryorder  
+请求方法：POST
+
+header:
+
+code:
+username:
+validatecode:
+userid:
+type:1001
+
+
+body:
+
+{
+    "warehouseid": "1",
+    "trackingnumber": "zj--008",
+    "customerid": "3100002",
+    "customertelnumber": "15024457933",
+    "customermobnumber": "0571-87650150",
+    "customername": "张杰",
+    "receivingzipcode": "310000",
+    "receivingaddress1": "浙江省杭州市江干区",
+    "receivingaddress2": "浙江传媒学院演播大楼一楼",
+    "packageweight": "7895.2",
+    "packagecodnum": "31100",
+    "packageremark": "送货前请电话联系预约",
+    "selectedcarrier": "1000043",
+    "actualshipdate": "2016-3-10 13:36:00",
+    "trackingstatus": "1000",
+    "isnoinventoryorders": "0",
+    "packagetype":"1000",
+    "deliveryOrderintransitDetail": [
+        {
+        		"orderid":"2344567",
+        		"itemid":"1",
+        		"shiporderid":"7366687",
+        		"shipordersequence":"1",
+        		"productid": 110880,
+        		"productversion":"1",
+        		"productname":"测试商品测试商品1",
+        		"colorclasscode":"5001",
+        		"colorcode":"5037",
+        		"styleclasscode":"6001",
+        		"stylecode":"6037",
+        		"colorvalue":"红色",
+        		"stylevalue":"37码",
+        		"productnum":"1",
+        		"codnum":"288",
+        		"createdtimestamp":"2016-3-10 8:00:00",
+        		"trackingnumber":"zj--008"
+            
+        },
+          {
+        		"orderid":"2344567",
+        		"itemid":"1",
+        		"shiporderid":"7366687",
+        		"shipordersequence":"1",
+        		"productid": 110880,
+        		"productversion":"1",
+        		"productname":"测试商品测试商品1",
+        		"colorclasscode":"5001",
+        		"colorcode":"5037",
+        		"styleclasscode":"6001",
+        		"stylecode":"6037",
+        		"colorvalue":"红色",
+        		"stylevalue":"37码",
+        		"productnum":"1",
+        		"codnum":"288",
+        		"createdtimestamp":"2016-3-10 8:00:00",
+        		"trackingnumber":"zj--008"
+            
+        }
+    ]
+}

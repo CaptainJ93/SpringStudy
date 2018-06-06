@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafApiFedirefundresponseMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.oaf.order.ToafApiFedirefundresponse" >
+
+    <result column="COMPANYID" property="companyid" jdbcType="DECIMAL" />
+    <result column="BANKCODE" property="bankcode" jdbcType="VARCHAR" />
+    <result column="REFUNDID" property="refundid" jdbcType="DECIMAL" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="REFUNDAMOUNT" property="refundamount" jdbcType="DECIMAL" />
+    <result column="REFUNDSTATUS" property="refundstatus" jdbcType="DECIMAL" />
+    <result column="TRANSACTIONSEQUENCE" property="transactionsequence" jdbcType="VARCHAR" />
+    <result column="PAYMENTDATE" property="paymentdate" jdbcType="TIMESTAMP" />
+    <result column="PAYINGACCOUNTNUMBER" property="payingaccountnumber" jdbcType="VARCHAR" />
+    <result column="RECIPIENTACCOUNT" property="recipientaccount" jdbcType="VARCHAR" />
+    <result column="RECIPIENTNAME" property="recipientname" jdbcType="VARCHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="PAYINGBANKID" property="payingbankid" jdbcType="DECIMAL" />
+    <result column="RECIPIENTBANKID" property="recipientbankid" jdbcType="DECIMAL" />
+    <result column="PERSONALID" property="personalid" jdbcType="VARCHAR" />
+    <result column="SERVICEFEE" property="servicefee" jdbcType="VARCHAR" />
+    <result column="BUSINESSCODE" property="businesscode" jdbcType="VARCHAR" />
+    <result column="PAYERNAME" property="payername" jdbcType="VARCHAR" />
+    <result column="REPAYID" property="repayid" jdbcType="DECIMAL" />
+    <result column="RECORDSTATUS" property="recordstatus" jdbcType="DECIMAL" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+   
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+   
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+   
+    COMPANYID, BANKCODE, REFUNDID, CUSTOMERID, REFUNDAMOUNT, REFUNDSTATUS, TRANSACTIONSEQUENCE, 
+    PAYMENTDATE, PAYINGACCOUNTNUMBER, RECIPIENTACCOUNT, RECIPIENTNAME, CREATEDBY, CREATEDTIMESTAMP, 
+    PAYINGBANKID, RECIPIENTBANKID, PERSONALID, SERVICEFEE, BUSINESSCODE, PAYERNAME, REPAYID,RECORDSTATUS,RECORDCREATEDTIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.best1.api.entity.oaf.order.ToafApiFedirefundresponseExample" >
+  
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TOAF_API_FEDIREFUNDRESPONSE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.best1.api.entity.oaf.order.ToafApiFedirefundresponseExample" >
+
+    delete from ET1_CHINA.TOAF_API_FEDIREFUNDRESPONSE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.best1.api.entity.oaf.order.ToafApiFedirefundresponse" >
+   
+    insert into ET1_CHINA.TOAF_API_FEDIREFUNDRESPONSE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="companyid != null" >
+        COMPANYID,
+      </if>
+      <if test="bankcode != null" >
+        BANKCODE,
+      </if>
+      <if test="refundid != null" >
+        REFUNDID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="refundamount != null" >
+        REFUNDAMOUNT,
+      </if>
+      <if test="refundstatus != null" >
+        REFUNDSTATUS,
+      </if>
+      <if test="transactionsequence != null" >
+        TRANSACTIONSEQUENCE,
+      </if>
+      <if test="paymentdate != null" >
+        PAYMENTDATE,
+      </if>
+      <if test="payingaccountnumber != null" >
+        PAYINGACCOUNTNUMBER,
+      </if>
+      <if test="recipientaccount != null" >
+        RECIPIENTACCOUNT,
+      </if>
+      <if test="recipientname != null" >
+        RECIPIENTNAME,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="payingbankid != null" >
+        PAYINGBANKID,
+      </if>
+      <if test="recipientbankid != null" >
+        RECIPIENTBANKID,
+      </if>
+      <if test="personalid != null" >
+        PERSONALID,
+      </if>
+      <if test="servicefee != null" >
+        SERVICEFEE,
+      </if>
+      <if test="businesscode != null" >
+        BUSINESSCODE,
+      </if>
+      <if test="payername != null" >
+        PAYERNAME,
+      </if>
+      <if test="repayid != null" >
+        REPAYID,
+      </if>
+      <if test="recordstatus != null" >
+        RECORDSTATUS,
+      </if>
+      <if test="recordcreatedtime != null" >
+        RECORDCREATEDTIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="companyid != null" >
+        #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="bankcode != null" >
+        #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="refundid != null" >
+        #{refundid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="refundamount != null" >
+        #{refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundstatus != null" >
+        #{refundstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionsequence != null" >
+        #{transactionsequence,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentdate != null" >
+        #{paymentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payingaccountnumber != null" >
+        #{payingaccountnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientaccount != null" >
+        #{recipientaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientname != null" >
+        #{recipientname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payingbankid != null" >
+        #{payingbankid,jdbcType=DECIMAL},
+      </if>
+      <if test="recipientbankid != null" >
+        #{recipientbankid,jdbcType=DECIMAL},
+      </if>
+      <if test="personalid != null" >
+        #{personalid,jdbcType=VARCHAR},
+      </if>
+      <if test="servicefee != null" >
+        #{servicefee,jdbcType=VARCHAR},
+      </if>
+      <if test="businesscode != null" >
+        #{businesscode,jdbcType=VARCHAR},
+      </if>
+      <if test="payername != null" >
+        #{payername,jdbcType=VARCHAR},
+      </if>
+      <if test="repayid != null" >
+        #{repayid,jdbcType=DECIMAL},
+      </if>
+      <if test="recordstatus != null" >
+        #{recordstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="recordcreatedtime != null" >
+        #{recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.best1.api.entity.oaf.order.ToafApiFedirefundresponseExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TOAF_API_FEDIREFUNDRESPONSE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+   
+    update ET1_CHINA.TOAF_API_FEDIREFUNDRESPONSE
+    <set >
+      <if test="record.companyid != null" >
+        COMPANYID = #{record.companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bankcode != null" >
+        BANKCODE = #{record.bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.refundid != null" >
+        REFUNDID = #{record.refundid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerid != null" >
+        CUSTOMERID = #{record.customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundamount != null" >
+        REFUNDAMOUNT = #{record.refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundstatus != null" >
+        REFUNDSTATUS = #{record.refundstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactionsequence != null" >
+        TRANSACTIONSEQUENCE = #{record.transactionsequence,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentdate != null" >
+        PAYMENTDATE = #{record.paymentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payingaccountnumber != null" >
+        PAYINGACCOUNTNUMBER = #{record.payingaccountnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recipientaccount != null" >
+        RECIPIENTACCOUNT = #{record.recipientaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recipientname != null" >
+        RECIPIENTNAME = #{record.recipientname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payingbankid != null" >
+        PAYINGBANKID = #{record.payingbankid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.recipientbankid != null" >
+        RECIPIENTBANKID = #{record.recipientbankid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.personalid != null" >
+        PERSONALID = #{record.personalid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.servicefee != null" >
+        SERVICEFEE = #{record.servicefee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businesscode != null" >
+        BUSINESSCODE = #{record.businesscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payername != null" >
+        PAYERNAME = #{record.payername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repayid != null" >
+        REPAYID = #{record.repayid,jdbcType=DECIMAL},
+      </if>
+         <if test="recordstatus != null" >
+        #{recordstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="recordcreatedtime != null" >
+        #{recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+   <update id="updateByRefundId" parameterType="com.best1.api.entity.oaf.order.ToafApiFedirefundresponse" >
+   
+    update ET1_CHINA.TOAF_API_FEDIREFUNDRESPONSE
+    <set >
+      <if test="companyid != null" >
+        COMPANYID = #{companyid,jdbcType=DECIMAL},
+      </if>
+      <if test="bankcode != null" >
+        BANKCODE = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="refundid != null" >
+        REFUNDID = #{refundid,jdbcType=DECIMAL},
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+      </if>
+      <if test="refundamount != null" >
+        REFUNDAMOUNT = #{refundamount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundstatus != null" >
+        REFUNDSTATUS = #{refundstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionsequence != null" >
+        TRANSACTIONSEQUENCE = #{transactionsequence,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentdate != null" >
+        PAYMENTDATE = #{paymentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payingaccountnumber != null" >
+        PAYINGACCOUNTNUMBER = #{payingaccountnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientaccount != null" >
+        RECIPIENTACCOUNT = #{recipientaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientname != null" >
+        RECIPIENTNAME = #{recipientname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payingbankid != null" >
+        PAYINGBANKID = #{payingbankid,jdbcType=DECIMAL},
+      </if>
+      <if test="recipientbankid != null" >
+        RECIPIENTBANKID = #{recipientbankid,jdbcType=DECIMAL},
+      </if>
+      <if test="personalid != null" >
+        PERSONALID = #{personalid,jdbcType=VARCHAR},
+      </if>
+      <if test="servicefee != null" >
+        SERVICEFEE = #{servicefee,jdbcType=VARCHAR},
+      </if>
+      <if test="businesscode != null" >
+        BUSINESSCODE = #{businesscode,jdbcType=VARCHAR},
+      </if>
+      <if test="payername != null" >
+        PAYERNAME = #{payername,jdbcType=VARCHAR},
+      </if>
+      <if test="repayid != null" >
+        REPAYID = #{repayid,jdbcType=DECIMAL},
+      </if>
+         <if test="recordstatus != null" >
+       recordstatus =  #{recordstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="recordcreatedtime != null" >
+       recordcreatedtime =  #{recordcreatedtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+      where refundid = #{refundid,jdbcType=DECIMAL}
+  </update>
+  
+  
+ 
+</mapper>

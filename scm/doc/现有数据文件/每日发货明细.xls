@@ -1,0 +1,1000 @@
+﻿<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Version>12.00</Version>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>9645</WindowHeight>
+  <WindowWidth>14985</WindowWidth>
+  <WindowTopX>600</WindowTopX>
+  <WindowTopY>45</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="宋体" x:CharSet="134" ss:Size="12"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s62">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="宋体" x:CharSet="134" ss:Size="12" ss:Bold="1"/>
+   <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s63">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Sheet2">
+  <Table ss:ExpandedColumnCount="29" ss:ExpandedRowCount="30" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="14.25">
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s62"><Data ss:Type="String">详情单号</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">寄件人姓名</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">寄件人电话</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">始发地邮编</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">寄件人地址</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">寄件人单位</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">收件人代码</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">收件人电话</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">收件人手机</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">收件人姓名</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">目的地邮编</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">收件人地址</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">收件人单位</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">内件名称</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">内件数量</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">重量</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">毛重</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">是否自提</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">是否泡货</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">一体化项目单号</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">总价</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">保险金额</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">批次</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">一体化项目代码</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">出货单号</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">备注</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">实际出货时间</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">配送公司编码</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">分派状态</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263450628</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2756557</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13586304346</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">许金永</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">314100</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省嘉兴市嘉善县香山路蓝盛网吧门口联系</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">许金永</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 圣珍比利时进口冷榨亚麻籽油6+6组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">8260</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">398</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251191401</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:45:17</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263454007</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1809104</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8615058915317</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15868086195</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">朱继兰</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">325024</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省温州市龙湾区滨海14弄4-466号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">朱继兰</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 好易洁炫彩拖把11.11秒杀组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">4765</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">178</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251195001</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 15:10:43</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263438170</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1032928</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13396563328</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">支晓莺</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310013</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市西湖区四眼井70号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">支晓莺</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 正宗阿克苏冰糖心苹果新年快抢组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">112</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1250964401</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 00:55:28</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已交接</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263444748</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1145163</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8613506803778</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13506803778</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">费建国</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">316100</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省舟山市普陀区沈家门鲁家峙</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">费建国</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 好易洁神奇防水去油污手套10+10特惠组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">990</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">199</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251191601</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:26:56</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263444775</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2994102</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15867413179</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">林武</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">315700</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省宁波市象山县丹城镇山头董村14号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">林武</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 好易洁神奇防水去油污手套10+10特惠组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">990</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">199</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251203601</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:26:46</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263445019</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2390321</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13506767639</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">沈大伟</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">317200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省台州市天台县紫东新村和春路15号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">沈大伟</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 好易洁神奇防水去油污手套10+10特惠组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">990</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">199</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251199801</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:25:03</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263448049</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">199953</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13857220878</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">贺爱君</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">316010</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省舟山市定海区城东街道蓬莱路109弄4幢12号504室</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">贺爱君</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> G新西兰原装纽仕兰全脂牛奶</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">13580</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">198</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251121301</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:12:52</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263448243</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">912283</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15067185681</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">王丽</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310013</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市西湖区之江路大诸桥94号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">王丽</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 五粮液股份锦上添花12瓶新年加赠组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">25140</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">698</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251108901</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:17:48</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263452035</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2085180</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15306816576</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">陈万跃</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311600</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市建德市洋溪街道朝阳路86号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">陈万跃</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 扬子居浴两用取暖器买一送一12.12秒杀组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">12000</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">299</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251340301</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 16:59:27</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263454122</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2081576</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8615157939697</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15157939697</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">何维芳</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">322000</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省金华市义乌市后宅街道马郊塘村</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">何维芳</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 亮之家蓝酶彩漂清洁直供</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">10395</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">298</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251252001</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 15:16:36</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263444411</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2581404</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">86057187082746</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13957188363</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">刘群</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311500</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市上城区青年路见仁里6号2单元701</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">刘群</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 吉尔佳全效炫白洗衣液大团购</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">17810</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">169</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251240901</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 13:41:38</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263444757</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1593701</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13056998805</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">陈瑞萍</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">315600</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省宁波市宁海县西店镇王家村</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">陈瑞萍</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 好易洁神奇防水去油污手套10+10特惠组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">990</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">199</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251188401</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:26:52</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263450406</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1811288</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">86057182565623</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13606755289</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">成波</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市萧山区瓜沥镇环城东路63号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">成波</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 迪欧达男式户外防寒两件套鹅绒冲锋衣</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1605</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">398</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251218901</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:36:05</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263452478</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">237363</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">86057462455232</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13567459037</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">陈春芳</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">315400</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省宁波市余姚市马渚镇东横路64号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">陈春芳</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 爱仕达俊雅欧式不锈钢套装锅</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">6640</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">398</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251258401</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 16:40:41</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263452927</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2193731</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13867891565</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">施金伟</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">315400</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省宁波市余姚市兰江街道下菱新村117—K</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">施金伟</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 辛格维拉2015经典韩版皮草大衣</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">3160</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1398</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251289101</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；开箱试穿</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 16:48:00</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263453816</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1768407</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">86057385129058</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13355733973</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">钟定观</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">314200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省嘉兴市平湖市文桥里1幢1单元302</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">钟定观</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 爱其郎和田御枣9周年庆秒杀组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">4030</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251308401</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 17:16:25</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263454999</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1648785</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8605782882976</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2882976</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">蔡丽雅</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">323010</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省丽水市莲都区梅山脚中山街613号区党校</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">蔡丽雅</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> U.S.POLO ASSN.125周年威廉绒贵族POLO衫</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1599</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">299</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251152301</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 15:47:24</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263437670</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">946247</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">86057763385676</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13646770056</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">李建虹</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">325700</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省温州市洞头县北岙街道新城大道2号</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">李建虹</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 正宗阿克苏冰糖心苹果新年快抢组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">129</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1250584301</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 00:55:34</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已交接</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263443726</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3349053</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13805741305</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">唐德才</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310011</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市拱墅区祥符街道祥富路2号浙江联龙电器有限公司</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">唐德才</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> G新西兰原装纽仕兰全脂牛奶</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">13580</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">198</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251105901</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 00:19:00</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已交接</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263445498</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3071327</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8615268072408</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15268072408</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">付小英</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">324200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省衢州市常山县芳村镇</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">付小英</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 富莱妮法兰绒套件4+4+4组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">9810</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">448</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251246401</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 13:53:46</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263446687</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2044678</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">18958060616</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">曹文儿</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311400</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市富阳市大桥路66号605</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">曹文儿</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">西班牙原瓶进口恩格尼干红葡萄酒（赠品）</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">6950</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1251144601</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 15:27:46</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263449548</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">161182</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13017808887</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">黄鹏</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">321200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省金华市武义县明召温泉国际大酒店11019房</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">黄鹏</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 五粮液股份公司-五粮神话五星陈酿52度白酒</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">8340</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">298</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251116902</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:58:12</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263450179</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3347698</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13875819889</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">丁锐</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311100</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市余杭区耀都凯越大酒店</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">丁锐</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 索娜斯雍容华贵獭兔皮草大衣</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">875</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">666</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251171501</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；尽量快点配送要回老家了</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:14:10</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263444536</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1674270</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8613566296378</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15088577778</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">王小洁</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">325010</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省温州市鹿城区荷花路大南门闻宅公寓3栋403室（上午10点前送到）</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">王小洁</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 吉尔佳全效炫白洗衣液大团购</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">17810</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">129</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251234201</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 13:40:25</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263444960</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1068417</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">8618868763847</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">18868763847</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">倪玲玲</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310002</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市江干区丁桥长睦华天苑小区8栋1单元1606</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">倪玲玲</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 好易洁神奇防水去油污手套10+10特惠组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">990</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">199</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251196701</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:25:19</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263445798</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3349073</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13906510251</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">叶涛</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310002</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市江干区金沙大道201号财通中心1802室</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">叶涛</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 法国金猴贺喜马琳古堡珍藏组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">19000</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1980</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251109002</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:30:37</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263445813</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3349073</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13906510251</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">叶涛</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310002</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市江干区金沙大道201号财通中心1802室</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">叶涛</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 法国金猴贺喜马琳古堡珍藏组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">19000</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1980</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251109005</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:30:45</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263445992</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3349068</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13185087599</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">赵志强</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">310051</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省杭州市滨江区滨康路228号万福中心A12</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">赵志强</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 法国金猴贺喜马琳古堡珍藏组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">19120</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1980</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251113801</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:09:47</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">780263447646</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4008-885-886</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">311200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">杭州市萧山区垦辉六路55号好易购物流中心</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">好易购物流</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">3349323</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">13567399650</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">裴卫华</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">314200</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">浙江省嘉兴市平湖市乍浦天飞东苑2单元52幢3楼</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">裴卫华</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 紫袍冷榨亚麻籽油家庭分享组</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">12930</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">121</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="Number">398</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String"> 1251140801</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">送货前请先电联；</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2016-01-19 14:02:41</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">1000043</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">已分派</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>12</ActiveRow>
+     <ActiveCol>3</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

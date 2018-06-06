@@ -1,0 +1,27 @@
+请求地址：http://localhost:8080/scm/a/express/returnintransit
+请求方法：POST
+
+header:
+
+code:
+username:
+validatecode:
+userid:
+type:1002
+
+
+body:
+
+{
+    "pathid": "1",
+    "returnid": "7994696",
+    "pathdesc": "退货包裹已经收取到了",
+    "pathdatetime": "2016-03-22 08:00:00",
+    "returncode": "1003",
+    "receiptsuccesstime": "2016-03-22 08:00:00",
+    "receiptperson": "快递员张",
+    "receiptpersoncontact": "15024457933",
+    "longitude": "",
+    "dimensionvalue": "",
+    "receiptdeliveryorderid": "ZJ000011"
+}

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.vwms.TvwsApiCsowholeMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.vwms.TvwsApiCsowhole" >
+ 
+    <result column="WAREHOUSEID" property="warehouseid" jdbcType="DECIMAL" />
+    <result column="SHIPORDERID" property="shiporderid" jdbcType="DECIMAL" />
+    <result column="SHIPORDERCREATEDDATE" property="shipordercreateddate" jdbcType="TIMESTAMP" />
+    <result column="ORDERPRIORITY" property="orderpriority" jdbcType="DECIMAL" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+    <result column="CUSTOMERNAME" property="customername" jdbcType="VARCHAR" />
+    <result column="CUSTOMERZIPCODE" property="customerzipcode" jdbcType="DECIMAL" />
+    <result column="DELIVERYADDRESS" property="deliveryaddress" jdbcType="VARCHAR" />
+    <result column="SHIPORDERTYPE" property="shipordertype" jdbcType="DECIMAL" />
+    <result column="CROSSDOCKFLAG" property="crossdockflag" jdbcType="CHAR" />
+    <result column="CARRIERIDPRIMARY" property="carrieridprimary" jdbcType="DECIMAL" />
+    <result column="PRODUCTID" property="productid" jdbcType="DECIMAL" />
+    <result column="PRODUCTVERSION" property="productversion" jdbcType="DECIMAL" />
+    <result column="PRODUCTQUANTITY" property="productquantity" jdbcType="DECIMAL" />
+    <result column="ISSPECIALPACKING" property="isspecialpacking" jdbcType="CHAR" />
+    <result column="ISOFFSHOREDELIVERY" property="isoffshoredelivery" jdbcType="CHAR" />
+    <result column="SHIPORDERSEQUENCE" property="shipordersequence" jdbcType="DECIMAL" />
+    <result column="GIFTPACKMESSAGE" property="giftpackmessage" jdbcType="VARCHAR" />
+    <result column="SCHEDULEDSHIPDATE" property="scheduledshipdate" jdbcType="TIMESTAMP" />
+    <result column="SCHEDULEDDELIVERYDATE" property="scheduleddeliverydate" jdbcType="TIMESTAMP" />
+    <result column="REQUIREDDELIVERYTIME" property="requireddeliverytime" jdbcType="TIMESTAMP" />
+    <result column="HOMETELEPHONE1" property="hometelephone1" jdbcType="VARCHAR" />
+    <result column="MOBILENO1" property="mobileno1" jdbcType="VARCHAR" />
+    <result column="INSTRUCTIONTOWMS" property="instructiontowms" jdbcType="VARCHAR" />
+    <result column="INSTRUCTIONTOSCM" property="instructiontoscm" jdbcType="VARCHAR" />
+    <result column="CARRIERIDSECONDARY" property="carrieridsecondary" jdbcType="DECIMAL" />
+    <result column="PRODUCTCOLOURCLASS" property="productcolourclass" jdbcType="DECIMAL" />
+    <result column="PRODUCTCOLOURCODE" property="productcolourcode" jdbcType="DECIMAL" />
+    <result column="PRODUCTCOLOURDESCRIPTION" property="productcolourdescription" jdbcType="VARCHAR" />
+    <result column="PRODUCTSTYLECLASS" property="productstyleclass" jdbcType="DECIMAL" />
+    <result column="PRODUCTSTYLECODE" property="productstylecode" jdbcType="DECIMAL" />
+    <result column="PRODUCTSTYLEDESCRIPTION" property="productstyledescription" jdbcType="VARCHAR" />
+    <result column="CODAMOUNT" property="codamount" jdbcType="DECIMAL" />
+    <result column="ORDERID" property="orderid" jdbcType="DECIMAL" />
+    <result column="ITEMID" property="itemid" jdbcType="DECIMAL" />
+    <result column="INVOICENUMBER" property="invoicenumber" jdbcType="VARCHAR" />
+    <result column="INVOICECOMPANYNO" property="invoicecompanyno" jdbcType="VARCHAR" />
+    <result column="INVOICETITLE" property="invoicetitle" jdbcType="VARCHAR" />
+    <result column="INVOICEAMOUNT" property="invoiceamount" jdbcType="DECIMAL" />
+    <result column="INVOICEZIPCODE" property="invoicezipcode" jdbcType="DECIMAL" />
+    <result column="INVOICEADDRESS1" property="invoiceaddress1" jdbcType="VARCHAR" />
+    <result column="INVOICEADDRESS2" property="invoiceaddress2" jdbcType="VARCHAR" />
+    <result column="SUBCHANNELID" property="subchannelid" jdbcType="DECIMAL" />
+    <result column="ISNEEDINVOICE" property="isneedinvoice" jdbcType="VARCHAR" />
+    <result column="INVOICETYPE" property="invoicetype" jdbcType="DECIMAL" />
+    <result column="PAYMENTMODE" property="paymentmode" jdbcType="VARCHAR" />
+    <result column="ISPROMOTIONALPRODUCT" property="ispromotionalproduct" jdbcType="CHAR" />
+    <result column="PROMOTIONRELATIONSEQ" property="promotionrelationseq" jdbcType="DECIMAL" />
+    <result column="DELIVERYADDRESSID" property="deliveryaddressid" jdbcType="DECIMAL" />
+    <result column="INVOICEADDRESSID" property="invoiceaddressid" jdbcType="DECIMAL" />
+    <result column="SERVICEFEE" property="servicefee" jdbcType="DECIMAL" />
+    <result column="OFFSHOREDELIVERYCHARGES" property="offshoredeliverycharges" jdbcType="DECIMAL" />
+    <result column="ISNEWCUSTOMER" property="isnewcustomer" jdbcType="CHAR" />
+    <result column="RECORDCREATEDTIME" property="recordcreatedtime" jdbcType="TIMESTAMP" />
+    <result column="BATCHID" property="batchid" jdbcType="VARCHAR" />
+      <result column="MEMBERSHIPLEVELID" property="membershiplevelid" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    WAREHOUSEID, SHIPORDERID, SHIPORDERCREATEDDATE, ORDERPRIORITY, CUSTOMERID, CUSTOMERNAME, 
+    CUSTOMERZIPCODE, DELIVERYADDRESS, SHIPORDERTYPE, CROSSDOCKFLAG, CARRIERIDPRIMARY, 
+    PRODUCTID, PRODUCTVERSION, PRODUCTQUANTITY, ISSPECIALPACKING, ISOFFSHOREDELIVERY, 
+    SHIPORDERSEQUENCE, GIFTPACKMESSAGE, SCHEDULEDSHIPDATE, SCHEDULEDDELIVERYDATE, REQUIREDDELIVERYTIME, 
+    HOMETELEPHONE1, MOBILENO1, INSTRUCTIONTOWMS, INSTRUCTIONTOSCM, CARRIERIDSECONDARY, 
+    PRODUCTCOLOURCLASS, PRODUCTCOLOURCODE, PRODUCTCOLOURDESCRIPTION, PRODUCTSTYLECLASS, 
+    PRODUCTSTYLECODE, PRODUCTSTYLEDESCRIPTION, CODAMOUNT, ORDERID, ITEMID, INVOICENUMBER, 
+    INVOICECOMPANYNO, INVOICETITLE, INVOICEAMOUNT, INVOICEZIPCODE, INVOICEADDRESS1, INVOICEADDRESS2, 
+    SUBCHANNELID, ISNEEDINVOICE, INVOICETYPE, PAYMENTMODE, ISPROMOTIONALPRODUCT, PROMOTIONRELATIONSEQ, 
+    DELIVERYADDRESSID, INVOICEADDRESSID, SERVICEFEE, OFFSHOREDELIVERYCHARGES, ISNEWCUSTOMER, 
+    RECORDCREATEDTIME, BATCHID,MEMBERSHIPLEVELID
+  </sql>
+
+<select id="selectByCsowhole" resultMap="BaseResultMap" parameterType="com.best1.api.entity.vwms.TvwsApiCsowhole" >
+   select
+  <include refid="Base_Column_List" />
+    from ET1_CHINA.TVWS_API_CSOWHOLE
+    where ORDERID>1000
+    
+     <if test="warehouseid != null">
+			AND WAREHOUSEID = #{warehouseid}
+		</if>
+		
+		 <if test="orderid != null">
+			AND orderid = #{orderid}
+		</if>
+	<if test="batchid != null">
+			AND batchid = #{batchid}
+		</if>
+		
+   <if test="startdate != null">
+			AND RECORDCREATEDTIME &gt;=  to_date(#{startdate},'yyyy-MM-dd hh24:mi:ss')
+			</if>
+		<if test="enddate != null">
+			AND RECORDCREATEDTIME &lt; to_date(#{enddate},'yyyy-MM-dd hh24:mi:ss')
+		</if>
+		
+  </select>
+
+
+
+ 
+ <select id="countByCsowhole" parameterType="com.best1.api.entity.vwms.TvwsApiCsowhole" resultType="java.lang.Integer" >
+     select count(*) from ET1_CHINA.TVWS_API_CSOWHOLE
+       where ORDERID>1000
+    
+       <if test="warehouseid != null">
+			AND WAREHOUSEID = #{warehouseid}
+		</if>
+		
+		 <if test="orderid != null">
+			AND orderid = #{orderid}
+		</if>
+		
+		<if test="batchid != null">
+			AND batchid = #{batchid}
+		</if>
+		
+  <if test="startdate != null">
+	AND recordcreatedtime &gt;= to_date('#{startdate}', 'yyyy-MM-dd hh24:mi:ss')
+</if>
+<if test="enddate != null">
+	AND recordcreatedtime &lt; to_date('#{enddate}', 'yyyy-MM-dd hh24:mi:ss')
+</if>
+ 
+</select>
+ 
+</mapper>

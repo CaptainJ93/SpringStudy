@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.webapi.dao.ExpressDao">
+
+	<select id="findListToFetchExpress"
+		resultType="com.best1.scm.modules.webapi.entity.ExpressCarrierInfo">
+		SELECT
+		a.id AS "id",
+		a.trackingnumber AS "trackingnumber",
+		a.recordcreatedtime AS "recordcreatedtime",
+		c.carrierid AS "carrierid",
+		c.apicode AS "apicode"
+		FROM scm_delivery_orderintransit a
+		RIGHT JOIN
+		scm_carrierapirelation c ON c.CARRIERID = a.selectedcarrier
+		<where>
+			<if test="recordcreatedtimeStart != null">
+				AND a.recordcreatedtime &gt;= #{recordcreatedtimeStart}
+			</if>
+			AND (a.trackingstatus = 1001 OR a.trackingstatus = 1000)
+			<if
+				test="deliveryType != null and deliveryType != null and deliveryType != ''">
+				AND a.deliverytype = #{deliveryType}
+			</if>
+			<if
+				test="deliverySubtype != null and deliverySubtype != null and deliverySubtype != ''">
+				AND a.subdeliverytype = #{deliverySubtype}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateTrackingStatus">
+		UPDATE scm_delivery_orderintransit SET 	
+			trackingstatus = #{trackingstatus},
+			receiptorrejecttime = #{receiptorrejecttime},
+			lastupdatedby = 6,
+			lastupdatedtime = #{lastupdatedtime}
+		WHERE trackingnumber = #{trackingnumber}
+	</update>
+	
+	<update id="deletePathDetails">
+		DELETE FROM scm_delivery_orderintransit_pathdetail
+		WHERE trackingnumber = #{trackingnumber}
+	</update>
+	
+	<insert id="insertPathDetails">
+		INSERT INTO scm_delivery_orderintransit_pathdetail(
+			id,
+			pathdesc,
+			pathdatetime,
+			deliverycode,
+			receiptorrejecttime,
+			receiptperson,
+			trackingnumber,
+			recordcreatedtime,
+			recordcreatedby
+		) VALUES (
+			#{id},
+			#{pathdesc},
+			#{pathdatetime},
+			#{deliverycode},
+			#{receiptorrejecttime},
+			#{receiptperson},
+			#{trackingnumber},
+			#{recordcreatedtime},
+			#{recordcreatedby}
+		)
+	</insert>
+
+</mapper>

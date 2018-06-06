@@ -1,0 +1,138 @@
+package com.best1.scm.modules.supplier.entity;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.best1.scm.common.utils.excel.annotation.ExcelField;
+
+public class ScmSupplierShipConfirmInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private String csoInfoId; // 出货单ID
+	private Long shiporderId; // 出货单号
+	private Long orderId; // 订单代码
+	private Integer itemId; // 订单序号
+	private Long carrierId; // 配送公司代码
+	private String carrierName; // 配送公司名称
+	private String trackingNumber; // 配送单号
+	private Double packageWeight; // 包裹重量(kg)
+	private String packageRemark; // 包裹备注
+
+	private boolean carrierReadonly;
+
+	public String getCsoInfoId() {
+		return csoInfoId;
+	}
+
+	public void setCsoInfoId(String csoInfoId) {
+		this.csoInfoId = csoInfoId;
+	}
+
+	public Long getShiporderId() {
+		return shiporderId;
+	}
+
+	public void setShiporderId(Long shiporderId) {
+		this.shiporderId = shiporderId;
+	}
+
+	@ExcelField(title = "订单代码", sort = 0)
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	@ExcelField(title = "订单序号", sort = 1000)
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
+	}
+
+	@NotNull(message = "配送公司代码不能为空")
+	@Min(value = 1, message = "配送公司代码必须大于0")
+	@ExcelField(title = "配送公司代码", sort = 2000)
+	public Long getCarrierId() {
+		return carrierId;
+	}
+
+	public void setCarrierId(Long carrierId) {
+		this.carrierId = carrierId;
+	}
+
+	public String getCarrierName() {
+		return carrierName;
+	}
+
+	public void setCarrierName(String carrierName) {
+		this.carrierName = carrierName;
+	}
+
+	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "配送单号只能包含英文字母和数字")
+	@Length(min = 1, max = 20, message = "配送单号长度必须介于 1 和 20 之间")
+	@ExcelField(title = "配送单号", sort = 3000)
+	public String getTrackingNumber() {
+		return trackingNumber;
+	}
+
+	public void setTrackingNumber(String trackingNumber) {
+		
+		this.trackingNumber = filterStr(trackingNumber);
+	}
+
+	@ExcelField(title = "包裹重量(kg)", sort = 4000)
+	public Double getPackageWeight() {
+		return packageWeight;
+	}
+
+	public void setPackageWeight(Double packageWeight) {
+		this.packageWeight = packageWeight;
+	}
+
+	@ExcelField(title = "包裹备注", sort = 5000)
+	public String getPackageRemark() {
+		return packageRemark;
+	}
+
+	public void setPackageRemark(String packageRemark) {
+		this.packageRemark = packageRemark;
+	}
+
+	@Override
+	public String toString() {
+		return "订单 [订单号=" + orderId + ", 订单序号=" + itemId + "]";
+	}
+
+	public boolean isCarrierReadonly() {
+		return carrierReadonly;
+	}
+
+	public void setCarrierReadonly(boolean carrierReadonly) {
+		this.carrierReadonly = carrierReadonly;
+	}
+	
+	public static String filterStr(String str){
+		String bigStr = "";
+		 try {
+			 if(str.indexOf("0")==0){
+					bigStr = str;
+				}else{
+					bigStr = new BigDecimal(str).toPlainString();
+				}
+	        } catch (Exception e) {
+	        	bigStr = str;
+	        }
+		return bigStr;
+	}
+
+}

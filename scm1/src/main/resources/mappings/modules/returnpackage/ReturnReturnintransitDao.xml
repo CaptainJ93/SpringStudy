@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.best1.scm.modules.returnpackage.dao.ReturnReturnintransitDao">
+    
+	<sql id="returnReturnintransitColumns">
+		a.id AS "id",
+		a.warehouseid AS "warehouseid",
+		a.zipcode AS "zipcode",
+		a.receiveaddress1 AS "receiveaddress1",
+		a.receiveaddress2 AS "receiveaddress2",
+		a.customername AS "customername",
+		a.telephonenumber AS "telephonenumber",
+		a.mobilenumber AS "mobilenumber",
+		a.returntime AS "returntime",
+		a.returnid AS "returnid",
+		a.returntype AS "returntype",
+		a.customerid AS "customerid",
+		a.selectedcarrier AS "selectedcarrier",
+		a.isfacetofacerefund AS "isfacetofacerefund",
+		a.refundcodnumber AS "refundcodnumber",
+		a.isneedinvoice AS "isneedinvoice",
+		a.receiptsuccesstime AS "receiptsuccesstime",
+		a.tohygwarehousetime AS "tohygwarehousetime",
+		a.receiptconfirmtime AS "receiptconfirmtime",
+		a.receiptdeliveryorderid AS "receiptdeliveryorderid",
+		a.receiptstatus AS "receiptstatus",
+		a.recordcreatedtime AS "recordcreatedtime",
+		a.recordcreatedby AS "recordcreatedby",
+		a.lastupdatedby AS "lastupdatedby",
+		a.lastupdatedtime AS "lastupdatedtime",
+		carrier.carriername AS "carrier.carriername"
+	</sql>
+	
+	<sql id="returnReturnintransitJoins">
+	,scm_carrier carrier
+	</sql>
+    
+	<select id="get" resultType="ReturnReturnintransit">
+		SELECT 
+			<include refid="returnReturnintransitColumns"/>
+		FROM scm_return_returnintransit a
+		<include refid="returnReturnintransitJoins"/>
+		WHERE a.id = #{id}
+		 and carrier.carrierid=a.selectedcarrier
+	</select>
+	
+	<select id="findList" resultType="ReturnReturnintransit">
+		SELECT 
+			<include refid="returnReturnintransitColumns"/>
+		FROM scm_return_returnintransit a
+		<include refid="returnReturnintransitJoins"/>
+		<where>
+			 carrier.carrierid=a.selectedcarrier
+		</where>
+		
+		<if test="returnid != null and returnid != null and returnid != '' and returnid>0">
+			AND a.returnid= #{returnid} 
+		
+		</if>
+		
+		<if test="returntype != null and returntype != null and returntype != '' and  returntype != -1">
+			AND a.returntype= #{returntype} 
+		
+		</if>
+		
+			<if test="selectedcarrier != null and selectedcarrier != null and selectedcarrier != ''">
+			AND a.selectedcarrier= #{selectedcarrier} 
+		
+		</if>
+			<if test="receiptdeliveryorderid != null and receiptdeliveryorderid != null and receiptdeliveryorderid != ''">
+			AND a.receiptdeliveryorderid=#{receiptdeliveryorderid}
+		</if>	
+		
+		<if test="createDateStart != null">
+			AND a.returntime &gt;= #{createDateStart}
+		</if>
+		<if test="returntime != null">
+			AND a.returntime &lt;= #{createDateEnd}
+		</if>
+		<if test="recordcreatedtimeStart != null">
+			AND a.recordcreatedtime &gt;= #{recordcreatedtimeStart}
+		</if>
+		<if test="recordcreatedtimeEnd != null">
+			AND a.recordcreatedtime &lt;= #{recordcreatedtimeEnd}
+		</if>
+		
+			<if test="receiptstatus != null and receiptstatus != null and receiptstatus != '' and receiptstatus!=-1">
+			AND a.receiptstatus= #{receiptstatus} 
+		
+		</if>
+		
+		<if test="deliverytype != null and deliverytype != null and deliverytype != '' and deliverytype!=-1">
+			AND a.deliverytype= #{deliverytype} 
+		</if>
+		<if test="subdeliverytype != null and subdeliverytype != null and subdeliverytype != '' and subdeliverytype!=-1">
+			AND a.subdeliverytype= #{subdeliverytype} 
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ReturnReturnintransit">
+		SELECT 
+			<include refid="returnReturnintransitColumns"/>
+		FROM scm_return_returnintransit a
+		<include refid="returnReturnintransitJoins"/>
+		<where>
+			 carrier.carrierid=a.selectedcarrier
+		</where>
+		
+		<if test="returnid != null and returnid != null and returnid != '' and returnid>0">
+			AND a.returnid= #{returnid} 
+		
+		</if>
+		
+		<if test="returntype != null and returntype != null and returntype != '' and  returntype != -1">
+			AND a.returntype= #{returntype} 
+		
+		</if>
+		
+			<if test="selectedcarrier != null and selectedcarrier != null and selectedcarrier != ''">
+			AND a.selectedcarrier= #{selectedcarrier} 
+		
+		</if>
+			<if test="receiptdeliveryorderid != null and receiptdeliveryorderid != null and receiptdeliveryorderid != ''">
+			AND a.receiptdeliveryorderid=#{receiptdeliveryorderid}
+		</if>	
+		
+		<if test="createDateStart != null">
+			AND a.returntime &gt;= #{createDateStart}
+		</if>
+		<if test="returntime != null">
+			AND a.returntime &lt;= #{createDateEnd}
+		</if>
+		
+			<if test="receiptstatus != null and receiptstatus != null and receiptstatus != '' and receiptstatus!=-1">
+			AND a.receiptstatus= #{receiptstatus} 
+		
+		</if>
+		<if test="deliverytype != null and deliverytype != null and deliverytype != '' and deliverytype!=-1">
+			AND a.deliverytype= #{deliverytype} 
+		</if>
+		<if test="subdeliverytype != null and subdeliverytype != null and subdeliverytype != '' and subdeliverytype!=-1">
+			AND a.subdeliverytype= #{subdeliverytype} 
+		</if>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO scm_return_returnintransit(
+			id,
+			warehouseid,
+			zipcode,
+			receiveaddress1,
+			receiveaddress2,
+			customername,
+			telephonenumber,
+			mobilenumber,
+			returntime,
+			returnid,
+			returntype,
+			customerid,
+			selectedcarrier,
+			isfacetofacerefund,
+			refundcodnumber,
+			isneedinvoice,
+			receiptsuccesstime,
+			tohygwarehousetime,
+			receiptconfirmtime,
+			receiptdeliveryorderid,
+			receiptstatus,
+			recordcreatedtime,
+			recordcreatedby,
+			lastupdatedby,
+			lastupdatedtime,
+			deliverytype,
+			subdeliverytype
+		) VALUES (
+			#{id},
+			#{warehouseid},
+			#{zipcode},
+			#{receiveaddress1},
+			#{receiveaddress2},
+			#{customername},
+			#{telephonenumber},
+			#{mobilenumber},
+			#{returntime},
+			#{returnid},
+			#{returntype},
+			#{customerid},
+			#{selectedcarrier},
+			#{isfacetofacerefund},
+			#{refundcodnumber},
+			#{isneedinvoice},
+			#{receiptsuccesstime},
+			#{tohygwarehousetime},
+			#{receiptconfirmtime},
+			#{receiptdeliveryorderid},
+			#{receiptstatus},
+			#{recordcreatedtime},
+			#{recordcreatedby},
+			#{lastupdatedby},
+			#{lastupdatedtime},
+			#{deliverytype},
+			#{subdeliverytype}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE scm_return_returnintransit SET 
+		<if test="warehouseid != null" >
+      warehouseid = #{warehouseid},
+      </if>	
+			<if test="zipcode != null" >
+      zipcode = #{zipcode},
+      </if>	
+		<if test="receiveaddress1 != null" >
+      receiveaddress1 = #{receiveaddress1},
+      </if>	
+	<if test="receiveaddress2 != null" >
+     	receiveaddress2 = #{receiveaddress2},
+      </if>
+      
+      <if test="customername != null" >
+     	customername = #{customername},
+      </if>		
+			
+		<if test="telephonenumber != null" >
+     	telephonenumber = #{telephonenumber},
+      </if>	
+		<if test="mobilenumber != null" >
+     	mobilenumber = #{mobilenumber},
+      </if>	
+		 <if test="returntime != null" >
+     	returntime = #{returntime},
+      </if>	
+			
+		<if test="returnid != null" >
+     	returnid = #{returnid},
+      </if>	
+		<if test="returntype != null" >
+     	returntype = #{returntype},
+      </if>	
+		<if test="customerid != null" >
+     	customerid = #{customerid},
+      </if>	
+			
+		<if test="selectedcarrier != null" >
+     	selectedcarrier = #{selectedcarrier},
+      </if>	
+		<if test="isfacetofacerefund != null" >
+     	isfacetofacerefund = #{isfacetofacerefund},
+      </if>	
+		<if test="refundcodnumber != null" >
+     		refundcodnumber = #{refundcodnumber},
+      </if>	
+		 <if test="isneedinvoice != null" >
+     	isneedinvoice = #{isneedinvoice},
+      </if>	
+		 <if test="receiptsuccesstime != null" >
+     	receiptsuccesstime = #{receiptsuccesstime},
+      </if>	
+		 <if test="tohygwarehousetime != null" >
+     	tohygwarehousetime = #{tohygwarehousetime},
+      </if>	
+			
+			 <if test="receiptconfirmtime != null" >
+     	receiptconfirmtime = #{receiptconfirmtime},
+      </if>	
+			
+			 <if test="receiptdeliveryorderid != null" >
+     	receiptdeliveryorderid = #{receiptdeliveryorderid},
+      </if>	
+			
+			 <if test="receiptstatus != null" >
+     	receiptstatus = #{receiptstatus},
+      </if>	
+			
+			 <if test="recordcreatedtime != null" >
+    recordcreatedtime = #{recordcreatedtime},
+      </if>	
+			
+			 <if test="recordcreatedby != null" >
+     	recordcreatedby = #{recordcreatedby},
+      </if>	
+			
+			 <if test="lastupdatedby != null" >
+     	lastupdatedby = #{lastupdatedby},
+      </if>	
+			
+			 <if test="lastupdatedtime != null" >
+lastupdatedtime = #{lastupdatedtime},
+      </if>	
+      		 <if test="deliverytype != null" >
+	deliverytype = #{deliverytype},
+      </if>	
+		 <if test="subdeliverytype != null" >
+			subdeliverytype = #{subdeliverytype}
+			</if>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM scm_return_returnintransit
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           	http://www.springframework.org/schema/context           
+           	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+	<!-- spring ibatis事务控制  -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   		<property name="dataSource" ref="DataSource"/> 
+	</bean>
+    
+    <!-- 自动检测服务器提供的事务管理器  
+    <tx:jta-transaction-manager />-->
+    <!-- 自动检测到的事务管理器使用标准名称transactionManager，因此无需显式指定transaction-manager属性 -->
+	<tx:advice id="TxAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<tx:advice id="TxAdviceOther" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="AllMethod" expression="execution(* com.best1.service..*.*(..))" />
+		<aop:advisor pointcut-ref="AllMethod" advice-ref="TxAdvice" />
+	</aop:config>
+	
+	<aop:config>
+		<aop:pointcut id="AllMethodOther" expression="execution(* com.best1.*.service..*.*(..))" />
+		<aop:advisor pointcut-ref="AllMethodOther" advice-ref="TxAdviceOther" />
+	</aop:config>
+	<!-- end 事务控制  -->
+	
+</beans> 

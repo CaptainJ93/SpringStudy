@@ -1,0 +1,117 @@
+[
+    {
+        "returnid": "129876",
+        "returntype": "1001",
+        "customerid": "20011",
+        "selectedcarrier": "1000043",
+        "isfacetofacerefund": "1000",
+        "refundcodnumber": "0.0",
+        "isneedinvoice": "0",
+        "receiveaddress1": "浙江省杭州市下城区",
+        "receiveaddress2": "oooo",
+        "customername": "成先生",
+        "telephonenumber": "057187654321",
+        "mobilenumber": "1357666678",
+        "returntime": "2016-03-16 14:01:02",
+        "details": [
+            {
+                "orderid": "111",
+                "itemid": "1",
+                "returnid": "129876",
+                "productid": "1112",
+                "productversion": "1",
+                "productname": "666",
+                "colorvalue": "黑",
+                "stylevalue": "39",
+                "productdetail": "11113",
+                "productboxingdetail": "11111",
+                "productnumber": "1"
+            }
+        ]
+    },
+    {
+        "returnid": "7994696",
+        "returntype": "1001",
+        "customerid": "32300",
+        "selectedcarrier": "1000043",
+        "isfacetofacerefund": "1",
+        "refundcodnumber": "789.0",
+        "isneedinvoice": "1",
+        "receiveaddress1": "浙江省杭州市下沙区",
+        "receiveaddress2": "高沙社区3幢2单元",
+        "customername": "张",
+        "telephonenumber": "15024457933",
+        "mobilenumber": "87650150",
+        "returntime": "0205-03-21 17:00:12",
+        "details": []
+    },
+    {
+        "returnid": "7994695",
+        "returntype": "1001",
+        "customerid": "32300",
+        "selectedcarrier": "1000043",
+        "isfacetofacerefund": "1",
+        "refundcodnumber": "789.0",
+        "isneedinvoice": "1",
+        "receiveaddress1": "浙江省杭州市下沙区",
+        "receiveaddress2": "高沙社区3幢2单元",
+        "customername": "张",
+        "telephonenumber": "15024457933",
+        "mobilenumber": "87650150",
+        "returntime": "0205-03-21 17:00:12",
+        "details": [
+            {
+                "orderid": "2344567",
+                "itemid": "2",
+                "returnid": "7994695",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productboxingdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productnumber": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "returnid": "7994695",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productboxingdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productnumber": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "2",
+                "returnid": "7994695",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productboxingdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productnumber": "1"
+            },
+            {
+                "orderid": "2344567",
+                "itemid": "1",
+                "returnid": "7994695",
+                "productid": "110880",
+                "productversion": "1",
+                "productname": "测试商品测试商品1",
+                "colorvalue": "红色",
+                "stylevalue": "37码",
+                "productdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productboxingdetail": "该商品是测试商品，为了更好的测试使用的.",
+                "productnumber": "1"
+            }
+        ]
+    }
+]

@@ -1,0 +1,14 @@
+销退受理
+/AcceptReturn
+
+销退类别
+/UpdateReturnType
+
+换货商品
+
+/ExchangeProductDetails
+
+
+销退确认
+
+/AcceptExchange

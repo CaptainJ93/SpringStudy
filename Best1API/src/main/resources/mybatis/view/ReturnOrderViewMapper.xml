@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.best1.api.mapper.view.ReturnOrderViewMapper">
+
+	<resultMap id="BaseResultMap" type="com.best1.api.entity.view.ReturnOrderView">
+		<id column="returnid" property="returnID" jdbcType="DECIMAL" />
+		<result column="customerid" property="customerID" jdbcType="DECIMAL" />
+		<result column="returnorderid" property="returnorderid"
+			jdbcType="DECIMAL" />
+		<result column="returnordersequence" property="returnordersequence"
+			jdbcType="DECIMAL" />
+		<result column="supplierid" property="supplierID" jdbcType="DECIMAL" />
+		<result column="selectedcarrier" property="selectedCarrier"
+			jdbcType="DECIMAL" />
+		<result column="returnIntoWarehouseDate" property="returnIntoWarehouseDate"
+			jdbcType="CHAR" />
+		<result column="productid" property="productID" jdbcType="DECIMAL" />
+		<result column="productversion" property="productVersion"
+			jdbcType="DECIMAL" />
+		<result column="colourclass" property="colourClass" jdbcType="DECIMAL" />
+		<result column="colourcode" property="colourCode" jdbcType="DECIMAL" />
+		<result column="styleclass" property="styleClass" jdbcType="DECIMAL" />
+		<result column="stylecode" property="styleCode" jdbcType="DECIMAL" />
+		<result column="receivedQuantity" property="receivedQuantity"
+			jdbcType="DECIMAL" />
+		<result column="returntype" property="returnType" jdbcType="DECIMAL" />
+		<result column="subreturntype " property="subReturnType"
+			jdbcType="DECIMAL" />
+		<result column="orderReturnType " property="orderReturnType"
+			jdbcType="DECIMAL" />
+		<result column="orderAmount " property="orderAmount" jdbcType="DECIMAL" />
+
+		<result column="orderid " property="orderid" jdbcType="DECIMAL" />
+		<result column="itemid " property="itemid" jdbcType="DECIMAL" />
+			<result column="warehouseid" property="warehouseid" jdbcType="DECIMAL" />
+		
+	</resultMap>
+
+<!-- 
+	select r.returnid,
+		r.returnorderid,
+		r.returnordersequence,
+		r.customerid,
+		r.supplierid,
+		r.selectedcarrier,
+		to_char(r.RETURNINTOWAREHOUSEDATE, 'yyyymmdd') as returnIntoWarehouseDate,
+		r.productid,
+		r.productversion,
+		r.colourclass,
+		r.colourcode,
+		r.styleclass,
+		r.stylecode,
+		r.RECEIVEDQUANTITY,
+		logis.returntype,
+		logis.subreturntype,
+		r.returntype as orderReturnType,
+		r.warehouseid,
+		0 as orderAmount,
+		0 as orderid,
+		0 as itemid
+		from tscm_returnorder r,
+		tscm_productlogistic logis
+		where r.status = 1007
+		and r.productid = logis.productid
+		and r.returntype in(1002,1003)
+		<if test="returnID != null">
+			AND r.returnid = #{returnID}
+		</if>
+		<if test="returnIntoWarehouseDateFrom != null">
+			AND r.RETURNINTOWAREHOUSEDATE &gt;=
+			to_date(#{returnIntoWarehouseDateFrom}, 'yyyymmdd')
+		</if>
+		<if test="returnIntoWarehouseDateTo != null">
+			AND r.RETURNINTOWAREHOUSEDATE &lt;
+			to_date(#{returnIntoWarehouseDateTo}, 'yyyymmdd')
+		</if>
+		union all
+ -->
+	<select id="fetchReturnOrders" parameterType="com.best1.api.entity.view.ReturnOrderView"
+		resultMap="BaseResultMap">
+	
+		select 
+		r.returnid,
+		r.returnorderid,
+		r.returnordersequence,
+		r.customerid,
+		r.supplierid,
+		r.selectedcarrier,
+		to_char(r.RETURNINTOWAREHOUSEDATE, 'yyyymmdd') as returnIntoWarehouseDate,
+		r.productid,
+		r.productversion,
+		r.colourclass,
+		r.colourcode,
+		r.styleclass,
+		r.stylecode,
+		r.RECEIVEDQUANTITY,
+		logis.returntype,
+		logis.subreturntype,
+		r.returntype as orderReturnType,
+		r.warehouseid,
+		op.productamount as orderAmount,
+		op.orderid,
+		op.itemid
+		from 
+		tscm_returnorder r,
+		tscm_productlogistic logis,
+		toaf_returnproducts rp,
+		tscm_customershiporder cso,
+		(select decode(ex.neworderid,
+		null,
+		s.orderid,
+		ex.originalorderid) as orderid,
+		decode(ex.newitemid, null, s.itemid, ex.originalitemid) as itemid,
+		s.orderid as tmporderid,
+		s.itemid as tmpitem
+		from toaf_returnproducts s, 
+		toaf_exchangedetails ex
+		where s.orderid = ex.neworderid(+)
+		and s.itemid = ex.newitemid(+)
+		<if test="returnIntoWarehouseDateFrom != null">
+			AND s.returnedintowarehousedate &gt;=
+			to_date(#{returnIntoWarehouseDateFrom}, 'yyyymmdd')-100
+		</if>
+		<if test="returnIntoWarehouseDateTo != null">
+			AND s.returnedintowarehousedate &lt;
+			to_date(#{returnIntoWarehouseDateTo}, 'yyyymmdd')+100
+		</if>
+
+		) originorder,
+		toaf_orderedproduct op
+		where r.status = 1007
+		and r.productid = logis.productid
+		and r.returntype = 1001
+		and r.shiporderid=cso.shiporderid
+        and r.shipordersequence=cso.sequenceno
+        and cso.orderid=rp.orderid
+        and cso.itemid=rp.itemid
+		and rp.orderid = originorder.tmporderid
+		and rp.itemid = originorder.tmpitem
+		and op.orderid = rp.orderid
+        and op.itemid=rp.itemid
+		<if test="returnID != null">
+			AND r.returnid = #{returnID}
+		</if>
+		<if test="returnIntoWarehouseDateFrom != null">
+			AND r.RETURNINTOWAREHOUSEDATE &gt;=
+			to_date(#{returnIntoWarehouseDateFrom}, 'yyyymmdd')
+		</if>
+		<if test="returnIntoWarehouseDateTo != null">
+			AND r.RETURNINTOWAREHOUSEDATE &lt;
+			to_date(#{returnIntoWarehouseDateTo}, 'yyyymmdd')
+		</if>
+		union all
+		
+select r.returnid,
+       r.returnorderid,
+       r.returnordersequence,
+       r.customerid,
+       r.supplierid,
+       r.selectedcarrier,
+       to_char(r.RETURNINTOWAREHOUSEDATE, 'yyyymmdd') as returnIntoWarehouseDate,
+       r.productid,
+       r.productversion,
+       r.colourclass,
+       r.colourcode,
+       r.styleclass,
+       r.stylecode,
+       r.RECEIVEDQUANTITY,
+       logis.returntype,
+       logis.subreturntype,
+       r.returntype as orderReturnType,
+       r.warehouseid,
+       op.productamount as orderAmount,
+       op.orderid,
+       op.itemid
+  from tscm_returnorder r,
+       tscm_productlogistic logis,
+       toaf_returnproductdetails rp,
+       tscm_customershiporder cso,
+       (select decode(ex.neworderid, null, s.orderid, ex.originalorderid) as orderid,
+               decode(ex.newitemid, null, s.itemid, ex.originalitemid) as itemid,
+               s.orderid as tmporderid,
+               s.itemid as tmpitem
+          from toaf_returnproducts s, toaf_exchangedetails ex
+         where s.orderid = ex.neworderid(+)
+           and s.itemid = ex.newitemid(+)
+       	<if test="returnIntoWarehouseDateFrom != null">
+			AND s.returnedintowarehousedate &gt;=
+			to_date(#{returnIntoWarehouseDateFrom}, 'yyyymmdd')-100
+		</if>
+		<if test="returnIntoWarehouseDateTo != null">
+			AND s.returnedintowarehousedate &lt;
+			to_date(#{returnIntoWarehouseDateTo}, 'yyyymmdd')+100
+		</if>
+        ) originorder,
+       toaf_orderedproduct op
+where r.status = 1007
+   and r.productid = logis.productid
+   and r.returntype = 1001
+   and r.shiporderid=cso.shiporderid
+   and r.shipordersequence=cso.sequenceno
+  -- and r.returnid = rp.returnid
+  and cso.orderid=rp.orderid
+  and cso.itemid=rp.itemid
+   and rp.orderid = originorder.tmporderid(+)
+   and rp.itemid = originorder.tmpitem(+)
+   and op.orderid = RP.ORDERID
+   and op.itemid=rp.itemid
+  	<if test="returnID != null">
+			AND r.returnid = #{returnID}
+		</if>
+		<if test="returnIntoWarehouseDateFrom != null">
+			AND r.RETURNINTOWAREHOUSEDATE &gt;=
+			to_date(#{returnIntoWarehouseDateFrom}, 'yyyymmdd')
+		</if>
+		<if test="returnIntoWarehouseDateTo != null">
+			AND r.RETURNINTOWAREHOUSEDATE &lt;
+			to_date(#{returnIntoWarehouseDateTo}, 'yyyymmdd')
+		</if>
+	</select>
+
+</mapper> 

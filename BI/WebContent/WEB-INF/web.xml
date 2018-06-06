@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+	<context-param>
+		<description>配置spring读取的xml文件</description>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:system/applicationContext*.xml,
+			classpath*:report/applicationContext*.xml
+		</param-value>
+	</context-param>
+	
+	<!-- 定义Filter -->
+	<filter>
+		<filter-name>authority</filter-name>
+		<filter-class>com.best1.filter.AuthorityFilter</filter-class>
+		<init-param>
+			<param-name>loginPage</param-name>
+			<param-value>/index.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>loginAction</param-name>
+			<param-value>login.action</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>authority</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 编码过滤器  
+	 <filter>
+        <filter-name>CharSetFilter</filter-name>
+        <filter-class>com.best1.filter.CharsetFilter</filter-class>
+        <init-param>
+         <param-name>encoding</param-name>
+         <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharSetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	-->
+  <filter>
+    <filter-name>struts2</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- fusioncharts图表导出配置
+	<servlet>
+		<display-name>FCExporter</display-name>
+		<servlet-name>FCExporter</servlet-name>
+		<servlet-class>com.fusioncharts.exporter.servlet.FCExporter</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FCExporter</servlet-name>
+		<url-pattern>/FCExporter</url-pattern>
+	</servlet-mapping>
+	-->
+  	<!-- dwr配置 -->
+	 <servlet>
+		<!-- 指定DWR核心Servlet的名字 -->
+		<servlet-name>dwr-invoker</servlet-name>
+		<!-- 指定DWR核心Servlet的实现类 -->
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<!--  指定DWR核心Servlet处于调试状态 -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<!-- 设置启用反向Ajax技术 -->
+		<init-param>
+			<param-name>pollAndCometEnabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+  	<!-- 指定核心Servlet的URL映射 -->
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<!-- 指定核心Servlet映射的URL -->
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+	
+</web-app>

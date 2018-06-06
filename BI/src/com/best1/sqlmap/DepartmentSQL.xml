@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DepartmentSql">
+    <typeAlias alias="Department" type="com.best1.domain.Department" />
+    <!-- 通用查询列表 -->
+	<sql id="Select_Clause">
+		select 
+			  a.department_id,
+			  a.department_name,
+			  a.department_pid,
+			  (select b.department_name from tb_best1_department b where b.department_id = a.department_pid) as department_pname,
+			  a.createdby,
+			  (select m.username from tb_best1_user m where m.userid = a.createdby) as createdbyname,
+			  a.create_date,
+			  a.lastmodifyby,
+			  (select m.username from tb_best1_user m where m.userid = a.lastmodifyby) as lastmodifybyname,
+			  a.last_modify_date
+		from tb_best1_department a
+	</sql>
+    <!-- 通用查询条件 -->
+	<sql id="Where_Clause">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="departmentId">
+				<![CDATA[
+					a.department_id = #departmentId#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentName">
+				<![CDATA[
+					a.department_name like '%$departmentName$%'
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentPid">
+				<![CDATA[
+					a.department_pid = #departmentPid#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentPName">
+				<![CDATA[
+					a.department_pid in (select n.department_id from tb_best1_department n where n.department_name like '%$departmentPName$%')
+				]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentIds">
+			    a.department_id in (
+			        <iterate property="departmentIds" conjunction = ",">
+				        #departmentIds[]#
+				    </iterate>
+			    )
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 查询 -->
+	<resultMap class="java.util.HashMap" id="getDepartment">
+		<result property="departmentId" column="department_id" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="departmentName" column="department_name" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="departmentPid" column="department_pid" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="departmentPName" column="department_pname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createdby" column="createdby" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="createdbyname" column="createdbyname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="createDate" column="create_date" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastmodifyby" column="lastmodifyby" javaType="java.lang.Long" jdbcType="DECIMAL" nullValue="-1"/>
+		<result property="lastmodifybyname" column="lastmodifybyname" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+		<result property="lastModifyDate" column="last_modify_date" javaType="java.lang.String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="getDepartments" resultMap="getDepartment" parameterClass="java.util.HashMap">
+	    <isGreaterThan property="endIndex" compareValue="0" >
+			<![CDATA[
+				select * from (select t_1.*,rownum as row_num from (
+			]]>
+		</isGreaterThan>
+		<include refid="Select_Clause" />
+		<include refid="Where_Clause" />
+		order by a.department_id desc
+		<isGreaterThan property="endIndex" compareValue="0">
+			<![CDATA[
+				) t_1 ) t_2 where t_2.row_num>=#startIndex# and t_2.row_num<=#endIndex#
+			]]>
+		</isGreaterThan>
+	</select>
+	
+	<!-- 统计 -->
+	<select id="countDepartment" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_department a
+		<include refid="Where_Clause" />
+	</select>
+	
+    <!-- 新增 -->
+	<insert id="insertDepartment" parameterClass="Department">
+	insert into tb_best1_department(
+	  department_id,
+	  department_name,
+	  department_pid,
+	  createdby,
+	  create_date)
+    values(
+      SEQ_DEPARTMENT_ID.NEXTVAL,
+      #departmentName#,
+      #departmentPid#,
+      #createdby#,
+      sysdate)
+    </insert>
+    
+    <!-- 修改 -->
+	<update id="updateDepartment" parameterClass="Department">
+		update tb_best1_department
+		set	department_name = #departmentName#,department_pid = #departmentPid#,lastmodifyby = #lastmodifyby#,last_modify_date = sysdate
+		where department_id = #departmentId#
+	</update>
+    
+    <!-- 删除 -->
+	<delete id="deleteDepartment" parameterClass="java.util.HashMap" >
+		delete from tb_best1_department a 
+		<include refid="Where_Clause" />
+	</delete> 
+	
+	<!-- 统计部门下未删除部门 -->
+	<select id="countDeptUndeleted" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+		select count(1) from tb_best1_department b where b.department_pid in (
+				<iterate property="departmentIds" conjunction = ",">
+				        #departmentIds[]#
+				</iterate>
+			)
+			and b.department_id not in (
+				<iterate property="departmentIds" conjunction = ",">
+					        #departmentIds[]#
+				</iterate>
+			)
+	</select>
+	
+</sqlMap>

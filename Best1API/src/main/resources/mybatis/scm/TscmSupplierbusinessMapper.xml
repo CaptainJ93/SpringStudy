@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.scm.TscmSupplierbusinessMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.scm.supplier.TscmSupplierbusiness" >
+   
+    <id column="SUPPLIERID" property="supplierid" jdbcType="DECIMAL" />
+    <id column="BUSINESSTYPE" property="businesstype" jdbcType="DECIMAL" />
+    <result column="ISDEFAULT" property="isdefault" jdbcType="CHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+    <result column="LASTMODIFIEDBY" property="lastmodifiedby" jdbcType="DECIMAL" />
+    <result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+   
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+  
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+  
+    SUPPLIERID, BUSINESSTYPE, ISDEFAULT, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, 
+    LASTMODIFIEDTIMESTAMP
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="TscmSupplierbusinessExample" >
+    
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="TscmSupplierbusinessKey" >
+   
+    select 
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+      and BUSINESSTYPE = #{businesstype,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="TscmSupplierbusinessKey" >
+    
+    delete from ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+      and BUSINESSTYPE = #{businesstype,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="TscmSupplierbusinessExample" >
+   
+    delete from ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TscmSupplierbusiness" >
+   
+    insert into ET1_CHINA.TSCM_SUPPLIERBUSINESS (SUPPLIERID, BUSINESSTYPE, ISDEFAULT, 
+      CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY, 
+      LASTMODIFIEDTIMESTAMP)
+    values (#{supplierid,jdbcType=DECIMAL}, #{businesstype,jdbcType=DECIMAL}, #{isdefault,jdbcType=CHAR}, 
+      #{createdby,jdbcType=DECIMAL}, #{createdtimestamp,jdbcType=TIMESTAMP}, #{lastmodifiedby,jdbcType=DECIMAL}, 
+      #{lastmodifiedtimestamp,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="TscmSupplierbusiness" >
+    
+    insert into ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="supplierid != null" >
+        SUPPLIERID,
+      </if>
+      <if test="businesstype != null" >
+        BUSINESSTYPE,
+      </if>
+      <if test="isdefault != null" >
+        ISDEFAULT,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY,
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="supplierid != null" >
+        #{supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="businesstype != null" >
+        #{businesstype,jdbcType=DECIMAL},
+      </if>
+      <if test="isdefault != null" >
+        #{isdefault,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TscmSupplierbusinessExample" resultType="java.lang.Integer" >
+   
+    select count(*) from ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    
+    update ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    <set >
+      <if test="record.supplierid != null" >
+        SUPPLIERID = #{record.supplierid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.businesstype != null" >
+        BUSINESSTYPE = #{record.businesstype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isdefault != null" >
+        ISDEFAULT = #{record.isdefault,jdbcType=CHAR},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+   
+    update ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    set SUPPLIERID = #{record.supplierid,jdbcType=DECIMAL},
+      BUSINESSTYPE = #{record.businesstype,jdbcType=DECIMAL},
+      ISDEFAULT = #{record.isdefault,jdbcType=CHAR},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{record.lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{record.lastmodifiedtimestamp,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TscmSupplierbusiness" >
+ 
+    update ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    <set >
+      <if test="isdefault != null" >
+        ISDEFAULT = #{isdefault,jdbcType=CHAR},
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastmodifiedby != null" >
+        LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      </if>
+      <if test="lastmodifiedtimestamp != null" >
+        LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+      and BUSINESSTYPE = #{businesstype,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TscmSupplierbusiness" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERBUSINESS
+    set ISDEFAULT = #{isdefault,jdbcType=CHAR},
+      CREATEDBY = #{createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+      LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+      LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP}
+    where SUPPLIERID = #{supplierid,jdbcType=DECIMAL}
+      and BUSINESSTYPE = #{businesstype,jdbcType=DECIMAL}
+  </update>
+</mapper>

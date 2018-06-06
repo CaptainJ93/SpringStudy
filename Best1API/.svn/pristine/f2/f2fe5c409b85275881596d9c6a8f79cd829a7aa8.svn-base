@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.scm.TscmSupplierdeliverypendingMapper" >
+  <resultMap id="BaseResultMap" type="com.best1.api.entity.scm.supplier.TscmSupplierdeliverypending" >
+  
+    <result column="SUPPLIERRECORDID" property="supplierrecordid" jdbcType="DECIMAL" />
+    <result column="DELIVERYTERM" property="deliveryterm" jdbcType="DECIMAL" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATEDTIMESTAMP" property="createdtimestamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" > 
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+   \
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+
+    SUPPLIERRECORDID, DELIVERYTERM, CREATEDBY, CREATEDTIMESTAMP
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="TscmSupplierdeliverypendingExample" >
+  
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="TscmSupplierdeliverypendingExample" >
+ 
+    delete from ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TscmSupplierdeliverypending" >
+
+    insert into ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING (SUPPLIERRECORDID, DELIVERYTERM, CREATEDBY, 
+      CREATEDTIMESTAMP)
+    values (#{supplierrecordid,jdbcType=DECIMAL}, #{deliveryterm,jdbcType=DECIMAL}, #{createdby,jdbcType=DECIMAL}, 
+      #{createdtimestamp,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="TscmSupplierdeliverypending" >
+   
+    insert into ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="supplierrecordid != null" >
+        SUPPLIERRECORDID,
+      </if>
+      <if test="deliveryterm != null" >
+        DELIVERYTERM,
+      </if>
+      <if test="createdby != null" >
+        CREATEDBY,
+      </if>
+      <if test="createdtimestamp != null" >
+        CREATEDTIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="supplierrecordid != null" >
+        #{supplierrecordid,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryterm != null" >
+        #{deliveryterm,jdbcType=DECIMAL},
+      </if>
+      <if test="createdby != null" >
+        #{createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="createdtimestamp != null" >
+        #{createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TscmSupplierdeliverypendingExample" resultType="java.lang.Integer" >
+  
+    select count(*) from ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING
+    <set >
+      <if test="record.supplierrecordid != null" >
+        SUPPLIERRECORDID = #{record.supplierrecordid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliveryterm != null" >
+        DELIVERYTERM = #{record.deliveryterm,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdby != null" >
+        CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdtimestamp != null" >
+        CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+  
+    update ET1_CHINA.TSCM_SUPPLIERDELIVERYPENDING
+    set SUPPLIERRECORDID = #{record.supplierrecordid,jdbcType=DECIMAL},
+      DELIVERYTERM = #{record.deliveryterm,jdbcType=DECIMAL},
+      CREATEDBY = #{record.createdby,jdbcType=DECIMAL},
+      CREATEDTIMESTAMP = #{record.createdtimestamp,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

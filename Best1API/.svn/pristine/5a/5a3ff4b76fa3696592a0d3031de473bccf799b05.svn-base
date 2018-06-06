@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.best1.api.mapper.oaf.order.ToafOrderinvoiceinfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.best1.api.entity.oaf.order.ToafOrderinvoiceinfo">
+
+		<id column="INVOICEINFOID" property="invoiceinfoid" jdbcType="DECIMAL" />
+		<result column="ORDERID" property="orderid" jdbcType="DECIMAL" />
+		<result column="ITEMID" property="itemid" jdbcType="DECIMAL" />
+		<result column="CUSTOMERID" property="customerid" jdbcType="DECIMAL" />
+		<result column="INVOICEADDRESSID" property="invoiceaddressid"
+			jdbcType="DECIMAL" />
+		<result column="INVOICETYPE" property="invoicetype" jdbcType="DECIMAL" />
+		<result column="TAXTYPE" property="taxtype" jdbcType="DECIMAL" />
+		<result column="INVOICETITLE" property="invoicetitle" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+		<result column="CREATEDTIMESTAMP" property="createdtimestamp"
+			jdbcType="TIMESTAMP" />
+		<result column="LASTMODIFIEDBY" property="lastmodifiedby"
+			jdbcType="DECIMAL" />
+		<result column="LASTMODIFIEDTIMESTAMP" property="lastmodifiedtimestamp"
+			jdbcType="TIMESTAMP" />
+		<result column="PICKUPAMOUNT" property="pickupamount" jdbcType="DECIMAL" />
+		<result column="TAIWANID" property="taiwanid" jdbcType="VARCHAR" />
+		<result column="INVOICESTATUS" property="invoicestatus"
+			jdbcType="DECIMAL" />
+		<result column="VERIFICATIONNO" property="verificationno"
+			jdbcType="DECIMAL" />
+		<result column="INVOICENO" property="invoiceno" jdbcType="DECIMAL" />
+		<result column="INVOICEISSUETYPE" property="invoiceissuetype"
+			jdbcType="DECIMAL" />
+		<result column="OWNERPERSONALID" property="ownerpersonalid"
+			jdbcType="VARCHAR" />
+		<result column="AUTOMOBILEVINNO" property="automobilevinno"
+			jdbcType="VARCHAR" />
+		<result column="INVOICEDATE" property="invoicedate" jdbcType="TIMESTAMP" />
+		<result column="INVOICEISSUEDATE" property="invoiceissuedate"
+			jdbcType="TIMESTAMP" />
+		<result column="INVOICERETURNDATE" property="invoicereturndate"
+			jdbcType="TIMESTAMP" />
+		<result column="STATUSDATE" property="statusdate" jdbcType="TIMESTAMP" />
+		<result column="ISMEDIAREPORTED" property="ismediareported"
+			jdbcType="CHAR" />
+		<result column="ISREPRINTED" property="isreprinted" jdbcType="CHAR" />
+		<result column="ISINVOICECOPIED" property="isinvoicecopied"
+			jdbcType="CHAR" />
+		<result column="ISWINNINGINVOICE" property="iswinninginvoice"
+			jdbcType="CHAR" />
+		<result column="ISMARKEDFOREDIFILE" property="ismarkedforedifile"
+			jdbcType="CHAR" />
+		<result column="ISINVOICERETURNED" property="isinvoicereturned"
+			jdbcType="CHAR" />
+		<result column="PREFIX" property="prefix" jdbcType="VARCHAR" />
+		<result column="NAMEOFLICENSEHOLDER" property="nameoflicenseholder"
+			jdbcType="VARCHAR" />
+		<result column="COMPANYNO" property="companyno" jdbcType="VARCHAR" />
+		<result column="RECEIVERNAME" property="receivername" jdbcType="VARCHAR" />
+		<result column="ISINVOICEDONATED" property="isinvoicedonated"
+			jdbcType="CHAR" />
+		<result column="ISPARTIALREFUND" property="ispartialrefund"
+			jdbcType="CHAR" />
+		<result column="PARTIALREFUNDAMOUNT" property="partialrefundamount"
+			jdbcType="DECIMAL" />
+		<result column="ORIGINALSTATUS" property="originalstatus"
+			jdbcType="DECIMAL" />
+		<result column="ISEINVOICE" property="iseinvoice" jdbcType="CHAR" />
+		<result column="INVOICETARGET" property="invoicetarget"
+			jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column_List">
+		INVOICEINFOID, ORDERID, ITEMID, CUSTOMERID, INVOICEADDRESSID, INVOICETYPE, TAXTYPE,
+		INVOICETITLE, AMOUNT, CREATEDBY, CREATEDTIMESTAMP, LASTMODIFIEDBY,
+		LASTMODIFIEDTIMESTAMP,
+		PICKUPAMOUNT, TAIWANID, INVOICESTATUS, VERIFICATIONNO, INVOICENO, INVOICEISSUETYPE,
+		OWNERPERSONALID, AUTOMOBILEVINNO, INVOICEDATE, INVOICEISSUEDATE,
+		INVOICERETURNDATE,
+		STATUSDATE, ISMEDIAREPORTED, ISREPRINTED, ISINVOICECOPIED, ISWINNINGINVOICE,
+		ISMARKEDFOREDIFILE,
+		ISINVOICERETURNED, PREFIX, NAMEOFLICENSEHOLDER, COMPANYNO, RECEIVERNAME,
+		ISINVOICEDONATED,
+		ISPARTIALREFUND, PARTIALREFUNDAMOUNT, ORIGINALSTATUS, ISEINVOICE, INVOICETARGET
+	</sql>
+
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.best1.api.entity.oaf.order.ToafOrderinvoiceinfoExample">
+
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from ET1_CHINA.TOAF_ORDERINVOICEINFO
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ET1_CHINA.TOAF_ORDERINVOICEINFO
+		where INVOICEINFOID = #{invoiceinfoid,jdbcType=DECIMAL}
+	</select>
+
+
+<select id="selectCustomerEinvoiceinfo"	parameterType="com.best1.api.entity.oaf.order.CustomerOrderinvoiceinfo" 	resultType="com.best1.api.entity.oaf.order.CustomerOrderinvoiceinfo">
+select invoice.invoiceinfoid,
+       invoice.amount,
+       invoice.invoicetitle,
+       invoice.orderid,
+       invoice.itemid,
+       invoice.customerid,
+       invoice.invoicestatus,
+       invoice.iseinvoice,
+       invoice.invoicetitle,
+       invoice.invoicedate,
+       einvoice.dzfphm,
+       einvoice.fpdm,
+       einvoice.fphm,
+       einvoice.invoicepdf,
+       einvoice.einvoiceinfostatus
+  from toaf_orderinvoiceinfo invoice,
+       et1_china.TOAF_EORDERINVOICEINFO einvoice
+ where   invoice.invoiceinfoid = einvoice.invoiceinfoid(+)
+		<if test="customerid != null">
+			and invoice.customerid=#{customerid}
+		</if>
+		<if test="orderid != null">
+			and invoice.orderid=#{orderid}
+		</if>
+		<if test="itemid != null">
+			and invoice.itemid=#{itemid}
+		</if>
+		<if test="invoicestatus != null">
+			and invoice.invoicestatus=#{invoicestatus}
+		</if>
+		<if test="invoiceinfoid != null">
+			and invoice.invoiceinfoid=#{invoiceinfoid}
+		</if>
+		<if test="iseinvoice != null">
+			and invoice.iseinvoice=#{iseinvoice}
+		</if>
+		<if test="einvoiceinfostatus != null">
+		 and einvoice.einvoiceinfostatus=#{einvoiceinfostatus}
+		</if>
+
+</select>
+
+
+
+
+<select id="selectCustomerOrderinvoiceinfo"	parameterType="com.best1.api.entity.oaf.order.CustomerOrderinvoiceinfo" 	resultType="com.best1.api.entity.oaf.order.CustomerOrderinvoiceinfo">
+		select invoice.invoiceinfoid,
+		invoice.amount,
+		invoice.invoicetitle,
+		op.orderid,
+		op.itemid,
+		op.customerid,
+		ad.address1 || ad.address2 address,
+		nvl(ad.mobilenumber,ad.hometelephoneareacode || ad.hometelephonenumber) mobilenumber,
+		op.productid,
+		op.productname,
+		color.shortnametaiwaneese as clr,
+        style.shortnametaiwaneese as sty,
+		op.orderstatus,
+		invoice.invoicestatus,
+		op.createdtimestamp,
+		op.quantity,
+		invoice.iseinvoice,
+		product.taxrate,
+		product.overalltax,
+		from toaf_orderedproduct op,
+		toaf_orderinvoiceinfo invoice,
+		tcrm_customeraddress ad,
+		et1_china.TOAF_EORDERINVOICEINFO einvoice,
+		tscm_productparameters           product,
+	    tcmn_domaindata           color,
+        tcmn_domaindata           style
+		where 
+		color.DOMAINID = 5102
+        and style.domainid = 5103
+        and op.colourcode = color.domaincode
+        and op.stylecode = style.domaincode
+		and op.orderid = invoice.orderid
+		and op.itemid = invoice.itemid
+		and op.invoiceaddressid = ad.addressid
+		and op.productid=product.productid(+)
+        and invoice.invoiceinfoid=einvoice.invoiceinfoid(+)
+        and einvoice.invoiceinfoid is null
+        and op.createdtimestamp>=trunc(sysdate-(365))
+		<if test="customerid != null">
+			and op.customerid=#{customerid}
+		</if>
+		<if test="orderid != null">
+			and op.orderid=#{orderid}
+		</if>
+		<if test="itemid != null">
+			and op.itemid=#{itemid}
+		</if>
+		<if test="orderstatus != null">
+			and op.orderstatus=#{orderstatus}
+		</if>
+		<if test="invoicestatus != null">
+			and invoice.invoicestatus=#{invoicestatus}
+		</if>
+		<if test="invoiceinfoid != null">
+			and invoice.invoiceinfoid=#{invoiceinfoid}
+		</if>
+		<if test="iseinvoice != null">
+			and invoice.iseinvoice=#{iseinvoice}
+		</if>
+		<if test="einvoiceinfostatus != null">
+		 and einvoice.einvoiceinfostatus=#{einvoiceinfostatus}
+		</if>
+		<if test="companyid != null">
+			and op.companyid=#{companyid}
+		</if>
+</select>
+
+<select id="selectCustomerReturninvoiceinfo"
+		parameterType="com.best1.api.entity.oaf.order.CustomerOrderinvoiceinfo"
+		resultType="com.best1.api.entity.oaf.order.CustomerOrderinvoiceinfo">
+		select invoice.invoiceinfoid,
+		invoice.amount,
+		invoice.invoicetitle,
+		op.orderid,
+		op.itemid,
+		op.customerid,
+		ad.address1 || ad.address2 address,
+		nvl(ad.mobilenumber,ad.hometelephoneareacode || ad.hometelephonenumber) mobilenumber,
+		op.productid,
+		op.productname,
+		op.quantity,
+		color.shortnametaiwaneese as clr,
+        style.shortnametaiwaneese as sty,
+		op.orderstatus,
+		invoice.invoicestatus,
+		op.createdtimestamp,
+		invoice.iseinvoice,
+		einvoice.dzfphm,
+		einvoice.fpdm,
+		einvoice.fphm,
+		einvoice.einvoiceinfoid,
+		product.taxrate
+		from toaf_orderedproduct op,
+		toaf_orderinvoiceinfo invoice,
+		tcrm_customeraddress ad,
+		et1_china.TOAF_EORDERINVOICEINFO einvoice,
+		tscm_productparameters           product,
+	    tcmn_domaindata           color,
+        tcmn_domaindata           style
+		where
+		 color.DOMAINID = 5102
+        and style.domainid = 5103
+        and op.colourcode = color.domaincode
+        and op.stylecode = style.domaincode
+		and einvoice.invoiceinfoid=invoice.invoiceinfoid
+		and op.orderid = invoice.orderid
+		and op.itemid = invoice.itemid
+		and op.invoiceaddressid = ad.addressid
+		and op.productid=product.productid(+)
+		<if test="customerid != null">
+			and op.customerid=#{customerid}
+		</if>
+		<if test="orderid != null">
+			and op.orderid=#{orderid}
+		</if>
+		<if test="itemid != null">
+			and op.itemid=#{itemid}
+		</if>
+		<if test="orderstatus != null">
+			and op.orderstatus=#{orderstatus}
+		</if>
+		<if test="invoicestatus != null">
+			and invoice.invoicestatus=#{invoicestatus}
+		</if>
+		<if test="invoiceinfoid != null">
+			and invoice.invoiceinfoid=#{invoiceinfoid}
+		</if>
+		<if test="iseinvoice != null">
+			and invoice.iseinvoice=#{iseinvoice}
+		</if>
+		<if test="einvoiceinfostatus != null">
+			and einvoice.einvoiceinfostatus=#{einvoiceinfostatus}
+		</if>
+		<if test="companyid != null">
+			and op.companyid=#{companyid}
+		</if>
+   </select>
+
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.best1.api.entity.oaf.order.ToafOrderinvoiceinfo">
+		update ET1_CHINA.TOAF_ORDERINVOICEINFO
+		<set>
+			<if test="orderid != null">
+				ORDERID = #{orderid,jdbcType=DECIMAL},
+			</if>
+			<if test="itemid != null">
+				ITEMID = #{itemid,jdbcType=DECIMAL},
+			</if>
+			<if test="customerid != null">
+				CUSTOMERID = #{customerid,jdbcType=DECIMAL},
+			</if>
+			<if test="invoiceaddressid != null">
+				INVOICEADDRESSID = #{invoiceaddressid,jdbcType=DECIMAL},
+			</if>
+			<if test="invoicetype != null">
+				INVOICETYPE = #{invoicetype,jdbcType=DECIMAL},
+			</if>
+			<if test="taxtype != null">
+				TAXTYPE = #{taxtype,jdbcType=DECIMAL},
+			</if>
+			<if test="invoicetitle != null">
+				INVOICETITLE = #{invoicetitle,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				AMOUNT = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="createdby != null">
+				CREATEDBY = #{createdby,jdbcType=DECIMAL},
+			</if>
+			<if test="createdtimestamp != null">
+				CREATEDTIMESTAMP = #{createdtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="pickupamount != null">
+				PICKUPAMOUNT = #{pickupamount,jdbcType=DECIMAL},
+			</if>
+			<if test="taiwanid != null">
+				TAIWANID = #{taiwanid,jdbcType=VARCHAR},
+			</if>
+			<if test="invoicestatus != null">
+				INVOICESTATUS = #{invoicestatus,jdbcType=DECIMAL},
+			</if>
+			<if test="verificationno != null">
+				VERIFICATIONNO = #{verificationno,jdbcType=DECIMAL},
+			</if>
+			<if test="invoiceno != null">
+				INVOICENO = #{invoiceno,jdbcType=DECIMAL},
+			</if>
+			<if test="invoiceissuetype != null">
+				INVOICEISSUETYPE = #{invoiceissuetype,jdbcType=DECIMAL},
+			</if>
+			<if test="ownerpersonalid != null">
+				OWNERPERSONALID = #{ownerpersonalid,jdbcType=VARCHAR},
+			</if>
+			<if test="automobilevinno != null">
+				AUTOMOBILEVINNO = #{automobilevinno,jdbcType=VARCHAR},
+			</if>
+			<if test="invoicedate != null">
+				INVOICEDATE = #{invoicedate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="invoiceissuedate != null">
+				INVOICEISSUEDATE = #{invoiceissuedate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="invoicereturndate != null">
+				INVOICERETURNDATE = #{invoicereturndate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statusdate != null">
+				STATUSDATE = #{statusdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ismediareported != null">
+				ISMEDIAREPORTED = #{ismediareported,jdbcType=CHAR},
+			</if>
+			<if test="isreprinted != null">
+				ISREPRINTED = #{isreprinted,jdbcType=CHAR},
+			</if>
+			<if test="isinvoicecopied != null">
+				ISINVOICECOPIED = #{isinvoicecopied,jdbcType=CHAR},
+			</if>
+			<if test="iswinninginvoice != null">
+				ISWINNINGINVOICE = #{iswinninginvoice,jdbcType=CHAR},
+			</if>
+			<if test="ismarkedforedifile != null">
+				ISMARKEDFOREDIFILE = #{ismarkedforedifile,jdbcType=CHAR},
+			</if>
+			<if test="isinvoicereturned != null">
+				ISINVOICERETURNED = #{isinvoicereturned,jdbcType=CHAR},
+			</if>
+			<if test="prefix != null">
+				PREFIX = #{prefix,jdbcType=VARCHAR},
+			</if>
+			<if test="nameoflicenseholder != null">
+				NAMEOFLICENSEHOLDER = #{nameoflicenseholder,jdbcType=VARCHAR},
+			</if>
+			<if test="companyno != null">
+				COMPANYNO = #{companyno,jdbcType=VARCHAR},
+			</if>
+			<if test="receivername != null">
+				RECEIVERNAME = #{receivername,jdbcType=VARCHAR},
+			</if>
+			<if test="isinvoicedonated != null">
+				ISINVOICEDONATED = #{isinvoicedonated,jdbcType=CHAR},
+			</if>
+			<if test="ispartialrefund != null">
+				ISPARTIALREFUND = #{ispartialrefund,jdbcType=CHAR},
+			</if>
+			<if test="partialrefundamount != null">
+				PARTIALREFUNDAMOUNT = #{partialrefundamount,jdbcType=DECIMAL},
+			</if>
+			<if test="originalstatus != null">
+				ORIGINALSTATUS = #{originalstatus,jdbcType=DECIMAL},
+			</if>
+			<if test="iseinvoice != null">
+				ISEINVOICE = #{iseinvoice,jdbcType=CHAR},
+			</if>
+			<if test="invoicetarget != null">
+				INVOICETARGET = #{invoicetarget,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where INVOICEINFOID = #{invoiceinfoid,jdbcType=DECIMAL}
+	</update>
+	
+	
+	<update id="updateInvoicenoByOrderSelective" parameterType="com.best1.api.entity.oaf.order.ToafOrderinvoiceinfo">
+		update ET1_CHINA.TOAF_ORDERINVOICEINFO
+		<set>
+			
+			
+			<if test="lastmodifiedby != null">
+				LASTMODIFIEDBY = #{lastmodifiedby,jdbcType=DECIMAL},
+			</if>
+			<if test="lastmodifiedtimestamp != null">
+				LASTMODIFIEDTIMESTAMP = #{lastmodifiedtimestamp,jdbcType=TIMESTAMP},
+			</if>
+			
+			<if test="invoicestatus != null">
+				INVOICESTATUS = #{invoicestatus,jdbcType=DECIMAL},
+			</if>
+		
+			<if test="invoiceno != null">
+				INVOICENO = #{invoiceno,jdbcType=DECIMAL},
+			</if>
+		
+			<if test="invoicedate != null">
+				INVOICEDATE = #{invoicedate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="invoiceissuedate != null">
+				INVOICEISSUEDATE = #{invoiceissuedate,jdbcType=TIMESTAMP},
+			</if>
+			
+			<if test="statusdate != null">
+				STATUSDATE = #{statusdate,jdbcType=TIMESTAMP},
+			</if>
+			
+			<if test="prefix != null">
+				PREFIX = #{prefix,jdbcType=VARCHAR},
+			</if>
+			
+		</set>
+		where ORDERID = #{orderid,jdbcType=DECIMAL} and ITEMID = #{itemid,jdbcType=DECIMAL}
+	</update>
+	
+	
+	
+	
+	
+	<select id="countInvoicenoByOrderSelective" parameterType="com.best1.api.entity.oaf.order.ToafOrderinvoiceinfo" resultType="java.lang.Integer" >
+ 
+    select count(*) from ET1_CHINA.TOAF_ORDERINVOICEINFO
+    where ORDERID = #{orderid,jdbcType=DECIMAL} and ITEMID = #{itemid,jdbcType=DECIMAL}
+  </select>
+</mapper>
