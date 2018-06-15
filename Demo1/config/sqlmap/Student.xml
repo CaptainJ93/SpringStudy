@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 使用namespace对不同用途分类的SQL进行隔离 -->
+<mapper namespace="Student">
+	<!-- 在映射文件中配置很多SQL -->
+	<!-- 用id标识SQL，将SQL语句封装到mapperStatement对象中，所以为statementid parametertype制定传入参数类型 
+		sno表示输入的参数，如果是简单类型那么参数名sno可以任意 -->
+	<!-- resualtType标识输出结果类型，输出结果映射的java对象 , 内容为这个类的目录地址 -->
+	<select id="findStudentById" parameterType="int"
+		resultType="com.hyg.jsz.mybatis.pojo.Student">
+		select * from student s where s.sno=#{sno}
+	</select>
+
+	<select id="findStudentByName" parameterType="java.lang.String"
+		resultType="com.hyg.jsz.mybatis.pojo.Student">
+		select * from student s where s.sname like '%${value}%'
+	</select>
+	
+	<insert id="insertStudentSingle" parameterType="com.hyg.jsz.mybatis.pojo.Student">
+		<selectKey keyProperty="sno" order="BEFORE" resultType="java.lang.String">
+			select uuid()
+		</selectKey>
+		insert into student(sno,sname,ssex,sclass) values (#{sno},#{sname},#{ssex},#{sclass})
+	</insert>
+	
+	<insert id="insertStudentSingle" parameterType="com.hyg.jsz.mybatis.pojo.Student">
+		<selectKey keyProperty="sno" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into student(sname,ssex,sclass) values (#{sname},#{ssex},#{sclass})
+	</insert>
+	
+	<delete id="deleteStudentBySno" parameterType="java.lang.Integer">
+		delete from student s where s.sno=#{sno}
+	</delete>
+</mapper> 
