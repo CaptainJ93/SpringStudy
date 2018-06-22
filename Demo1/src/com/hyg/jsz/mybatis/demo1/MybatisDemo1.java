@@ -34,7 +34,7 @@ public class MybatisDemo1 {
 //		// 释放资源
 //		sqlSession.close();
 		MybatisDemo1 mybatisDemo1 = new MybatisDemo1();
-		mybatisDemo1.deleteStudentBySno();
+		mybatisDemo1.UpdateStudent();
 	}
 
 	public void findUserByName() throws IOException {
@@ -77,6 +77,21 @@ public class MybatisDemo1 {
 		
 		sqlSession.commit();
 		sqlSession.close();
+	}
+	
+	public void UpdateStudent() throws IOException {
+		Student student = new Student();
+		student.setSno(111);
+		student.setSname("wangd");
+		student.setSsex("女");
+		student.setSclass("95036");
+		
+		InputStream inputStream = Resources.getResourceAsStream("SqlMapConfig.xml");
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		sqlSession.update("Student.updateStudentBySno", student);
+		
+		
 	}
 	
 }

@@ -20,6 +20,8 @@
 
 	<!-- 配置加载mapping -->
 	<mappers>
-		<mapper resource="sqlmap/Student.xml"></mapper>
+		<mapper resource="sqlmap/Student.xml"/>
+		<package name="com.hyg.jsz.mybatis.mapper"/>
+		<package name="com.hyg.jsz.mybatis.pojo"/>
 	</mappers>
 </configuration>
